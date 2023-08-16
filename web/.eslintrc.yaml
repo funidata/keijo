@@ -1,0 +1,4 @@
+extends:
+  - next/core-web-vitals
+  # Keep prettier last.
+  - prettier
