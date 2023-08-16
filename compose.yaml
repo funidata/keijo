@@ -8,3 +8,11 @@ services:
       - ./web/src:/usr/src/app/src
       - ./web/public:/usr/src/app/public
       - ./web/.next:/usr/src/app/.next
+
+  server:
+    build: ./server/
+    container_name: keijo-server
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./server/src:/usr/src/app/src
