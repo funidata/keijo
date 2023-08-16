@@ -14,5 +14,6 @@ services:
     container_name: keijo-server
     environment:
       - NODE_ENV=development
+      - PORT=3001
     volumes:
       - ./server/src:/usr/src/app/src
