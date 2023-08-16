@@ -1,0 +1,10 @@
+services:
+  web:
+    build: ./web/
+    container_name: keijo-web
+    ports:
+      - 3000:3000
+    volumes:
+      - ./web/src:/usr/src/app/src
+      - ./web/public:/usr/src/app/public
+      - ./web/.next:/usr/src/app/.next
