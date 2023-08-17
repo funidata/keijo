@@ -4,8 +4,8 @@ on:
   workflow_call:
 
 jobs:
-  build:
-    name: Build and save image
+  build-test:
+    name: Build and save test image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -16,10 +16,11 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: server
-          tags: keijo
-          outputs: type=docker,dest=/tmp/keijo.tar
+          file: server/Dockerfile.dev
+          tags: keijo-test
+          outputs: type=docker,dest=/tmp/keijo-test.tar
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: keijo
-          path: /tmp/keijo.tar
+          name: keijo-test
+          path: /tmp/keijo-test.tar

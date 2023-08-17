@@ -1,6 +1,4 @@
-FROM node:18.17
-
-USER node
+FROM node:18.17 AS dev
 
 # Install dependencies.
 WORKDIR /usr/src/app
@@ -11,3 +9,11 @@ COPY . .
 
 # Start via Nest in development mode.
 CMD npx nest start --watch --preserveWatchOutput
+
+# This stage is for reducing image size in CI which makes artifact upload faster.
+FROM node:18.17-alpine
+
+WORKDIR /usr/src/app
+COPY --from=dev /usr/src/app .
+
+CMD npx nest start

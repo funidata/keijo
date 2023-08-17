@@ -13,6 +13,7 @@ services:
     build:
       context: ./server/
       dockerfile: Dockerfile.dev
+      target: dev
     container_name: keijo-server
     environment:
       - NODE_ENV=development
