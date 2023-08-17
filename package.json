@@ -5,7 +5,7 @@
   "scripts": {
     "start": "docker compose up -d --build && npm run logs",
     "stop": "docker compose down",
-    "logs": "docker compose -f logs"
+    "logs": "docker compose logs -f"
   },
   "author": "Joonas Häkkinen <joonas.hakkinen@funidata.fi>",
   "license": "MIT"
