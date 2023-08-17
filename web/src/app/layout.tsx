@@ -1,5 +1,5 @@
 import "@fontsource/roboto";
-import { CssBaseline } from "@mui/material";
+import { AppBar, Box, Container, CssBaseline, Toolbar, Typography } from "@mui/material";
 import type { Metadata } from "next";
 import { ReactNode } from "react";
 
@@ -12,7 +12,16 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en">
       <CssBaseline />
-      <body>{children}</body>
+      <body>
+        <Box sx={{ flexGrow: 1 }}>
+          <AppBar position="sticky">
+            <Toolbar>
+              <Typography variant="h6">Keijo</Typography>
+            </Toolbar>
+          </AppBar>
+          <Container>{children}</Container>
+        </Box>
+      </body>
     </html>
   );
 };
