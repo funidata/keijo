@@ -1,0 +1,25 @@
+name: Build and save image
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    name: Build and save image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build and export
+        uses: docker/build-push-action@v4
+        with:
+          context: server
+          tags: keijo
+          outputs: type=docker,dest=/tmp/keijo.tar
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: keijo
+          path: /tmp/keijo.tar

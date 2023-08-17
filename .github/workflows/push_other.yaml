@@ -1,0 +1,11 @@
+name: Push (other branches)
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  build:
+    name: Build image
+    uses: ./.github/workflows/build_image.yaml
