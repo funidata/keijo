@@ -10,7 +10,9 @@ services:
       - ./web/.next:/usr/src/app/.next
 
   server:
-    build: ./server/
+    build:
+      context: ./server/
+      dockerfile: Dockerfile.dev
     container_name: keijo-server
     environment:
       - NODE_ENV=development
