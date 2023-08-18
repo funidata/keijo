@@ -1,0 +1,4 @@
+# Ignore libs and built code when using repo root as context for building the production image.
+**/node_modules
+server/dist
+web/out

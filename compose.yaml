@@ -1,3 +1,4 @@
+# Bootstraps the local development environment. Not for production use.
 services:
   web:
     build: ./web/

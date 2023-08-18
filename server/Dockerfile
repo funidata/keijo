@@ -1,15 +1,23 @@
+# Production image.
+# Has to be run with the parent folder as context for the builder to access frontend files.
 FROM node:18.17 AS build
 
-# Install dependencies.
+# Build backend.
 WORKDIR /usr/src/app
-COPY package.json package-lock.json ./
+COPY server/package.json server/package-lock.json ./
 RUN npm ci
+COPY server .
+RUN npm run build
 
-# Build
-COPY . .
+# Build frontend.
+WORKDIR /usr/src/web
+COPY web/package.json web/package-lock.json ./
+RUN npm ci
+COPY web .
 RUN npm run build
 
 
+# Final build stage to pick only actually needed files into the image.
 FROM node:18.17-alpine
 
 USER node
@@ -17,5 +25,6 @@ USER node
 WORKDIR /app
 COPY --from=build /usr/src/app/dist ./dist
 COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY --from=build /usr/src/web/out ./public
 
-CMD node dist/main.js
+ENTRYPOINT ["node", "dist/main.js"]

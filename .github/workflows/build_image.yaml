@@ -29,7 +29,7 @@ jobs:
       - name: Build production image
         uses: docker/build-push-action@v4
         with:
-          context: server
+          file: server/Dockerfile
           tags: keijo
           outputs: type=docker,dest=/tmp/keijo.tar
       - name: Save production image as artifact

@@ -1,3 +1,4 @@
+# Backend image for development and test environments, complete with all the tooling, etc.
 FROM node:18.17 AS dev
 
 # Install dependencies.
