@@ -16,6 +16,8 @@ services:
       dockerfile: Dockerfile.dev
       target: dev
     container_name: keijo-server
+    env_file:
+      - .env
     environment:
       - NODE_ENV=development
       - PORT=3001
