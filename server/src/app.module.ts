@@ -1,9 +1,16 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Module } from "@nestjs/common";
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
+import config from "./config";
 
 @Module({
-  imports: [],
+  imports: [
+    ServeStaticModule.forRoot({
+      rootPath: config.clientPath,
+      exclude: ["/api/(.*)"],
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
