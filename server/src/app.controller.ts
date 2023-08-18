@@ -1,12 +1,18 @@
 import { Controller, Get } from "@nestjs/common";
-import { AppService } from "./app.service";
+import dayjs from "dayjs";
+import { NetvisorApiService } from "./netvisor-api/netvisor-api.service";
 
 @Controller("api")
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private netvisorApiService: NetvisorApiService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  async getHello() {
+    // FIXME: For testing. Remove.
+    return this.netvisorApiService.getWorkdays({
+      employeeNumber: "123",
+      start: dayjs("2023-01-01"),
+      end: dayjs(),
+    });
   }
 }

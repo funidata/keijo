@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import config from "./config";
+import { NetvisorApiModule } from "./netvisor-api/netvisor-api.module";
 
 @Module({
   imports: [
@@ -10,8 +10,8 @@ import config from "./config";
       rootPath: config.clientPath,
       exclude: ["/api/(.*)"],
     }),
+    NetvisorApiModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
