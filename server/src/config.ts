@@ -7,6 +7,7 @@ const {
   NETVISOR_ORGANIZATION_ID,
   NETVISOR_CUSTOMER_KEY,
   NETVISOR_ORGANIZATION_KEY,
+  NETVISOR_PARTNER_ID,
 } = process.env;
 
 const config = {
@@ -16,7 +17,7 @@ const config = {
   netvisor: {
     host: "https://isvapi.netvisor.fi",
     sender: "keijo",
-    partnerId: "Netvisor TestPartner",
+    partnerId: NETVISOR_PARTNER_ID,
     lang: "fi",
     customerId: NETVISOR_CUSTOMER_ID,
     organizationId: NETVISOR_ORGANIZATION_ID,
