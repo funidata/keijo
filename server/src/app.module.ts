@@ -3,7 +3,7 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
 import { AppController } from "./app.controller";
 import { ConfigModule } from "./config/config.module";
-import { NetvisorApiModule } from "./netvisor-api/netvisor-api.module";
+import { NetvisorModule } from "./netvisor/netvisor.module";
 
 // Serve frontend files only in production.
 const productionOnlyModules =
@@ -17,7 +17,7 @@ const productionOnlyModules =
     : [];
 
 @Module({
-  imports: [...productionOnlyModules, ConfigModule, NetvisorApiModule],
+  imports: [...productionOnlyModules, ConfigModule, NetvisorModule],
   controllers: [AppController],
 })
 export class AppModule {}

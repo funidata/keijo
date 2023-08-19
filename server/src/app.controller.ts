@@ -1,6 +1,6 @@
 import { Controller, Get } from "@nestjs/common";
 import dayjs from "dayjs";
-import { NetvisorApiService } from "./netvisor-api/netvisor-api.service";
+import { NetvisorApiService } from "./netvisor/netvisor-api.service";
 
 @Controller("api")
 export class AppController {
