@@ -26,6 +26,7 @@
     "@nestjs/serve-static": "^4.0.0",
     "axios": "^1.4.0",
     "dayjs": "^1.11.9",
+    "fast-xml-parser": "^4.2.7",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "sha.js": "^2.4.11",
