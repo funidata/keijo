@@ -3,7 +3,6 @@ import { Module } from "@nestjs/common";
 import { GraphQLModule } from "@nestjs/graphql";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
-import { AppController } from "./app.controller";
 import { ConfigModule } from "./config/config.module";
 import { ConfigService } from "./config/config.service";
 import { NetvisorModule } from "./netvisor/netvisor.module";
@@ -33,6 +32,5 @@ const productionOnlyModules =
     ConfigModule,
     NetvisorModule,
   ],
-  controllers: [AppController],
 })
 export class AppModule {}
