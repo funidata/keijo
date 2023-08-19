@@ -4,7 +4,8 @@ import dayjs from "dayjs";
 import Utc from "dayjs/plugin/utc";
 import sha from "sha.js";
 import { v4 as uuid } from "uuid";
-import config from "../config";
+import { Config } from "../config/config.schema";
+import { ConfigService } from "../config/config.service";
 
 dayjs.extend(Utc);
 
@@ -16,6 +17,11 @@ type WorkdayQuery = {
 
 @Injectable()
 export class NetvisorApiService {
+  private config: Config;
+  constructor(configService: ConfigService) {
+    this.config = configService.config;
+  }
+
   async getWorkdays({ employeeNumber, start, end }: WorkdayQuery) {
     const params = {
       employeenumber: employeeNumber,
@@ -29,7 +35,7 @@ export class NetvisorApiService {
   }
 
   private getUrl(endpoint: string): string {
-    return [config.netvisor.host, endpoint].join("/");
+    return [this.config.netvisor.host, endpoint].join("/");
   }
 
   /**
@@ -37,7 +43,7 @@ export class NetvisorApiService {
    */
   private getAuthenticationHeaders(endpointUrl: string, params?: unknown) {
     const { customerId, customerKey, lang, organizationId, organizationKey, partnerId, sender } =
-      config.netvisor;
+      this.config.netvisor;
 
     const urlParams = Object.entries(params || {})
       .map(([key, val]) => [key, val].join("="))
