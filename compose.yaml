@@ -23,3 +23,5 @@ services:
       - PORT=3001
     volumes:
       - ./server/src:/usr/src/app/src
+    ports:
+      - 3001:3001
