@@ -1,0 +1,5 @@
+query Asd {
+  test {
+    asd
+  }
+}
