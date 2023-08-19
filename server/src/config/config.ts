@@ -1,5 +1,3 @@
-import { join } from "path";
-
 const {
   NODE_ENV,
   PORT,
@@ -14,7 +12,6 @@ const config = {
   nodeEnv: NODE_ENV,
   inDev: NODE_ENV === "development",
   port: Number(PORT) || 3001,
-  clientPath: join(__dirname, "..", "public"),
   netvisor: {
     host: "https://isvapi.netvisor.fi",
     sender: "keijo",
