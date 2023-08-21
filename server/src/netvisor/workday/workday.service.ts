@@ -16,7 +16,8 @@ type WorkdayQuery = {
 export class WorkdayService {
   constructor(private netvisorApiService: NetvisorApiService) {}
 
-  async getWorkdays({ employeeNumber, start, end }: WorkdayQuery) {
+  // TODO: Add validation (pipe?)
+  async findMany({ employeeNumber, start, end }: WorkdayQuery) {
     const params = {
       employeenumber: employeeNumber,
       workhourstartdate: start.format("YYYY-MM-DD"),
@@ -24,7 +25,9 @@ export class WorkdayService {
     };
 
     const data = await this.netvisorApiService.get(NetvisorEndpoints.GET_WORKDAYS, params);
+    console.dir(data.Root, { depth: null });
 
+    // TODO: The two ifs below can probably be safely generalized. This behavior should be due to conversion from XML, not Netvisor API.
     if (!data.Root.WorkDays) {
       return [];
     }
@@ -33,6 +36,9 @@ export class WorkdayService {
       return [data.Root.WorkDays.Workday];
     }
 
+    // FIXME: `Date` must be converted to JS date.
+    // FIXME: `WorkdayHour` needs the XML->JS array treatment.
+    // FIXME: `WorkdayHour.Hours` must be converted properly; now integers are numbers and decimals strings.
     return data.Root.WorkDays.Workday;
   }
 }

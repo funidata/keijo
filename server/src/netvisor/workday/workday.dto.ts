@@ -1,7 +1,11 @@
 import { Field, ObjectType } from "@nestjs/graphql";
+import { Entry } from "./entry.dto";
 
 @ObjectType()
 export class Workday {
   @Field()
-  asd: string;
+  date: Date;
+
+  @Field(() => [Entry])
+  entries: Entry[];
 }
