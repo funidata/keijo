@@ -1,9 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import axios from "axios";
 import dayjs from "dayjs";
 import Utc from "dayjs/plugin/utc";
-import { XMLParser } from "fast-xml-parser";
-import { NetvisorAuthService } from "./netvisor-auth.service";
+import { NetvisorApiService } from "../netvisor-api/netvisor-api.service";
+import { NetvisorEndpoints } from "../netvisor-api/netvisor-endpoints.enum";
 
 dayjs.extend(Utc);
 
@@ -14,8 +13,8 @@ type WorkdayQuery = {
 };
 
 @Injectable()
-export class NetvisorApiService {
-  constructor(private netvisorAuthService: NetvisorAuthService) {}
+export class WorkdayService {
+  constructor(private netvisorApiService: NetvisorApiService) {}
 
   async getWorkdays({ employeeNumber, start, end }: WorkdayQuery) {
     const params = {
@@ -23,10 +22,8 @@ export class NetvisorApiService {
       workhourstartdate: start.format("YYYY-MM-DD"),
       workhourenddate: end.format("YYYY-MM-DD"),
     };
-    const url = this.netvisorAuthService.getUrl("getworkdays.nv");
-    const headers = this.netvisorAuthService.getAuthenticationHeaders(url, params);
-    const res = await axios.get(url, { headers, params });
-    const data = new XMLParser().parse(res.data);
+
+    const data = await this.netvisorApiService.get(NetvisorEndpoints.GET_WORKDAYS, params);
 
     if (!data.Root.WorkDays) {
       return [];

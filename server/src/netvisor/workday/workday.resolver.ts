@@ -1,8 +1,8 @@
 import { Query, Resolver } from "@nestjs/graphql";
-import { Workday } from "./models/workday.model";
+import { Workday } from "./workday.model";
 
 @Resolver()
-export class NetvisorResolver {
+export class WorkdayResolver {
   @Query(() => Workday)
   test() {
     return null;
