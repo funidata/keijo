@@ -12,9 +12,8 @@ export class WorkdayResolver {
     const res = await this.workdayService.findMany({
       employeeNumber: "123",
       start: dayjs("2023-01-01"),
-      end: dayjs(),
+      end: dayjs("2023-08-15"),
     });
-    console.log(res);
 
     // TODO: Refactor conversion.
     return res.map((wd) => ({

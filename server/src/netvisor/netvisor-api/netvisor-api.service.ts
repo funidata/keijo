@@ -3,8 +3,10 @@ import axios from "axios";
 import dayjs from "dayjs";
 import Utc from "dayjs/plugin/utc";
 import { XMLParser } from "fast-xml-parser";
+import { get, set } from "lodash";
 import { NetvisorAuthService } from "./netvisor-auth.service";
 import { NetvisorEndpoints } from "./netvisor-endpoints.enum";
+import { getWorkdaysNvArrays } from "./schema/get-workdays-nv.schema";
 
 dayjs.extend(Utc);
 
@@ -18,6 +20,20 @@ export class NetvisorApiService {
     const url = this.netvisorAuthService.getUrl(endpoint);
     const headers = this.netvisorAuthService.getAuthenticationHeaders(url, params);
     const res = await axios.get(url, { headers, params });
-    return new XMLParser().parse(res.data);
+
+    const data = new XMLParser({
+      isArray: (_, path) => {
+        return getWorkdaysNvArrays.includes(path);
+      },
+    }).parse(res.data);
+
+    // Despite `isArray` coercion, empty lists are still undefined.
+    getWorkdaysNvArrays.forEach((path) => {
+      if (get(data, path) === undefined) {
+        set(data, path, []);
+      }
+    });
+
+    return data;
   }
 }

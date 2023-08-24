@@ -25,16 +25,6 @@ export class WorkdayService {
     };
 
     const data = await this.netvisorApiService.get(NetvisorEndpoints.GET_WORKDAYS, params);
-    console.dir(data.Root, { depth: null });
-
-    // TODO: The two ifs below can probably be safely generalized. This behavior should be due to conversion from XML, not Netvisor API.
-    if (!data.Root.WorkDays) {
-      return [];
-    }
-
-    if (!data.Root.WorkDays.Workday.length) {
-      return [data.Root.WorkDays.Workday];
-    }
 
     // FIXME: `Date` must be converted to JS date.
     // FIXME: `WorkdayHour` needs the XML->JS array treatment.
