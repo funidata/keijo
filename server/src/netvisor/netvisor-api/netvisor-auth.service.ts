@@ -22,11 +22,11 @@ export class NetvisorAuthService {
   /**
    * Build headers required to authenticate requests to Netvisor API.
    */
-  getAuthenticationHeaders(endpointUrl: string, params?: unknown) {
+  getAuthenticationHeaders(endpointUrl: string, params = {}) {
     const { customerId, customerKey, lang, organizationId, organizationKey, partnerId, sender } =
       this.config.netvisor;
 
-    const urlParams = Object.entries(params || {})
+    const urlParams = Object.entries(params)
       .map(([key, val]) => [key, val].join("="))
       .join("&");
     const urlWithParams = urlParams ? [endpointUrl, urlParams].join("?") : endpointUrl;

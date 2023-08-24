@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import Utc from "dayjs/plugin/utc";
 import { NetvisorApiService } from "../netvisor-api/netvisor-api.service";
 import { NetvisorEndpoints } from "../netvisor-api/netvisor-endpoints.enum";
+import { getWorkdaysNvArrays } from "../netvisor-api/schema/get-workdays-nv.schema";
 
 dayjs.extend(Utc);
 
@@ -24,7 +25,11 @@ export class WorkdayService {
       workhourenddate: end.format("YYYY-MM-DD"),
     };
 
-    const data = await this.netvisorApiService.get(NetvisorEndpoints.GET_WORKDAYS, params);
+    const data = await this.netvisorApiService.get(
+      NetvisorEndpoints.GET_WORKDAYS,
+      getWorkdaysNvArrays,
+      params,
+    );
 
     // FIXME: `Date` must be converted to JS date.
     // FIXME: `WorkdayHour` needs the XML->JS array treatment.
