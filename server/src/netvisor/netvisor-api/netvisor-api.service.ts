@@ -21,6 +21,7 @@ export class NetvisorApiService {
     const headers = this.netvisorAuthService.getAuthenticationHeaders(url, params);
     const res = await axios.get(url, { headers, params });
 
+    // FIXME: Parameterize array path list.
     const data = new XMLParser({
       isArray: (_, path) => {
         return getWorkdaysNvArrays.includes(path);
@@ -29,7 +30,11 @@ export class NetvisorApiService {
 
     // Despite `isArray` coercion, empty lists are still undefined.
     getWorkdaysNvArrays.forEach((path) => {
-      if (get(data, path) === undefined) {
+      // Use parent for comparison rather than the actual path to effectively skip setting the
+      // default when the parent is an array. This will break if we actually need to set the
+      // default within list values but currently there is no need for that so this will do.
+      const parentPath = path.split(".").slice(0, -1).join(".");
+      if (get(data, parentPath) === "") {
         set(data, path, []);
       }
     });

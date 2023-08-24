@@ -18,12 +18,10 @@ export class WorkdayResolver {
     // TODO: Refactor conversion.
     return res.map((wd) => ({
       date: new Date(wd.Date),
-      entries: [
-        {
-          duration: Number(wd.WorkdayHour.Hours) || Number(wd.WorkdayHour.Hours.replace(",", ".")),
-          entryType: wd.WorkdayHour.CollectorRatio,
-        },
-      ],
+      entries: wd.WorkdayHour.map((wdh) => ({
+        duration: Number(wdh.Hours) || Number(wdh.Hours.replace(",", ".")),
+        entryType: wdh.CollectorRatio,
+      })),
     }));
   }
 }
