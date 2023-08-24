@@ -19,7 +19,7 @@ export class WorkdayResolver {
     return res.map((wd) => ({
       date: new Date(wd.Date),
       entries: wd.WorkdayHour.map((wdh) => ({
-        duration: Number(wdh.Hours) || Number(wdh.Hours.replace(",", ".")),
+        duration: wdh.Hours,
         entryType: wdh.CollectorRatio,
       })),
     }));

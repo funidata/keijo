@@ -26,6 +26,13 @@ export class NetvisorApiService {
       isArray: (_, path) => {
         return getWorkdaysNvArrays.includes(path);
       },
+      tagValueProcessor: (_, tagValue) => {
+        // Change decimal separator from comma to period because the parser does not support comma.
+        if (typeof tagValue === "string" && tagValue.match(/^\d{1,2},\d{1,2}$/g)) {
+          return tagValue.replace(",", ".");
+        }
+        return tagValue;
+      },
     }).parse(res.data);
 
     // Despite `isArray` coercion, empty lists are still undefined.
