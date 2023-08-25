@@ -9,6 +9,10 @@ import { string } from "zod";
 import config from "../config/config";
 
 export const EmployeeNumber = createParamDecorator((_, context: ExecutionContext) => {
+  if (config.inDev) {
+    return config.mockEmployeeNumber;
+  }
+
   const logger = new Logger("EmployeeNumber");
 
   if (context.getType<GqlContextType>() !== "graphql") {

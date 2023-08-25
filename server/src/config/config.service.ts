@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable, InternalServerErrorException, Logger } from "@nestjs/common";
 import { Config, configSchema } from "./config.schema";
 
 /**
@@ -19,6 +19,12 @@ export class ConfigService {
     } catch (error) {
       this.logger.error("Invalid configuration.");
       throw error;
+    }
+
+    if (!config.inDev && config.mockEmployeeId) {
+      throw new InternalServerErrorException(
+        "Mock employee ID cannot be used in production environment.",
+      );
     }
   }
 }
