@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, Logger } from "@nestjs/common";
 import axios from "axios";
 import dayjs from "dayjs";
 import Utc from "dayjs/plugin/utc";
@@ -11,6 +11,8 @@ dayjs.extend(Utc);
 
 @Injectable()
 export class NetvisorApiService {
+  private readonly logger = new Logger(NetvisorApiService.name);
+
   constructor(private netvisorAuthService: NetvisorAuthService) {}
 
   // FIXME: Type this properly.
@@ -36,6 +38,13 @@ export class NetvisorApiService {
         return tagValue;
       },
     }).parse(res.data);
+
+    if (data.Root.ResponseStatus.Status !== "OK") {
+      const message = "Request to Netvisor API failed.";
+      const description = data.Root.ResponseStatus.Status[1];
+      this.logger.error(message, description);
+      throw new BadRequestException(message, description);
+    }
 
     // Despite `isArray` coercion, empty lists are still undefined.
     arrayPaths.forEach((path) => {
