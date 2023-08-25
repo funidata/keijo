@@ -8,7 +8,7 @@ import { getWorkdaysNvArrays } from "../netvisor-api/schema/get-workdays-nv.sche
 dayjs.extend(Utc);
 
 type WorkdayQuery = {
-  employeeNumber: string;
+  employeeNumber: number;
   start: dayjs.Dayjs;
   end: dayjs.Dayjs;
 };
