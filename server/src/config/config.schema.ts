@@ -4,6 +4,7 @@ export const configSchema = object({
   nodeEnv: union([literal("production"), literal("development")]),
   inDev: boolean(),
   port: number(),
+  employeeNumberHeaderKey: string(),
   netvisor: object({
     host: string(),
     sender: string(),

@@ -1,6 +1,7 @@
 const {
   NODE_ENV,
   PORT,
+  EMPLOYEE_NUMBER_HEADER_KEY,
   NETVISOR_CUSTOMER_ID,
   NETVISOR_ORGANIZATION_ID,
   NETVISOR_CUSTOMER_KEY,
@@ -12,6 +13,7 @@ const config = {
   nodeEnv: NODE_ENV,
   inDev: NODE_ENV === "development",
   port: Number(PORT) || 3001,
+  employeeNumberHeaderKey: EMPLOYEE_NUMBER_HEADER_KEY || "X-SHIB-employeeId",
   netvisor: {
     host: "https://isvapi.netvisor.fi",
     sender: "keijo",
