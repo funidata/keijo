@@ -3,7 +3,11 @@ import dayjs from "dayjs";
 import Utc from "dayjs/plugin/utc";
 import { NetvisorApiService } from "../netvisor-api/netvisor-api.service";
 import { NetvisorEndpoints } from "../netvisor-api/netvisor-endpoints.enum";
-import { getWorkdaysNvArrays } from "../netvisor-api/schema/get-workdays-nv.schema";
+import {
+  GetWorkdaysNvSchema,
+  getWorkdaysNvArrays,
+} from "../netvisor-api/schema/get-workdays-nv.schema";
+import { Workday } from "./dto/workday.dto";
 
 dayjs.extend(Utc);
 
@@ -31,9 +35,16 @@ export class WorkdayService {
       params,
     );
 
-    // FIXME: `Date` must be converted to JS date.
-    // FIXME: `WorkdayHour` needs the XML->JS array treatment.
-    // FIXME: `WorkdayHour.Hours` must be converted properly; now integers are numbers and decimals strings.
-    return data.Root.WorkDays.Workday;
+    return this.toLocalWorkdays(data.Root);
+  }
+
+  private toLocalWorkdays(apiResult: GetWorkdaysNvSchema): Workday[] {
+    return apiResult.WorkDays.Workday.map((wd) => ({
+      date: new Date(wd.Date),
+      entries: wd.WorkdayHour.map((wdh) => ({
+        duration: wdh.Hours,
+        entryType: wdh.CollectorRatio,
+      })),
+    }));
   }
 }

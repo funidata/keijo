@@ -1,9 +1,9 @@
-import { array, z as zod } from "zod";
+import { array, object, z as zod } from "zod";
 import { rootSchema } from "./root.schema";
 import { workdaySchema } from "./workday.schema";
 
 export const getWorkdaysNvSchema = rootSchema.extend({
-  WorkDays: array(workdaySchema),
+  WorkDays: object({ Workday: array(workdaySchema) }),
 });
 
 export type GetWorkdaysNvSchema = zod.infer<typeof getWorkdaysNvSchema>;
