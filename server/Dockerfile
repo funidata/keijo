@@ -10,6 +10,7 @@ COPY server .
 RUN npm run build
 
 # Build frontend.
+ENV NEXT_PUBLIC_API_URL=/graphql
 WORKDIR /usr/src/web
 COPY web/package.json web/package-lock.json ./
 RUN npm ci

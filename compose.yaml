@@ -3,6 +3,8 @@ services:
   web:
     build: ./web/
     container_name: keijo-web
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:3001/graphql
     ports:
       - 3000:3000
     volumes:

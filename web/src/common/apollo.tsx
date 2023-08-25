@@ -8,8 +8,7 @@ import {
 import { ChildrenProps } from "./types";
 
 const makeClient = () => {
-  // FIXME: Get URL from env.
-  const httpLink = new HttpLink({ uri: "http://localhost:3001/graphql" });
+  const httpLink = new HttpLink({ uri: process.env.NEXT_PUBLIC_API_URL });
 
   return new NextSSRApolloClient({
     cache: new NextSSRInMemoryCache(),
