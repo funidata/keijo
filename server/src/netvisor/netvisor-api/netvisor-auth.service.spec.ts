@@ -60,13 +60,40 @@ describe("Netvisor authentication", () => {
     });
 
     it("Timestamp is correct", () => {
-      const expcetedTimestamp = dayjs(now).utc().format("YYYY-MM-DD HH:mm:ss.SSS");
+      const expectedTimestamp = dayjs(now).utc().format("YYYY-MM-DD HH:mm:ss.SSS");
 
       const actualTimestamp =
         netvisorAuthService.getAuthenticationHeaders(testUrl)[
           "X-Netvisor-Authentication-Timestamp"
         ];
-      expect(actualTimestamp).toEqual(expcetedTimestamp);
+
+      expect(actualTimestamp).toEqual(expectedTimestamp);
+    });
+
+    it("Transaction ID is correct", () => {
+      const uuidMatcher = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      const firstId =
+        netvisorAuthService.getAuthenticationHeaders(testUrl)[
+          "X-Netvisor-Authentication-TransactionId"
+        ];
+      const secondId =
+        netvisorAuthService.getAuthenticationHeaders(testUrl)[
+          "X-Netvisor-Authentication-TransactionId"
+        ];
+
+      expect(firstId).not.toEqual(secondId);
+      expect(firstId).toMatch(uuidMatcher);
+      expect(secondId).toMatch(uuidMatcher);
+    });
+
+    it("MAC hash is correct", () => {
+      // Check just that the resulting string appears to be a valid SHA256 hash.
+      // Otherwise, we'd need to modify `getAuthenticationHeaders` to accept UUID override and the
+      // resulting test code would be just a copy-paste.
+      const shaMatcher = /^[0-9a-f]{64}$/i;
+      const actualHash =
+        netvisorAuthService.getAuthenticationHeaders(testUrl)["X-Netvisor-Authentication-MAC"];
+      expect(actualHash).toMatch(shaMatcher);
     });
   });
 });
