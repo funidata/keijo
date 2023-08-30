@@ -5,17 +5,19 @@ import sha from "sha.js";
 import { v4 as uuid } from "uuid";
 import { Config } from "../../config/config.schema";
 import { ConfigService } from "../../config/config.service";
+import { NetvisorEndpoints } from "./netvisor-endpoints.enum";
 
 dayjs.extend(Utc);
 
 @Injectable()
 export class NetvisorAuthService {
   private config: Config;
+
   constructor(configService: ConfigService) {
     this.config = configService.config;
   }
 
-  getUrl(endpoint: string): string {
+  getUrl(endpoint: NetvisorEndpoints): string {
     return [this.config.netvisor.host, endpoint].join("/");
   }
 
