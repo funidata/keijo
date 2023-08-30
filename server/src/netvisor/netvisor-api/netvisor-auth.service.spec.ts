@@ -2,18 +2,21 @@ import { Test } from "@nestjs/testing";
 import dayjs from "dayjs";
 import { omit } from "lodash";
 import mockConfigProvider from "../../../test/utils/mock-config.service";
+import { ConfigService } from "../../config/config.service";
 import { NetvisorAuthService } from "./netvisor-auth.service";
 import { NetvisorEndpoints } from "./netvisor-endpoints.enum";
 
 describe("Netvisor authentication", () => {
   let netvisorAuthService: NetvisorAuthService;
+  let testUrl: string;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [NetvisorAuthService, mockConfigProvider()],
     }).compile();
 
-    netvisorAuthService = module.get<NetvisorAuthService>(NetvisorAuthService);
+    netvisorAuthService = module.get(NetvisorAuthService);
+    testUrl = module.get<ConfigService>(ConfigService).config.netvisor.host;
   });
 
   it("Builds correct URL", () => {
@@ -23,7 +26,6 @@ describe("Netvisor authentication", () => {
   });
 
   describe("Builds correct headers", () => {
-    const testUrl = "asd";
     let now: number;
 
     beforeAll(() => {
