@@ -46,3 +46,24 @@ Run this command in the `web/` directory. Dev env must be running as the code ge
 ```bash
 npm run generate
 ```
+
+## Releases
+
+The project is setup with an automatic release pipeline that takes care of testing the software, building, packaging and finally publishing it as a Docker image to GHCR (GitHub Container Registry).
+
+### Versions
+
+Keijo is released as a single Docker image that contains the whole software. (The frontend is built into the backend and served by it.) Following images are published at [GHCR](https://github.com/funidata/keijo/pkgs/container/keijo):
+
+- `next`: The `HEAD` of `main` branch. Not guaranteed to be stable.
+- `latest`: The latest released version. This image is also tagged with the full semver version number along with the abbreviated major and minor semver tags. For example, if you release version `1.2.3`, the following tags would point to the same image (until a new version is release, that is):
+  - `latest`
+  - `1.2.3`
+  - `1.2`
+  - `1`
+
+### Publish New Version
+
+1. Make sure you are in `main` branch and the working tree is clean.
+2. Run `npm version <patch|minor|major>`. **Always follow the [semantic versioning guidelines](https://semver.org/).** This script uses `npm version` to apply the desired version bump, sync the sub-projects with it, and finally push the created tags to GitHub.
+3. Allow the [CI/CD pipeline](https://github.com/funidata/keijo/actions) to finish. The new version is automatically published once the workflow completes.
