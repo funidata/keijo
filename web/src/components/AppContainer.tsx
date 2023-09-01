@@ -1,17 +1,17 @@
 "use client";
 import "@fontsource/roboto";
 import { AppBar, Box, Container, CssBaseline, Toolbar, Typography } from "@mui/material";
-import Apollo from "../common/apollo";
+import ApolloProvider from "../common/ApolloProvider";
+import { ChildrenProps } from "../common/types";
+import "../i18n";
 import LanguageSelect from "./LanguageSelect";
-import "./i18n";
-import { ChildrenProps } from "./types";
 
 const AppContainer = ({ children }: ChildrenProps) => {
   return (
     <html lang="en">
       <CssBaseline />
       <body>
-        <Apollo>
+        <ApolloProvider>
           <Box sx={{ flexGrow: 1 }}>
             <AppBar position="sticky">
               <Toolbar>
@@ -24,7 +24,7 @@ const AppContainer = ({ children }: ChildrenProps) => {
             </AppBar>
             <Container>{children}</Container>
           </Box>
-        </Apollo>
+        </ApolloProvider>
       </body>
     </html>
   );

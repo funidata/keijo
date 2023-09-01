@@ -16,8 +16,8 @@ const makeClient = () => {
   });
 };
 
-const Apollo = ({ children }: ChildrenProps) => (
+const ApolloProvider = ({ children }: ChildrenProps) => (
   <ApolloNextAppProvider makeClient={makeClient}>{children}</ApolloNextAppProvider>
 );
 
-export default Apollo;
+export default ApolloProvider;

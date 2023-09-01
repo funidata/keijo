@@ -1,7 +1,7 @@
 import "@fontsource/roboto";
 import type { Metadata } from "next";
-import AppContainer from "../common/app-container";
 import { ChildrenProps } from "../common/types";
+import AppContainer from "../components/AppContainer";
 
 export const metadata: Metadata = {
   title: "Keijo",
