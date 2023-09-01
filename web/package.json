@@ -8,7 +8,7 @@
     "lint": "next lint",
     "generate": "npm run generate:codegen && npm run generate:format",
     "generate:codegen": "graphql-codegen",
-    "generate:format": "prettier -w src/generated"
+    "generate:format": "prettier -w src/graphql/generated"
   },
   "dependencies": {
     "@apollo/client": "^3.8.1",

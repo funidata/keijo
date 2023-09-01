@@ -46,9 +46,9 @@ export type Workday = {
   entries: Array<Entry>;
 };
 
-export type AsdQueryVariables = Exact<{ [key: string]: never }>;
+export type FindWorkdaysQueryVariables = Exact<{ [key: string]: never }>;
 
-export type AsdQuery = {
+export type FindWorkdaysQuery = {
   __typename?: "Query";
   findWorkdays: Array<{
     __typename?: "Workday";
@@ -57,13 +57,13 @@ export type AsdQuery = {
   }>;
 };
 
-export const AsdDocument = {
+export const FindWorkdaysDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "Asd" },
+      name: { kind: "Name", value: "FindWorkdays" },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
@@ -85,7 +85,7 @@ export const AsdDocument = {
                     {
                       kind: "ObjectField",
                       name: { kind: "Name", value: "end" },
-                      value: { kind: "StringValue", value: "asd", block: false },
+                      value: { kind: "StringValue", value: "2023-08-15", block: false },
                     },
                   ],
                 },
@@ -113,4 +113,4 @@ export const AsdDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<AsdQuery, AsdQueryVariables>;
+} as unknown as DocumentNode<FindWorkdaysQuery, FindWorkdaysQueryVariables>;
