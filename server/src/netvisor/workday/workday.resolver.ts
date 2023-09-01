@@ -1,7 +1,7 @@
 import { Args, Query, Resolver } from "@nestjs/graphql";
 import dayjs from "dayjs";
 import { EmployeeNumber } from "../../decorators/employee-number.decorator";
-import { FindWorkdaysQuery } from "./dto/find-workdays-query.dto";
+import { FindWorkdaysInput } from "./dto/find-workdays-query.dto";
 import { Workday } from "./dto/workday.dto";
 import { WorkdayService } from "./workday.service";
 
@@ -12,7 +12,7 @@ export class WorkdayResolver {
   @Query(() => [Workday])
   async findWorkdays(
     @EmployeeNumber() employeeNumber: number,
-    @Args("query") query: FindWorkdaysQuery,
+    @Args("query") query: FindWorkdaysInput,
   ): Promise<Workday[]> {
     return await this.workdayService.findMany({
       employeeNumber,

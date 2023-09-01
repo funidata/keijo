@@ -1,7 +1,7 @@
 import { Field, InputType } from "@nestjs/graphql";
 
 @InputType()
-export class FindWorkdaysQuery {
+export class FindWorkdaysInput {
   @Field()
   start: Date;
 

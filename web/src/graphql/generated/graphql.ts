@@ -26,7 +26,7 @@ export type Entry = {
   entryType: Scalars["String"]["output"];
 };
 
-export type FindWorkdaysQuery = {
+export type FindWorkdaysInput = {
   end: Scalars["DateTime"]["input"];
   start: Scalars["DateTime"]["input"];
 };
@@ -37,7 +37,7 @@ export type Query = {
 };
 
 export type QueryFindWorkdaysArgs = {
-  query: FindWorkdaysQuery;
+  query: FindWorkdaysInput;
 };
 
 export type Workday = {
@@ -85,7 +85,7 @@ export const FindWorkdaysDocument = {
                     {
                       kind: "ObjectField",
                       name: { kind: "Name", value: "end" },
-                      value: { kind: "StringValue", value: "2023-08-15", block: false },
+                      value: { kind: "StringValue", value: "2023-08-31", block: false },
                     },
                   ],
                 },

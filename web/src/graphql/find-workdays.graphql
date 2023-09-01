@@ -1,0 +1,9 @@
+query FindWorkdays {
+  findWorkdays(query: { start: "2023-01-01", end: "2023-08-31" }) {
+    date
+    entries {
+      duration
+      entryType
+    }
+  }
+}
