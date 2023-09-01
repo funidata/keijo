@@ -10,9 +10,11 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { FindWorkdaysDocument } from "../graphql/generated/graphql";
 
 const Home = () => {
+  const { t } = useTranslation();
   const { data } = useQuery(FindWorkdaysDocument);
 
   if (!data) {
@@ -21,7 +23,7 @@ const Home = () => {
 
   return (
     <>
-      <Typography variant="h4">Hello, world!</Typography>
+      <Typography variant="h4">{t("asd")}</Typography>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
