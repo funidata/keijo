@@ -44,6 +44,11 @@ export class WorkdayService {
       entries: wd.WorkdayHour.map((wdh) => ({
         duration: wdh.Hours,
         entryType: wdh.CollectorRatio,
+        dimensions:
+          wdh.Dimension?.map((dim) => ({
+            name: dim.DimensionName,
+            value: dim.DimensionItem,
+          })) || [],
       })),
     }));
   }

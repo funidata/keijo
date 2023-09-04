@@ -1,4 +1,5 @@
 import { Field, ObjectType } from "@nestjs/graphql";
+import { Dimension } from "./dimension.dto";
 
 @ObjectType()
 export class Entry {
@@ -7,4 +8,7 @@ export class Entry {
 
   @Field()
   entryType: string;
+
+  @Field(() => [Dimension])
+  dimensions: Dimension[];
 }

@@ -8,4 +8,8 @@ export const getWorkdaysNvSchema = rootSchema.extend({
 
 export type GetWorkdaysNvSchema = zod.infer<typeof getWorkdaysNvSchema>;
 
-export const getWorkdaysNvArrays = ["Root.WorkDays.Workday", "Root.WorkDays.Workday.WorkdayHour"];
+export const getWorkdaysNvArrays = [
+  "Root.WorkDays.Workday",
+  "Root.WorkDays.Workday.WorkdayHour",
+  "Root.WorkDays.Workday.WorkdayHour.Dimension",
+];

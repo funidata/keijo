@@ -1,4 +1,4 @@
-import { array, number, object, string, union, z as zod } from "zod";
+import { array, number, object, string, z as zod } from "zod";
 import { dimensionSchema } from "./dimension.schema";
 
 export const workdaySchema = object({
@@ -10,7 +10,7 @@ export const workdaySchema = object({
       AcceptanceStatus: string(),
       Description: string(),
       CrmProcessName: string(),
-      Dimension: union([string().length(0), array(dimensionSchema)]).optional(),
+      Dimension: array(dimensionSchema).optional(),
     }),
   ),
 });
