@@ -1,6 +1,8 @@
 "use client";
 import "@fontsource/roboto";
 import { AppBar, Box, Container, CssBaseline, Toolbar, Typography } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import ApolloProvider from "../common/ApolloProvider";
 import { ChildrenProps } from "../common/types";
 import "../i18n";
@@ -12,18 +14,20 @@ const AppContainer = ({ children }: ChildrenProps) => {
       <CssBaseline />
       <body>
         <ApolloProvider>
-          <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="sticky">
-              <Toolbar>
-                <Typography variant="h6">Keijo</Typography>
-                <Box sx={{ flexGrow: 1 }} />
-                <Box>
-                  <LanguageSelect />
-                </Box>
-              </Toolbar>
-            </AppBar>
-            <Container>{children}</Container>
-          </Box>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Box sx={{ flexGrow: 1 }}>
+              <AppBar position="sticky">
+                <Toolbar>
+                  <Typography variant="h6">Keijo</Typography>
+                  <Box sx={{ flexGrow: 1 }} />
+                  <Box>
+                    <LanguageSelect />
+                  </Box>
+                </Toolbar>
+              </AppBar>
+              <Container>{children}</Container>
+            </Box>
+          </LocalizationProvider>
         </ApolloProvider>
       </body>
     </html>
