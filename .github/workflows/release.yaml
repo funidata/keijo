@@ -37,9 +37,9 @@ jobs:
       - name: Compose semver tags
         id: tags
         run: |
-          echo "::set-output name=major::v${{ steps.semver.outputs.major }}"
-          echo "::set-output name=minor::v${{ steps.semver.outputs.major }}.${{ steps.semver.outputs.minor }}"
-          echo "::set-output name=full::v${{ steps.semver.outputs.major }}.${{ steps.semver.outputs.minor }}.${{ steps.semver.outputs.patch }}"
+          echo "::set-output name=major::${{ steps.semver.outputs.major }}"
+          echo "::set-output name=minor::${{ steps.semver.outputs.major }}.${{ steps.semver.outputs.minor }}"
+          echo "::set-output name=full::${{ steps.semver.outputs.major }}.${{ steps.semver.outputs.minor }}.${{ steps.semver.outputs.patch }}"
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Download artifact
