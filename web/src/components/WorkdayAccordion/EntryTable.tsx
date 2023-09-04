@@ -1,12 +1,12 @@
 import { useQuery } from "@apollo/client";
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
-import { Entry, FindDimensionNamesDocument } from "../../graphql/generated/graphql";
+import { Entry, FindDimensionNamesDocument, Workday } from "../../graphql/generated/graphql";
 
 type EntryTableProps = {
-  entries: Entry[];
+  workday: Workday;
 };
 
-const EntryTable = ({ entries }: EntryTableProps) => {
+const EntryTable = ({ workday }: EntryTableProps) => {
   const { data } = useQuery(FindDimensionNamesDocument);
 
   if (!data) {
@@ -15,26 +15,36 @@ const EntryTable = ({ entries }: EntryTableProps) => {
 
   const { findDimensionNames } = data;
 
+  const tableHeadCellKey = (name: string) => [workday.date, name, "head"].join("-");
+  const tableRowKey = (entry: Entry) =>
+    [
+      workday.date,
+      entry.entryType,
+      entry.duration,
+      ...entry.dimensions.map((dim) => dim.value),
+    ].join("-");
+  const dimensionValueCellKey = (entry: Entry, name: string) =>
+    [tableRowKey(entry), name].join("-");
+
   return (
     <Table size="small">
       <TableHead>
-        <TableCell>Type</TableCell>
-        <TableCell>Duration</TableCell>
-        {findDimensionNames.map((name) => (
-          <TableCell key={name}>{name}</TableCell>
-        ))}
+        <TableRow>
+          <TableCell>Type</TableCell>
+          <TableCell>Duration</TableCell>
+          {findDimensionNames.map((name) => (
+            <TableCell key={tableHeadCellKey(name)}>{name}</TableCell>
+          ))}
+        </TableRow>
       </TableHead>
 
       <TableBody>
-        {
-          // FIXME: TableRow needs a proper key!
-        }
-        {entries.map((entry) => (
-          <TableRow key={entry.duration}>
+        {workday.entries.map((entry) => (
+          <TableRow key={tableRowKey(entry)}>
             <TableCell>{entry.entryType}</TableCell>
             <TableCell>{entry.duration}</TableCell>
             {findDimensionNames.map((name) => (
-              <TableCell key={[name, entry.duration].join()}>
+              <TableCell key={dimensionValueCellKey(entry, name)}>
                 {entry.dimensions.find((dim) => dim.name === name)?.value}
               </TableCell>
             ))}

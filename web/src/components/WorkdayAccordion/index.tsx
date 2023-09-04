@@ -29,7 +29,7 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
         </Box>
       </AccordionSummary>
       <AccordionDetails>
-        <EntryTable entries={workday.entries} />
+        <EntryTable workday={workday} />
       </AccordionDetails>
     </Accordion>
   );
