@@ -1,4 +1,5 @@
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
+import { CacheModule } from "@nestjs/cache-manager";
 import { Module } from "@nestjs/common";
 import { GraphQLModule } from "@nestjs/graphql";
 import { ServeStaticModule } from "@nestjs/serve-static";
@@ -27,6 +28,12 @@ const productionOnlyModules =
       useFactory: ({ config }: ConfigService) => ({
         playground: config.inDev,
         autoSchemaFile: true,
+      }),
+    }),
+    CacheModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        ttl: configService.config.netvisor.cacheTtl * 1000,
       }),
     }),
     ConfigModule,

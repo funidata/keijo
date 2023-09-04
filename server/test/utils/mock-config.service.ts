@@ -15,6 +15,7 @@ const defaultMockConfig: Config = {
     organizationId: "test-org-id",
     customerKey: "test-customer-key",
     organizationKey: "test-org-key",
+    cacheTtl: 60,
   },
 };
 

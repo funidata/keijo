@@ -14,6 +14,7 @@ export const configSchema = object({
     organizationId: string(),
     customerKey: string(),
     organizationKey: string(),
+    cacheTtl: number(),
   }),
 });
 

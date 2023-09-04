@@ -2,6 +2,8 @@
 
 Netvisor integration credentials must be supplied in order for the upstream API integration to work. The backend application reads configuration from environment variables according to the table below.
 
+Variables with default values can be omitted from environment.
+
 For local development, create `.env` file in repository root and populate it with your demo credentials.
 
 ## Environment Variables
@@ -15,5 +17,6 @@ Key|Default|Description
 `NETVISOR_CUSTOMER_KEY`||See Netvisor auth docs for _"Integraatiokäyttäjän yksilöivä avain"_.
 `NETVISOR_ORGANIZATION_KEY`||See Netvisor auth docs for _"Integraatiokumppanin yksilöivä avain"_.
 `NETVISOR_PARTNER_ID`||See Netvisor auth docs for `X-Netvisor-Authentication-PartnerId` header.
+`NETVISOR_CACHE_TTL`|60|Time-to-live (seconds) for caching certain Netvisor API endpoint results.
 `PORT`|3001|Server listens to this port.
 `EMPLOYEE_NUMBER_HEADER_KEY`|X-SHIB-employeeId|Name of the header that defines authenticated user's Netvisor employee ID (case insensitive). **The user must not be able to set this header.**
