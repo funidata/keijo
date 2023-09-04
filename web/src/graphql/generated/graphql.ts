@@ -20,8 +20,15 @@ export type Scalars = {
   DateTime: { input: any; output: any };
 };
 
+export type Dimension = {
+  __typename?: "Dimension";
+  name: Scalars["String"]["output"];
+  value: Scalars["String"]["output"];
+};
+
 export type Entry = {
   __typename?: "Entry";
+  dimensions: Array<Dimension>;
   duration: Scalars["Float"]["output"];
   entryType: Scalars["String"]["output"];
 };
@@ -33,6 +40,7 @@ export type FindWorkdaysInput = {
 
 export type Query = {
   __typename?: "Query";
+  findDimensionNames: Array<Scalars["String"]["output"]>;
   findWorkdays: Array<Workday>;
 };
 
@@ -56,7 +64,12 @@ export type FindWorkdaysQuery = {
   findWorkdays: Array<{
     __typename?: "Workday";
     date: any;
-    entries: Array<{ __typename?: "Entry"; duration: number; entryType: string }>;
+    entries: Array<{
+      __typename?: "Entry";
+      duration: number;
+      entryType: string;
+      dimensions: Array<{ __typename?: "Dimension"; name: string; value: string }>;
+    }>;
   }>;
 };
 
@@ -124,6 +137,17 @@ export const FindWorkdaysDocument = {
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "duration" } },
                       { kind: "Field", name: { kind: "Name", value: "entryType" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "dimensions" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            { kind: "Field", name: { kind: "Name", value: "name" } },
+                            { kind: "Field", name: { kind: "Name", value: "value" } },
+                          ],
+                        },
+                      },
                     ],
                   },
                 },

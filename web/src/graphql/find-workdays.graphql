@@ -4,6 +4,10 @@ query FindWorkdays($start: DateTime!, $end: DateTime!) {
     entries {
       duration
       entryType
+      dimensions {
+        name
+        value
+      }
     }
   }
 }
