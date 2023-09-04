@@ -25,7 +25,7 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
           }}
         >
           {dayjs(workday.date).format("dd D.M.YYYY")}
-          <Chip label={totalHours} sx={{ mr: 2 }} />
+          <Chip label={`${totalHours} h`} sx={{ mr: 2 }} />
         </Box>
       </AccordionSummary>
       <AccordionDetails>

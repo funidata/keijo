@@ -1,6 +1,6 @@
 "use client";
 import { useLazyQuery } from "@apollo/client";
-import { Paper, Typography } from "@mui/material";
+import { Paper } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
@@ -31,7 +31,6 @@ const Home = () => {
 
   return (
     <>
-      <Typography variant="h4">{t("asd")}</Typography>
       <DatePicker value={start} onChange={handleStartChange} />
       <Paper>
         {data.findWorkdays.map((wd) => (

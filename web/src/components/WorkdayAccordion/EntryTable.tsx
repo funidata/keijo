@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { Entry, FindDimensionNamesDocument, Workday } from "../../graphql/generated/graphql";
 
 type EntryTableProps = {
@@ -7,6 +8,7 @@ type EntryTableProps = {
 };
 
 const EntryTable = ({ workday }: EntryTableProps) => {
+  const { t } = useTranslation();
   const { data } = useQuery(FindDimensionNamesDocument);
 
   if (!data) {
@@ -30,8 +32,8 @@ const EntryTable = ({ workday }: EntryTableProps) => {
     <Table size="small">
       <TableHead>
         <TableRow>
-          <TableCell>Type</TableCell>
-          <TableCell>Duration</TableCell>
+          <TableCell>{t("entryTable.head.type")}</TableCell>
+          <TableCell>{t("entryTable.head.duration")}</TableCell>
           {findDimensionNames.map((name) => (
             <TableCell key={tableHeadCellKey(name)}>{name}</TableCell>
           ))}

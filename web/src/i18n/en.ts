@@ -1,5 +1,10 @@
 const en = {
-  asd: "Hello, world!",
+  entryTable: {
+    head: {
+      type: "Type",
+      duration: "Duration (h)",
+    },
+  },
 };
 
 export default en;

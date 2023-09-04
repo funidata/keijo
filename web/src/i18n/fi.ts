@@ -1,5 +1,10 @@
 const fi = {
-  asd: "Moikka, maailma!",
+  entryTable: {
+    head: {
+      type: "Tyyppi",
+      duration: "Kesto (h)",
+    },
+  },
 };
 
 export default fi;
