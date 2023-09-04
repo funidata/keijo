@@ -1,5 +1,5 @@
-query FindWorkdays {
-  findWorkdays(query: { start: "2023-01-01", end: "2023-08-31" }) {
+query FindWorkdays($start: DateTime!, $end: DateTime!) {
+  findWorkdays(query: { start: $start, end: $end }) {
     date
     entries {
       duration

@@ -46,7 +46,10 @@ export type Workday = {
   entries: Array<Entry>;
 };
 
-export type FindWorkdaysQueryVariables = Exact<{ [key: string]: never }>;
+export type FindWorkdaysQueryVariables = Exact<{
+  start: Scalars["DateTime"]["input"];
+  end: Scalars["DateTime"]["input"];
+}>;
 
 export type FindWorkdaysQuery = {
   __typename?: "Query";
@@ -64,6 +67,24 @@ export const FindWorkdaysDocument = {
       kind: "OperationDefinition",
       operation: "query",
       name: { kind: "Name", value: "FindWorkdays" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "start" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "DateTime" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "end" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "DateTime" } },
+          },
+        },
+      ],
       selectionSet: {
         kind: "SelectionSet",
         selections: [
@@ -80,12 +101,12 @@ export const FindWorkdaysDocument = {
                     {
                       kind: "ObjectField",
                       name: { kind: "Name", value: "start" },
-                      value: { kind: "StringValue", value: "2023-01-01", block: false },
+                      value: { kind: "Variable", name: { kind: "Name", value: "start" } },
                     },
                     {
                       kind: "ObjectField",
                       name: { kind: "Name", value: "end" },
-                      value: { kind: "StringValue", value: "2023-08-31", block: false },
+                      value: { kind: "Variable", name: { kind: "Name", value: "end" } },
                     },
                   ],
                 },
