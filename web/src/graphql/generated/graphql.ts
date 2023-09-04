@@ -54,6 +54,10 @@ export type Workday = {
   entries: Array<Entry>;
 };
 
+export type FindDimensionNamesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type FindDimensionNamesQuery = { __typename?: "Query"; findDimensionNames: Array<string> };
+
 export type FindWorkdaysQueryVariables = Exact<{
   start: Scalars["DateTime"]["input"];
   end: Scalars["DateTime"]["input"];
@@ -73,6 +77,20 @@ export type FindWorkdaysQuery = {
   }>;
 };
 
+export const FindDimensionNamesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "FindDimensionNames" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [{ kind: "Field", name: { kind: "Name", value: "findDimensionNames" } }],
+      },
+    },
+  ],
+} as unknown as DocumentNode<FindDimensionNamesQuery, FindDimensionNamesQueryVariables>;
 export const FindWorkdaysDocument = {
   kind: "Document",
   definitions: [
