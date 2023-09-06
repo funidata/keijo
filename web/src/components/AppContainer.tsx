@@ -1,6 +1,6 @@
 "use client";
 import "@fontsource/roboto";
-import { AppBar, Box, Container, CssBaseline, Toolbar, Typography } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useEffect } from "react";
@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import ApolloProvider from "../common/ApolloProvider";
 import { ChildrenProps } from "../common/types";
 import "../i18n";
-import LanguageSelect from "./LanguageSelect";
+import AppBar from "./AppBar";
 
 const AppContainer = ({ children }: ChildrenProps) => {
   const {
@@ -18,6 +18,7 @@ const AppContainer = ({ children }: ChildrenProps) => {
   useEffect(() => {
     // Set initial HTML lang value.
     document.documentElement.lang = language;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -26,18 +27,7 @@ const AppContainer = ({ children }: ChildrenProps) => {
       <body>
         <ApolloProvider>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box sx={{ flexGrow: 1 }}>
-              <AppBar position="sticky">
-                <Toolbar>
-                  <Typography variant="h6">Keijo</Typography>
-                  <Box sx={{ flexGrow: 1 }} />
-                  <Box>
-                    <LanguageSelect />
-                  </Box>
-                </Toolbar>
-              </AppBar>
-              <Container>{children}</Container>
-            </Box>
+            <AppBar>{children}</AppBar>
           </LocalizationProvider>
         </ApolloProvider>
       </body>
