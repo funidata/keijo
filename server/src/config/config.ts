@@ -26,7 +26,7 @@ const config = {
     organizationId: NETVISOR_ORGANIZATION_ID,
     customerKey: NETVISOR_CUSTOMER_KEY,
     organizationKey: NETVISOR_ORGANIZATION_KEY,
-    cacheTtl: NETVISOR_CACHE_TTL || 60,
+    cacheTtl: Number(NETVISOR_CACHE_TTL) || 60,
   },
 };
 
