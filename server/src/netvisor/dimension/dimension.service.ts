@@ -15,13 +15,6 @@ export class DimensionService {
     }));
   }
 
-  // TODO: This isn't necessary once we have better resolver for Dimensions with values etc.
-  async findDimensionNames(): Promise<string[]> {
-    const data = await this.dimensionCacheService.getCachedDimensionData();
-    const dimensionNames = data.Root.DimensionNameList.DimensionName.map((dim) => dim.Name);
-    return dimensionNames;
-  }
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private buildOptions = (dimension: any) => {
     const details = dimension.DimensionDetails;

@@ -10,9 +10,4 @@ export class DimensionResolver {
   async findDimensions(): Promise<Dimension> {
     return this.dimensionService.findAllDimensions();
   }
-
-  @Query(() => [String])
-  async findDimensionNames(): Promise<string[]> {
-    return this.dimensionService.findDimensionNames();
-  }
 }
