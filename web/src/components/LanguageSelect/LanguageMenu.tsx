@@ -15,6 +15,7 @@ const LanguageMenu = ({ anchor, onClose }: LanguageMenuProps) => {
 
   const selectLanguage = (languageCode: string) => {
     changeLanguage(languageCode);
+    document.documentElement.lang = languageCode;
     onClose();
   };
 

@@ -3,14 +3,25 @@ import "@fontsource/roboto";
 import { AppBar, Box, Container, CssBaseline, Toolbar, Typography } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import ApolloProvider from "../common/ApolloProvider";
 import { ChildrenProps } from "../common/types";
 import "../i18n";
 import LanguageSelect from "./LanguageSelect";
 
 const AppContainer = ({ children }: ChildrenProps) => {
+  const {
+    i18n: { language },
+  } = useTranslation();
+
+  useEffect(() => {
+    // Set initial HTML lang value.
+    document.documentElement.lang = language;
+  }, []);
+
   return (
-    <html lang="en">
+    <html>
       <CssBaseline />
       <body>
         <ApolloProvider>
