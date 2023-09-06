@@ -1,3 +1,5 @@
 query FindDimensionNames {
-  findDimensionNames
+  findDimensions {
+    name
+  }
 }

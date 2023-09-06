@@ -4,12 +4,10 @@ import { Paper } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import WorkdayAccordion from "../components/WorkdayAccordion";
 import { FindWorkdaysDocument } from "../graphql/generated/graphql";
 
 const Home = () => {
-  const { t } = useTranslation();
   const [findWorkdays, { data }] = useLazyQuery(FindWorkdaysDocument);
   const [start, setStart] = useState<dayjs.Dayjs>(dayjs().day(1));
 

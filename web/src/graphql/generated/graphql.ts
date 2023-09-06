@@ -23,12 +23,18 @@ export type Scalars = {
 export type Dimension = {
   __typename?: "Dimension";
   name: Scalars["String"]["output"];
+  options: Array<Scalars["String"]["output"]>;
+};
+
+export type DimensionRecord = {
+  __typename?: "DimensionRecord";
+  name: Scalars["String"]["output"];
   value: Scalars["String"]["output"];
 };
 
 export type Entry = {
   __typename?: "Entry";
-  dimensions: Array<Dimension>;
+  dimensions: Array<DimensionRecord>;
   duration: Scalars["Float"]["output"];
   entryType: Scalars["String"]["output"];
 };
@@ -41,6 +47,7 @@ export type FindWorkdaysInput = {
 export type Query = {
   __typename?: "Query";
   findDimensionNames: Array<Scalars["String"]["output"]>;
+  findDimensions: Array<Dimension>;
   findWorkdays: Array<Workday>;
 };
 
@@ -56,7 +63,10 @@ export type Workday = {
 
 export type FindDimensionNamesQueryVariables = Exact<{ [key: string]: never }>;
 
-export type FindDimensionNamesQuery = { __typename?: "Query"; findDimensionNames: Array<string> };
+export type FindDimensionNamesQuery = {
+  __typename?: "Query";
+  findDimensions: Array<{ __typename?: "Dimension"; name: string }>;
+};
 
 export type FindWorkdaysQueryVariables = Exact<{
   start: Scalars["DateTime"]["input"];
@@ -72,7 +82,7 @@ export type FindWorkdaysQuery = {
       __typename?: "Entry";
       duration: number;
       entryType: string;
-      dimensions: Array<{ __typename?: "Dimension"; name: string; value: string }>;
+      dimensions: Array<{ __typename?: "DimensionRecord"; name: string; value: string }>;
     }>;
   }>;
 };
@@ -86,7 +96,16 @@ export const FindDimensionNamesDocument = {
       name: { kind: "Name", value: "FindDimensionNames" },
       selectionSet: {
         kind: "SelectionSet",
-        selections: [{ kind: "Field", name: { kind: "Name", value: "findDimensionNames" } }],
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "findDimensions" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [{ kind: "Field", name: { kind: "Name", value: "name" } }],
+            },
+          },
+        ],
       },
     },
   ],

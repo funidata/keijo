@@ -15,7 +15,8 @@ const EntryTable = ({ workday }: EntryTableProps) => {
     return null;
   }
 
-  const { findDimensionNames } = data;
+  const { findDimensions } = data;
+  const dimensionNames = findDimensions.map((dim) => dim.name);
 
   const tableHeadCellKey = (name: string) => [workday.date, name, "head"].join("-");
   const tableRowKey = (entry: Entry) =>
@@ -34,7 +35,7 @@ const EntryTable = ({ workday }: EntryTableProps) => {
         <TableRow>
           <TableCell>{t("entryTable.head.type")}</TableCell>
           <TableCell>{t("entryTable.head.duration")}</TableCell>
-          {findDimensionNames.map((name) => (
+          {dimensionNames.map((name) => (
             <TableCell key={tableHeadCellKey(name)}>{name}</TableCell>
           ))}
         </TableRow>
@@ -45,7 +46,7 @@ const EntryTable = ({ workday }: EntryTableProps) => {
           <TableRow key={tableRowKey(entry)}>
             <TableCell>{entry.entryType}</TableCell>
             <TableCell>{entry.duration}</TableCell>
-            {findDimensionNames.map((name) => (
+            {dimensionNames.map((name) => (
               <TableCell key={dimensionValueCellKey(entry, name)}>
                 {entry.dimensions.find((dim) => dim.name === name)?.value}
               </TableCell>
