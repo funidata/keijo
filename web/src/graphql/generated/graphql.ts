@@ -47,11 +47,18 @@ export type FindWorkdaysInput = {
 export type Query = {
   __typename?: "Query";
   findDimensions: Array<Dimension>;
+  findRecordTypes: Array<RecordType>;
   findWorkdays: Array<Workday>;
 };
 
 export type QueryFindWorkdaysArgs = {
   query: FindWorkdaysInput;
+};
+
+export type RecordType = {
+  __typename?: "RecordType";
+  name: Scalars["String"]["output"];
+  ratioNumber: Scalars["Float"]["output"];
 };
 
 export type Workday = {
@@ -72,6 +79,13 @@ export type FindDimensionsQueryVariables = Exact<{ [key: string]: never }>;
 export type FindDimensionsQuery = {
   __typename?: "Query";
   findDimensions: Array<{ __typename?: "Dimension"; name: string; options: Array<string> }>;
+};
+
+export type FindRecordTypesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type FindRecordTypesQuery = {
+  __typename?: "Query";
+  findRecordTypes: Array<{ __typename?: "RecordType"; name: string; ratioNumber: number }>;
 };
 
 export type FindWorkdaysQueryVariables = Exact<{
@@ -142,6 +156,32 @@ export const FindDimensionsDocument = {
     },
   ],
 } as unknown as DocumentNode<FindDimensionsQuery, FindDimensionsQueryVariables>;
+export const FindRecordTypesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "FindRecordTypes" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "findRecordTypes" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "ratioNumber" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<FindRecordTypesQuery, FindRecordTypesQueryVariables>;
 export const FindWorkdaysDocument = {
   kind: "Document",
   definitions: [

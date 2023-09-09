@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import DimensionSelects from "./DimensionSelects";
+import RecordTypeSelect from "./RecordTypeSelect";
 
 const EntryDialog = (props: DialogProps) => {
   const theme = useTheme();
@@ -27,6 +28,9 @@ const EntryDialog = (props: DialogProps) => {
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField />
+          </Grid>
+          <Grid item xs={12}>
+            <RecordTypeSelect />
           </Grid>
           <DimensionSelects />
           <Grid item xs={12}>

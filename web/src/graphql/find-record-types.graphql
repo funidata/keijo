@@ -1,0 +1,6 @@
+query FindRecordTypes {
+  findRecordTypes {
+    name
+    ratioNumber
+  }
+}
