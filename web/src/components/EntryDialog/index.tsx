@@ -11,6 +11,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
+import DimensionSelects from "./DimensionSelects";
 
 const EntryDialog = (props: DialogProps) => {
   const theme = useTheme();
@@ -27,6 +28,7 @@ const EntryDialog = (props: DialogProps) => {
           <Grid item xs={12} md={6}>
             <TextField />
           </Grid>
+          <DimensionSelects />
           <Grid item xs={12}>
             <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
               <Button type="reset" variant="outlined" size="large">

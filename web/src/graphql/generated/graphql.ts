@@ -46,7 +46,6 @@ export type FindWorkdaysInput = {
 
 export type Query = {
   __typename?: "Query";
-  findDimensionNames: Array<Scalars["String"]["output"]>;
   findDimensions: Array<Dimension>;
   findWorkdays: Array<Workday>;
 };
@@ -66,6 +65,13 @@ export type FindDimensionNamesQueryVariables = Exact<{ [key: string]: never }>;
 export type FindDimensionNamesQuery = {
   __typename?: "Query";
   findDimensions: Array<{ __typename?: "Dimension"; name: string }>;
+};
+
+export type FindDimensionsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type FindDimensionsQuery = {
+  __typename?: "Query";
+  findDimensions: Array<{ __typename?: "Dimension"; name: string; options: Array<string> }>;
 };
 
 export type FindWorkdaysQueryVariables = Exact<{
@@ -110,6 +116,32 @@ export const FindDimensionNamesDocument = {
     },
   ],
 } as unknown as DocumentNode<FindDimensionNamesQuery, FindDimensionNamesQueryVariables>;
+export const FindDimensionsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "FindDimensions" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "findDimensions" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "options" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<FindDimensionsQuery, FindDimensionsQueryVariables>;
 export const FindWorkdaysDocument = {
   kind: "Document",
   definitions: [
