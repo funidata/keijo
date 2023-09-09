@@ -2,10 +2,10 @@ import { BadRequestException, Injectable, Logger } from "@nestjs/common";
 import axios from "axios";
 import dayjs from "dayjs";
 import Utc from "dayjs/plugin/utc";
-import { XMLParser } from "fast-xml-parser";
-import { get, set } from "lodash";
 import { NetvisorAuthService } from "./netvisor-auth.service";
 import { NetvisorEndpoints } from "./netvisor-endpoints.enum";
+import fixUndefinedArrays from "./xml/fix-undefined-arrays";
+import { NetvisorXmlParser } from "./xml/netvisor-xml-parser";
 
 dayjs.extend(Utc);
 
@@ -26,18 +26,7 @@ export class NetvisorApiService {
     const headers = this.netvisorAuthService.getAuthenticationHeaders(url, params);
     const res = await axios.get(url, { headers, params });
 
-    const data = new XMLParser({
-      isArray: (_, path) => {
-        return arrayPaths.includes(path);
-      },
-      tagValueProcessor: (_, tagValue) => {
-        // Change decimal separator from comma to period because the parser does not support comma.
-        if (typeof tagValue === "string" && tagValue.match(/^\d{1,2},\d{1,2}$/g)) {
-          return tagValue.replace(",", ".");
-        }
-        return tagValue;
-      },
-    }).parse(res.data);
+    const data = new NetvisorXmlParser(arrayPaths).parse(res.data);
 
     if (data.Root.ResponseStatus.Status !== "OK") {
       const message = "Request to Netvisor API failed.";
@@ -46,17 +35,7 @@ export class NetvisorApiService {
       throw new BadRequestException(message, description);
     }
 
-    // Despite `isArray` coercion, empty lists are still undefined.
-    arrayPaths.forEach((path) => {
-      // Use parent for comparison rather than the actual path to effectively skip setting the
-      // default when the parent is an array. This will break if we actually need to set the
-      // default within list values but currently there is no need for that so this will do.
-      const parentPath = path.split(".").slice(0, -1).join(".");
-      if (get(data, parentPath) === "") {
-        set(data, path, []);
-      }
-    });
-
-    return data;
+    const fixedData = fixUndefinedArrays(data, arrayPaths);
+    return fixedData;
   }
 }
