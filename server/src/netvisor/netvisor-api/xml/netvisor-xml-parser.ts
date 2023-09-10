@@ -4,7 +4,7 @@ import { XMLParser } from "fast-xml-parser";
  * Configuration for `fast-xml-parser` to parse responses from NV API.
  */
 export class NetvisorXmlParser extends XMLParser {
-  constructor(arrayPaths: string[]) {
+  constructor(arrayPaths: string[] = []) {
     super({
       isArray: (_, path) => {
         return arrayPaths.includes(path);

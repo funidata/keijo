@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, Logger } from "@nestjs/common";
 import axios from "axios";
 import dayjs from "dayjs";
 import Utc from "dayjs/plugin/utc";
+import { XMLBuilder } from "fast-xml-parser";
 import { NetvisorAuthService } from "./netvisor-auth.service";
 import { NetvisorEndpoints } from "./netvisor-endpoints.enum";
 import fixUndefinedArrays from "./xml/fix-undefined-arrays";
@@ -37,5 +38,25 @@ export class NetvisorApiService {
 
     const fixedData = fixUndefinedArrays(data, arrayPaths);
     return fixedData;
+  }
+
+  async post(endpoint: NetvisorEndpoints, data: object): Promise<object> {
+    const url = this.netvisorAuthService.getUrl(endpoint);
+    const headers = this.netvisorAuthService.getAuthenticationHeaders(url);
+
+    const builder = new XMLBuilder({ ignoreAttributes: false });
+    const xml = builder.build(data);
+
+    const res = await axios.post(url, xml, { headers });
+    const resultData = new NetvisorXmlParser().parse(res.data);
+
+    if (resultData.Root.ResponseStatus.Status !== "OK") {
+      const message = "Request to Netvisor API failed.";
+      const description = resultData.Root.ResponseStatus.Status[1];
+      this.logger.error(message, description);
+      throw new BadRequestException(message, description);
+    }
+
+    return resultData;
   }
 }
