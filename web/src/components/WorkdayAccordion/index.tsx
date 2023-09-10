@@ -1,7 +1,14 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Chip } from "@mui/material";
-import dayjs from "dayjs";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Chip,
+  Typography,
+} from "@mui/material";
 import { sum } from "lodash";
+import dayjs from "../../common/dayjs";
 import { Workday } from "../../graphql/generated/graphql";
 import EntryTable from "./EntryTable";
 
@@ -24,7 +31,9 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
             alignItems: "center",
           }}
         >
-          {dayjs(workday.date).format("dd D.M.YYYY")}
+          <Typography sx={{ textTransform: "capitalize" }}>
+            {dayjs(workday.date).format("dd D.M.YYYY")}
+          </Typography>
           <Chip label={`${totalHours} h`} sx={{ mr: 2 }} />
         </Box>
       </AccordionSummary>
