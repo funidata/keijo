@@ -28,7 +28,6 @@ export class WorkdayResolver {
     @EmployeeNumber() employeeNumber: number,
     @Args("entry") entry: AddWorkdayEntryInput,
   ) {
-    console.log(employeeNumber);
-    console.log(entry);
+    return this.workdayService.addWorkdayEntry(employeeNumber, entry);
   }
 }
