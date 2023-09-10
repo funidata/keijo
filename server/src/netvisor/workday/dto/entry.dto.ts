@@ -1,5 +1,5 @@
 import { Field, ObjectType } from "@nestjs/graphql";
-import { DimensionRecord } from "./dimension.dto";
+import { DimensionRecord } from "./dimension-record.dto";
 
 @ObjectType()
 export class Entry {
