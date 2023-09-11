@@ -17,9 +17,10 @@ import dayjs from "../../common/dayjs";
 import DimensionSelects from "./DimensionSelects";
 import RecordTypeSelect from "./RecordTypeSelect";
 
-type EntryFormSchema = {
+export type EntryFormSchema = {
   date: Dayjs;
   duration: string;
+  recordType: number;
 };
 
 const EntryDialog = (props: DialogProps) => {
@@ -30,8 +31,10 @@ const EntryDialog = (props: DialogProps) => {
     defaultValues: {
       date: dayjs(),
       duration: "",
+      recordType: 100,
     },
   });
+
   const onSubmit: SubmitHandler<EntryFormSchema> = (data) => console.log(data);
 
   return (
@@ -55,7 +58,7 @@ const EntryDialog = (props: DialogProps) => {
               />
             </Grid>
             <Grid item xs={12}>
-              <RecordTypeSelect />
+              <RecordTypeSelect control={control} />
             </Grid>
             <DimensionSelects />
             <Grid item xs={12}>
