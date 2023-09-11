@@ -1,0 +1,6 @@
+mutation AddWorkdayEntry($entry: AddWorkdayEntryInput!) {
+  addWorkdayEntry(entry: $entry) {
+    duration
+    entryType
+  }
+}

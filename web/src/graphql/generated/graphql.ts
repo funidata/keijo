@@ -20,6 +20,12 @@ export type Scalars = {
   DateTime: { input: any; output: any };
 };
 
+export type AddWorkdayEntryInput = {
+  date: Scalars["DateTime"]["input"];
+  duration: Scalars["Float"]["input"];
+  recordTypeRatioNumber: Scalars["Float"]["input"];
+};
+
 export type Dimension = {
   __typename?: "Dimension";
   name: Scalars["String"]["output"];
@@ -44,6 +50,15 @@ export type FindWorkdaysInput = {
   start: Scalars["DateTime"]["input"];
 };
 
+export type Mutation = {
+  __typename?: "Mutation";
+  addWorkdayEntry: Entry;
+};
+
+export type MutationAddWorkdayEntryArgs = {
+  entry: AddWorkdayEntryInput;
+};
+
 export type Query = {
   __typename?: "Query";
   findDimensions: Array<Dimension>;
@@ -65,6 +80,15 @@ export type Workday = {
   __typename?: "Workday";
   date: Scalars["DateTime"]["output"];
   entries: Array<Entry>;
+};
+
+export type AddWorkdayEntryMutationVariables = Exact<{
+  entry: AddWorkdayEntryInput;
+}>;
+
+export type AddWorkdayEntryMutation = {
+  __typename?: "Mutation";
+  addWorkdayEntry: { __typename?: "Entry"; duration: number; entryType: string };
 };
 
 export type FindDimensionNamesQueryVariables = Exact<{ [key: string]: never }>;
@@ -107,6 +131,49 @@ export type FindWorkdaysQuery = {
   }>;
 };
 
+export const AddWorkdayEntryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "AddWorkdayEntry" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "entry" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "AddWorkdayEntryInput" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "addWorkdayEntry" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "entry" },
+                value: { kind: "Variable", name: { kind: "Name", value: "entry" } },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "entryType" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<AddWorkdayEntryMutation, AddWorkdayEntryMutationVariables>;
 export const FindDimensionNamesDocument = {
   kind: "Document",
   definitions: [

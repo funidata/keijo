@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client";
 import {
   Box,
   Button,
@@ -14,6 +15,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { Dayjs } from "dayjs";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import dayjs from "../../common/dayjs";
+import { AddWorkdayEntryDocument } from "../../graphql/generated/graphql";
 import DimensionSelects from "./DimensionSelects";
 import RecordTypeSelect from "./RecordTypeSelect";
 
@@ -26,6 +28,7 @@ export type EntryFormSchema = {
 const EntryDialog = (props: DialogProps) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const [addWorkdayEntryMutation] = useMutation(AddWorkdayEntryDocument);
 
   const { handleSubmit, control, reset } = useForm<EntryFormSchema>({
     defaultValues: {
@@ -35,7 +38,17 @@ const EntryDialog = (props: DialogProps) => {
     },
   });
 
-  const onSubmit: SubmitHandler<EntryFormSchema> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<EntryFormSchema> = async ({ date, duration, recordType }) => {
+    await addWorkdayEntryMutation({
+      variables: {
+        entry: {
+          date: date.format("YYYY-MM-DD"),
+          duration: Number(duration),
+          recordTypeRatioNumber: recordType,
+        },
+      },
+    });
+  };
 
   return (
     <Dialog {...props} fullScreen={fullScreen}>
