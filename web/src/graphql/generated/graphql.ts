@@ -52,7 +52,7 @@ export type FindWorkdaysInput = {
 
 export type Mutation = {
   __typename?: "Mutation";
-  addWorkdayEntry: Entry;
+  addWorkdayEntry: Scalars["String"]["output"];
 };
 
 export type MutationAddWorkdayEntryArgs = {
@@ -86,10 +86,7 @@ export type AddWorkdayEntryMutationVariables = Exact<{
   entry: AddWorkdayEntryInput;
 }>;
 
-export type AddWorkdayEntryMutation = {
-  __typename?: "Mutation";
-  addWorkdayEntry: { __typename?: "Entry"; duration: number; entryType: string };
-};
+export type AddWorkdayEntryMutation = { __typename?: "Mutation"; addWorkdayEntry: string };
 
 export type FindDimensionNamesQueryVariables = Exact<{ [key: string]: never }>;
 
@@ -161,13 +158,6 @@ export const AddWorkdayEntryDocument = {
                 value: { kind: "Variable", name: { kind: "Name", value: "entry" } },
               },
             ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "duration" } },
-                { kind: "Field", name: { kind: "Name", value: "entryType" } },
-              ],
-            },
           },
         ],
       },

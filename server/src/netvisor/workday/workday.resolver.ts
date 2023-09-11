@@ -2,7 +2,6 @@ import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import dayjs from "../../config/dayjs";
 import { EmployeeNumber } from "../../decorators/employee-number.decorator";
 import { AddWorkdayEntryInput } from "./dto/add-workday-entry-input.dto";
-import { Entry } from "./dto/entry.dto";
 import { FindWorkdaysInput } from "./dto/find-workdays-query.dto";
 import { Workday } from "./dto/workday.dto";
 import { WorkdayService } from "./workday.service";
@@ -23,11 +22,15 @@ export class WorkdayResolver {
     });
   }
 
-  @Mutation(() => Entry)
+  @Mutation(() => String)
   async addWorkdayEntry(
     @EmployeeNumber() employeeNumber: number,
     @Args("entry") entry: AddWorkdayEntryInput,
   ) {
-    return this.workdayService.addWorkdayEntry(employeeNumber, entry);
+    await this.workdayService.addWorkdayEntry(employeeNumber, entry);
+    // NV API does not return any data about the created object so it does not make
+    // sense for us to return anything, as it would be just guessing. (E.g., NV API might
+    // round given duration resulting in different durations between NV and a client.)
+    return "OK";
   }
 }

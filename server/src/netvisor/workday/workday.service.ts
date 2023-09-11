@@ -8,7 +8,6 @@ import {
   getWorkdaysNvArrays,
 } from "../netvisor-api/schema/get-workdays-nv.schema";
 import { AddWorkdayEntryInput } from "./dto/add-workday-entry-input.dto";
-import { Entry } from "./dto/entry.dto";
 import { Workday } from "./dto/workday.dto";
 
 type WorkdayQuery = {
@@ -38,7 +37,7 @@ export class WorkdayService {
     return this.toLocalWorkdays(data.Root);
   }
 
-  async addWorkdayEntry(employeeNumber: number, entry: AddWorkdayEntryInput): Promise<Entry> {
+  async addWorkdayEntry(employeeNumber: number, entry: AddWorkdayEntryInput): Promise<void> {
     await this.netvisorApiService.post(NetvisorEndpoints.POST_WORKDAY, {
       root: {
         workday: {
@@ -62,12 +61,6 @@ export class WorkdayService {
         },
       },
     });
-
-    return {
-      entryType: "",
-      duration: entry.duration,
-      dimensions: [],
-    };
   }
 
   private toLocalWorkdays(apiResult: GetWorkdaysNvSchema): Workday[] {
