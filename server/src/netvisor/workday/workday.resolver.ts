@@ -1,5 +1,5 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import dayjs from "dayjs";
+import dayjs from "../../config/dayjs";
 import { EmployeeNumber } from "../../decorators/employee-number.decorator";
 import { AddWorkdayEntryInput } from "./dto/add-workday-entry-input.dto";
 import { Entry } from "./dto/entry.dto";

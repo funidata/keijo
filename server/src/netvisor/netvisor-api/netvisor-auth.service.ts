@@ -1,13 +1,10 @@
 import { Injectable } from "@nestjs/common";
-import dayjs from "dayjs";
-import Utc from "dayjs/plugin/utc";
 import sha from "sha.js";
 import { v4 as uuid } from "uuid";
 import { Config } from "../../config/config.schema";
 import { ConfigService } from "../../config/config.service";
+import dayjs from "../../config/dayjs";
 import { NetvisorEndpoints } from "./netvisor-endpoints.enum";
-
-dayjs.extend(Utc);
 
 @Injectable()
 export class NetvisorAuthService {

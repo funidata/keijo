@@ -1,8 +1,8 @@
 import { Test } from "@nestjs/testing";
-import dayjs from "dayjs";
 import { omit } from "lodash";
 import mockConfigProvider from "../../../test/utils/mock-config.service";
 import { ConfigService } from "../../config/config.service";
+import dayjs from "../../config/dayjs";
 import { NetvisorAuthService } from "./netvisor-auth.service";
 import { NetvisorEndpoints } from "./netvisor-endpoints.enum";
 

@@ -1,14 +1,10 @@
 import { BadRequestException, Injectable, Logger } from "@nestjs/common";
 import axios from "axios";
-import dayjs from "dayjs";
-import Utc from "dayjs/plugin/utc";
 import { XMLBuilder } from "fast-xml-parser";
 import { NetvisorAuthService } from "./netvisor-auth.service";
 import { NetvisorEndpoints } from "./netvisor-endpoints.enum";
 import fixUndefinedArrays from "./xml/fix-undefined-arrays";
 import { NetvisorXmlParser } from "./xml/netvisor-xml-parser";
-
-dayjs.extend(Utc);
 
 @Injectable()
 export class NetvisorApiService {

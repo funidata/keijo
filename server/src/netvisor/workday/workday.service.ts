@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import dayjs from "dayjs";
-import Utc from "dayjs/plugin/utc";
+import { Dayjs } from "dayjs";
+import dayjs from "../../config/dayjs";
 import { NetvisorApiService } from "../netvisor-api/netvisor-api.service";
 import { NetvisorEndpoints } from "../netvisor-api/netvisor-endpoints.enum";
 import {
@@ -11,12 +11,10 @@ import { AddWorkdayEntryInput } from "./dto/add-workday-entry-input.dto";
 import { Entry } from "./dto/entry.dto";
 import { Workday } from "./dto/workday.dto";
 
-dayjs.extend(Utc);
-
 type WorkdayQuery = {
   employeeNumber: number;
-  start: dayjs.Dayjs;
-  end: dayjs.Dayjs;
+  start: Dayjs;
+  end: Dayjs;
 };
 
 @Injectable()
