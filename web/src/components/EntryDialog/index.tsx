@@ -17,6 +17,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import dayjs from "../../common/dayjs";
 import {
   AddWorkdayEntryDocument,
+  AddWorkdayEntryInput,
   Dimension,
   DimensionRecord,
 } from "../../graphql/generated/graphql";
@@ -44,13 +45,19 @@ const EntryDialog = (props: DialogProps) => {
     },
   });
 
-  const onSubmit: SubmitHandler<EntryFormSchema> = async ({ date, duration, recordType }) => {
+  const onSubmit: SubmitHandler<EntryFormSchema> = async (formValues) => {
+    const { date, duration, recordType } = formValues;
+    const dimensions: AddWorkdayEntryInput["dimensions"] = formValues.dimensions
+      .filter((dim) => dim.value)
+      .map(({ name, value }) => ({ name, value }));
+
     await addWorkdayEntryMutation({
       variables: {
         entry: {
           date: date.format("YYYY-MM-DD"),
           duration: Number(duration),
           recordTypeRatioNumber: recordType,
+          dimensions,
         },
       },
     });

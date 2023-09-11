@@ -22,6 +22,7 @@ export type Scalars = {
 
 export type AddWorkdayEntryInput = {
   date: Scalars["DateTime"]["input"];
+  dimensions: Array<DimensionRecordInput>;
   duration: Scalars["Float"]["input"];
   recordTypeRatioNumber: Scalars["Float"]["input"];
 };
@@ -36,6 +37,11 @@ export type DimensionRecord = {
   __typename?: "DimensionRecord";
   name: Scalars["String"]["output"];
   value: Scalars["String"]["output"];
+};
+
+export type DimensionRecordInput = {
+  name: Scalars["String"]["input"];
+  value: Scalars["String"]["input"];
 };
 
 export type Entry = {
