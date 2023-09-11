@@ -1,37 +1,61 @@
 import { useQuery } from "@apollo/client";
 import { FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
-import { Dimension, FindDimensionsDocument } from "../../graphql/generated/graphql";
+import { useEffect } from "react";
+import { Control, Controller, FieldArrayWithId, useFieldArray } from "react-hook-form";
+import { EntryFormSchema } from ".";
+import { FindDimensionsDocument } from "../../graphql/generated/graphql";
 
 type DimensionSelectProps = {
-  dimension: Dimension;
+  control: Control<EntryFormSchema, any>;
+  index: number;
+  field: FieldArrayWithId<EntryFormSchema>;
 };
 
-const DimensionSelect = ({ dimension }: DimensionSelectProps) => {
-  const labelId = `add-entry-dimension-select-${dimension.name}`;
+const DimensionSelect = ({ field, control, index }: DimensionSelectProps) => {
+  const labelId = `add-entry-dimension-select-${field.name}`;
 
   return (
-    <FormControl fullWidth>
-      <InputLabel id={labelId}>{dimension.name}</InputLabel>
-      <Select labelId={labelId} label={dimension.name}>
-        {dimension.options.map((option) => (
-          <MenuItem key={option} value={option}>
-            {option}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+    <Grid item xs={12} md={6}>
+      <FormControl fullWidth>
+        <InputLabel id={labelId}>{field.name}</InputLabel>
+        <Controller
+          control={control}
+          name={`dimensions.${index}.value`}
+          render={({ field: props }) => {
+            return (
+              <Select labelId={labelId} label={field.name} {...props}>
+                {field.options.map((opt) => (
+                  <MenuItem key={opt} value={opt}>
+                    {opt}
+                  </MenuItem>
+                ))}
+              </Select>
+            );
+          }}
+        />
+      </FormControl>
+    </Grid>
   );
 };
 
-const DimensionSelects = () => {
+type DimensionSelectsProps = {
+  control: Control<EntryFormSchema, any>;
+};
+
+const DimensionSelects = ({ control }: DimensionSelectsProps) => {
   const { data } = useQuery(FindDimensionsDocument);
+  const { fields, append } = useFieldArray({ name: "dimensions", control });
+
+  useEffect(() => {
+    data?.findDimensions.forEach((dimension) =>
+      append({ name: dimension.name, options: dimension.options, value: "" }),
+    );
+  }, [data, append]);
 
   return (
     <>
-      {data?.findDimensions.map((dimension) => (
-        <Grid item xs={12} md={6} key={`add-entry-dimension-${dimension.name}`}>
-          <DimensionSelect dimension={dimension} />
-        </Grid>
+      {fields.map((field, index) => (
+        <DimensionSelect field={field} index={index} control={control} key={field.id} />
       ))}
     </>
   );
