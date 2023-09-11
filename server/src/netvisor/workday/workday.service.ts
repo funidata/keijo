@@ -57,6 +57,10 @@ export class WorkdayService {
             },
             acceptancestatus: "confirmed",
             description: "",
+            dimension: entry.dimensions.map((dim) => ({
+              dimensionname: dim.name,
+              dimensionitem: dim.value,
+            })),
           },
         },
       },

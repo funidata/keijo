@@ -1,4 +1,4 @@
-import { Field, ObjectType } from "@nestjs/graphql";
+import { Field, InputType, ObjectType } from "@nestjs/graphql";
 
 /**
  * Certain dimension (specified by name) with attached value.
@@ -7,6 +7,7 @@ import { Field, ObjectType } from "@nestjs/graphql";
  * values.
  */
 @ObjectType()
+@InputType("DimensionRecordInput")
 export class DimensionRecord {
   @Field()
   name: string;

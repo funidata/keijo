@@ -1,4 +1,5 @@
 import { Field, InputType } from "@nestjs/graphql";
+import { DimensionRecord } from "./dimension-record.dto";
 
 @InputType()
 export class AddWorkdayEntryInput {
@@ -10,4 +11,7 @@ export class AddWorkdayEntryInput {
 
   @Field()
   recordTypeRatioNumber: number;
+
+  @Field(() => [DimensionRecord])
+  dimensions: DimensionRecord[];
 }
