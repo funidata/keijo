@@ -27,6 +27,14 @@ export class Logger extends ConsoleLogger {
     this.useJsonLogger("debug", message, context);
   }
 
+  audit(message: unknown): void {
+    if (!this.configService.config.enableAuditLogs) {
+      return;
+    }
+
+    this.logJsonString("audit", message);
+  }
+
   private useConsoleLogger(loggerFn: LogLevel, message: unknown, context?: string): void {
     if (this.configService.config.enableJsonLogs) {
       return;
@@ -44,6 +52,14 @@ export class Logger extends ConsoleLogger {
       return;
     }
 
+    this.logJsonString(logLevel, message, contextOverride);
+  }
+
+  private logJsonString(
+    logLevel: LogLevel | "audit",
+    message: unknown,
+    contextOverride?: string,
+  ): void {
     const context = contextOverride || this.context;
 
     const output = JSON.stringify({ logLevel, context, message });
