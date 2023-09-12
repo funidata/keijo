@@ -20,3 +20,6 @@ Key|Default|Description
 `NETVISOR_CACHE_TTL`|60|Time-to-live (seconds) for caching certain Netvisor API endpoint results.
 `PORT`|3001|Server listens to this port.
 `EMPLOYEE_NUMBER_HEADER_KEY`|X-SHIB-employeeId|Name of the header that defines authenticated user's Netvisor employee ID (case insensitive). **The user must not be able to set this header.**
+`LOG_LEVEL`|log|Filter log output by suppressing log messages of higher level than the given value. Log levels in ascending order are `error`, `warn`, `log` and `debug`.
+`ENABLE_JSON_LOGS`|`false`|Output stringified JSON instead of human-readable logs by setting this to `true`.
+`ENABLE_AUDIT_LOGS`|`false`|When set to `true`, logs of level `audit` are printed, containing users' personal information. These logs should be stored safely or not enabled at all in production environments. Audit log output is always JSON and does not respect the `LOG_LEVEL` setting.

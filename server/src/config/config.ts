@@ -3,6 +3,9 @@ const {
   PORT,
   EMPLOYEE_NUMBER_HEADER_KEY,
   MOCK_EMPLOYEE_NUMBER,
+  LOG_LEVEL,
+  ENABLE_JSON_LOGS,
+  ENABLE_AUDIT_LOGS,
   NETVISOR_CUSTOMER_ID,
   NETVISOR_ORGANIZATION_ID,
   NETVISOR_CUSTOMER_KEY,
@@ -13,10 +16,13 @@ const {
 
 const config = {
   nodeEnv: NODE_ENV,
-  inDev: NODE_ENV === "development",
+  inDev: NODE_ENV?.toLowerCase() === "development",
   port: Number(PORT) || 3001,
   employeeNumberHeaderKey: EMPLOYEE_NUMBER_HEADER_KEY || "X-SHIB-employeeId",
   mockEmployeeNumber: MOCK_EMPLOYEE_NUMBER,
+  logLevel: LOG_LEVEL?.toLowerCase() || "log",
+  enableJsonLogs: ENABLE_JSON_LOGS?.toLowerCase() === "true",
+  enableAuditLogs: ENABLE_AUDIT_LOGS?.toLowerCase() === "true",
   netvisor: {
     host: "https://isvapi.netvisor.fi",
     sender: "keijo",

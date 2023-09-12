@@ -5,6 +5,9 @@ export const configSchema = object({
   inDev: boolean(),
   port: number(),
   employeeNumberHeaderKey: string(),
+  logLevel: union([literal("error"), literal("warn"), literal("log"), literal("debug")]),
+  enableJsonLogs: boolean(),
+  enableAuditLogs: boolean(),
   netvisor: object({
     host: string(),
     sender: string(),
