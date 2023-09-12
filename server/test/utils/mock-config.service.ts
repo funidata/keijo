@@ -6,6 +6,9 @@ const defaultMockConfig: Config = {
   inDev: false,
   port: 3001,
   employeeNumberHeaderKey: "test-shib-header",
+  logLevel: "log",
+  enableJsonLogs: false,
+  enableAuditLogs: true,
   netvisor: {
     host: "https://mock-netvisor.url.com",
     sender: "keijo",
