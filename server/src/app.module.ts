@@ -6,6 +6,7 @@ import { join } from "path";
 import { CustomCacheModule } from "./cache.module";
 import { ConfigModule } from "./config/config.module";
 import { ConfigService } from "./config/config.service";
+import { LoggerModule } from "./logger/logger.module";
 import { NetvisorModule } from "./netvisor/netvisor.module";
 
 // Serve frontend files only in production.
@@ -32,6 +33,7 @@ const productionOnlyModules =
     }),
     CustomCacheModule,
     ConfigModule,
+    LoggerModule,
     NetvisorModule,
   ],
 })
