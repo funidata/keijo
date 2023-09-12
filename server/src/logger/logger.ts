@@ -4,7 +4,7 @@ import { ConfigService } from "../config/config.service";
 @Injectable({ scope: Scope.TRANSIENT })
 export class Logger extends ConsoleLogger {
   constructor(private configService: ConfigService) {
-    super("", { logLevels: ["debug"] });
+    super(Logger.name, { logLevels: [configService.config.logLevel] });
   }
 
   log(message: unknown, context?: string): void {
@@ -24,6 +24,10 @@ export class Logger extends ConsoleLogger {
   }
 
   private useConsoleLogger(loggerFn: LogLevel, message: unknown, context?: string): void {
+    if (this.configService.config.enableJsonLogs) {
+      return;
+    }
+
     if (context === undefined) {
       super[loggerFn](message);
     } else {
