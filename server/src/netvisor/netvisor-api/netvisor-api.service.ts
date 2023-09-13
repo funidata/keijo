@@ -1,16 +1,19 @@
-import { BadRequestException, Injectable, Logger } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import axios from "axios";
 import { XMLBuilder } from "fast-xml-parser";
+import { Logger } from "../../logger/logger";
 import { NetvisorAuthService } from "./netvisor-auth.service";
 import { NetvisorEndpoints } from "./netvisor-endpoints.enum";
 import fixUndefinedArrays from "./xml/fix-undefined-arrays";
-import { NetvisorXmlParser } from "./xml/netvisor-xml-parser";
+import { XmlParserService } from "./xml/xml-parser.service";
 
 @Injectable()
 export class NetvisorApiService {
-  private readonly logger = new Logger(NetvisorApiService.name);
-
-  constructor(private netvisorAuthService: NetvisorAuthService) {}
+  constructor(
+    private netvisorAuthService: NetvisorAuthService,
+    private logger: Logger,
+    private xmlParserService: XmlParserService,
+  ) {}
 
   // FIXME: Type this properly.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,7 +26,7 @@ export class NetvisorApiService {
     const headers = this.netvisorAuthService.getAuthenticationHeaders(url, params);
     const res = await axios.get(url, { headers, params });
 
-    const data = new NetvisorXmlParser(arrayPaths).parse(res.data);
+    const data = this.xmlParserService.parse(res.data, arrayPaths);
 
     if (data.Root.ResponseStatus.Status !== "OK") {
       const message = "Request to Netvisor API failed.";
@@ -44,7 +47,7 @@ export class NetvisorApiService {
     const xml = builder.build(data);
 
     const res = await axios.post(url, xml, { headers });
-    const resultData = new NetvisorXmlParser().parse(res.data);
+    const resultData = this.xmlParserService.parse(res.data);
 
     if (resultData.Root.ResponseStatus.Status !== "OK") {
       const message = "Request to Netvisor API failed.";
