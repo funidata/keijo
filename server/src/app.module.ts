@@ -9,6 +9,7 @@ import { ConfigService } from "./config/config.service";
 import { appGuards } from "./guards/app-guards";
 import { LoggerModule } from "./logger/logger.module";
 import { NetvisorModule } from "./netvisor/netvisor.module";
+import { StatusModule } from "./status/status.module";
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { NetvisorModule } from "./netvisor/netvisor.module";
     ConfigModule,
     LoggerModule,
     NetvisorModule,
+    StatusModule,
   ],
   providers: [...appGuards],
 })

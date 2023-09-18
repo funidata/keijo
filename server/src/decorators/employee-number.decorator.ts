@@ -2,7 +2,7 @@ import { createParamDecorator, ExecutionContext } from "@nestjs/common";
 import { CustomParamFactory } from "@nestjs/common/interfaces";
 import { GqlExecutionContext } from "@nestjs/graphql";
 
-export const decoratorFactory: CustomParamFactory<object, ExecutionContext, number> = (
+export const decoratorFactory: CustomParamFactory<object, ExecutionContext, number | undefined> = (
   _,
   context: ExecutionContext,
 ) => {
