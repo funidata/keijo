@@ -1,5 +1,6 @@
 import { AuthenticationError } from "@nestjs/apollo";
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
 import { GqlExecutionContext } from "@nestjs/graphql";
 import { string } from "zod";
 import { ConfigService } from "../config/config.service";
@@ -10,11 +11,17 @@ export class HeadersGuard implements CanActivate {
   constructor(
     private logger: Logger,
     private configService: ConfigService,
+    private readonly reflector: Reflector,
   ) {
     logger.setContext(HeadersGuard.name);
   }
 
   canActivate(context: ExecutionContext): boolean {
+    const bypass = this.reflector.get<boolean | undefined>("bypass", context.getHandler());
+    if (bypass) {
+      return true;
+    }
+
     const employeeNumberHeaderKey = this.configService.config.employeeNumberHeaderKey.toLowerCase();
     const request = GqlExecutionContext.create(context).getContext().req;
 
