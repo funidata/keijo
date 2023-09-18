@@ -10,20 +10,12 @@ import { appGuards } from "./guards/app-guards";
 import { LoggerModule } from "./logger/logger.module";
 import { NetvisorModule } from "./netvisor/netvisor.module";
 
-// Serve frontend files only in production.
-const productionOnlyModules =
-  process.env.NODE_ENV === "production"
-    ? [
-        ServeStaticModule.forRoot({
-          rootPath: join(__dirname, "..", "public"),
-          exclude: ["/graphql/(.*)"],
-        }),
-      ]
-    : [];
-
 @Module({
   imports: [
-    ...productionOnlyModules,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "..", "public"),
+      exclude: ["/graphql/(.*)"],
+    }),
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
       inject: [ConfigService],
