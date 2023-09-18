@@ -1,14 +1,14 @@
 import { Injectable } from "@nestjs/common";
 import { Logger } from "../logger/logger";
-import { Status } from "./dto/status.dto";
+import { SessionStatus } from "./dto/session-status.dto";
 
 @Injectable()
-export class StatusService {
+export class SessionService {
   constructor(private logger: Logger) {
-    logger.setContext(StatusService.name);
+    logger.setContext(SessionService.name);
   }
 
-  getStatus(employeeNumber: number | undefined): Status {
+  getSessionStatus(employeeNumber: number | undefined): SessionStatus {
     if (employeeNumber === undefined) {
       this.logger.warn("User without employee number detected.");
     }
