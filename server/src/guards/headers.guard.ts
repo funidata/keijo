@@ -15,7 +15,6 @@ export class HeadersGuard implements CanActivate {
   }
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-    console.log("canActivate called");
     const employeeNumberHeaderKey = this.configService.config.employeeNumberHeaderKey.toLowerCase();
     const request = GqlExecutionContext.create(context).getContext().req;
 

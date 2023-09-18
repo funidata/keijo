@@ -12,10 +12,6 @@ import config from "../config/config";
 // This should return undefined, if the header was not found(?).
 
 export const EmployeeNumber = createParamDecorator((_, context: ExecutionContext) => {
-  if (config.inDev) {
-    return config.mockEmployeeNumber;
-  }
-
   const logger = new Logger("EmployeeNumber");
 
   if (context.getType<GqlContextType>() !== "graphql") {
