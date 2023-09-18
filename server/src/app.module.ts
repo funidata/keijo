@@ -1,11 +1,13 @@
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { Module } from "@nestjs/common";
+import { APP_GUARD } from "@nestjs/core";
 import { GraphQLModule } from "@nestjs/graphql";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
 import { CustomCacheModule } from "./cache.module";
 import { ConfigModule } from "./config/config.module";
 import { ConfigService } from "./config/config.service";
+import { HeadersGuard } from "./guards/headers.guard";
 import { LoggerModule } from "./logger/logger.module";
 import { NetvisorModule } from "./netvisor/netvisor.module";
 
@@ -35,6 +37,12 @@ const productionOnlyModules =
     ConfigModule,
     LoggerModule,
     NetvisorModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: HeadersGuard,
+    },
   ],
 })
 export class AppModule {}

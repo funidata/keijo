@@ -5,8 +5,11 @@ import {
   Logger,
 } from "@nestjs/common";
 import { GqlContextType, GqlExecutionContext } from "@nestjs/graphql";
-import { string } from "zod";
 import config from "../config/config";
+
+// TODO: Move everything else to middleware (or validation pipes?) and leave only employee number fetching here.
+// This is probably not the place to inject services etc.
+// This should return undefined, if the header was not found(?).
 
 export const EmployeeNumber = createParamDecorator((_, context: ExecutionContext) => {
   if (config.inDev) {
@@ -22,24 +25,8 @@ export const EmployeeNumber = createParamDecorator((_, context: ExecutionContext
   }
 
   const employeeNumberHeaderKey = config.employeeNumberHeaderKey.toLowerCase();
-
   const request = GqlExecutionContext.create(context).getContext().req;
-
-  if (!Object.keys(request.headers).includes(employeeNumberHeaderKey)) {
-    const message = `Header '${employeeNumberHeaderKey}' not found.`;
-    logger.error(message);
-    throw new BadRequestException(message);
-  }
-
   const employeeNumberHeaderValue = request.headers[employeeNumberHeaderKey];
-
-  try {
-    string().regex(/^\d+$/).transform(Number).parse(employeeNumberHeaderValue);
-  } catch {
-    const message = `Header '${employeeNumberHeaderKey}' is not valid.`;
-    logger.error(message);
-    throw new BadRequestException(message);
-  }
 
   return parseInt(employeeNumberHeaderValue);
 });
