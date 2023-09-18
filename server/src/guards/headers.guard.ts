@@ -4,6 +4,7 @@ import { Reflector } from "@nestjs/core";
 import { GqlExecutionContext } from "@nestjs/graphql";
 import { string } from "zod";
 import { ConfigService } from "../config/config.service";
+import { getBypassHeadersGuardMetadataValue } from "../decorators/bypass-headers-guard.decorator";
 import { Logger } from "../logger/logger";
 
 @Injectable()
@@ -17,7 +18,7 @@ export class HeadersGuard implements CanActivate {
   }
 
   canActivate(context: ExecutionContext): boolean {
-    const bypass = this.reflector.get<boolean | undefined>("bypass", context.getHandler());
+    const bypass = getBypassHeadersGuardMetadataValue(this.reflector, context);
     if (bypass) {
       return true;
     }
