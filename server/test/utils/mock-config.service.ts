@@ -1,7 +1,7 @@
 import { Config } from "../../src/config/config.schema";
 import { ConfigService } from "../../src/config/config.service";
 
-const defaultMockConfig: Config = {
+export const defaultMockConfig: Config = {
   nodeEnv: "production",
   inDev: false,
   port: 3001,
