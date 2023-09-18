@@ -7,6 +7,7 @@ import { join } from "path";
 import { CustomCacheModule } from "./cache.module";
 import { ConfigModule } from "./config/config.module";
 import { ConfigService } from "./config/config.service";
+import { GraphQlGuard } from "./guards/graphql.guard";
 import { HeadersGuard } from "./guards/headers.guard";
 import { LoggerModule } from "./logger/logger.module";
 import { NetvisorModule } from "./netvisor/netvisor.module";
@@ -39,6 +40,10 @@ const productionOnlyModules =
     NetvisorModule,
   ],
   providers: [
+    {
+      provide: APP_GUARD,
+      useClass: GraphQlGuard,
+    },
     {
       provide: APP_GUARD,
       useClass: HeadersGuard,
