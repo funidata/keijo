@@ -34,6 +34,8 @@ export class HeadersGuard implements CanActivate {
       throw new AuthenticationError(message);
     }
 
+    request.employeeNumber = parseInt(employeeNumberHeaderValue);
+
     return true;
   }
 }
