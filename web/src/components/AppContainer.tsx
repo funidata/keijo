@@ -9,6 +9,7 @@ import ApolloProvider from "../common/ApolloProvider";
 import { ChildrenProps } from "../common/types";
 import "../i18n";
 import AppBar from "./AppBar";
+import GlobalNotification from "./GlobalNotification";
 
 const AppContainer = ({ children }: ChildrenProps) => {
   const {
@@ -25,6 +26,7 @@ const AppContainer = ({ children }: ChildrenProps) => {
     <html>
       <CssBaseline />
       <body>
+        <GlobalNotification />
         <ApolloProvider>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <AppBar>{children}</AppBar>
