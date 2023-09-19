@@ -70,6 +70,7 @@ export type Query = {
   findDimensions: Array<Dimension>;
   findRecordTypes: Array<RecordType>;
   findWorkdays: Array<Workday>;
+  getSessionStatus: SessionStatus;
 };
 
 export type QueryFindWorkdaysArgs = {
@@ -80,6 +81,11 @@ export type RecordType = {
   __typename?: "RecordType";
   name: Scalars["String"]["output"];
   ratioNumber: Scalars["Float"]["output"];
+};
+
+export type SessionStatus = {
+  __typename?: "SessionStatus";
+  employeeNumber?: Maybe<Scalars["Float"]["output"]>;
 };
 
 export type Workday = {
@@ -132,6 +138,13 @@ export type FindWorkdaysQuery = {
       dimensions: Array<{ __typename?: "DimensionRecord"; name: string; value: string }>;
     }>;
   }>;
+};
+
+export type GetSessionStatusQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetSessionStatusQuery = {
+  __typename?: "Query";
+  getSessionStatus: { __typename?: "SessionStatus"; employeeNumber?: number | null };
 };
 
 export const AddWorkdayEntryDocument = {
@@ -331,3 +344,26 @@ export const FindWorkdaysDocument = {
     },
   ],
 } as unknown as DocumentNode<FindWorkdaysQuery, FindWorkdaysQueryVariables>;
+export const GetSessionStatusDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetSessionStatus" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getSessionStatus" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [{ kind: "Field", name: { kind: "Name", value: "employeeNumber" } }],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetSessionStatusQuery, GetSessionStatusQueryVariables>;

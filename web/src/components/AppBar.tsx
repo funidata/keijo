@@ -8,7 +8,7 @@ import LanguageSelect from "./LanguageSelect";
 
 const AppBar = ({ children }: ChildrenProps) => (
   <Box sx={{ flexGrow: 1 }}>
-    <MuiAppBar position="sticky">
+    <MuiAppBar position="sticky" sx={{ mb: 4 }}>
       <Toolbar>
         <Typography variant="h6">Keijo</Typography>
         <Box sx={{ flexGrow: 1 }} />
