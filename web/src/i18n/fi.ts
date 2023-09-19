@@ -1,4 +1,9 @@
 const fi = {
+  errors: {
+    error: "Virhe",
+    missingEmployeeNumber:
+      "Palkansaajanumeroasi ei löytynyt HTTP-otsakkeista. Keijoa ei voi käyttää ilman tätä tietoa. Ilmoita ongelmasta esihenkilöllesi.",
+  },
   entryTable: {
     head: {
       type: "Tyyppi",
