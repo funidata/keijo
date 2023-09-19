@@ -4,11 +4,11 @@
  */
 import { Alert, Snackbar } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useNotification } from "./useNotification";
+import { useNotificationState } from "./useNotification";
 
 const GlobalNotification = () => {
   const [open, setOpen] = useState(false);
-  const { autoHide, message, type } = useNotification();
+  const { autoHide, message, type } = useNotificationState();
 
   const severity = type || "info";
   const autoHideDuration = autoHide ? 5000 : null;
