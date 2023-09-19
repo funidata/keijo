@@ -8,15 +8,9 @@ import { useNotificationState } from "./useNotification";
 
 const GlobalNotification = () => {
   const [open, setOpen] = useState(false);
-  const { autoHide, message, type } = useNotificationState();
-
-  const severity = type || "info";
+  const { autoHide, message, type, resetNotification } = useNotificationState();
   const autoHideDuration = autoHide ? 5000 : null;
-
   const close = () => setOpen(false);
-  const reset = () => {
-    // FIXME: Re-implement resetNotification()
-  };
 
   useEffect(() => {
     if (type) {
@@ -28,10 +22,10 @@ const GlobalNotification = () => {
     <Snackbar
       open={open}
       onClose={close}
-      TransitionProps={{ onExited: reset }}
+      TransitionProps={{ onExited: resetNotification }}
       autoHideDuration={autoHideDuration}
     >
-      <Alert severity={severity} variant="filled" onClose={close}>
+      <Alert severity={type} variant="filled" onClose={close}>
         {message}
       </Alert>
     </Snackbar>

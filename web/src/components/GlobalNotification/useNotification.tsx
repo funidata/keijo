@@ -9,13 +9,15 @@ type NotificationState = {
 
 type NotificationActions = {
   setNotification: (notification: NotificationState) => void;
+  resetNotification: () => void;
 };
 
+const defaultState = { type: undefined, message: null, autoHide: false };
+
 export const useNotificationState = create<NotificationState & NotificationActions>()((set) => ({
-  type: undefined,
-  message: null,
-  autoHide: false,
+  ...defaultState,
   setNotification: (notification: NotificationState) => set(() => notification),
+  resetNotification: () => set(() => defaultState),
 }));
 
 type NotificationOptions = Partial<Pick<NotificationState, "autoHide">>;
