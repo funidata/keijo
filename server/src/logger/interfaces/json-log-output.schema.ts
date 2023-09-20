@@ -1,5 +1,5 @@
 import { literal, number, object, string, union } from "zod";
-
+// FIXME: Split this into two to differentiate between audit logs.
 /**
  * Output schema for JSON logs. All JSON output MUST adhere to this.
  *
@@ -30,5 +30,5 @@ export const jsonLogOutputSchema = object({
     // to be used programmatically, so this should be fine.
     dimensionNames: string().array().optional(),
     dimensionValues: string().array().optional(),
-  }),
+  }).optional(),
 });

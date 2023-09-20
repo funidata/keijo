@@ -1,4 +1,5 @@
-import { ZodOptionalDef, literal, number, object, string, union } from "zod";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ZodObject, ZodOptionalDef, literal, number, object, string, union } from "zod";
 import { jsonLogOutputSchema } from "./json-log-output.schema";
 
 /**
@@ -7,26 +8,6 @@ import { jsonLogOutputSchema } from "./json-log-output.schema";
  * See `docs/logging.md`.
  * ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
  */
-
-type ZodTestObject = {
-  _def: ZodOptionalDef;
-};
-
-/**
- * Recursive equality check for Zod objects.
- *
- * Zod objects are composed from nested objects that completely describe the resulting
- * type. Therefore we can check for equality by comparing the `typeName` recursively
- * for each level of nesting.
- */
-const testZodDeep = (actual: ZodTestObject, test: ZodTestObject) => {
-  // FIXME: Will not check nested `object()` fields.
-  expect(actual._def.typeName).toEqual(test._def.typeName);
-
-  if (test._def.innerType) {
-    testZodDeep(actual._def.innerType, test._def.innerType);
-  }
-};
 
 // Once again, the existing fields here should never change, new ones can be added.
 const testSchema = object({
@@ -48,26 +29,57 @@ const testSchema = object({
     description: string().optional(),
     dimensionNames: string().array().optional(),
     dimensionValues: string().array().optional(),
-  }),
+  }).optional(),
 });
 
-const actualKeys = Object.keys(jsonLogOutputSchema.shape);
-const testKeys = Object.keys(testSchema.shape);
+type ZodTestObject = {
+  _def: ZodOptionalDef;
+};
+
+/**
+ * Recursive equality check for Zod objects.
+ *
+ * Zod objects are composed from nested objects that completely describe the resulting
+ * type. Therefore we can check for equality by comparing the `typeName` recursively
+ * for each level of nesting.
+ */
+const testZodObjectDeep = (actual: ZodTestObject, test: ZodTestObject) => {
+  expect(actual._def.typeName).toEqual(test._def.typeName);
+
+  if (test._def.innerType) {
+    testZodObjectDeep(actual._def.innerType, test._def.innerType);
+  }
+};
+
+/**
+ * Deep equality check for Zod schemas.
+ *
+ * Detects nested objects and runs recursively on them.
+ */
+const testZodSchema = (actual: ZodObject<any>, test: ZodObject<any>) => {
+  Object.entries<any>(test.shape).forEach(([key, testObj]) => {
+    const actualObj = actual.shape[key];
+    testZodObjectDeep(actualObj, testObj);
+
+    if (testObj._def.typeName === "ZodObject") {
+      testZodSchema(actualObj, testObj as any);
+    }
+
+    if (testObj._def.innerType?._def.typeName === "ZodObject") {
+      const innerActualObj = actualObj._def.innerType;
+      const innerTestObj = testObj._def.innerType as ZodObject<any>;
+      testZodSchema(innerActualObj, innerTestObj);
+    }
+  });
+};
 
 describe("JSON log output schema", () => {
   describe("That should never change", () => {
-    describe("Has not changed", () => {
-      it("Schema keys match exactly (no extras)", () => {
-        expect(actualKeys).toMatchObject(testKeys);
-      });
-
-      it("Schema types match", () => {
-        for (const key of testKeys) {
-          const actualObj = jsonLogOutputSchema.shape[key];
-          const testObj = testSchema.shape[key];
-          testZodDeep(actualObj, testObj);
-        }
-      });
+    it("Has not changed", () => {
+      testZodSchema(jsonLogOutputSchema, testSchema);
+      // Running this again with switched arguments is a dirty little hack to
+      // rule out missing fields both ways without extra work.
+      testZodSchema(testSchema, jsonLogOutputSchema);
     });
   });
 });
