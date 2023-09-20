@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ZodObject, ZodOptionalDef, literal, number, object, string, union } from "zod";
-import { jsonLogOutputSchema } from "./json-log-output.schema";
+import { jsonAppLogOutputSchema, jsonAuditLogOutputSchema } from "./json-log-output.schema";
 
 /**
  * ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
@@ -9,8 +9,7 @@ import { jsonLogOutputSchema } from "./json-log-output.schema";
  * ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! !
  */
 
-// Once again, the existing fields here should never change, new ones can be added.
-const testSchema = object({
+const appLogFields = {
   logLevel: union([
     literal("error"),
     literal("warn"),
@@ -20,8 +19,11 @@ const testSchema = object({
   ]),
   message: string().optional(),
   context: string().optional(),
-  employeeNumber: number().optional(),
   operation: string().optional(),
+};
+
+const auditLogFields = {
+  employeeNumber: number().optional(),
   input: object({
     date: string().optional(),
     duration: number().optional(),
@@ -30,7 +32,10 @@ const testSchema = object({
     dimensionNames: string().array().optional(),
     dimensionValues: string().array().optional(),
   }).optional(),
-});
+};
+
+const appLogTestSchema = object(appLogFields);
+const auditLogTestSchema = object({ ...appLogFields, ...auditLogFields });
 
 type ZodTestObject = {
   _def: ZodOptionalDef;
@@ -75,11 +80,18 @@ const testZodSchema = (actual: ZodObject<any>, test: ZodObject<any>) => {
 
 describe("JSON log output schema", () => {
   describe("That should never change", () => {
-    it("Has not changed", () => {
-      testZodSchema(jsonLogOutputSchema, testSchema);
-      // Running this again with switched arguments is a dirty little hack to
-      // rule out missing fields both ways without extra work.
-      testZodSchema(testSchema, jsonLogOutputSchema);
+    describe("Has not changed", () => {
+      it("App logs", () => {
+        testZodSchema(jsonAppLogOutputSchema, appLogTestSchema);
+        // Running this again with switched arguments is a dirty little hack to
+        // rule out missing fields both ways without extra work.
+        testZodSchema(appLogTestSchema, jsonAppLogOutputSchema);
+      });
+
+      it("Audit logs", () => {
+        testZodSchema(jsonAuditLogOutputSchema, auditLogTestSchema);
+        testZodSchema(auditLogTestSchema, jsonAuditLogOutputSchema);
+      });
     });
   });
 });

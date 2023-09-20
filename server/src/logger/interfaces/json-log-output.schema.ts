@@ -1,14 +1,15 @@
 import { literal, number, object, string, union } from "zod";
-// FIXME: Split this into two to differentiate between audit logs.
-/**
- * Output schema for JSON logs. All JSON output MUST adhere to this.
+
+/*
+ * Output schemas for JSON logs. All JSON output MUST adhere to these.
  *
  * - All fields SHOULD be optional, save for `logLevel`.
  * - Leaving fields out SHOULD be preferred over empty values.
  * - Existing fields MUST NOT be changed. New ones can be added.
  * - Output MUST be sanitized to remove fields not declared in this schema.
  */
-export const jsonLogOutputSchema = object({
+
+const appLogFields = {
   logLevel: union([
     literal("error"),
     literal("warn"),
@@ -18,8 +19,11 @@ export const jsonLogOutputSchema = object({
   ]),
   message: string().optional(),
   context: string().optional(),
-  employeeNumber: number().optional(),
   operation: string().optional(),
+};
+
+const auditLogFields = {
+  employeeNumber: number().optional(),
   input: object({
     date: string().optional(),
     duration: number().optional(),
@@ -31,4 +35,14 @@ export const jsonLogOutputSchema = object({
     dimensionNames: string().array().optional(),
     dimensionValues: string().array().optional(),
   }).optional(),
-});
+};
+
+/**
+ * JSON log output schema for app logs (no sensitive data).
+ */
+export const jsonAppLogOutputSchema = object(appLogFields);
+
+/**
+ * JSON log output schema for audit logs (includes sensitive data).
+ */
+export const jsonAuditLogOutputSchema = object({ ...appLogFields, ...auditLogFields });
