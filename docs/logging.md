@@ -24,6 +24,8 @@ _**JSON LOG OUTPUT SCHEMA MUST NOT BE CHANGED EXCEPT FOR ADDING NEW FIELDS!**_
 
 Elasticsearch will fail, if types change for existing fields, possibly causing a loss of logs. To prevent this from happening, all logging **MUST** use our custom `Logger` and its interface **MUST NOT** be changed except for adding new fields.
 
+The schema is defined in [`json-log-output.schema.ts`](../server/src/logger/interfaces/json-log-output.schema.ts).
+
 ## Audit Logs
 
 Audit logs can be written to preserve an audit trail about critical operations. In practice, these logs contain information about all requests that mutate Netvisor's data via their API. Audit logs inherently contain employees' sensitive information, and should be kept with proper care or not toggled on at all.
