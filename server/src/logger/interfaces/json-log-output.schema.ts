@@ -7,7 +7,6 @@ import { literal, number, object, string, union } from "zod";
  * - Leaving fields out SHOULD be preferred over empty values.
  * - Existing fields MUST NOT be changed. New ones can be added.
  * - Output MUST be sanitized to remove fields not declared in this schema.
- * - The schema is flat to make Elasticsearch and Kibana usage nicer.
  */
 export const jsonLogOutputSchema = object({
   logLevel: union([
@@ -21,13 +20,15 @@ export const jsonLogOutputSchema = object({
   context: string().optional(),
   employeeNumber: number().optional(),
   operation: string().optional(),
-  inputDate: string().optional(),
-  inputDuration: number().optional(),
-  inputRatioNumber: number().optional(),
-  inputDescription: string().optional(),
-  // We were not sure if logging lists of objects is a good idea, thus dimension
-  // data is logged as two lists of strings. This data is probably never needed
-  // to be used programmatically, so this should be fine.
-  inputDimensionNames: string().array().optional(),
-  inputDimensionValues: string().array().optional(),
+  input: object({
+    date: string().optional(),
+    duration: number().optional(),
+    ratioNumber: number().optional(),
+    description: string().optional(),
+    // We were not sure if logging lists of objects is a good idea, thus dimension
+    // data is logged as two lists of strings. This data is probably never needed
+    // to be used programmatically, so this should be fine.
+    dimensionNames: string().array().optional(),
+    dimensionValues: string().array().optional(),
+  }),
 });
