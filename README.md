@@ -8,3 +8,4 @@ Implemented with a stateless Nest.js backend and a Next.js frontend. The backend
 
 - [Development Handbook](docs/development-handbook.md)
 - [Configuration](docs/configuration.md)
+- [Logging](docs/logging.md)
