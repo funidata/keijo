@@ -43,13 +43,18 @@ export class WorkdayService {
     return this.toLocalWorkdays(data.Root);
   }
 
-  async addWorkdayEntry(employeeNumber: number, entry: AddWorkdayEntryInput): Promise<void> {
+  async addWorkdayEntry(
+    employeeNumber: number,
+    eppn: string,
+    entry: AddWorkdayEntryInput,
+  ): Promise<void> {
     const { duration, dimensions, recordTypeRatioNumber } = entry;
     const date = dayjs(entry.date).format("YYYY-MM-DD");
 
     this.logger.audit({
       operation: "addWorkdayEntry",
       employeeNumber,
+      eppn,
       input: {
         date,
         duration,
