@@ -14,6 +14,7 @@ const appLogFields = {
   message: string().optional(),
   context: string().optional(),
   operation: string().optional(),
+  errors: string().array().optional(),
 };
 
 const auditLogFields = {

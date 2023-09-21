@@ -3,18 +3,16 @@ import {
   BaseContext,
   GraphQLRequestContext,
   GraphQLRequestContextDidEncounterErrors,
-  GraphQLRequestContextWillSendResponse,
   GraphQLRequestListener,
 } from "@apollo/server";
 import { Plugin } from "@nestjs/apollo";
-import { get } from "lodash";
 import { ConfigService } from "../config/config.service";
-import { AppLogger } from "./app-logger";
+import { Logger } from "./logger";
 
 @Plugin()
 export class ApolloLogger implements ApolloServerPlugin {
   constructor(
-    private logger: AppLogger,
+    private logger: Logger,
     private configService: ConfigService,
   ) {
     logger.setContext(ApolloLogger.name);
@@ -23,36 +21,41 @@ export class ApolloLogger implements ApolloServerPlugin {
   async requestDidStart(
     ctx: GraphQLRequestContext<BaseContext>,
   ): Promise<GraphQLRequestListener<BaseContext>> {
-    const { query, variables } = ctx.request;
+    const { operationName } = ctx.request;
+
     this.logger.audit({
-      description: "Request started.",
-      query,
-      variables,
-      employeeNumber: this.getEmployeeNumber(ctx),
+      message: "GraphQL request started.",
+      operation: operationName,
+      ...this.getOptionalEmployeeNumber(ctx),
     });
 
     return {
-      willSendResponse: async (ctx: GraphQLRequestContextWillSendResponse<BaseContext>) => {
-        this.logger.debug(ctx.response.body);
-      },
       didEncounterErrors: async (ctx: GraphQLRequestContextDidEncounterErrors<BaseContext>) => {
-        const { errors, request } = ctx;
-        const { query, variables } = request;
-        const description = "Encountered an error while processing a GraphQL request.";
-        const errorLog = { description, errors, query };
+        const {
+          errors,
+          request: { operationName },
+        } = ctx;
+        const message = "Encountered an error while processing a GraphQL request.";
 
-        this.logger.error(errorLog);
-
+        this.logger.error(message);
         this.logger.audit({
-          ...errorLog,
-          variables,
-          employeeNumber: this.getEmployeeNumber(ctx),
+          message,
+          operation: operationName,
+          errors: errors.map((err) => err.message),
+          ...this.getOptionalEmployeeNumber(ctx),
         });
       },
     };
   }
 
-  private getEmployeeNumber(ctx: GraphQLRequestContext<BaseContext>): string {
-    return get(ctx.request.http?.headers, this.configService.config.employeeNumberHeaderKey, "");
+  private getOptionalEmployeeNumber(ctx: GraphQLRequestContext<BaseContext>): {
+    employeeNumber?: number;
+  } {
+    const employeeNumber = Number(
+      ctx.request.http?.headers.get(
+        this.configService.config.employeeNumberHeaderKey.toLowerCase(),
+      ),
+    );
+    return employeeNumber ? { employeeNumber } : {};
   }
 }
