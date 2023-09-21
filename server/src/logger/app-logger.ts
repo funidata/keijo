@@ -1,5 +1,6 @@
 import { ConsoleLogger, Injectable, LogLevel, Scope } from "@nestjs/common";
 import dayjs from "dayjs";
+import { get } from "lodash";
 import { ZodError } from "zod";
 import { ConfigService } from "../config/config.service";
 import {
@@ -77,6 +78,9 @@ export class AppLogger extends ConsoleLogger {
     content: AppLogContent | AuditLogContent,
     contextOverride?: string,
   ): void {
+    if (this.ignoreIntrospectionQuery(content)) {
+      return;
+    }
     const context = this.getContext(contextOverride);
     const date = dayjs().toISOString();
     const unsafeOutput = { ...content, logLevel, date, context };
@@ -134,5 +138,15 @@ export class AppLogger extends ConsoleLogger {
   private validateJsonAuditLogOutput(content: JsonAuditLogOutputSchema): JsonAuditLogOutputSchema {
     // ZobObject.parse will strip extra fields from input, including nested objects.
     return jsonAuditLogOutputSchema.parse(content);
+  }
+
+  /**
+   * IntrospectionQuery gets spammed while developing with GraphQL playground open.
+   */
+  private ignoreIntrospectionQuery(content: unknown): boolean {
+    if (!this.configService.config.inDev) {
+      return false;
+    }
+    return get(content, "operation") === "IntrospectionQuery";
   }
 }
