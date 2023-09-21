@@ -1,4 +1,5 @@
 import { ConsoleLogger, Injectable, LogLevel, Scope } from "@nestjs/common";
+import dayjs from "dayjs";
 import { ZodError } from "zod";
 import { ConfigService } from "../config/config.service";
 import {
@@ -8,8 +9,9 @@ import {
   jsonAuditLogOutputSchema,
 } from "./interfaces/json-log-output.schema";
 
-export type AppLogContent = Omit<JsonAppLogOutputSchema, "logLevel" | "context">;
-export type AuditLogContent = Omit<JsonAuditLogOutputSchema, "logLevel" | "context">;
+type ForbiddenFields = "logLevel" | "date" | "context";
+export type AppLogContent = Omit<JsonAppLogOutputSchema, ForbiddenFields>;
+export type AuditLogContent = Omit<JsonAuditLogOutputSchema, ForbiddenFields>;
 
 /**
  * Nest.js-compatible custom logger.
@@ -76,7 +78,8 @@ export class AppLogger extends ConsoleLogger {
     contextOverride?: string,
   ): void {
     const context = this.getContext(contextOverride);
-    const unsafeOutput = { ...content, logLevel, context };
+    const date = dayjs().toISOString();
+    const unsafeOutput = { ...content, logLevel, date, context };
 
     try {
       const sanitizedOutput =

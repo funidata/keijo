@@ -11,6 +11,7 @@ import { jsonAppLogOutputSchema, jsonAuditLogOutputSchema } from "./json-log-out
 
 const appLogFields = {
   logLevel: union([literal("error"), literal("warn"), literal("log"), literal("debug")]),
+  date: string(),
   message: string().optional(),
   context: string().optional(),
   operation: string().optional(),
