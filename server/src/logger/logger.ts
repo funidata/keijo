@@ -40,11 +40,7 @@ export class Logger extends ConsoleLogger {
       return;
     }
 
-    if (context === undefined) {
-      super[loggerFn](message);
-    } else {
-      super[loggerFn](message, context);
-    }
+    super[loggerFn](message, this.getContext(context));
   }
 
   private useJsonLogger(logLevel: LogLevel, message: unknown, contextOverride?: string): void {
@@ -60,9 +56,17 @@ export class Logger extends ConsoleLogger {
     message: unknown,
     contextOverride?: string,
   ): void {
-    const context = contextOverride || this.context;
+    const context = this.getContext(contextOverride);
 
     const output = JSON.stringify({ logLevel, context, message });
     console.log(output);
+  }
+
+  private getContext(context: unknown): string {
+    // Nest may pass objects, so need to check that arg is strictly a string.
+    if (typeof context === "string" && context.length > 0) {
+      return context;
+    }
+    return this.context || Logger.name;
   }
 }
