@@ -1,6 +1,9 @@
 import { ConsoleLogger, Injectable, LogLevel, Scope } from "@nestjs/common";
 import { ConfigService } from "../config/config.service";
 
+// TODO: Rename this to LoggerService and use this only for injection to Nest, etc.
+// TODO: Create new Logger class that offers only strictly-typed methods for logging.
+
 @Injectable({ scope: Scope.TRANSIENT })
 export class Logger extends ConsoleLogger {
   constructor(private configService: ConfigService) {
@@ -40,7 +43,7 @@ export class Logger extends ConsoleLogger {
       return;
     }
 
-    super[loggerFn](message, this.getContext(context));
+    super[loggerFn](this.getMessage(message), this.getContext(context));
   }
 
   private useJsonLogger(logLevel: LogLevel, message: unknown, contextOverride?: string): void {
@@ -48,7 +51,7 @@ export class Logger extends ConsoleLogger {
       return;
     }
 
-    this.logJsonString(logLevel, message, contextOverride);
+    this.logJsonString(logLevel, this.getMessage(message), contextOverride);
   }
 
   private logJsonString(
@@ -68,5 +71,15 @@ export class Logger extends ConsoleLogger {
       return context;
     }
     return this.context || Logger.name;
+  }
+
+  private getMessage(content: unknown): string {
+    if (typeof content === "string") {
+      return content;
+    }
+    if (!content) {
+      return "";
+    }
+    return content["data"];
   }
 }
