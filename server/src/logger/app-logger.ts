@@ -1,7 +1,7 @@
 import { ConsoleLogger, Injectable, LogLevel, Scope } from "@nestjs/common";
 import { ConfigService } from "../config/config.service";
 
-// TODO: Create new Logger class that offers only strictly-typed methods for logging.
+// TODO: Sanitize JSON output of extra fields.
 
 /**
  * Nest.js-compatible custom logger.

@@ -1,4 +1,4 @@
-import { literal, number, object, string, union } from "zod";
+import { literal, number, object, string, union, z as zod } from "zod";
 
 /*
  * Output schemas for JSON logs. All JSON output MUST adhere to these.
@@ -41,8 +41,10 @@ const auditLogFields = {
  * JSON log output schema for app logs (no sensitive data).
  */
 export const jsonAppLogOutputSchema = object(appLogFields);
+export type JsonAppLogOutputSchema = zod.infer<typeof jsonAppLogOutputSchema>;
 
 /**
  * JSON log output schema for audit logs (includes sensitive data).
  */
 export const jsonAuditLogOutputSchema = object({ ...appLogFields, ...auditLogFields });
+export type JsonAuditLogOutputSchema = zod.infer<typeof jsonAuditLogOutputSchema>;
