@@ -9,12 +9,12 @@ import {
 import { Plugin } from "@nestjs/apollo";
 import { get } from "lodash";
 import { ConfigService } from "../config/config.service";
-import { Logger } from "./logger";
+import { AppLogger } from "./app-logger";
 
 @Plugin()
 export class ApolloLogger implements ApolloServerPlugin {
   constructor(
-    private logger: Logger,
+    private logger: AppLogger,
     private configService: ConfigService,
   ) {
     logger.setContext(ApolloLogger.name);

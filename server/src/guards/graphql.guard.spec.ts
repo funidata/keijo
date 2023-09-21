@@ -1,13 +1,13 @@
 import { createMock } from "@golevelup/ts-jest";
 import { BadRequestException, ExecutionContext } from "@nestjs/common";
-import { Logger } from "../logger/logger";
+import { AppLogger } from "../logger/app-logger";
 import { GraphQlGuard } from "./graphql.guard";
 
 describe("GraphQlGuard", () => {
   let guard: GraphQlGuard;
 
   beforeEach(() => {
-    const logger = createMock<Logger>();
+    const logger = createMock<AppLogger>();
     guard = new GraphQlGuard(logger);
   });
 

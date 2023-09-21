@@ -2,7 +2,7 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { XMLBuilder } from "fast-xml-parser";
-import { Logger } from "../../logger/logger";
+import { AppLogger } from "../../logger/app-logger";
 import { NetvisorAuthService } from "./netvisor-auth.service";
 import { NetvisorEndpoints } from "./netvisor-endpoints.enum";
 import fixUndefinedArrays from "./xml/fix-undefined-arrays";
@@ -12,7 +12,7 @@ import { XmlParserService } from "./xml/xml-parser.service";
 export class NetvisorApiService {
   constructor(
     private netvisorAuthService: NetvisorAuthService,
-    private logger: Logger,
+    private logger: AppLogger,
     private xmlParserService: XmlParserService,
   ) {
     logger.setContext(NetvisorApiService.name);

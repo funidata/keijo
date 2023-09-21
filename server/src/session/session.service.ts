@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
-import { Logger } from "../logger/logger";
+import { AppLogger } from "../logger/app-logger";
 import { SessionStatus } from "./dto/session-status.dto";
 
 @Injectable()
 export class SessionService {
-  constructor(private logger: Logger) {
+  constructor(private logger: AppLogger) {
     logger.setContext(SessionService.name);
   }
 

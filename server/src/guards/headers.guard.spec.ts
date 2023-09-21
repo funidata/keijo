@@ -5,7 +5,7 @@ import { Test } from "@nestjs/testing";
 import mockConfigProvider, { defaultMockConfig } from "../../test/utils/mock-config.service";
 import { mockContextWithHeaders } from "../../test/utils/mock-context";
 import { ConfigService } from "../config/config.service";
-import { Logger } from "../logger/logger";
+import { AppLogger } from "../logger/app-logger";
 import { HeadersGuard } from "./headers.guard";
 
 describe("HeadersGuard", () => {
@@ -15,7 +15,7 @@ describe("HeadersGuard", () => {
     const module = await Test.createTestingModule({
       providers: [mockConfigProvider()],
     }).compile();
-    const logger = createMock<Logger>();
+    const logger = createMock<AppLogger>();
     const configService = module.get(ConfigService);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const reflector = createMock<Reflector>({ get: (): any => undefined });
@@ -52,7 +52,7 @@ describe("HeadersGuard", () => {
       const module = await Test.createTestingModule({
         providers: [mockConfigProvider()],
       }).compile();
-      const logger = createMock<Logger>();
+      const logger = createMock<AppLogger>();
       const configService = module.get(ConfigService);
       const reflector = createMock<Reflector>({ get: () => true });
       guard = new HeadersGuard(logger, configService, reflector);

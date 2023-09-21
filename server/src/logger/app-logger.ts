@@ -1,13 +1,19 @@
 import { ConsoleLogger, Injectable, LogLevel, Scope } from "@nestjs/common";
 import { ConfigService } from "../config/config.service";
 
-// TODO: Rename this to LoggerService and use this only for injection to Nest, etc.
 // TODO: Create new Logger class that offers only strictly-typed methods for logging.
 
+/**
+ * Nest.js-compatible custom logger.
+ *
+ * This class is designed to be injected into Nest app and other places that require
+ * a logger with a ConsoleLogger-compatible interface. Instead of this, the `Logger`
+ * class from this module should be used in code.
+ */
 @Injectable({ scope: Scope.TRANSIENT })
-export class Logger extends ConsoleLogger {
+export class AppLogger extends ConsoleLogger {
   constructor(private configService: ConfigService) {
-    super(Logger.name, { logLevels: [configService.config.logLevel] });
+    super(AppLogger.name, { logLevels: [configService.config.logLevel] });
   }
 
   log(message: unknown, context?: string): void {
@@ -38,6 +44,7 @@ export class Logger extends ConsoleLogger {
     this.logJsonString("audit", message);
   }
 
+  // TODO: Refactor the rest into LoggerService.
   private useConsoleLogger(loggerFn: LogLevel, message: unknown, context?: string): void {
     if (this.configService.config.enableJsonLogs) {
       return;
@@ -70,7 +77,7 @@ export class Logger extends ConsoleLogger {
     if (typeof context === "string" && context.length > 0) {
       return context;
     }
-    return this.context || Logger.name;
+    return this.context || AppLogger.name;
   }
 
   private getMessage(content: unknown): string {

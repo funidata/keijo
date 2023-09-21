@@ -5,14 +5,14 @@ import { GqlExecutionContext } from "@nestjs/graphql";
 import { string } from "zod";
 import { ConfigService } from "../config/config.service";
 import { getBypassHeadersGuardMetadataValue } from "../decorators/bypass-headers-guard.decorator";
-import { Logger } from "../logger/logger";
+import { AppLogger } from "../logger/app-logger";
 
 @Injectable()
 export class HeadersGuard implements CanActivate {
   private employeeNumberHeaderKey: string;
 
   constructor(
-    private logger: Logger,
+    private logger: AppLogger,
     configService: ConfigService,
     private readonly reflector: Reflector,
   ) {

@@ -1,13 +1,13 @@
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { XMLParser, validationOptions } from "fast-xml-parser";
-import { Logger } from "../../../logger/logger";
+import { AppLogger } from "../../../logger/app-logger";
 
 /**
  * Configuration for `fast-xml-parser` to parse responses from NV API.
  */
 @Injectable()
 export class XmlParserService {
-  constructor(private logger: Logger) {}
+  constructor(private logger: AppLogger) {}
 
   parse(
     xmlData: string | Buffer,

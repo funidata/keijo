@@ -1,9 +1,9 @@
 import { BadRequestException, CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
-import { Logger } from "../logger/logger";
+import { AppLogger } from "../logger/app-logger";
 
 @Injectable()
 export class GraphQlGuard implements CanActivate {
-  constructor(private logger: Logger) {
+  constructor(private logger: AppLogger) {
     logger.setContext(GraphQlGuard.name);
   }
 
