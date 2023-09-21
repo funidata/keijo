@@ -1,14 +1,7 @@
 import { Injectable, Scope } from "@nestjs/common";
-import { AppLogger } from "./app-logger";
-import {
-  JsonAppLogOutputSchema,
-  JsonAuditLogOutputSchema,
-} from "./interfaces/json-log-output.schema";
+import { AppLogContent, AppLogger, AuditLogContent } from "./app-logger";
 
 // TODO: Use this class in code instead of AppLogger.
-
-type AppLogContent = Omit<JsonAppLogOutputSchema, "logLevel" | "context">;
-type AuditLogContent = Omit<JsonAuditLogOutputSchema, "logLevel" | "context">;
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class Logger {

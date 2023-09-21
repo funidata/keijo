@@ -1,7 +1,15 @@
 import { ConsoleLogger, Injectable, LogLevel, Scope } from "@nestjs/common";
+import { ZodError } from "zod";
 import { ConfigService } from "../config/config.service";
+import {
+  JsonAppLogOutputSchema,
+  JsonAuditLogOutputSchema,
+  jsonAppLogOutputSchema,
+  jsonAuditLogOutputSchema,
+} from "./interfaces/json-log-output.schema";
 
-// TODO: Sanitize JSON output of extra fields.
+export type AppLogContent = Omit<JsonAppLogOutputSchema, "logLevel" | "context">;
+export type AuditLogContent = Omit<JsonAuditLogOutputSchema, "logLevel" | "context">;
 
 /**
  * Nest.js-compatible custom logger.
@@ -36,20 +44,21 @@ export class AppLogger extends ConsoleLogger {
     this.useJsonLogger("debug", message, context);
   }
 
-  audit(message: unknown): void {
+  audit(content: AuditLogContent): void {
     if (!this.configService.config.enableAuditLogs) {
       return;
     }
 
-    this.logJsonString("audit", message);
+    this.logJsonString("audit", content);
   }
 
-  // TODO: Refactor the rest into LoggerService.
+  // TODO: Refactor the rest into LoggerService?
   private useConsoleLogger(loggerFn: LogLevel, message: unknown, context?: string): void {
     if (this.configService.config.enableJsonLogs) {
       return;
     }
 
+    // Don't pass anything else except message string to ConsoleLogger to keep output clean.
     super[loggerFn](this.getMessage(message), this.getContext(context));
   }
 
@@ -58,18 +67,32 @@ export class AppLogger extends ConsoleLogger {
       return;
     }
 
-    this.logJsonString(logLevel, this.getMessage(message), contextOverride);
+    this.logJsonString(logLevel, this.getContent(message), contextOverride);
   }
 
   private logJsonString(
     logLevel: LogLevel | "audit",
-    message: unknown,
+    content: AppLogContent | AuditLogContent,
     contextOverride?: string,
   ): void {
     const context = this.getContext(contextOverride);
+    const unsafeOutput = { ...content, logLevel, context };
 
-    const output = JSON.stringify({ logLevel, context, message });
-    console.log(output);
+    try {
+      const sanitizedOutput =
+        logLevel === "audit"
+          ? this.validateJsonAuditLogOutput(unsafeOutput as JsonAuditLogOutputSchema)
+          : this.validateJsonAppLogOutput(unsafeOutput as JsonAppLogOutputSchema);
+      const output = JSON.stringify(sanitizedOutput);
+      console.log(output);
+    } catch (error) {
+      this.error("JSON log output validation failed with following errors:");
+      const { issues } = error as ZodError;
+      issues.forEach(({ message }) => {
+        this.error(` - ${message}`, AppLogger.name);
+      });
+      this.error("All output for the invalid object is suppressed.");
+    }
   }
 
   private getContext(context: unknown): string {
@@ -80,13 +103,33 @@ export class AppLogger extends ConsoleLogger {
     return this.context || AppLogger.name;
   }
 
-  private getMessage(content: unknown): string {
-    if (typeof content === "string") {
-      return content;
+  private getMessage(input: unknown): string {
+    if (typeof input === "string") {
+      return input;
     }
-    if (!content) {
+    if (!input) {
       return "";
     }
-    return content["data"];
+    return input["message"];
+  }
+
+  private getContent(input: unknown): AppLogContent | AuditLogContent {
+    if (typeof input === "string") {
+      return { message: input };
+    }
+    if (!input) {
+      return { message: "" };
+    }
+    return input;
+  }
+
+  private validateJsonAppLogOutput(content: JsonAppLogOutputSchema): JsonAppLogOutputSchema {
+    // ZobObject.parse will strip extra fields from input, including nested objects.
+    return jsonAppLogOutputSchema.parse(content);
+  }
+
+  private validateJsonAuditLogOutput(content: JsonAuditLogOutputSchema): JsonAuditLogOutputSchema {
+    // ZobObject.parse will strip extra fields from input, including nested objects.
+    return jsonAuditLogOutputSchema.parse(content);
   }
 }
