@@ -45,7 +45,6 @@ export class Logger {
     if (this.context === undefined) {
       this.appLogger.warn(
         "Logger context was not set before calling logging methods. Use Logger.setContext to pass the relevant context name to Logger.",
-        AppLogger.name,
       );
     }
   }

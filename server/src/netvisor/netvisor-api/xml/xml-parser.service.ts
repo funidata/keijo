@@ -1,13 +1,15 @@
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { XMLParser, validationOptions } from "fast-xml-parser";
-import { AppLogger } from "../../../logger/app-logger";
+import { Logger } from "../../../logger/logger";
 
 /**
  * Configuration for `fast-xml-parser` to parse responses from NV API.
  */
 @Injectable()
 export class XmlParserService {
-  constructor(private logger: AppLogger) {}
+  constructor(private logger: Logger) {
+    logger.setContext(XmlParserService.name);
+  }
 
   parse(
     xmlData: string | Buffer,
@@ -20,8 +22,12 @@ export class XmlParserService {
       return parser.parse(xmlData, validationOptions);
     } catch (error) {
       const description = "XML parsing failed.";
-      this.logger.error({ description, error });
-      this.logger.audit({ description, error, xmlData });
+      this.logger.error(`${description} [${error.message}]`);
+      this.logger.audit({
+        message: description,
+        errors: [error.message],
+        xml: xmlData.toString(),
+      });
       throw new InternalServerErrorException(description);
     }
   }

@@ -20,6 +20,7 @@ const appLogFields = {
 const auditLogFields = {
   logLevel: literal("audit"),
   employeeNumber: number().optional(),
+  xml: string().optional(),
   input: object({
     date: string().optional(),
     duration: number().optional(),
