@@ -4,6 +4,8 @@ import { Logger } from "../../src/logger/logger";
 import { NetvisorApiService } from "../../src/netvisor/netvisor-api/netvisor-api.service";
 import { WorkdayService } from "../../src/netvisor/workday/workday.service";
 
+const { fn } = jest;
+
 const createMockProvider = <T extends object>(
   service: InjectionToken,
   partial?: PartialFuncReturn<T>,
@@ -12,7 +14,9 @@ const createMockProvider = <T extends object>(
   useFactory: () => createMock<T>(partial),
 });
 
-export const MockNetvisorApiService = createMockProvider(NetvisorApiService);
+export const MockNetvisorApiService = createMockProvider(NetvisorApiService, {
+  get: fn().mockResolvedValue({ Root: { ResponseStatus: { Status: "OK" } } }),
+});
 
 export const MockWorkdayService = createMockProvider(WorkdayService);
 
