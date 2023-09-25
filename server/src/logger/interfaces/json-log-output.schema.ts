@@ -33,6 +33,7 @@ const auditLogFields = {
     // to be used programmatically, so this should be fine.
     dimensionNames: string().array().optional(),
     dimensionValues: string().array().optional(),
+    entryKey: string().optional(),
   }).optional(),
 };
 

@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { Dayjs } from "dayjs";
 import dayjs from "../../config/dayjs";
 import { Logger } from "../../logger/logger";
@@ -8,6 +8,7 @@ import { AddWorkdayEntryInput } from "./dto/add-workday-entry-input.dto";
 import { Entry } from "./dto/entry.dto";
 import { WorkdayService } from "./workday.service";
 
+// TODO: Refactor.
 @Injectable()
 export class EntryService {
   constructor(
@@ -77,5 +78,58 @@ export class EntryService {
   async findOne(key: string, date: Dayjs, employeeNumber: number): Promise<Entry | undefined> {
     const workdays = await this.workdayService.findMany({ employeeNumber, start: date, end: date });
     return workdays[0]?.entries.find((entry) => entry.key === key);
+  }
+
+  /**
+   * Remove one workday entry.
+   *
+   * NV API exposes only one endpoint to remove entries and it works by key only.
+   * Therefore, we must first check that the given entry key belongs to the user who
+   * made the request. For this, entry date is required, as workday entries cannot
+   * be queried from NV API without it.
+   */
+  async remove(
+    employeeNumber: number,
+    eppn: string,
+    entryKey: string,
+    entryDate: Dayjs,
+  ): Promise<void> {
+    const entry = await this.findOne(entryKey, entryDate, employeeNumber);
+
+    if (!entry) {
+      const message = "Removing an entry failed because it could not be found from Netvisor.";
+      this.logger.error(message);
+      this.logger.audit({
+        message,
+        employeeNumber,
+        eppn,
+        input: { entryKey, date: entryDate.toISOString() },
+      });
+      throw new NotFoundException(message);
+    }
+
+    const res = await this.netvisorApiService.get(NetvisorEndpoints.DELETE_WORKDAYHOUR, [], {
+      netvisorkey: entryKey,
+    });
+
+    if (res.Root.ResponseStatus.Status !== "OK") {
+      const message = "Removing an entry failed with an unknown exception from NV API.";
+      this.logger.error(message);
+      this.logger.audit({
+        message,
+        employeeNumber,
+        eppn,
+        input: { entryKey, date: entryDate.toISOString() },
+      });
+      throw new BadRequestException(message);
+    }
+
+    this.logger.audit({
+      message: "Removed an entry.",
+      operation: "removeWorkdayEntry",
+      employeeNumber,
+      eppn,
+      input: { entryKey, date: entryDate.toISOString() },
+    });
   }
 }

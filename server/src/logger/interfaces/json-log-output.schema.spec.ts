@@ -30,6 +30,7 @@ const auditLogFields = {
     description: string().optional(),
     dimensionNames: string().array().optional(),
     dimensionValues: string().array().optional(),
+    entryKey: string().optional(),
   }).optional(),
 };
 
