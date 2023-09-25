@@ -98,7 +98,7 @@ export class WorkdayService {
       date: new Date(wd.Date),
       entries: wd.WorkdayHour.map((wdh) => ({
         duration: wdh.Hours,
-        entryType: wdh.CollectorRatio,
+        entryType: wdh.CollectorRatio["#text"],
         dimensions:
           wdh.Dimension?.map((dim) => ({
             name: dim.DimensionName,

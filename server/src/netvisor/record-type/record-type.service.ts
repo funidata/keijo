@@ -10,7 +10,7 @@ export class RecordTypeService {
     const data = await this.recordTypeCacheService.getCachedRecordTypeData();
 
     return data.Root.RecordTypes.RecordType.map((recordType) => ({
-      name: recordType.Names.Name[0],
+      name: recordType.Names.Name[0]["#text"],
       ratioNumber: recordType.RatioNumber,
     }));
   }

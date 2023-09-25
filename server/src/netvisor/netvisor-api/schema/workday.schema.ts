@@ -6,11 +6,16 @@ export const workdaySchema = object({
   WorkdayHour: array(
     object({
       Hours: number(),
-      CollectorRatio: string(),
+      CollectorRatio: object({
+        "#text": string(),
+        "@_number": string(),
+        "@_netvisorkey": string(),
+      }),
       AcceptanceStatus: string(),
       Description: string(),
       CrmProcessName: string(),
       Dimension: array(dimensionSchema).optional(),
+      "@_netvisorkey": string(),
     }),
   ),
 });

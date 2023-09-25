@@ -34,6 +34,7 @@ export class XmlParserService {
 
   private getOptions(arrayPaths: string[] = []) {
     return {
+      ignoreAttributes: false,
       isArray: (_, path) => {
         return arrayPaths.includes(path);
       },
