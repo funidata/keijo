@@ -19,7 +19,7 @@ export class WorkdayService {
   constructor(private netvisorApiService: NetvisorApiService) {}
 
   // TODO: Add validation (pipe?)
-  async findMany({ employeeNumber, start, end }: WorkdayQuery) {
+  async findMany({ employeeNumber, start, end }: WorkdayQuery): Promise<Workday[]> {
     const params = {
       employeenumber: employeeNumber,
       workhourstartdate: start.format("YYYY-MM-DD"),
