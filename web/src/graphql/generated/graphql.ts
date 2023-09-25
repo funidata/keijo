@@ -49,6 +49,7 @@ export type Entry = {
   dimensions: Array<DimensionRecord>;
   duration: Scalars["Float"]["output"];
   entryType: Scalars["String"]["output"];
+  key: Scalars["String"]["output"];
 };
 
 export type FindWorkdaysInput = {
@@ -133,6 +134,7 @@ export type FindWorkdaysQuery = {
     date: any;
     entries: Array<{
       __typename?: "Entry";
+      key: string;
       duration: number;
       entryType: string;
       dimensions: Array<{ __typename?: "DimensionRecord"; name: string; value: string }>;
@@ -320,6 +322,7 @@ export const FindWorkdaysDocument = {
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
+                      { kind: "Field", name: { kind: "Name", value: "key" } },
                       { kind: "Field", name: { kind: "Name", value: "duration" } },
                       { kind: "Field", name: { kind: "Name", value: "entryType" } },
                       {

@@ -2,6 +2,7 @@ query FindWorkdays($start: DateTime!, $end: DateTime!) {
   findWorkdays(query: { start: $start, end: $end }) {
     date
     entries {
+      key
       duration
       entryType
       dimensions {

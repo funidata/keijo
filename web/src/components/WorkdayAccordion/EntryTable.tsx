@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { Entry, FindDimensionNamesDocument, Workday } from "../../graphql/generated/graphql";
+import { FindDimensionNamesDocument, Workday } from "../../graphql/generated/graphql";
 
 type EntryTableProps = {
   workday: Workday;
@@ -19,15 +19,6 @@ const EntryTable = ({ workday }: EntryTableProps) => {
   const dimensionNames = findDimensions.map((dim) => dim.name);
 
   const tableHeadCellKey = (name: string) => [workday.date, name, "head"].join("-");
-  const tableRowKey = (entry: Entry) =>
-    [
-      workday.date,
-      entry.entryType,
-      entry.duration,
-      ...entry.dimensions.map((dim) => dim.value),
-    ].join("-");
-  const dimensionValueCellKey = (entry: Entry, name: string) =>
-    [tableRowKey(entry), name].join("-");
 
   return (
     <Table size="small">
@@ -43,11 +34,11 @@ const EntryTable = ({ workday }: EntryTableProps) => {
 
       <TableBody>
         {workday.entries.map((entry) => (
-          <TableRow key={tableRowKey(entry)}>
+          <TableRow key={`entry-row-${entry.key}`}>
             <TableCell>{entry.entryType}</TableCell>
             <TableCell>{entry.duration}</TableCell>
             {dimensionNames.map((name) => (
-              <TableCell key={dimensionValueCellKey(entry, name)}>
+              <TableCell key={`dim-val-${entry.key}-${name}`}>
                 {entry.dimensions.find((dim) => dim.name === name)?.value}
               </TableCell>
             ))}
