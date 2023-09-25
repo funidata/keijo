@@ -97,6 +97,7 @@ export class WorkdayService {
     return apiResult.WorkDays.Workday.map((wd) => ({
       date: new Date(wd.Date),
       entries: wd.WorkdayHour.map((wdh) => ({
+        key: wdh["@_netvisorkey"],
         duration: wdh.Hours,
         entryType: wdh.CollectorRatio["#text"],
         dimensions:

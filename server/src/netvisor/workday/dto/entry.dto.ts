@@ -4,6 +4,9 @@ import { DimensionRecord } from "./dimension-record.dto";
 @ObjectType()
 export class Entry {
   @Field()
+  key: string;
+
+  @Field()
   duration: number;
 
   @Field()
