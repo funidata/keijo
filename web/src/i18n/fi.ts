@@ -1,4 +1,7 @@
 const fi = {
+  controls: {
+    deleteEntry: "Poista merkintä.",
+  },
   errors: {
     error: "Virhe",
     missingEmployeeNumber:

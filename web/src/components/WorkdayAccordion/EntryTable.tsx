@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { FindDimensionNamesDocument, Workday } from "../../graphql/generated/graphql";
+import DeleteEntryButton from "../DeleteEntryButton";
 
 type EntryTableProps = {
   workday: Workday;
@@ -29,6 +30,7 @@ const EntryTable = ({ workday }: EntryTableProps) => {
           {dimensionNames.map((name) => (
             <TableCell key={tableHeadCellKey(name)}>{name}</TableCell>
           ))}
+          <TableCell />
         </TableRow>
       </TableHead>
 
@@ -42,6 +44,9 @@ const EntryTable = ({ workday }: EntryTableProps) => {
                 {entry.dimensions.find((dim) => dim.name === name)?.value}
               </TableCell>
             ))}
+            <TableCell>
+              <DeleteEntryButton />
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

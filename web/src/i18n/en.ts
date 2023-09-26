@@ -1,4 +1,7 @@
 const en = {
+  controls: {
+    deleteEntry: "Delete entry.",
+  },
   errors: {
     error: "Error",
     missingEmployeeNumber:
