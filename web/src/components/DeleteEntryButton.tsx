@@ -1,11 +1,20 @@
+import { useMutation } from "@apollo/client";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton, Menu, MenuItem } from "@mui/material";
+import { Dayjs } from "dayjs";
 import { MouseEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { RemoveWorkdayEntryDocument } from "../graphql/generated/graphql";
 
-const DeleteEntryButton = () => {
+type DeleteEntryButtonProps = {
+  entryKey: string;
+  date: Dayjs;
+};
+
+const DeleteEntryButton = ({ entryKey, date }: DeleteEntryButtonProps) => {
   const { t } = useTranslation();
   const [anchor, setAnchor] = useState<Element | null>(null);
+  const [removeWorkdayEntry] = useMutation(RemoveWorkdayEntryDocument);
 
   const onOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchor(event.target as Element);
@@ -16,7 +25,7 @@ const DeleteEntryButton = () => {
   };
 
   const onConfirm = async () => {
-    console.log("delete");
+    removeWorkdayEntry({ variables: { entry: { key: entryKey, date } } });
     onClose();
   };
 

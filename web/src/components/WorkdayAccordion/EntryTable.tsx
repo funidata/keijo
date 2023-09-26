@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import dayjs from "../../common/dayjs";
 import { FindDimensionNamesDocument, Workday } from "../../graphql/generated/graphql";
 import DeleteEntryButton from "../DeleteEntryButton";
 
@@ -45,7 +46,7 @@ const EntryTable = ({ workday }: EntryTableProps) => {
               </TableCell>
             ))}
             <TableCell>
-              <DeleteEntryButton />
+              <DeleteEntryButton entryKey={entry.key} date={dayjs(workday.date)} />
             </TableCell>
           </TableRow>
         ))}

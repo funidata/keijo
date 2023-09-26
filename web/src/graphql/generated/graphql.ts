@@ -60,10 +60,15 @@ export type FindWorkdaysInput = {
 export type Mutation = {
   __typename?: "Mutation";
   addWorkdayEntry: Scalars["String"]["output"];
+  removeWorkdayEntry: Scalars["String"]["output"];
 };
 
 export type MutationAddWorkdayEntryArgs = {
   entry: AddWorkdayEntryInput;
+};
+
+export type MutationRemoveWorkdayEntryArgs = {
+  entry: RemoveWorkdayEntryInput;
 };
 
 export type Query = {
@@ -82,6 +87,11 @@ export type RecordType = {
   __typename?: "RecordType";
   name: Scalars["String"]["output"];
   ratioNumber: Scalars["Float"]["output"];
+};
+
+export type RemoveWorkdayEntryInput = {
+  date: Scalars["DateTime"]["input"];
+  key: Scalars["String"]["input"];
 };
 
 export type SessionStatus = {
@@ -148,6 +158,12 @@ export type GetSessionStatusQuery = {
   __typename?: "Query";
   getSessionStatus: { __typename?: "SessionStatus"; employeeNumber?: number | null };
 };
+
+export type RemoveWorkdayEntryMutationVariables = Exact<{
+  entry: RemoveWorkdayEntryInput;
+}>;
+
+export type RemoveWorkdayEntryMutation = { __typename?: "Mutation"; removeWorkdayEntry: string };
 
 export const AddWorkdayEntryDocument = {
   kind: "Document",
@@ -370,3 +386,39 @@ export const GetSessionStatusDocument = {
     },
   ],
 } as unknown as DocumentNode<GetSessionStatusQuery, GetSessionStatusQueryVariables>;
+export const RemoveWorkdayEntryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "RemoveWorkdayEntry" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "entry" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "RemoveWorkdayEntryInput" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "removeWorkdayEntry" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "entry" },
+                value: { kind: "Variable", name: { kind: "Name", value: "entry" } },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<RemoveWorkdayEntryMutation, RemoveWorkdayEntryMutationVariables>;
