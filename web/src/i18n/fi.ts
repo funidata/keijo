@@ -1,6 +1,7 @@
 const fi = {
   controls: {
-    deleteEntry: "Poista merkintä.",
+    confirm: "Vahvista",
+    deleteEntry: "Poista merkintä",
   },
   errors: {
     error: "Virhe",

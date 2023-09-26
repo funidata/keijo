@@ -1,6 +1,7 @@
 const en = {
   controls: {
-    deleteEntry: "Delete entry.",
+    confirm: "Confirm",
+    deleteEntry: "Delete entry",
   },
   errors: {
     error: "Error",
