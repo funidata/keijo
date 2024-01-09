@@ -28,9 +28,13 @@ const auditLogFields = {
     duration: number().optional(),
     ratioNumber: number().optional(),
     description: string().optional(),
-    dimensionNames: string().array().optional(),
-    dimensionValues: string().array().optional(),
+    dimensionNames: string().array().length(0).optional(),
+    dimensionValues: string().array().length(0).optional(),
     entryKey: string().optional(),
+    product: string().nullable().optional(),
+    activity: string().nullable().optional(),
+    issue: string().nullable().optional(),
+    client: string().nullable().optional(),
   }).optional(),
 };
 

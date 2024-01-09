@@ -28,12 +28,15 @@ const auditLogFields = {
     duration: number().optional(),
     ratioNumber: number().optional(),
     description: string().optional(),
-    // We were not sure if logging lists of objects is a good idea, thus dimension
-    // data is logged as two lists of strings. This data is probably never needed
-    // to be used programmatically, so this should be fine.
-    dimensionNames: string().array().optional(),
-    dimensionValues: string().array().optional(),
+    // Deprecated using .length(0) in favor of named fields.
+    dimensionNames: string().array().length(0).optional(),
+    // Deprecated using .length(0) in favor of named fields.
+    dimensionValues: string().array().length(0).optional(),
     entryKey: string().optional(),
+    product: string().nullable().optional(),
+    activity: string().nullable().optional(),
+    issue: string().nullable().optional(),
+    client: string().nullable().optional(),
   }).optional(),
 };
 

@@ -27,7 +27,6 @@ export class EntryService {
     const { duration, recordTypeRatioNumber, product, activity, issue, client } = entry;
     const date = dayjs(entry.date).format("YYYY-MM-DD");
 
-    // FIXME: Log new static dimension fields!
     this.logger.audit({
       operation: "addWorkdayEntry",
       employeeNumber,
@@ -35,8 +34,10 @@ export class EntryService {
       input: {
         date,
         duration,
-        // dimensionNames: dimensions.map((dim) => dim.name),
-        // dimensionValues: dimensions.map((dim) => dim.value),
+        product,
+        activity,
+        issue,
+        client,
         ratioNumber: recordTypeRatioNumber,
       },
     });
