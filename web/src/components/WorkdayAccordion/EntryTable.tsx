@@ -17,20 +17,16 @@ const EntryTable = ({ workday }: EntryTableProps) => {
     return null;
   }
 
-  const { findDimensions } = data;
-  const dimensionNames = findDimensions.map((dim) => dim.name);
-
-  const tableHeadCellKey = (name: string) => [workday.date, name, "head"].join("-");
-
   return (
     <Table size="small">
       <TableHead>
         <TableRow>
           <TableCell>{t("entryTable.head.type")}</TableCell>
           <TableCell>{t("entryTable.head.duration")}</TableCell>
-          {dimensionNames.map((name) => (
-            <TableCell key={tableHeadCellKey(name)}>{name}</TableCell>
-          ))}
+          <TableCell>{t("dimensionNames.product")}</TableCell>
+          <TableCell>{t("dimensionNames.activity")}</TableCell>
+          <TableCell>{t("dimensionNames.issue")}</TableCell>
+          <TableCell>{t("dimensionNames.client")}</TableCell>
           <TableCell />
         </TableRow>
       </TableHead>
@@ -40,11 +36,10 @@ const EntryTable = ({ workday }: EntryTableProps) => {
           <TableRow key={`entry-row-${entry.key}`}>
             <TableCell>{entry.entryType}</TableCell>
             <TableCell>{entry.duration}</TableCell>
-            {dimensionNames.map((name) => (
-              <TableCell key={`dim-val-${entry.key}-${name}`}>
-                {entry.dimensions.find((dim) => dim.name === name)?.value}
-              </TableCell>
-            ))}
+            <TableCell>{entry.product}</TableCell>
+            <TableCell>{entry.activity}</TableCell>
+            <TableCell>{entry.issue}</TableCell>
+            <TableCell>{entry.client}</TableCell>
             <TableCell>
               <DeleteEntryButton entryKey={entry.key} date={dayjs(workday.date)} />
             </TableCell>

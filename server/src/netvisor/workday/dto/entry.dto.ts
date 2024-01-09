@@ -1,5 +1,4 @@
 import { Field, ObjectType, PickType } from "@nestjs/graphql";
-import { DimensionRecord } from "./dimension-record.dto";
 
 @ObjectType()
 export class Entry {
@@ -23,10 +22,6 @@ export class Entry {
 
   @Field(() => String, { nullable: true })
   client: string | null;
-
-  // FIXME: Remove
-  @Field(() => [DimensionRecord])
-  dimensions: DimensionRecord[];
 }
 
 export class EntryDimensions extends PickType(Entry, ["product", "activity", "issue", "client"]) {}

@@ -15,12 +15,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { Dayjs } from "dayjs";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import dayjs from "../../common/dayjs";
-import {
-  AddWorkdayEntryDocument,
-  AddWorkdayEntryInput,
-  Dimension,
-  DimensionRecord,
-} from "../../graphql/generated/graphql";
+import { AddWorkdayEntryDocument, AddWorkdayEntryInput } from "../../graphql/generated/graphql";
 import DimensionSelects from "./DimensionSelects";
 import RecordTypeSelect from "./RecordTypeSelect";
 
@@ -28,7 +23,7 @@ export type EntryFormSchema = {
   date: Dayjs;
   duration: string;
   recordType: number;
-  dimensions: (DimensionRecord & Dimension)[];
+  dimensions: any[];
 };
 
 const EntryDialog = (props: DialogProps) => {

@@ -24,7 +24,7 @@ const DimensionSelect = ({ field, control, index }: DimensionSelectProps) => {
           render={({ field: props }) => {
             return (
               <Select labelId={labelId} label={field.name} {...props}>
-                {field.options.map((opt) => (
+                {field.options.map((opt: any) => (
                   <MenuItem key={opt} value={opt}>
                     {opt}
                   </MenuItem>

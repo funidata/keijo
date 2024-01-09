@@ -5,10 +5,10 @@ query FindWorkdays($start: DateTime!, $end: DateTime!) {
       key
       duration
       entryType
-      dimensions {
-        name
-        value
-      }
+      product
+      activity
+      issue
+      client
     }
   }
 }

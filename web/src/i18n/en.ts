@@ -3,6 +3,12 @@ const en = {
     confirm: "Confirm",
     deleteEntry: "Delete entry",
   },
+  dimensionNames: {
+    product: "Product",
+    activity: "Activity",
+    issue: "Issue",
+    client: "Client",
+  },
   errors: {
     error: "Error",
     missingEmployeeNumber:

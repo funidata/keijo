@@ -33,12 +33,6 @@ export type Dimension = {
   options: Array<Scalars["String"]["output"]>;
 };
 
-export type DimensionRecord = {
-  __typename?: "DimensionRecord";
-  name: Scalars["String"]["output"];
-  value: Scalars["String"]["output"];
-};
-
 export type DimensionRecordInput = {
   name: Scalars["String"]["input"];
   value: Scalars["String"]["input"];
@@ -46,10 +40,13 @@ export type DimensionRecordInput = {
 
 export type Entry = {
   __typename?: "Entry";
-  dimensions: Array<DimensionRecord>;
+  activity?: Maybe<Scalars["String"]["output"]>;
+  client?: Maybe<Scalars["String"]["output"]>;
   duration: Scalars["Float"]["output"];
   entryType: Scalars["String"]["output"];
+  issue?: Maybe<Scalars["String"]["output"]>;
   key: Scalars["String"]["output"];
+  product?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type FindWorkdaysInput = {
@@ -147,7 +144,10 @@ export type FindWorkdaysQuery = {
       key: string;
       duration: number;
       entryType: string;
-      dimensions: Array<{ __typename?: "DimensionRecord"; name: string; value: string }>;
+      product?: string | null;
+      activity?: string | null;
+      issue?: string | null;
+      client?: string | null;
     }>;
   }>;
 };
@@ -341,17 +341,10 @@ export const FindWorkdaysDocument = {
                       { kind: "Field", name: { kind: "Name", value: "key" } },
                       { kind: "Field", name: { kind: "Name", value: "duration" } },
                       { kind: "Field", name: { kind: "Name", value: "entryType" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "dimensions" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            { kind: "Field", name: { kind: "Name", value: "name" } },
-                            { kind: "Field", name: { kind: "Name", value: "value" } },
-                          ],
-                        },
-                      },
+                      { kind: "Field", name: { kind: "Name", value: "product" } },
+                      { kind: "Field", name: { kind: "Name", value: "activity" } },
+                      { kind: "Field", name: { kind: "Name", value: "issue" } },
+                      { kind: "Field", name: { kind: "Name", value: "client" } },
                     ],
                   },
                 },

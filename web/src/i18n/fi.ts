@@ -3,6 +3,12 @@ const fi = {
     confirm: "Vahvista",
     deleteEntry: "Poista merkintä",
   },
+  dimensionNames: {
+    product: "Tuote",
+    activity: "Toiminto",
+    issue: "Tiketti",
+    client: "Asiakas",
+  },
   errors: {
     error: "Virhe",
     missingEmployeeNumber:

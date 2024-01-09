@@ -45,11 +45,6 @@ export class WorkdayService {
         duration: wdh.Hours,
         entryType: wdh.CollectorRatio["#text"],
         ...this.transformDimensionsToObject(wdh.Dimension),
-        dimensions:
-          wdh.Dimension?.map((dim) => ({
-            name: dim.DimensionName,
-            value: dim.DimensionItem,
-          })) || [],
       })),
     }));
   }
@@ -59,13 +54,11 @@ export class WorkdayService {
   }
 
   private transformDimensionsToObject(dimensions: DimensionSchema[] = []): EntryDimensions {
-    const obj = {
+    return {
       product: this.getDimension("1 Tuote", dimensions),
       activity: this.getDimension("2 Toiminto", dimensions),
       issue: this.getDimension("3 Tiketti", dimensions),
       client: this.getDimension("4 Asiakas", dimensions),
     };
-
-    return obj;
   }
 }
