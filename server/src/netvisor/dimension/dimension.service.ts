@@ -9,10 +9,12 @@ export class DimensionService {
   async findAllDimensions(): Promise<Dimension> {
     const data = await this.dimensionCacheService.getCachedDimensionData();
 
-    return data.Root.DimensionNameList.DimensionName.map((dim) => ({
+    const res = await data.Root.DimensionNameList.DimensionName.map((dim) => ({
       name: dim.Name,
       options: this.buildOptions(dim),
     }));
+    // console.log(res);
+    return res;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -2,10 +2,12 @@ import { Injectable } from "@nestjs/common";
 import { Dayjs } from "dayjs";
 import { NetvisorApiService } from "../netvisor-api/netvisor-api.service";
 import { NetvisorEndpoints } from "../netvisor-api/netvisor-endpoints.enum";
+import { DimensionSchema } from "../netvisor-api/schema/dimension.schema";
 import {
   GetWorkdaysNvSchema,
   getWorkdaysNvArrays,
 } from "../netvisor-api/schema/get-workdays-nv.schema";
+import { EntryDimensions } from "./dto/entry.dto";
 import { Workday } from "./dto/workday.dto";
 
 type WorkdayQuery = {
@@ -42,6 +44,7 @@ export class WorkdayService {
         key: wdh["@_netvisorkey"],
         duration: wdh.Hours,
         entryType: wdh.CollectorRatio["#text"],
+        ...this.transformDimensionsToObject(wdh.Dimension),
         dimensions:
           wdh.Dimension?.map((dim) => ({
             name: dim.DimensionName,
@@ -49,5 +52,20 @@ export class WorkdayService {
           })) || [],
       })),
     }));
+  }
+
+  private getDimension(key: string, dimensions: DimensionSchema[]): string | null {
+    return dimensions.find((dim) => dim.DimensionName === key)?.DimensionItem || null;
+  }
+
+  private transformDimensionsToObject(dimensions: DimensionSchema[] = []): EntryDimensions {
+    const obj = {
+      product: this.getDimension("1 Tuote", dimensions),
+      activity: this.getDimension("2 Toiminto", dimensions),
+      issue: this.getDimension("3 Tiketti", dimensions),
+      client: this.getDimension("4 Asiakas", dimensions),
+    };
+
+    return obj;
   }
 }
