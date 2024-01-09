@@ -24,9 +24,10 @@ export class EntryService {
     eppn: string,
     entry: AddWorkdayEntryInput,
   ): Promise<void> {
-    const { duration, dimensions, recordTypeRatioNumber } = entry;
+    const { duration, recordTypeRatioNumber, product, activity, issue, client } = entry;
     const date = dayjs(entry.date).format("YYYY-MM-DD");
 
+    // FIXME: Log new static dimension fields!
     this.logger.audit({
       operation: "addWorkdayEntry",
       employeeNumber,
@@ -34,11 +35,30 @@ export class EntryService {
       input: {
         date,
         duration,
-        dimensionNames: dimensions.map((dim) => dim.name),
-        dimensionValues: dimensions.map((dim) => dim.value),
+        // dimensionNames: dimensions.map((dim) => dim.name),
+        // dimensionValues: dimensions.map((dim) => dim.value),
         ratioNumber: recordTypeRatioNumber,
       },
     });
+
+    const dimensions = [
+      {
+        dimensionname: "1 Tuote",
+        dimensionitem: product,
+      },
+      {
+        dimensionname: "2 Toiminto",
+        dimensionitem: activity,
+      },
+      {
+        dimensionname: "3 Tiketti",
+        dimensionitem: issue,
+      },
+      {
+        dimensionname: "4 Asiakas",
+        dimensionitem: client,
+      },
+    ].filter((dim) => dim.dimensionitem);
 
     await this.netvisorApiService.post(NetvisorEndpoints.POST_WORKDAY, {
       root: {
@@ -59,10 +79,7 @@ export class EntryService {
             },
             acceptancestatus: "confirmed",
             description: "",
-            dimension: dimensions.map((dim) => ({
-              dimensionname: dim.name,
-              dimensionitem: dim.value,
-            })),
+            dimension: dimensions,
           },
         },
       },
