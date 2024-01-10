@@ -1,13 +1,13 @@
 import { Query, Resolver } from "@nestjs/graphql";
 import { DimensionService } from "./dimension.service";
-import { Dimension } from "./dto/dimension.dto";
+import { DimensionOptions } from "./dto/dimension-options.dto";
 
 @Resolver()
 export class DimensionResolver {
   constructor(private dimensionService: DimensionService) {}
 
-  @Query(() => [Dimension])
-  async findDimensions(): Promise<Dimension> {
-    return this.dimensionService.findAllDimensions();
+  @Query(() => DimensionOptions)
+  async findDimensionOptions(): Promise<DimensionOptions> {
+    return this.dimensionService.findDimensionOptions();
   }
 }
