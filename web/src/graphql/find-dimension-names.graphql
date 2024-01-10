@@ -1,5 +1,0 @@
-query FindDimensionNames {
-  findDimensions {
-    name
-  }
-}

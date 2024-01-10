@@ -1,0 +1,8 @@
+query FindDimensionOptions {
+  findDimensionOptions {
+    product
+    activity
+    issue
+    client
+  }
+}

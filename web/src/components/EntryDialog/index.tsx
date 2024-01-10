@@ -15,15 +15,18 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { Dayjs } from "dayjs";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import dayjs from "../../common/dayjs";
-import { AddWorkdayEntryDocument, AddWorkdayEntryInput } from "../../graphql/generated/graphql";
-import DimensionSelects from "./DimensionSelects";
+import { AddWorkdayEntryDocument } from "../../graphql/generated/graphql";
+import DimensionSelect from "./DimensionSelect";
 import RecordTypeSelect from "./RecordTypeSelect";
 
 export type EntryFormSchema = {
   date: Dayjs;
   duration: string;
   recordType: number;
-  dimensions: any[];
+  product: string;
+  activity: string;
+  issue: string;
+  client: string;
 };
 
 const EntryDialog = (props: DialogProps) => {
@@ -36,15 +39,11 @@ const EntryDialog = (props: DialogProps) => {
       date: dayjs(),
       duration: "",
       recordType: 100,
-      dimensions: [],
     },
   });
 
   const onSubmit: SubmitHandler<EntryFormSchema> = async (formValues) => {
-    const { date, duration, recordType } = formValues;
-    const dimensions: AddWorkdayEntryInput["dimensions"] = formValues.dimensions
-      .filter((dim) => dim.value)
-      .map(({ name, value }) => ({ name, value }));
+    const { date, duration, recordType, product, activity, issue, client } = formValues;
 
     await addWorkdayEntryMutation({
       variables: {
@@ -52,7 +51,10 @@ const EntryDialog = (props: DialogProps) => {
           date: date.format("YYYY-MM-DD"),
           duration: Number(duration),
           recordTypeRatioNumber: recordType,
-          dimensions,
+          product,
+          activity,
+          issue,
+          client,
         },
       },
     });
@@ -81,7 +83,10 @@ const EntryDialog = (props: DialogProps) => {
             <Grid item xs={12}>
               <RecordTypeSelect control={control} />
             </Grid>
-            <DimensionSelects control={control} />
+            <DimensionSelect control={control} name="product" title="Tuote" />
+            <DimensionSelect control={control} name="activity" title="Toiminto" />
+            <DimensionSelect control={control} name="issue" title="Tiketti" />
+            <DimensionSelect control={control} name="client" title="Asiakas" />
             <Grid item xs={12}>
               <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
                 <Button type="reset" variant="outlined" size="large">

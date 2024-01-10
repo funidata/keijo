@@ -1,8 +1,7 @@
-import { useQuery } from "@apollo/client";
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import dayjs from "../../common/dayjs";
-import { FindDimensionNamesDocument, Workday } from "../../graphql/generated/graphql";
+import { Workday } from "../../graphql/generated/graphql";
 import DeleteEntryButton from "../DeleteEntryButton";
 
 type EntryTableProps = {
@@ -11,11 +10,6 @@ type EntryTableProps = {
 
 const EntryTable = ({ workday }: EntryTableProps) => {
   const { t } = useTranslation();
-  const { data } = useQuery(FindDimensionNamesDocument);
-
-  if (!data) {
-    return null;
-  }
 
   return (
     <Table size="small">

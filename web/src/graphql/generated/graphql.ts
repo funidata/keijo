@@ -21,21 +21,21 @@ export type Scalars = {
 };
 
 export type AddWorkdayEntryInput = {
+  activity?: InputMaybe<Scalars["String"]["input"]>;
+  client?: InputMaybe<Scalars["String"]["input"]>;
   date: Scalars["DateTime"]["input"];
-  dimensions: Array<DimensionRecordInput>;
   duration: Scalars["Float"]["input"];
+  issue?: InputMaybe<Scalars["String"]["input"]>;
+  product?: InputMaybe<Scalars["String"]["input"]>;
   recordTypeRatioNumber: Scalars["Float"]["input"];
 };
 
-export type Dimension = {
-  __typename?: "Dimension";
-  name: Scalars["String"]["output"];
-  options: Array<Scalars["String"]["output"]>;
-};
-
-export type DimensionRecordInput = {
-  name: Scalars["String"]["input"];
-  value: Scalars["String"]["input"];
+export type DimensionOptions = {
+  __typename?: "DimensionOptions";
+  activity: Array<Scalars["String"]["output"]>;
+  client: Array<Scalars["String"]["output"]>;
+  issue: Array<Scalars["String"]["output"]>;
+  product: Array<Scalars["String"]["output"]>;
 };
 
 export type Entry = {
@@ -70,7 +70,7 @@ export type MutationRemoveWorkdayEntryArgs = {
 
 export type Query = {
   __typename?: "Query";
-  findDimensions: Array<Dimension>;
+  findDimensionOptions: DimensionOptions;
   findRecordTypes: Array<RecordType>;
   findWorkdays: Array<Workday>;
   getSessionStatus: SessionStatus;
@@ -108,18 +108,17 @@ export type AddWorkdayEntryMutationVariables = Exact<{
 
 export type AddWorkdayEntryMutation = { __typename?: "Mutation"; addWorkdayEntry: string };
 
-export type FindDimensionNamesQueryVariables = Exact<{ [key: string]: never }>;
+export type FindDimensionOptionsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type FindDimensionNamesQuery = {
+export type FindDimensionOptionsQuery = {
   __typename?: "Query";
-  findDimensions: Array<{ __typename?: "Dimension"; name: string }>;
-};
-
-export type FindDimensionsQueryVariables = Exact<{ [key: string]: never }>;
-
-export type FindDimensionsQuery = {
-  __typename?: "Query";
-  findDimensions: Array<{ __typename?: "Dimension"; name: string; options: Array<string> }>;
+  findDimensionOptions: {
+    __typename?: "DimensionOptions";
+    product: Array<string>;
+    activity: Array<string>;
+    issue: Array<string>;
+    client: Array<string>;
+  };
 };
 
 export type FindRecordTypesQueryVariables = Exact<{ [key: string]: never }>;
@@ -201,47 +200,26 @@ export const AddWorkdayEntryDocument = {
     },
   ],
 } as unknown as DocumentNode<AddWorkdayEntryMutation, AddWorkdayEntryMutationVariables>;
-export const FindDimensionNamesDocument = {
+export const FindDimensionOptionsDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "FindDimensionNames" },
+      name: { kind: "Name", value: "FindDimensionOptions" },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "findDimensions" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [{ kind: "Field", name: { kind: "Name", value: "name" } }],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<FindDimensionNamesQuery, FindDimensionNamesQueryVariables>;
-export const FindDimensionsDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "FindDimensions" },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "findDimensions" },
+            name: { kind: "Name", value: "findDimensionOptions" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "name" } },
-                { kind: "Field", name: { kind: "Name", value: "options" } },
+                { kind: "Field", name: { kind: "Name", value: "product" } },
+                { kind: "Field", name: { kind: "Name", value: "activity" } },
+                { kind: "Field", name: { kind: "Name", value: "issue" } },
+                { kind: "Field", name: { kind: "Name", value: "client" } },
               ],
             },
           },
@@ -249,7 +227,7 @@ export const FindDimensionsDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<FindDimensionsQuery, FindDimensionsQueryVariables>;
+} as unknown as DocumentNode<FindDimensionOptionsQuery, FindDimensionOptionsQueryVariables>;
 export const FindRecordTypesDocument = {
   kind: "Document",
   definitions: [

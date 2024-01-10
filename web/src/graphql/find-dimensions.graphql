@@ -1,6 +1,0 @@
-query FindDimensions {
-  findDimensions {
-    name
-    options
-  }
-}
