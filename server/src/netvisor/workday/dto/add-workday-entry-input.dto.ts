@@ -8,9 +8,6 @@ export class AddWorkdayEntryInput {
   @Field()
   duration: number;
 
-  @Field()
-  recordTypeRatioNumber: number;
-
   @Field(() => String, { nullable: true })
   product: string | null;
 

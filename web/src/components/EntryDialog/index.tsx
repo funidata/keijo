@@ -17,12 +17,10 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import dayjs from "../../common/dayjs";
 import { AddWorkdayEntryDocument } from "../../graphql/generated/graphql";
 import DimensionSelect from "./DimensionSelect";
-import RecordTypeSelect from "./RecordTypeSelect";
 
 export type EntryFormSchema = {
   date: Dayjs;
   duration: string;
-  recordType: number;
   product: string;
   activity: string;
   issue: string;
@@ -38,19 +36,17 @@ const EntryDialog = (props: DialogProps) => {
     defaultValues: {
       date: dayjs(),
       duration: "",
-      recordType: 100,
     },
   });
 
   const onSubmit: SubmitHandler<EntryFormSchema> = async (formValues) => {
-    const { date, duration, recordType, product, activity, issue, client } = formValues;
+    const { date, duration, product, activity, issue, client } = formValues;
 
     await addWorkdayEntryMutation({
       variables: {
         entry: {
           date: date.format("YYYY-MM-DD"),
           duration: Number(duration),
-          recordTypeRatioNumber: recordType,
           product,
           activity,
           issue,
@@ -79,9 +75,6 @@ const EntryDialog = (props: DialogProps) => {
                 control={control}
                 render={({ field }) => <TextField {...field} />}
               />
-            </Grid>
-            <Grid item xs={12}>
-              <RecordTypeSelect control={control} />
             </Grid>
             <DimensionSelect control={control} name="product" title="Tuote" />
             <DimensionSelect control={control} name="activity" title="Toiminto" />

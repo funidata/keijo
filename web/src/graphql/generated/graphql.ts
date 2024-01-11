@@ -27,7 +27,6 @@ export type AddWorkdayEntryInput = {
   duration: Scalars["Float"]["input"];
   issue?: InputMaybe<Scalars["String"]["input"]>;
   product?: InputMaybe<Scalars["String"]["input"]>;
-  recordTypeRatioNumber: Scalars["Float"]["input"];
 };
 
 export type DimensionOptions = {
@@ -119,13 +118,6 @@ export type FindDimensionOptionsQuery = {
     issue: Array<string>;
     client: Array<string>;
   };
-};
-
-export type FindRecordTypesQueryVariables = Exact<{ [key: string]: never }>;
-
-export type FindRecordTypesQuery = {
-  __typename?: "Query";
-  findRecordTypes: Array<{ __typename?: "RecordType"; name: string; ratioNumber: number }>;
 };
 
 export type FindWorkdaysQueryVariables = Exact<{
@@ -228,32 +220,6 @@ export const FindDimensionOptionsDocument = {
     },
   ],
 } as unknown as DocumentNode<FindDimensionOptionsQuery, FindDimensionOptionsQueryVariables>;
-export const FindRecordTypesDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "FindRecordTypes" },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "findRecordTypes" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "name" } },
-                { kind: "Field", name: { kind: "Name", value: "ratioNumber" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<FindRecordTypesQuery, FindRecordTypesQueryVariables>;
 export const FindWorkdaysDocument = {
   kind: "Document",
   definitions: [
