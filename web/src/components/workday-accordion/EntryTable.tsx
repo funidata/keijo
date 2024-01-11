@@ -2,7 +2,8 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material"
 import { useTranslation } from "react-i18next";
 import dayjs from "../../common/dayjs";
 import { Workday } from "../../graphql/generated/graphql";
-import DeleteEntryButton from "../DeleteEntryButton";
+import DeleteEntryButton from "./DeleteEntryButton";
+import EditEntryButton from "./EditEntryButton";
 
 type EntryTableProps = {
   workday: Workday;
@@ -35,6 +36,7 @@ const EntryTable = ({ workday }: EntryTableProps) => {
             <TableCell>{entry.issue}</TableCell>
             <TableCell>{entry.client}</TableCell>
             <TableCell>
+              <EditEntryButton />
               <DeleteEntryButton entryKey={entry.key} date={dayjs(workday.date)} />
             </TableCell>
           </TableRow>

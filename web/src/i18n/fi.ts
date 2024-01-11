@@ -2,6 +2,7 @@ const fi = {
   controls: {
     confirm: "Vahvista",
     deleteEntry: "Poista merkintä",
+    editEntry: "Muokkaa merkintää",
   },
   dimensionNames: {
     product: "Tuote",

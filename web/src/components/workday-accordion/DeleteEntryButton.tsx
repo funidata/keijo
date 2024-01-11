@@ -4,7 +4,7 @@ import { IconButton, Menu, MenuItem } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { MouseEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { RemoveWorkdayEntryDocument } from "../graphql/generated/graphql";
+import { RemoveWorkdayEntryDocument } from "../../graphql/generated/graphql";
 
 type DeleteEntryButtonProps = {
   entryKey: string;

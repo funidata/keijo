@@ -2,6 +2,7 @@ const en = {
   controls: {
     confirm: "Confirm",
     deleteEntry: "Delete entry",
+    editEntry: "Edit entry",
   },
   dimensionNames: {
     product: "Product",

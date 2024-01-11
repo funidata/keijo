@@ -15,7 +15,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { Dayjs } from "dayjs";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import dayjs from "../../common/dayjs";
-import { AddWorkdayEntryDocument } from "../../graphql/generated/graphql";
+import { AddWorkdayEntryDocument, Entry } from "../../graphql/generated/graphql";
 import DimensionSelect from "./DimensionSelect";
 
 export type EntryFormSchema = {
@@ -27,7 +27,12 @@ export type EntryFormSchema = {
   client: string;
 };
 
-const EntryDialog = (props: DialogProps) => {
+type EntryDialogProps = DialogProps & {
+  editEntry?: Entry;
+};
+
+const EntryDialog = ({ editEntry, ...props }: EntryDialogProps) => {
+  console.log("edit entry", editEntry);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [addWorkdayEntryMutation] = useMutation(AddWorkdayEntryDocument);
@@ -36,6 +41,10 @@ const EntryDialog = (props: DialogProps) => {
     defaultValues: {
       date: dayjs(),
       duration: "",
+      product: "",
+      activity: "",
+      issue: "",
+      client: "",
     },
   });
 
