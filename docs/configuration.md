@@ -18,6 +18,7 @@ Key|Default|Description
 `NETVISOR_ORGANIZATION_KEY`||See Netvisor auth docs for _"Integraatiokumppanin yksilöivä avain"_.
 `NETVISOR_PARTNER_ID`||See Netvisor auth docs for `X-Netvisor-Authentication-PartnerId` header.
 `NETVISOR_CACHE_TTL`|60|Time-to-live (seconds) for caching certain Netvisor API endpoint results.
+`NETVISOR_ENTRY_RATIONUMBER`|100|Ratio number ("collectorratio") to use when making new workday entries.
 `PORT`|3001|Server listens to this port.
 `EMPLOYEE_NUMBER_HEADER_KEY`|X-SHIB-employeeId|Name of the header that defines authenticated user's Netvisor employee ID (case insensitive). **The user must not be able to set this header.**
 `LOG_LEVEL`<sup>1</sup>|log|Filter log output by suppressing log messages of higher level than the given value. Log levels in ascending order are `error`, `warn`, `log` and `debug`.

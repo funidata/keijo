@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { Dayjs } from "dayjs";
+import config from "../../config/config";
 import dayjs from "../../config/dayjs";
 import { Logger } from "../../logger/logger";
 import { NetvisorApiService } from "../netvisor-api/netvisor-api.service";
@@ -24,7 +25,8 @@ export class EntryService {
     eppn: string,
     entry: AddWorkdayEntryInput,
   ): Promise<void> {
-    const { duration, recordTypeRatioNumber, product, activity, issue, client } = entry;
+    const { duration, product, activity, issue, client } = entry;
+    const { ratioNumber } = config.netvisor;
     const date = dayjs(entry.date).format("YYYY-MM-DD");
 
     this.logger.audit({
@@ -38,7 +40,7 @@ export class EntryService {
         activity,
         issue,
         client,
-        ratioNumber: recordTypeRatioNumber,
+        ratioNumber,
       },
     });
 
@@ -75,7 +77,7 @@ export class EntryService {
           workdayhour: {
             hours: duration,
             collectorratio: {
-              "#text": recordTypeRatioNumber,
+              "#text": ratioNumber,
               "@_type": "number",
             },
             acceptancestatus: "confirmed",

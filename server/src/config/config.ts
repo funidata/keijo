@@ -11,6 +11,7 @@ const {
   NETVISOR_ORGANIZATION_KEY,
   NETVISOR_PARTNER_ID,
   NETVISOR_CACHE_TTL,
+  NETVISOR_ENTRY_RATIONUMBER,
 } = process.env;
 
 const config = {
@@ -31,6 +32,7 @@ const config = {
     customerKey: NETVISOR_CUSTOMER_KEY,
     organizationKey: NETVISOR_ORGANIZATION_KEY,
     cacheTtl: Number(NETVISOR_CACHE_TTL) || 60,
+    ratioNumber: Number(NETVISOR_ENTRY_RATIONUMBER) || 100,
   },
 };
 
