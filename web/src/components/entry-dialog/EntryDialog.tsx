@@ -29,24 +29,24 @@ export type EntryFormSchema = {
 
 type EntryDialogProps = DialogProps & {
   editEntry?: Entry;
+  date?: Dayjs;
 };
 
-const EntryDialog = ({ editEntry, ...props }: EntryDialogProps) => {
-  console.log("edit entry", editEntry);
+const EntryDialog = ({ editEntry, date, ...props }: EntryDialogProps) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [addWorkdayEntryMutation] = useMutation(AddWorkdayEntryDocument);
 
-  const { handleSubmit, control, reset } = useForm<EntryFormSchema>({
-    defaultValues: {
-      date: dayjs(),
-      duration: "",
-      product: "",
-      activity: "",
-      issue: "",
-      client: "",
-    },
-  });
+  const defaultValues: EntryFormSchema = {
+    date: date ? dayjs(date) : dayjs(),
+    duration: editEntry?.duration.toString() || "",
+    product: editEntry?.product || "",
+    activity: editEntry?.activity || "",
+    issue: editEntry?.issue || "",
+    client: editEntry?.client || "",
+  };
+
+  const { handleSubmit, control, reset } = useForm<EntryFormSchema>({ defaultValues });
 
   const onSubmit: SubmitHandler<EntryFormSchema> = async (formValues) => {
     const { date, duration, product, activity, issue, client } = formValues;

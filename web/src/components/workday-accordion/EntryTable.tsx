@@ -36,7 +36,7 @@ const EntryTable = ({ workday }: EntryTableProps) => {
             <TableCell>{entry.issue}</TableCell>
             <TableCell>{entry.client}</TableCell>
             <TableCell>
-              <EditEntryButton />
+              <EditEntryButton entry={entry} date={dayjs(workday.date)} />
               <DeleteEntryButton entryKey={entry.key} date={dayjs(workday.date)} />
             </TableCell>
           </TableRow>
