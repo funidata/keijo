@@ -6,7 +6,7 @@ import {
   NextSSRApolloClient,
   NextSSRInMemoryCache,
 } from "@apollo/experimental-nextjs-app-support/ssr";
-import { useNotificationState } from "../components/GlobalNotification/useNotification";
+import { useNotificationState } from "../components/global-notification/useNotification";
 import { ChildrenProps } from "./types";
 
 const makeClient = () => {

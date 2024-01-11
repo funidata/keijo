@@ -1,7 +1,7 @@
 "use client";
 import { useQuery } from "@apollo/client";
 import MissingHeadersAlert from "../components/MissingHeadersAlert";
-import WorkdayBrowser from "../components/WorkdayBrowser";
+import WorkdayBrowser from "../components/workday-browser/WorkdayBrowser";
 import { GetSessionStatusDocument } from "../graphql/generated/graphql";
 
 const Home = () => {

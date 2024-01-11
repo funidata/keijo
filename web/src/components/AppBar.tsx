@@ -2,9 +2,8 @@
 import "@fontsource/roboto";
 import { Box, Container, AppBar as MuiAppBar, Toolbar, Typography } from "@mui/material";
 import { ChildrenProps } from "../common/types";
-import "../i18n";
-import EntryDialogButton from "./EntryDialog/EntryDialogButton";
-import LanguageSelect from "./LanguageSelect";
+import EntryDialogButton from "./entry-dialog/EntryDialogButton";
+import LanguageSelect from "./language-select/LanguageSelect";
 
 const AppBar = ({ children }: ChildrenProps) => (
   <Box sx={{ flexGrow: 1 }}>

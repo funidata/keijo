@@ -5,7 +5,7 @@ import { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import dayjs from "../../common/dayjs";
 import { FindWorkdaysDocument } from "../../graphql/generated/graphql";
-import WorkdayAccordion from "../WorkdayAccordion";
+import WorkdayAccordion from "../workday-accordion/WorkdayAccordion";
 
 const WorkdayBrowser = () => {
   const [findWorkdays, { data }] = useLazyQuery(FindWorkdaysDocument);

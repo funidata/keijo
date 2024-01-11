@@ -1,8 +1,8 @@
 import { useQuery } from "@apollo/client";
 import { FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
 import { Control, Controller } from "react-hook-form";
-import { EntryFormSchema } from ".";
 import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
+import { EntryFormSchema } from "./EntryDialog";
 
 type DimensionSelectProps = {
   control: Control<EntryFormSchema, any>;

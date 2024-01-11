@@ -7,9 +7,9 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import ApolloProvider from "../common/ApolloProvider";
 import { ChildrenProps } from "../common/types";
-import "../i18n";
+import "../i18n/i18n-config";
 import AppBar from "./AppBar";
-import GlobalNotification from "./GlobalNotification";
+import GlobalNotification from "./global-notification/GlobalNotification";
 
 const AppContainer = ({ children }: ChildrenProps) => {
   const {

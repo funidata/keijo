@@ -1,7 +1,7 @@
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { IconButton } from "@mui/material";
 import { useState } from "react";
-import EntryDialog from ".";
+import EntryDialog from "./EntryDialog";
 
 const EntryDialogButton = () => {
   const [open, setOpen] = useState(false);
