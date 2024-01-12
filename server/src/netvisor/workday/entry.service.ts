@@ -152,4 +152,16 @@ export class EntryService {
       input: { entryKey, date: entryDate.toISOString() },
     });
   }
+
+  async replace(
+    employeeNumber: number,
+    eppn: string,
+    originalEntryKey: string,
+    // Original entry date is necessary to remove the correct entry even if date is updated.
+    originalEntryDate: Dayjs,
+    replacementEntry: AddWorkdayEntryInput,
+  ): Promise<void> {
+    await this.remove(employeeNumber, eppn, originalEntryKey, originalEntryDate);
+    await this.addWorkdayEntry(employeeNumber, eppn, replacementEntry);
+  }
 }

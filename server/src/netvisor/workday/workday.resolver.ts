@@ -50,4 +50,21 @@ export class WorkdayResolver {
     await this.entryService.remove(employeeNumber, eppn, entry.key, dayjs(entry.date));
     return "OK";
   }
+
+  @Mutation(() => String)
+  async replaceWorkdayEntry(
+    @EmployeeNumber() employeeNumber: number,
+    @Eppn() eppn: string,
+    @Args("originalEntry") originalEntry: RemoveWorkdayEntryInput,
+    @Args("replacementEntry") replacementEntry: AddWorkdayEntryInput,
+  ) {
+    await this.entryService.replace(
+      employeeNumber,
+      eppn,
+      originalEntry.key,
+      dayjs(originalEntry.date),
+      replacementEntry,
+    );
+    return "OK";
+  }
 }
