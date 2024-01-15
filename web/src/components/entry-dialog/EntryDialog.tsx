@@ -14,6 +14,7 @@ import {
 import { DatePicker } from "@mui/x-date-pickers";
 import { Dayjs } from "dayjs";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import dayjs from "../../common/dayjs";
 import {
   AddWorkdayEntryDocument,
@@ -21,6 +22,7 @@ import {
   FindWorkdaysDocument,
   ReplaceWorkdayEntryDocument,
 } from "../../graphql/generated/graphql";
+import { useNotification } from "../global-notification/useNotification";
 import DimensionSelect from "./DimensionSelect";
 
 export type EntryFormSchema = {
@@ -35,16 +37,28 @@ export type EntryFormSchema = {
 type EntryDialogProps = DialogProps & {
   editEntry?: Entry;
   date?: Dayjs;
+  onClose: () => void;
 };
 
 const EntryDialog = ({ editEntry, date, ...props }: EntryDialogProps) => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const { showSuccessNotification } = useNotification();
+
   const [addWorkdayEntryMutation] = useMutation(AddWorkdayEntryDocument, {
     refetchQueries: [FindWorkdaysDocument],
+    onCompleted: () => {
+      showSuccessNotification(t("notifications.addEntry.success"));
+    },
   });
+
   const [replaceWorkdayEntryMutation] = useMutation(ReplaceWorkdayEntryDocument, {
     refetchQueries: [FindWorkdaysDocument],
+    notifyOnNetworkStatusChange: true,
+    onCompleted: () => {
+      showSuccessNotification(t("notifications.editEntry.success"));
+    },
   });
 
   const defaultValues: EntryFormSchema = {
@@ -102,6 +116,7 @@ const EntryDialog = ({ editEntry, date, ...props }: EntryDialogProps) => {
       await editWorkday(formValues);
     } else {
       await addWorkday(formValues);
+      props.onClose();
     }
   };
 

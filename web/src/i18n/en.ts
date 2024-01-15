@@ -21,6 +21,17 @@ const en = {
       duration: "Duration (h)",
     },
   },
+  notifications: {
+    addEntry: {
+      success: "Workday entry created.",
+    },
+    editEntry: {
+      success: "Workday entry updated.",
+    },
+    deleteEntry: {
+      success: "Workday entry deleted.",
+    },
+  },
 };
 
 export default en;

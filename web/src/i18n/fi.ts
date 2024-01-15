@@ -21,6 +21,17 @@ const fi = {
       duration: "Kesto (h)",
     },
   },
+  notifications: {
+    addEntry: {
+      success: "Uusi työaikakirjaus lisätty.",
+    },
+    editEntry: {
+      success: "Työaikakirjaus päivitetty.",
+    },
+    deleteEntry: {
+      success: "Työaikakirjaus poistettu.",
+    },
+  },
 };
 
 export default fi;
