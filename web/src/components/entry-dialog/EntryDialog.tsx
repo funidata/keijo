@@ -18,6 +18,7 @@ import dayjs from "../../common/dayjs";
 import {
   AddWorkdayEntryDocument,
   Entry,
+  FindWorkdaysDocument,
   ReplaceWorkdayEntryDocument,
 } from "../../graphql/generated/graphql";
 import DimensionSelect from "./DimensionSelect";
@@ -39,8 +40,12 @@ type EntryDialogProps = DialogProps & {
 const EntryDialog = ({ editEntry, date, ...props }: EntryDialogProps) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const [addWorkdayEntryMutation] = useMutation(AddWorkdayEntryDocument);
-  const [replaceWorkdayEntryMutation] = useMutation(ReplaceWorkdayEntryDocument);
+  const [addWorkdayEntryMutation] = useMutation(AddWorkdayEntryDocument, {
+    refetchQueries: [FindWorkdaysDocument],
+  });
+  const [replaceWorkdayEntryMutation] = useMutation(ReplaceWorkdayEntryDocument, {
+    refetchQueries: [FindWorkdaysDocument],
+  });
 
   const defaultValues: EntryFormSchema = {
     date: date ? dayjs(date) : dayjs(),

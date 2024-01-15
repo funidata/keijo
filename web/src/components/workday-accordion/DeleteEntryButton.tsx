@@ -4,7 +4,7 @@ import { IconButton, Menu, MenuItem } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { MouseEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { RemoveWorkdayEntryDocument } from "../../graphql/generated/graphql";
+import { FindWorkdaysDocument, RemoveWorkdayEntryDocument } from "../../graphql/generated/graphql";
 
 type DeleteEntryButtonProps = {
   entryKey: string;
@@ -14,7 +14,9 @@ type DeleteEntryButtonProps = {
 const DeleteEntryButton = ({ entryKey, date }: DeleteEntryButtonProps) => {
   const { t } = useTranslation();
   const [anchor, setAnchor] = useState<Element | null>(null);
-  const [removeWorkdayEntry] = useMutation(RemoveWorkdayEntryDocument);
+  const [removeWorkdayEntry] = useMutation(RemoveWorkdayEntryDocument, {
+    refetchQueries: [FindWorkdaysDocument],
+  });
 
   const onOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchor(event.target as Element);
