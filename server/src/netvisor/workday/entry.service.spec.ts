@@ -6,6 +6,7 @@ import {
   MockNetvisorApiService,
   MockWorkdayService,
 } from "../../../test/utils/mock-services";
+import config from "../../config/config";
 import { Logger } from "../../logger/logger";
 import { NetvisorApiService } from "../netvisor-api/netvisor-api.service";
 import { NetvisorEndpoints } from "../netvisor-api/netvisor-endpoints.enum";
@@ -13,11 +14,21 @@ import { Workday } from "./dto/workday.dto";
 import { EntryService } from "./entry.service";
 import { WorkdayService } from "./workday.service";
 
-describe("EntryService", () => {
-  const key = "100";
-  const date = dayjs();
-  const employeeNumber = 123;
+const key = "100";
+const date = dayjs();
+const employeeNumber = 123;
 
+const entry = {
+  key,
+  duration: 1,
+  entryType: "tuntityö",
+  product: "testituote",
+  activity: "testitunkkaus",
+  issue: "TIKSU-007",
+  client: "maksaja",
+};
+
+describe("EntryService", () => {
   let entryService: EntryService;
   let workdayService: WorkdayService;
   let netvisorApiService: NetvisorApiService;
@@ -37,16 +48,6 @@ describe("EntryService", () => {
       jest.spyOn(workdayService, "findMany").mockResolvedValueOnce(workdays);
     };
   });
-
-  const entry = {
-    key,
-    duration: 1,
-    entryType: "",
-    product: "",
-    activity: "",
-    issue: "",
-    client: "",
-  };
 
   describe("findOne", () => {
     it("Returns the correct entry", () => {
@@ -110,6 +111,59 @@ describe("EntryService", () => {
         .mockResolvedValueOnce({ Root: { ResponseStatus: { Status: "FAILED" } } });
       const res = entryService.remove(employeeNumber, "", key, date);
       await expect(res).rejects.toThrow(BadRequestException);
+    });
+  });
+
+  describe("addWorkdayEntry", () => {
+    it("Adds entry", async () => {
+      const call = entryService.addWorkdayEntry(employeeNumber, "", {
+        ...entry,
+        date: date.toDate(),
+      });
+      await expect(call).resolves.toBeUndefined();
+      expect(netvisorApiService.post).toBeCalledTimes(1);
+      expect(netvisorApiService.post).toBeCalledWith(NetvisorEndpoints.POST_WORKDAY, {
+        root: {
+          workday: {
+            date: {
+              "#text": date.format("YYYY-MM-DD"),
+              "@_method": "increment",
+            },
+            employeeidentifier: {
+              "#text": employeeNumber,
+              "@_type": "number",
+            },
+            workdayhour: {
+              acceptancestatus: "confirmed",
+              collectorratio: {
+                "#text": config.netvisor.ratioNumber,
+                "@_type": "number",
+              },
+              description: "",
+              dimension: [
+                {
+                  dimensionitem: entry.product,
+                  dimensionname: "1 Tuote",
+                },
+                {
+                  dimensionitem: entry.activity,
+                  dimensionname: "2 Toiminto",
+                },
+                {
+                  dimensionitem: entry.issue,
+                  dimensionname: "3 Tiketti",
+                },
+                {
+                  dimensionitem: entry.client,
+                  dimensionname: "4 Asiakas",
+                },
+              ],
+              hours: entry.duration,
+            },
+          },
+        },
+      });
+      expect(logger.audit).toBeCalledTimes(1);
     });
   });
 });

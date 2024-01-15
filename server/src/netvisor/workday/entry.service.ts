@@ -44,6 +44,7 @@ export class EntryService {
       },
     });
 
+    // TODO: Refactor and make an enum out of the names.
     const dimensions = [
       {
         dimensionname: "1 Tuote",
@@ -63,6 +64,7 @@ export class EntryService {
       },
     ].filter((dim) => dim.dimensionitem);
 
+    // FIXME: Better error handling.
     await this.netvisorApiService.post(NetvisorEndpoints.POST_WORKDAY, {
       root: {
         workday: {
