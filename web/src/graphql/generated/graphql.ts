@@ -57,6 +57,7 @@ export type Mutation = {
   __typename?: "Mutation";
   addWorkdayEntry: Scalars["String"]["output"];
   removeWorkdayEntry: Scalars["String"]["output"];
+  replaceWorkdayEntry: Scalars["String"]["output"];
 };
 
 export type MutationAddWorkdayEntryArgs = {
@@ -67,22 +68,20 @@ export type MutationRemoveWorkdayEntryArgs = {
   entry: RemoveWorkdayEntryInput;
 };
 
+export type MutationReplaceWorkdayEntryArgs = {
+  originalEntry: RemoveWorkdayEntryInput;
+  replacementEntry: AddWorkdayEntryInput;
+};
+
 export type Query = {
   __typename?: "Query";
   findDimensionOptions: DimensionOptions;
-  findRecordTypes: Array<RecordType>;
   findWorkdays: Array<Workday>;
   getSessionStatus: SessionStatus;
 };
 
 export type QueryFindWorkdaysArgs = {
   query: FindWorkdaysInput;
-};
-
-export type RecordType = {
-  __typename?: "RecordType";
-  name: Scalars["String"]["output"];
-  ratioNumber: Scalars["Float"]["output"];
 };
 
 export type RemoveWorkdayEntryInput = {
@@ -155,6 +154,13 @@ export type RemoveWorkdayEntryMutationVariables = Exact<{
 }>;
 
 export type RemoveWorkdayEntryMutation = { __typename?: "Mutation"; removeWorkdayEntry: string };
+
+export type ReplaceWorkdayEntryMutationVariables = Exact<{
+  originalEntry: RemoveWorkdayEntryInput;
+  replacementEntry: AddWorkdayEntryInput;
+}>;
+
+export type ReplaceWorkdayEntryMutation = { __typename?: "Mutation"; replaceWorkdayEntry: string };
 
 export const AddWorkdayEntryDocument = {
   kind: "Document",
@@ -359,3 +365,52 @@ export const RemoveWorkdayEntryDocument = {
     },
   ],
 } as unknown as DocumentNode<RemoveWorkdayEntryMutation, RemoveWorkdayEntryMutationVariables>;
+export const ReplaceWorkdayEntryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "ReplaceWorkdayEntry" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "originalEntry" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "RemoveWorkdayEntryInput" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "replacementEntry" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "AddWorkdayEntryInput" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "replaceWorkdayEntry" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "originalEntry" },
+                value: { kind: "Variable", name: { kind: "Name", value: "originalEntry" } },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "replacementEntry" },
+                value: { kind: "Variable", name: { kind: "Name", value: "replacementEntry" } },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ReplaceWorkdayEntryMutation, ReplaceWorkdayEntryMutationVariables>;

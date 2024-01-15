@@ -15,7 +15,11 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { Dayjs } from "dayjs";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import dayjs from "../../common/dayjs";
-import { AddWorkdayEntryDocument, Entry } from "../../graphql/generated/graphql";
+import {
+  AddWorkdayEntryDocument,
+  Entry,
+  ReplaceWorkdayEntryDocument,
+} from "../../graphql/generated/graphql";
 import DimensionSelect from "./DimensionSelect";
 
 export type EntryFormSchema = {
@@ -36,6 +40,7 @@ const EntryDialog = ({ editEntry, date, ...props }: EntryDialogProps) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [addWorkdayEntryMutation] = useMutation(AddWorkdayEntryDocument);
+  const [replaceWorkdayEntryMutation] = useMutation(ReplaceWorkdayEntryDocument);
 
   const defaultValues: EntryFormSchema = {
     date: date ? dayjs(date) : dayjs(),
@@ -48,7 +53,7 @@ const EntryDialog = ({ editEntry, date, ...props }: EntryDialogProps) => {
 
   const { handleSubmit, control, reset } = useForm<EntryFormSchema>({ defaultValues });
 
-  const onSubmit: SubmitHandler<EntryFormSchema> = async (formValues) => {
+  const addWorkday: SubmitHandler<EntryFormSchema> = async (formValues) => {
     const { date, duration, product, activity, issue, client } = formValues;
 
     await addWorkdayEntryMutation({
@@ -63,6 +68,36 @@ const EntryDialog = ({ editEntry, date, ...props }: EntryDialogProps) => {
         },
       },
     });
+  };
+
+  const editWorkday: SubmitHandler<EntryFormSchema> = async (formValues) => {
+    const { date, duration, product, activity, issue, client } = formValues;
+
+    if (!editEntry) {
+      throw new Error("Original entry not given.");
+    }
+
+    await replaceWorkdayEntryMutation({
+      variables: {
+        originalEntry: { key: editEntry.key, date: date.format("YYYY-MM-DD") },
+        replacementEntry: {
+          date: date.format("YYYY-MM-DD"),
+          duration: Number(duration),
+          product,
+          activity,
+          issue,
+          client,
+        },
+      },
+    });
+  };
+
+  const onSubmit: SubmitHandler<EntryFormSchema> = async (formValues) => {
+    if (editEntry) {
+      await editWorkday(formValues);
+    } else {
+      await addWorkday(formValues);
+    }
   };
 
   return (
