@@ -165,5 +165,32 @@ describe("EntryService", () => {
       });
       expect(logger.audit).toBeCalledTimes(1);
     });
+
+    describe("replace", () => {
+      it("Removes the old entry and creates a new one", async () => {
+        const replacement = {
+          ...entry,
+          date: date.subtract(2).toDate(),
+          duration: 2,
+        };
+
+        mockResolvedWorkday([
+          {
+            date: date.toDate(),
+            entries: [entry],
+          },
+        ]);
+
+        jest.spyOn(entryService, "remove");
+        jest.spyOn(entryService, "addWorkdayEntry");
+        const call = entryService.replace(employeeNumber, "", key, date, replacement);
+
+        await expect(call).resolves.toBeUndefined();
+        expect(entryService.remove).toBeCalledTimes(1);
+        expect(entryService.remove).toBeCalledWith(employeeNumber, "", key, date);
+        expect(entryService.addWorkdayEntry).toBeCalledTimes(1);
+        expect(entryService.addWorkdayEntry).toBeCalledWith(employeeNumber, "", replacement);
+      });
+    });
   });
 });
