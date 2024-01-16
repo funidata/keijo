@@ -1,3 +1,0 @@
-mutation RemoveWorkdayEntry($entry: RemoveWorkdayEntryInput!) {
-  removeWorkdayEntry(entry: $entry)
-}

@@ -1,6 +1,0 @@
-mutation ReplaceWorkdayEntry(
-  $originalEntry: RemoveWorkdayEntryInput!
-  $replacementEntry: AddWorkdayEntryInput!
-) {
-  replaceWorkdayEntry(originalEntry: $originalEntry, replacementEntry: $replacementEntry)
-}
