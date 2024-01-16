@@ -3,13 +3,12 @@ import { onError } from "@apollo/client/link/error";
 import { useNotificationState } from "../components/global-notification/useNotification";
 
 const httpLink = new HttpLink({
-  uri: import.meta.env.NEXT_PUBLIC_API_URL,
+  uri: import.meta.env.VITE_API_URL,
   headers:
     import.meta.env.NODE_ENV === "production"
       ? {}
       : {
-          "x-shib-employeeid":
-            import.meta.env.NEXT_PUBLIC_MOCK_EMPLOYEE_NUMBER || "",
+          "x-shib-employeeid": import.meta.env.VITE_MOCK_EMPLOYEE_NUMBER || "",
         },
 });
 

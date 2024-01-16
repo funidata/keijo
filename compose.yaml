@@ -1,18 +1,17 @@
 # Bootstraps the local development environment. Not for production use.
 services:
   web:
-    build: ./web/
+    build: ./vite/
     container_name: keijo-web
     env_file:
       - .env
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:3001/graphql
+      - VITE_API_URL=http://localhost:3001/graphql
     ports:
-      - 3000:3000
+      - 3000:5173
     volumes:
-      - ./web/src:/usr/src/app/src
-      - ./web/public:/usr/src/app/public
-      - ./web/.next:/usr/src/app/.next
+      - ./vite/src:/usr/src/app/src
+      - ./vite/public:/usr/src/app/public
 
   server:
     build:
