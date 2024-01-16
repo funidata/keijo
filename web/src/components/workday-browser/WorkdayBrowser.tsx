@@ -16,7 +16,7 @@ const WorkdayBrowser = () => {
     findWorkdays({ variables: { start, end } });
   }, [start, findWorkdays]);
 
-  const handleStartChange = (val: any) => {
+  const handleStartChange = (val: Dayjs | null) => {
     const date = dayjs(val);
     if (date.isValid()) {
       setStart(date);
