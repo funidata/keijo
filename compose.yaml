@@ -1,7 +1,7 @@
 # Bootstraps the local development environment. Not for production use.
 services:
   web:
-    build: ./vite/
+    build: ./web/
     container_name: keijo-web
     env_file:
       - .env
@@ -10,8 +10,8 @@ services:
     ports:
       - 3000:5173
     volumes:
-      - ./vite/src:/usr/src/app/src
-      - ./vite/public:/usr/src/app/public
+      - ./web/src:/usr/src/app/src
+      - ./web/public:/usr/src/app/public
 
   server:
     build:
