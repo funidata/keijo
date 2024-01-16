@@ -26,6 +26,6 @@ USER node
 WORKDIR /app
 COPY --from=build /usr/src/app/dist ./dist
 COPY --from=build /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/web/out ./public
+COPY --from=build /usr/src/web/dist ./public
 
 ENTRYPOINT ["node", "dist/main.js"]
