@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import Home from "./Home";
-import AppContainer from "./components/AppContainer";
+import AppContainer from "./components/layout/AppContainer";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

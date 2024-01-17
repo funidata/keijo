@@ -5,12 +5,13 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { apolloClient } from "../common/ApolloProvider";
-import { ChildrenProps } from "../common/types";
-import "../i18n/i18n-config";
-import KeijoTheme from "../theme/KeijoTheme";
+import { apolloClient } from "../../common/ApolloProvider";
+import { ChildrenProps } from "../../common/types";
+import "../../i18n/i18n-config";
+import KeijoTheme from "../../theme/KeijoTheme";
+import GlobalNotification from "../global-notification/GlobalNotification";
 import AppBar from "./AppBar";
-import GlobalNotification from "./global-notification/GlobalNotification";
+import ContentContainer from "./ContentContainer";
 
 const AppContainer = ({ children }: ChildrenProps) => {
   const {
@@ -30,7 +31,8 @@ const AppContainer = ({ children }: ChildrenProps) => {
       <ApolloProvider client={apolloClient}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <KeijoTheme>
-            <AppBar>{children}</AppBar>
+            <AppBar />
+            <ContentContainer>{children}</ContentContainer>
           </KeijoTheme>
         </LocalizationProvider>
       </ApolloProvider>
