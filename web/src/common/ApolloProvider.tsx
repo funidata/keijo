@@ -2,8 +2,10 @@ import { ApolloClient, HttpLink, InMemoryCache, from } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { useNotificationState } from "../components/global-notification/useNotification";
 
+const apiUrl = import.meta.env.VITE_API_URL_OVERRIDE || import.meta.env.VITE_API_URL;
+
 const httpLink = new HttpLink({
-  uri: import.meta.env.VITE_API_URL,
+  uri: apiUrl,
   headers:
     import.meta.env.NODE_ENV === "production"
       ? {}
@@ -19,7 +21,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
         message: `Error in GraphQL request "${path}". Message: ${message}`,
         type: "error",
         autoHide: false,
-      })
+      }),
     );
 
   if (networkError) {

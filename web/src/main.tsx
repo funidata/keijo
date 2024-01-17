@@ -8,5 +8,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <AppContainer>
       <Home />
     </AppContainer>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
