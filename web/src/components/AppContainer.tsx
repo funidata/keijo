@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { apolloClient } from "../common/ApolloProvider";
 import { ChildrenProps } from "../common/types";
 import "../i18n/i18n-config";
+import KeijoTheme from "../theme/KeijoTheme";
 import AppBar from "./AppBar";
 import GlobalNotification from "./global-notification/GlobalNotification";
 
@@ -28,7 +29,9 @@ const AppContainer = ({ children }: ChildrenProps) => {
       <GlobalNotification />
       <ApolloProvider client={apolloClient}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <AppBar>{children}</AppBar>
+          <KeijoTheme>
+            <AppBar>{children}</AppBar>
+          </KeijoTheme>
         </LocalizationProvider>
       </ApolloProvider>
     </>
