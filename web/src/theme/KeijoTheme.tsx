@@ -1,19 +1,15 @@
+import { PaletteMode } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { ReactNode, useEffect, useMemo } from "react";
-import useColorMode from "./useColorMode";
+import { ReactNode, useMemo } from "react";
+import { useDarkMode } from "usehooks-ts";
 
 type KeijoThemeProps = {
   children: ReactNode;
 };
 
 const KeijoTheme = ({ children }: KeijoThemeProps) => {
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-  const { mode, setColorMode } = useColorMode();
-
-  useEffect(() => {
-    setColorMode(prefersDarkMode ? "dark" : "light");
-  }, [prefersDarkMode, setColorMode]);
+  const { isDarkMode } = useDarkMode();
+  const mode: PaletteMode = isDarkMode ? "dark" : "light";
 
   const theme = useMemo(
     () =>
