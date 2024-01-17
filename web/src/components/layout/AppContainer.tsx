@@ -25,18 +25,16 @@ const AppContainer = ({ children }: ChildrenProps) => {
   }, []);
 
   return (
-    <>
+    <KeijoTheme>
       <CssBaseline />
       <GlobalNotification />
       <ApolloProvider client={apolloClient}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <KeijoTheme>
-            <AppBar />
-            <ContentContainer>{children}</ContentContainer>
-          </KeijoTheme>
+          <AppBar />
+          <ContentContainer>{children}</ContentContainer>
         </LocalizationProvider>
       </ApolloProvider>
-    </>
+    </KeijoTheme>
   );
 };
 
