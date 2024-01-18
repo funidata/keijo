@@ -9,7 +9,7 @@ type WorkdayBrowserOptions = {
   setEnd: (end: Dayjs) => void;
 };
 
-const lastMonday = dayjs().locale("fi").weekday(0);
+const lastMonday = dayjs().weekday(0);
 
 const useWorkdayBrowser = create<WorkdayBrowserOptions>((set) => ({
   start: lastMonday,
