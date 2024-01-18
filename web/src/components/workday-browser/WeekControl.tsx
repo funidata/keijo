@@ -49,7 +49,7 @@ const WeekControl = () => {
       <IconButton sx={iconButtonSx} onClick={goToPreviousWeek}>
         <ArrowBackIcon />
       </IconButton>
-      <FormControl sx={{ minWidth: 100 }}>
+      <FormControl sx={{ minWidth: 170 }}>
         <InputLabel id="demo-simple-select-label">Week</InputLabel>
         <Select
           labelId="demo-simple-select-label"
