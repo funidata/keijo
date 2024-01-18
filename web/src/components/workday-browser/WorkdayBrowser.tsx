@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import dayjs from "../../common/dayjs";
 import { FindWorkdaysDocument } from "../../graphql/generated/graphql";
 import WorkdayAccordion from "../workday-accordion/WorkdayAccordion";
+import ListControls from "./ListControls";
 
 const WorkdayBrowser = () => {
   const [findWorkdays, { data }] = useLazyQuery(FindWorkdaysDocument);
@@ -30,6 +31,7 @@ const WorkdayBrowser = () => {
   return (
     <>
       <DatePicker value={start} onChange={handleStartChange} />
+      <ListControls />
       <Paper>
         {data.findWorkdays.map((wd) => (
           <WorkdayAccordion workday={wd} key={wd.date} />
