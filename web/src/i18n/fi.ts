@@ -1,8 +1,13 @@
 const fi = {
   controls: {
+    aria: {
+      prevWeek: "Mene edelliseen viikkoon",
+      nextWeek: "Mene seuraavaan viikkoon",
+    },
     confirm: "Vahvista",
     deleteEntry: "Poista merkintä",
     editEntry: "Muokkaa merkintää",
+    selectWeek: "Viikko",
   },
   dimensionNames: {
     product: "Tuote",
@@ -19,6 +24,12 @@ const fi = {
     head: {
       type: "Tyyppi",
       duration: "Kesto (h)",
+    },
+    loading: "Lataan kirjauksia...",
+    tabs: {
+      aria: "Valitse selaustapa",
+      browseByWeek: "Selaa viikkoja",
+      browseByDates: "Hae päivämäärillä",
     },
   },
   notifications: {

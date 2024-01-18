@@ -13,10 +13,12 @@ import {
 } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { range } from "lodash";
+import { useTranslation } from "react-i18next";
 import dayjs from "../../common/dayjs";
 import useWorkdayBrowser from "./useWorkdayBrowser";
 
 const WeekControl = () => {
+  const { t } = useTranslation();
   const { start, setStart, setEnd } = useWorkdayBrowser();
   const selectedValue = start.week().toString();
 
@@ -46,15 +48,19 @@ const WeekControl = () => {
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center", gap: 1 }}>
-      <IconButton sx={iconButtonSx} onClick={goToPreviousWeek}>
+      <IconButton
+        sx={iconButtonSx}
+        onClick={goToPreviousWeek}
+        aria-label={t("controls.aria.prevWeek")}
+      >
         <ArrowBackIcon />
       </IconButton>
       <FormControl sx={{ minWidth: 170 }}>
-        <InputLabel id="demo-simple-select-label">Week</InputLabel>
+        <InputLabel id="week-control-select-label">{t("controls.selectWeek")}</InputLabel>
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          label="Week"
+          labelId="week-control-select-label"
+          id="week-control-select"
+          label={t("controls.selectWeek")}
           value={selectedValue}
           onChange={handleChange}
           sx={{
@@ -83,7 +89,7 @@ const WeekControl = () => {
           ))}
         </Select>
       </FormControl>
-      <IconButton sx={iconButtonSx} onClick={goToNextWeek}>
+      <IconButton sx={iconButtonSx} onClick={goToNextWeek} aria-label={t("controls.aria.nextWeek")}>
         <ArrowForwardIcon />
       </IconButton>
     </Box>

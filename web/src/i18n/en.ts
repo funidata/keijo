@@ -1,8 +1,13 @@
 const en = {
   controls: {
+    aria: {
+      prevWeek: "Go to previous week",
+      nextWeek: "Go to next week",
+    },
     confirm: "Confirm",
     deleteEntry: "Delete entry",
     editEntry: "Edit entry",
+    selectWeek: "Week",
   },
   dimensionNames: {
     product: "Product",
@@ -19,6 +24,12 @@ const en = {
     head: {
       type: "Type",
       duration: "Duration (h)",
+    },
+    loading: "Loading workday data...",
+    tabs: {
+      aria: "Choose how to browse",
+      browseByWeek: "Browse by week",
+      browseByDates: "Browse by dates",
     },
   },
   notifications: {
