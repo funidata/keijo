@@ -1,6 +1,7 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Box, Tab } from "@mui/material";
 import { SyntheticEvent, useState } from "react";
+import DateControl from "./DateControl";
 import WeekControl from "./WeekControl";
 
 const ListControls = () => {
@@ -22,7 +23,9 @@ const ListControls = () => {
         <TabPanel value="1">
           <WeekControl />
         </TabPanel>
-        <TabPanel value="2">Item Two</TabPanel>
+        <TabPanel value="2">
+          <DateControl />
+        </TabPanel>
       </TabContext>
     </Box>
   );
