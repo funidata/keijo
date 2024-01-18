@@ -7,7 +7,7 @@ import WeekControl from "./WeekControl";
 const ListControls = () => {
   const [value, setValue] = useState("1");
 
-  const handleChange = (event: SyntheticEvent, newValue: string) => {
+  const handleChange = (_: SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
