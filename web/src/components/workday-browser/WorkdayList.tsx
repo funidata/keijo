@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Paper } from "@mui/material";
+import { Box, CircularProgress, Paper, Typography } from "@mui/material";
 import { FindWorkdaysDocument } from "../../graphql/generated/graphql";
 import WorkdayAccordion from "../workday-accordion/WorkdayAccordion";
 import useWorkdayBrowser from "./useWorkdayBrowser";
@@ -9,7 +9,23 @@ const WorkdayList = () => {
   const { data } = useQuery(FindWorkdaysDocument, { variables: { start, end } });
 
   if (!data) {
-    return null;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: 200,
+          gap: 2,
+        }}
+      >
+        <CircularProgress />
+        <Typography variant="h6" fontStyle="italic">
+          Loading workday data...
+        </Typography>
+      </Box>
+    );
   }
 
   return (
