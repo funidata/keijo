@@ -1,21 +1,22 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Box, Tab } from "@mui/material";
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
+import { useSessionStorage } from "usehooks-ts";
 import DateControl from "./DateControl";
 import WeekControl from "./WeekControl";
 
 const ListControls = () => {
   const { t } = useTranslation();
-  const [value, setValue] = useState("1");
+  const [selectedTab, setSelectedTab] = useSessionStorage("selected-list-control-tab", "1");
 
   const handleChange = (_: SyntheticEvent, newValue: string) => {
-    setValue(newValue);
+    setSelectedTab(newValue);
   };
 
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
-      <TabContext value={value}>
+      <TabContext value={selectedTab}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label={t("entryTable.tabs.aria")}>
             <Tab label={t("entryTable.tabs.browseByWeek")} value="1" />
