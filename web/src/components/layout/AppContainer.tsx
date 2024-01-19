@@ -1,12 +1,11 @@
 import { ApolloProvider } from "@apollo/client";
 import "@fontsource/roboto";
 import { CssBaseline } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { apolloClient } from "../../common/ApolloProvider";
 import { ChildrenProps } from "../../common/types";
+import LocalizationProvider from "../../i18n/LocalizationProvider";
 import "../../i18n/i18n-config";
 import KeijoTheme from "../../theme/KeijoTheme";
 import GlobalNotification from "../global-notification/GlobalNotification";
@@ -29,7 +28,7 @@ const AppContainer = ({ children }: ChildrenProps) => {
       <CssBaseline />
       <GlobalNotification />
       <ApolloProvider client={apolloClient}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider>
           <AppBar />
           <ContentContainer>{children}</ContentContainer>
         </LocalizationProvider>

@@ -22,6 +22,8 @@ export class WorkdayService {
 
   // TODO: Add validation (pipe?)
   async findMany({ employeeNumber, start, end }: WorkdayQuery): Promise<Workday[]> {
+    console.log(start);
+    console.log(end);
     const params = {
       employeenumber: employeeNumber,
       workhourstartdate: start.format("YYYY-MM-DD"),

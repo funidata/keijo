@@ -18,7 +18,7 @@ const DateControl = () => {
   return (
     <Box>
       <DateRangePicker
-        defaultValue={[start, end]}
+        value={[start, end]}
         localeText={{ start: t("controls.startDate"), end: t("controls.endDate") }}
         onChange={handleChange}
       />
