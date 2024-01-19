@@ -43,6 +43,9 @@ const en = {
       success: "Workday entry deleted.",
     },
   },
+  titles: {
+    workdayBrowser: "Entries",
+  },
 };
 
 export default en;

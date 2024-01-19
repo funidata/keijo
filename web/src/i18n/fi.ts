@@ -43,6 +43,9 @@ const fi = {
       success: "Työaikakirjaus poistettu.",
     },
   },
+  titles: {
+    workdayBrowser: "Työaikakirjaukset",
+  },
 };
 
 export default fi;
