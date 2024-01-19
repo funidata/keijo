@@ -1,31 +1,27 @@
 import { Box } from "@mui/material";
-import { DatePicker, DateRangePicker } from "@mui/x-date-pickers-pro";
+import { DateRange, DateRangePicker } from "@mui/x-date-pickers-pro";
 import { Dayjs } from "dayjs";
-import dayjs from "../../common/dayjs";
+import { useTranslation } from "react-i18next";
 import useWorkdayBrowser from "./useWorkdayBrowser";
 
 const DateControl = () => {
+  const { t } = useTranslation();
   const { start, end, setStart, setEnd } = useWorkdayBrowser();
 
-  const handleStartChange = (val: Dayjs | null) => {
-    const date = dayjs(val);
-    if (date.isValid()) {
-      setStart(date);
-    }
-  };
-
-  const handleEndChange = (val: Dayjs | null) => {
-    const date = dayjs(val);
-    if (date.isValid()) {
-      setEnd(date);
+  const handleChange = ([newStart, newEnd]: DateRange<Dayjs>) => {
+    if (newStart && newEnd) {
+      setStart(newStart);
+      setEnd(newEnd);
     }
   };
 
   return (
     <Box>
-      <DatePicker value={start} onChange={handleStartChange} />
-      <DatePicker value={end} onChange={handleEndChange} />
-      <DateRangePicker localeText={{ start: "Check-in", end: "Check-out" }} />
+      <DateRangePicker
+        defaultValue={[start, end]}
+        localeText={{ start: t("controls.startDate"), end: t("controls.endDate") }}
+        onChange={handleChange}
+      />
     </Box>
   );
 };

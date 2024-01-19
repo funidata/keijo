@@ -7,7 +7,9 @@ const fi = {
     confirm: "Vahvista",
     deleteEntry: "Poista merkintä",
     editEntry: "Muokkaa merkintää",
+    endDate: "Loppu",
     selectWeek: "Viikko",
+    startDate: "Alku",
   },
   dimensionNames: {
     product: "Tuote",

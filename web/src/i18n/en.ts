@@ -7,7 +7,9 @@ const en = {
     confirm: "Confirm",
     deleteEntry: "Delete entry",
     editEntry: "Edit entry",
+    endDate: "To",
     selectWeek: "Week",
+    startDate: "From",
   },
   dimensionNames: {
     product: "Product",
