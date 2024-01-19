@@ -14,10 +14,11 @@ import {
 import { Dayjs } from "dayjs";
 import { range } from "lodash";
 import { useTranslation } from "react-i18next";
-import dayjs from "../../common/dayjs";
+import useDayjs from "../../common/useDayjs";
 import useWorkdayBrowser from "./useWorkdayBrowser";
 
 const WeekControl = () => {
+  const dayjs = useDayjs();
   const { t } = useTranslation();
   const { start, setStart, setEnd } = useWorkdayBrowser();
   const selectedValue = start.week().toString();

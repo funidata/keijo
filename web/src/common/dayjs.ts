@@ -1,4 +1,5 @@
 import _dayjs from "dayjs";
+import "dayjs/locale/en-gb";
 import "dayjs/locale/fi";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";

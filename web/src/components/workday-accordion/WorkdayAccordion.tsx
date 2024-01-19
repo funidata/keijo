@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { sum } from "lodash";
-import dayjs from "../../common/dayjs";
+import useDayjs from "../../common/useDayjs";
 import { Workday } from "../../graphql/generated/graphql";
 import EntryTable from "./EntryTable";
 
@@ -16,8 +16,8 @@ type WorkdayAccordionProps = {
   workday: Workday;
 };
 
-//FIXME: Make dayjs respect language selection over browser locale.
 const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
+  const dayjs = useDayjs();
   const totalHours = sum(workday.entries.map((wd) => wd.duration));
 
   return (
@@ -32,7 +32,7 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
           }}
         >
           <Typography sx={{ textTransform: "capitalize" }}>
-            {dayjs(workday.date).format("dd D.M.YYYY")}
+            {dayjs(workday.date).format("dd L")}
           </Typography>
           <Chip label={`${totalHours} h`} sx={{ mr: 2 }} />
         </Box>
