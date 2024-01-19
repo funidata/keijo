@@ -31,6 +31,20 @@ const WeekControl = () => {
     start: dayjs().week(weekIndex).weekday(0),
   }));
 
+  // If user navigates beyond the options list, add current selection to the list.
+  if (start.isBefore(weeks[0].start, "week")) {
+    weeks.unshift({
+      no: start.week(),
+      start: start.weekday(0),
+    });
+  }
+  if (start.isAfter(weeks.at(-1)?.start, "week")) {
+    weeks.push({
+      no: start.week(),
+      start: start.weekday(0),
+    });
+  }
+
   const selectWeek = (start: Dayjs) => {
     setStart(start);
     setEnd(start.add(6, "day"));
