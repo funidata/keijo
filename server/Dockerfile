@@ -15,7 +15,8 @@ WORKDIR /usr/src/web
 COPY web/package.json web/package-lock.json ./
 RUN npm ci
 COPY web .
-RUN npm run build
+RUN --mount=type=secret,id=mui_x_license \
+  VITE_MUI_X_LICENSE=$(cat /run/secrets/mui_x_license) npm run build
 
 
 # Final build stage to pick only actually needed files into the image.
