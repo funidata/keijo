@@ -8,6 +8,9 @@ export class AddWorkdayEntryInput {
   @Field()
   duration: number;
 
+  @Field()
+  description: string;
+
   @Field(() => String, { nullable: true })
   product: string | null;
 

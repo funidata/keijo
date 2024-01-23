@@ -21,6 +21,7 @@ const employeeNumber = 123;
 const entry = {
   key,
   duration: 1,
+  description: "jee",
   entryType: "tuntityö",
   product: "testituote",
   activity: "testitunkkaus",
@@ -139,7 +140,7 @@ describe("EntryService", () => {
                 "#text": config.netvisor.ratioNumber,
                 "@_type": "number",
               },
-              description: "",
+              description: entry.description,
               dimension: [
                 {
                   dimensionitem: entry.product,

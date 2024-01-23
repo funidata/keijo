@@ -28,6 +28,7 @@ import DimensionSelect from "./DimensionSelect";
 export type EntryFormSchema = {
   date: Dayjs;
   duration: string;
+  description: string;
   product: string;
   activity: string;
   issue: string;
@@ -64,6 +65,7 @@ const EntryDialog = ({ editEntry, date, ...props }: EntryDialogProps) => {
   const defaultValues: EntryFormSchema = {
     date: date ? dayjs(date) : dayjs(),
     duration: editEntry?.duration.toString() || "",
+    description: "",
     product: editEntry?.product || "",
     activity: editEntry?.activity || "",
     issue: editEntry?.issue || "",
@@ -73,13 +75,14 @@ const EntryDialog = ({ editEntry, date, ...props }: EntryDialogProps) => {
   const { handleSubmit, control, reset } = useForm<EntryFormSchema>({ defaultValues });
 
   const addWorkday: SubmitHandler<EntryFormSchema> = async (formValues) => {
-    const { date, duration, product, activity, issue, client } = formValues;
+    const { date, duration, description, product, activity, issue, client } = formValues;
 
     await addWorkdayEntryMutation({
       variables: {
         entry: {
           date: date.format("YYYY-MM-DD"),
           duration: Number(duration),
+          description,
           product,
           activity,
           issue,
@@ -90,7 +93,7 @@ const EntryDialog = ({ editEntry, date, ...props }: EntryDialogProps) => {
   };
 
   const editWorkday: SubmitHandler<EntryFormSchema> = async (formValues) => {
-    const { date, duration, product, activity, issue, client } = formValues;
+    const { date, duration, description, product, activity, issue, client } = formValues;
 
     if (!editEntry) {
       throw new Error("Original entry not given.");
@@ -102,6 +105,7 @@ const EntryDialog = ({ editEntry, date, ...props }: EntryDialogProps) => {
         replacementEntry: {
           date: date.format("YYYY-MM-DD"),
           duration: Number(duration),
+          description,
           product,
           activity,
           issue,

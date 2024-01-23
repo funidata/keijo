@@ -25,7 +25,7 @@ export class EntryService {
     eppn: string,
     entry: AddWorkdayEntryInput,
   ): Promise<void> {
-    const { duration, product, activity, issue, client } = entry;
+    const { duration, description, product, activity, issue, client } = entry;
     const { ratioNumber } = config.netvisor;
     const date = dayjs(entry.date).format("YYYY-MM-DD");
 
@@ -36,6 +36,7 @@ export class EntryService {
       input: {
         date,
         duration,
+        description,
         product,
         activity,
         issue,
@@ -83,7 +84,7 @@ export class EntryService {
               "@_type": "number",
             },
             acceptancestatus: "confirmed",
-            description: "asd",
+            description,
             dimension: dimensions,
           },
         },
