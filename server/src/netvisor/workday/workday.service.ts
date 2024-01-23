@@ -43,6 +43,7 @@ export class WorkdayService {
       entries: wd.WorkdayHour.map((wdh) => ({
         key: wdh["@_netvisorkey"],
         duration: wdh.Hours,
+        description: wdh.Description,
         entryType: wdh.CollectorRatio["#text"],
         ...this.transformDimensionsToObject(wdh.Dimension),
       })),

@@ -24,6 +24,7 @@ export type AddWorkdayEntryInput = {
   activity?: InputMaybe<Scalars["String"]["input"]>;
   client?: InputMaybe<Scalars["String"]["input"]>;
   date: Scalars["DateTime"]["input"];
+  description: Scalars["String"]["input"];
   duration: Scalars["Float"]["input"];
   issue?: InputMaybe<Scalars["String"]["input"]>;
   product?: InputMaybe<Scalars["String"]["input"]>;
@@ -41,6 +42,7 @@ export type Entry = {
   __typename?: "Entry";
   activity?: Maybe<Scalars["String"]["output"]>;
   client?: Maybe<Scalars["String"]["output"]>;
+  description: Scalars["String"]["output"];
   duration: Scalars["Float"]["output"];
   entryType: Scalars["String"]["output"];
   issue?: Maybe<Scalars["String"]["output"]>;
@@ -133,6 +135,7 @@ export type FindWorkdaysQuery = {
       __typename?: "Entry";
       key: string;
       duration: number;
+      description: string;
       entryType: string;
       product?: string | null;
       activity?: string | null;
@@ -290,6 +293,7 @@ export const FindWorkdaysDocument = {
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "key" } },
                       { kind: "Field", name: { kind: "Name", value: "duration" } },
+                      { kind: "Field", name: { kind: "Name", value: "description" } },
                       { kind: "Field", name: { kind: "Name", value: "entryType" } },
                       { kind: "Field", name: { kind: "Name", value: "product" } },
                       { kind: "Field", name: { kind: "Name", value: "activity" } },

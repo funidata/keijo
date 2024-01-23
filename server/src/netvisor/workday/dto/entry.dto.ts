@@ -9,6 +9,9 @@ export class Entry {
   duration: number;
 
   @Field()
+  description: string;
+
+  @Field()
   entryType: string;
 
   @Field(() => String, { nullable: true })

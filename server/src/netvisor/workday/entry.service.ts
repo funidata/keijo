@@ -83,7 +83,7 @@ export class EntryService {
               "@_type": "number",
             },
             acceptancestatus: "confirmed",
-            description: "",
+            description: "asd",
             dimension: dimensions,
           },
         },
