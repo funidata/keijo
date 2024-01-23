@@ -24,7 +24,7 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
   const toggle = true;
 
   return (
-    <Accordion defaultExpanded>
+    <Accordion defaultExpanded disableGutters>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Box
           sx={{
@@ -42,7 +42,11 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
       </AccordionSummary>
       <AccordionDetails>
         {toggle ? (
-          workday.entries.map((entry) => <EntryFlexRow entry={entry} date={workday.date} />)
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+            {workday.entries.map((entry) => (
+              <EntryFlexRow entry={entry} date={dayjs(workday.date)} />
+            ))}
+          </Box>
         ) : (
           <EntryTable workday={workday} />
         )}
