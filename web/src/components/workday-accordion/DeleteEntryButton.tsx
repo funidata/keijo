@@ -32,7 +32,9 @@ const DeleteEntryButton = ({ entryKey, date }: DeleteEntryButtonProps) => {
   };
 
   const onConfirm = async () => {
-    removeWorkdayEntry({ variables: { entry: { key: entryKey, date } } });
+    removeWorkdayEntry({
+      variables: { entry: { key: entryKey, date: date.format("YYYY-MM-DD") } },
+    });
     onClose();
   };
 
