@@ -10,6 +10,7 @@ import {
 import { sum } from "lodash";
 import useDayjs from "../../common/useDayjs";
 import { Workday } from "../../graphql/generated/graphql";
+import EntryFlexRow from "./EntryFlexRow";
 import EntryTable from "./EntryTable";
 
 type WorkdayAccordionProps = {
@@ -19,6 +20,8 @@ type WorkdayAccordionProps = {
 const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
   const dayjs = useDayjs();
   const totalHours = sum(workday.entries.map((wd) => wd.duration));
+
+  const toggle = true;
 
   return (
     <Accordion defaultExpanded>
@@ -38,7 +41,11 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
         </Box>
       </AccordionSummary>
       <AccordionDetails>
-        <EntryTable workday={workday} />
+        {toggle ? (
+          workday.entries.map((entry) => <EntryFlexRow entry={entry} date={workday.date} />)
+        ) : (
+          <EntryTable workday={workday} />
+        )}
       </AccordionDetails>
     </Accordion>
   );
