@@ -1,12 +1,11 @@
 import { useQuery } from "@apollo/client";
-import { Box, CircularProgress, Paper, Typography } from "@mui/material";
-import { useTranslation } from "react-i18next";
+import { Paper } from "@mui/material";
 import { FindWorkdaysDocument } from "../../graphql/generated/graphql";
 import WorkdayAccordion from "../workday-accordion/WorkdayAccordion";
+import LoadingIndicator from "./LoadingIndicator";
 import useWorkdayBrowser from "./useWorkdayBrowser";
 
 const WorkdayList = () => {
-  const { t } = useTranslation();
   const { start, end } = useWorkdayBrowser();
 
   const { data } = useQuery(FindWorkdaysDocument, {
@@ -14,23 +13,7 @@ const WorkdayList = () => {
   });
 
   if (!data) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: 200,
-          gap: 2,
-        }}
-      >
-        <CircularProgress />
-        <Typography variant="h6" fontStyle="italic">
-          {t("entryTable.loading")}
-        </Typography>
-      </Box>
-    );
+    return <LoadingIndicator />;
   }
 
   return (
