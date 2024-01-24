@@ -44,7 +44,7 @@ const DeleteEntryButton = ({ entryKey, date }: DeleteEntryButtonProps) => {
         aria-label={t("controls.deleteEntry")}
         onClick={onOpen}
         color="error"
-        size="small"
+        size="medium"
       >
         <DeleteIcon fontSize="inherit" />
       </IconButton>

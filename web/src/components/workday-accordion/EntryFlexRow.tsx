@@ -7,6 +7,7 @@ import { grey } from "@mui/material/colors";
 import { Dayjs } from "dayjs";
 import useDayjs from "../../common/useDayjs";
 import { Entry } from "../../graphql/generated/graphql";
+import DeleteEntryButton from "./DeleteEntryButton";
 import DimensionChip from "./DimensionChip";
 import EditEntryButton from "./EditEntryButton";
 
@@ -17,7 +18,7 @@ type EntryFlexRowProps = {
 
 const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
   const dayjs = useDayjs();
-  const { product, activity, issue, client } = entry;
+  const { product, activity, issue, client, description } = entry;
 
   return (
     <Box
@@ -35,7 +36,16 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
           {dayjs.duration(entry.duration, "hour").format("H:mm")}
         </Typography>
       </Box>
-      <Box sx={{ flexGrow: 1, display: "flex", gap: 2, overflow: "scroll", whiteSpace: "nowrap" }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          overflow: "scroll",
+          whiteSpace: "nowrap",
+        }}
+      >
         {product && (
           <DimensionChip icon={<LayersIcon fontSize="small" />} color="primary" label={product} />
         )}
@@ -48,9 +58,13 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
         {client && (
           <DimensionChip icon={<PersonIcon fontSize="small" />} color="secondary" label={client} />
         )}
+        <Typography variant="subtitle2">{description}</Typography>
       </Box>
       <Box>
         <EditEntryButton date={date} entry={entry} />
+      </Box>
+      <Box sx={{ display: { xs: "none", md: "block" }, ml: -0.5 }}>
+        <DeleteEntryButton date={date} entryKey={entry.key} />
       </Box>
     </Box>
   );
