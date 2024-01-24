@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { Dayjs } from "dayjs";
 import config from "../../config/config";
 import dayjs from "../../config/dayjs";
@@ -7,6 +12,7 @@ import { NetvisorApiService } from "../netvisor-api/netvisor-api.service";
 import { NetvisorEndpoints } from "../netvisor-api/netvisor-endpoints.enum";
 import { AddWorkdayEntryInput } from "./dto/add-workday-entry-input.dto";
 import { Entry } from "./dto/entry.dto";
+import { AcceptanceStatus } from "./enum/acceptance-status.enum";
 import { WorkdayService } from "./workday.service";
 
 // TODO: Refactor.
@@ -129,6 +135,10 @@ export class EntryService {
         input: { entryKey, date: entryDate.toISOString() },
       });
       throw new NotFoundException(message);
+    }
+
+    if (entry.acceptanceStatus === AcceptanceStatus.Accepted) {
+      throw new ForbiddenException("Accepted entries cannot be removed.");
     }
 
     const res = await this.netvisorApiService.get(NetvisorEndpoints.DELETE_WORKDAYHOUR, [], {

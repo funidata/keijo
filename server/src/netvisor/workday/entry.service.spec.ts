@@ -12,6 +12,7 @@ import { NetvisorApiService } from "../netvisor-api/netvisor-api.service";
 import { NetvisorEndpoints } from "../netvisor-api/netvisor-endpoints.enum";
 import { Workday } from "./dto/workday.dto";
 import { EntryService } from "./entry.service";
+import { AcceptanceStatus } from "./enum/acceptance-status.enum";
 import { WorkdayService } from "./workday.service";
 
 const key = "100";
@@ -22,6 +23,7 @@ const entry = {
   key,
   duration: 1,
   description: "jee",
+  acceptanceStatus: AcceptanceStatus.Checked,
   entryType: "tuntityö",
   product: "testituote",
   activity: "testitunkkaus",

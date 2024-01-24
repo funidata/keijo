@@ -1,4 +1,7 @@
-import { Field, ObjectType, PickType } from "@nestjs/graphql";
+import { Field, ObjectType, PickType, registerEnumType } from "@nestjs/graphql";
+import { AcceptanceStatus } from "../enum/acceptance-status.enum";
+
+registerEnumType(AcceptanceStatus, { name: "AcceptanceStatus" });
 
 @ObjectType()
 export class Entry {
@@ -10,6 +13,9 @@ export class Entry {
 
   @Field()
   description: string;
+
+  @Field(() => AcceptanceStatus)
+  acceptanceStatus: AcceptanceStatus;
 
   @Field()
   entryType: string;

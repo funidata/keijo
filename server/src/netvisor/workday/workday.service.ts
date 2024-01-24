@@ -9,6 +9,7 @@ import {
 } from "../netvisor-api/schema/get-workdays-nv.schema";
 import { EntryDimensions } from "./dto/entry.dto";
 import { Workday } from "./dto/workday.dto";
+import { AcceptanceStatus } from "./enum/acceptance-status.enum";
 
 type WorkdayQuery = {
   employeeNumber: number;
@@ -34,7 +35,8 @@ export class WorkdayService {
       params,
     );
 
-    return this.toLocalWorkdays(data.Root);
+    const workdays = this.toLocalWorkdays(data.Root);
+    return workdays;
   }
 
   private toLocalWorkdays(apiResult: GetWorkdaysNvSchema): Workday[] {
@@ -42,6 +44,7 @@ export class WorkdayService {
       date: new Date(wd.Date),
       entries: wd.WorkdayHour.map((wdh) => ({
         key: wdh["@_netvisorkey"],
+        acceptanceStatus: this.toAcceptanceStatusEnum(wdh.AcceptanceStatus),
         duration: wdh.Hours,
         description: wdh.Description,
         entryType: wdh.CollectorRatio["#text"],
@@ -61,5 +64,13 @@ export class WorkdayService {
       issue: this.getDimension("3 Tiketti", dimensions),
       client: this.getDimension("4 Asiakas", dimensions),
     };
+  }
+
+  private toAcceptanceStatusEnum(val: string): AcceptanceStatus {
+    const acceptableValues = Object.values(AcceptanceStatus) as string[];
+    if (!acceptableValues.includes(val)) {
+      throw new Error("Netvisor returned an unknown acceptance status value.");
+    }
+    return val as AcceptanceStatus;
   }
 }

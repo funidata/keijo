@@ -5,6 +5,7 @@ query FindWorkdays($start: DateTime!, $end: DateTime!) {
       key
       duration
       description
+      acceptanceStatus
       entryType
       product
       activity

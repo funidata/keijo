@@ -20,6 +20,12 @@ export type Scalars = {
   DateTime: { input: any; output: any };
 };
 
+export enum AcceptanceStatus {
+  Accepted = "Accepted",
+  Checked = "Checked",
+  Open = "Open",
+}
+
 export type AddWorkdayEntryInput = {
   activity?: InputMaybe<Scalars["String"]["input"]>;
   client?: InputMaybe<Scalars["String"]["input"]>;
@@ -40,6 +46,7 @@ export type DimensionOptions = {
 
 export type Entry = {
   __typename?: "Entry";
+  acceptanceStatus: AcceptanceStatus;
   activity?: Maybe<Scalars["String"]["output"]>;
   client?: Maybe<Scalars["String"]["output"]>;
   description: Scalars["String"]["output"];
@@ -136,6 +143,7 @@ export type FindWorkdaysQuery = {
       key: string;
       duration: number;
       description: string;
+      acceptanceStatus: AcceptanceStatus;
       entryType: string;
       product?: string | null;
       activity?: string | null;
@@ -294,6 +302,7 @@ export const FindWorkdaysDocument = {
                       { kind: "Field", name: { kind: "Name", value: "key" } },
                       { kind: "Field", name: { kind: "Name", value: "duration" } },
                       { kind: "Field", name: { kind: "Name", value: "description" } },
+                      { kind: "Field", name: { kind: "Name", value: "acceptanceStatus" } },
                       { kind: "Field", name: { kind: "Name", value: "entryType" } },
                       { kind: "Field", name: { kind: "Name", value: "product" } },
                       { kind: "Field", name: { kind: "Name", value: "activity" } },
