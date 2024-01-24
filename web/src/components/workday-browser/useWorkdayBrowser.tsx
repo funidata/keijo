@@ -13,7 +13,7 @@ const lastMonday = dayjs().weekday(0);
 
 const useWorkdayBrowser = create<WorkdayBrowserOptions>((set) => ({
   start: lastMonday,
-  end: lastMonday.add(7, "day"),
+  end: lastMonday.add(6, "day"),
   setStart: (start) =>
     set((state) => ({
       start,
