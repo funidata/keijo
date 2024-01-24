@@ -23,6 +23,7 @@ const fi = {
       "Palkansaajanumeroasi ei löytynyt HTTP-otsakkeista. Keijoa ei voi käyttää ilman tätä tietoa. Ilmoita ongelmasta esihenkilöllesi.",
   },
   entryTable: {
+    accepted: "Hyväksytty",
     head: {
       type: "Tyyppi",
       duration: "Kesto (h)",

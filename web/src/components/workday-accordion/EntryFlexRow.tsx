@@ -6,7 +6,8 @@ import { Box, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { Dayjs } from "dayjs";
 import useDayjs from "../../common/useDayjs";
-import { Entry } from "../../graphql/generated/graphql";
+import { AcceptanceStatus, Entry } from "../../graphql/generated/graphql";
+import AcceptedChip from "./AcceptedChip";
 import DeleteEntryButton from "./DeleteEntryButton";
 import DimensionChip from "./DimensionChip";
 import EditEntryButton from "./EditEntryButton";
@@ -60,12 +61,20 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
         )}
         <Typography variant="subtitle2">{description}</Typography>
       </Box>
-      <Box>
-        <EditEntryButton date={date} entry={entry} />
-      </Box>
-      <Box sx={{ display: { xs: "none", md: "block" }, ml: -0.5 }}>
-        <DeleteEntryButton date={date} entryKey={entry.key} />
-      </Box>
+      {entry.acceptanceStatus === AcceptanceStatus.Accepted ? (
+        <Box>
+          <AcceptedChip />
+        </Box>
+      ) : (
+        <>
+          <Box>
+            <EditEntryButton date={date} entry={entry} />
+          </Box>
+          <Box sx={{ display: { xs: "none", md: "block" }, ml: -0.5 }}>
+            <DeleteEntryButton date={date} entryKey={entry.key} />
+          </Box>
+        </>
+      )}
     </Box>
   );
 };

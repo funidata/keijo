@@ -44,7 +44,7 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
         {toggle ? (
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
             {workday.entries.map((entry) => (
-              <EntryFlexRow entry={entry} date={dayjs(workday.date)} />
+              <EntryFlexRow entry={entry} date={dayjs(workday.date)} key={entry.key} />
             ))}
           </Box>
         ) : (
