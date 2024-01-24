@@ -1,4 +1,4 @@
-import { BadRequestException, NotFoundException } from "@nestjs/common";
+import { BadRequestException, ForbiddenException, NotFoundException } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import dayjs from "dayjs";
 import {
@@ -94,6 +94,18 @@ describe("EntryService", () => {
         netvisorkey: key,
       });
       expect(logger.audit).toBeCalledTimes(1);
+    });
+
+    it("Denies removing an accepted entry", async () => {
+      mockResolvedWorkday([
+        {
+          date: new Date(),
+          entries: [{ ...entry, acceptanceStatus: AcceptanceStatus.Accepted }],
+        },
+      ]);
+
+      const test = entryService.remove(employeeNumber, "", key, date);
+      await expect(test).rejects.toThrow(ForbiddenException);
     });
 
     it("Throws on missing entry", async () => {
