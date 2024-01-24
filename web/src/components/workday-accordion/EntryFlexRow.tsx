@@ -20,6 +20,7 @@ type EntryFlexRowProps = {
 const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
   const dayjs = useDayjs();
   const { product, activity, issue, client, description } = entry;
+  const accepted = entry.acceptanceStatus === AcceptanceStatus.Accepted;
 
   return (
     <Box
@@ -27,12 +28,22 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
         bgcolor: grey[800],
         borderRadius: 4,
         pl: 1,
-        pr: 1,
+        pr: accepted ? 0 : 1,
+        overflow: "hidden",
         display: "flex",
-        alignItems: "center",
+        alignItems: "stretch",
       }}
     >
-      <Box sx={{ minWidth: 60, textAlign: "right", mr: 3 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "end",
+          minWidth: 60,
+          textAlign: "right",
+          mr: 3,
+        }}
+      >
         <Typography variant="h6">
           {dayjs.duration(entry.duration, "hour").format("H:mm")}
         </Typography>
@@ -45,6 +56,9 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
           gap: 2,
           overflow: "scroll",
           whiteSpace: "nowrap",
+          pt: "6px",
+          pb: "6px",
+          minHeight: 44,
         }}
       >
         {product && (
@@ -59,9 +73,9 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
         {client && (
           <DimensionChip icon={<PersonIcon fontSize="small" />} color="secondary" label={client} />
         )}
-        <Typography variant="subtitle2">{description}</Typography>
+        {description && <Typography variant="subtitle2">{description}</Typography>}
       </Box>
-      {entry.acceptanceStatus === AcceptanceStatus.Accepted ? (
+      {accepted ? (
         <Box>
           <AcceptedChip />
         </Box>

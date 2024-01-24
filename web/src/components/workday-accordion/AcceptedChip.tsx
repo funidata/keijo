@@ -8,7 +8,15 @@ const AcceptedChip = (props: ChipProps) => {
   return (
     <Chip
       variant="filled"
-      sx={{ borderRadius: 1, textTransform: "uppercase", fontWeight: 900 }}
+      sx={{
+        height: "100%",
+        borderRadius: 0,
+        pl: 1,
+        pr: { xs: 3, md: 0 },
+        textTransform: "uppercase",
+        fontWeight: 900,
+        ".MuiChip-label": { display: { xs: "none", md: "block" } },
+      }}
       label={t("entryTable.accepted")}
       icon={<TaskAltIcon fontSize="small" />}
       color="success"
