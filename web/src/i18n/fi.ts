@@ -22,6 +22,9 @@ const fi = {
     missingEmployeeNumber:
       "Palkansaajanumeroasi ei löytynyt HTTP-otsakkeista. Keijoa ei voi käyttää ilman tätä tietoa. Ilmoita ongelmasta esihenkilöllesi.",
   },
+  entryDialog: {
+    title: "Lisää työaikakirjaus",
+  },
   entryTable: {
     accepted: "Hyväksytty",
     head: {

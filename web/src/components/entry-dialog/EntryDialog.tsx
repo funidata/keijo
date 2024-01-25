@@ -1,19 +1,14 @@
 import { useMutation } from "@apollo/client";
 import {
-  Box,
-  Button,
   Dialog,
   DialogContent,
   DialogProps,
   DialogTitle,
-  Grid,
-  TextField,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers-pro";
 import { Dayjs } from "dayjs";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import dayjs from "../../common/dayjs";
 import {
@@ -23,7 +18,7 @@ import {
   ReplaceWorkdayEntryDocument,
 } from "../../graphql/generated/graphql";
 import { useNotification } from "../global-notification/useNotification";
-import DimensionSelect from "./DimensionSelect";
+import EntryForm from "./EntryForm";
 
 export type EntryFormSchema = {
   date: Dayjs;
@@ -126,40 +121,9 @@ const EntryDialog = ({ editEntry, date, ...props }: EntryDialogProps) => {
 
   return (
     <Dialog {...props} fullScreen={fullScreen}>
-      <DialogTitle>Entry</DialogTitle>
+      <DialogTitle>{t("entryDialog.title")}</DialogTitle>
       <DialogContent sx={{ maxWidth: "100vw" }}>
-        <form onSubmit={handleSubmit(onSubmit)} onReset={() => reset()}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <Controller
-                name="date"
-                control={control}
-                render={({ field }) => <DatePicker {...field} />}
-              />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Controller
-                name="duration"
-                control={control}
-                render={({ field }) => <TextField {...field} />}
-              />
-            </Grid>
-            <DimensionSelect control={control} name="product" title="Tuote" />
-            <DimensionSelect control={control} name="activity" title="Toiminto" />
-            <DimensionSelect control={control} name="issue" title="Tiketti" />
-            <DimensionSelect control={control} name="client" title="Asiakas" />
-            <Grid item xs={12}>
-              <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
-                <Button type="reset" variant="outlined" size="large">
-                  Clear
-                </Button>
-                <Button type="submit" variant="contained" size="large">
-                  Save
-                </Button>
-              </Box>
-            </Grid>
-          </Grid>
-        </form>
+        <EntryForm control={control} onSubmit={handleSubmit(onSubmit)} reset={reset} />
       </DialogContent>
     </Dialog>
   );

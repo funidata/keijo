@@ -22,6 +22,9 @@ const en = {
     missingEmployeeNumber:
       "Your employee number was not found in HTTP headers. Keijo cannot be used without this information. Please report this problem to your superior.",
   },
+  entryDialog: {
+    title: "Add New Entry",
+  },
   entryTable: {
     accepted: "Accepted",
     head: {
