@@ -54,11 +54,12 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
           display: "flex",
           alignItems: "center",
           gap: 2,
-          overflow: "scroll",
+          overflowX: "auto",
+          overflowY: "hidden",
           whiteSpace: "nowrap",
-          pt: "6px",
-          pb: "6px",
-          minHeight: 44,
+          pt: 1,
+          pb: 1,
+          minHeight: 48,
         }}
       >
         {product && (
@@ -80,14 +81,14 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
           <AcceptedChip />
         </Box>
       ) : (
-        <>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
           <Box>
             <EditEntryButton date={date} entry={entry} />
           </Box>
           <Box sx={{ display: { xs: "none", md: "block" }, ml: -0.5 }}>
             <DeleteEntryButton date={date} entryKey={entry.key} />
           </Box>
-        </>
+        </Box>
       )}
     </Box>
   );

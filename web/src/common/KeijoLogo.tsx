@@ -7,8 +7,8 @@ const KeijoLogo = () => {
   const { isDarkMode } = useDarkMode();
 
   return (
-    <Box sx={{ display: "flex", width: 30, m: 1 }}>
-      <img src={isDarkMode ? logoLime : logoViolet} alt="Keijo logo" />
+    <Box sx={{ display: "flex", m: 1 }}>
+      <img src={isDarkMode ? logoLime : logoViolet} alt="Keijo logo" width={30} />
     </Box>
   );
 };
