@@ -1,4 +1,3 @@
-import "@fontsource/roboto";
 import { Container } from "@mui/material";
 import { ChildrenProps } from "../../common/types";
 

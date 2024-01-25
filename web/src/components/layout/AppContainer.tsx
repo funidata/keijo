@@ -1,5 +1,4 @@
 import { ApolloProvider } from "@apollo/client";
-import "@fontsource/roboto";
 import { CssBaseline } from "@mui/material";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";

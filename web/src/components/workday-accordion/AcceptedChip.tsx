@@ -14,7 +14,6 @@ const AcceptedChip = (props: ChipProps) => {
         pl: 1,
         pr: { xs: 3, md: 0 },
         textTransform: "uppercase",
-        fontWeight: 900,
         ".MuiChip-label": { display: { xs: "none", md: "block" } },
       }}
       label={t("entryTable.accepted")}

@@ -1,4 +1,3 @@
-import "@fontsource/roboto";
 import { Box, AppBar as MuiAppBar, Toolbar } from "@mui/material";
 import { useDarkMode } from "usehooks-ts";
 import KeijoLogo from "../../common/KeijoLogo";
