@@ -32,36 +32,37 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
         overflow: "hidden",
         display: "flex",
         alignItems: "stretch",
+        justifyContent: "space-between",
       }}
     >
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "end",
-          minWidth: 60,
-          textAlign: "right",
-          mr: 3,
-        }}
-      >
-        <Typography variant="h6">
-          {dayjs.duration(entry.duration, "hour").format("H:mm")}
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          flexGrow: 1,
-          display: "flex",
-          alignItems: "center",
           gap: 2,
-          overflowX: "auto",
+          overflowX: { xs: "auto", md: "hidden" },
           overflowY: "hidden",
           whiteSpace: "nowrap",
+          mr: 1,
           pt: 1,
           pb: 1,
           minHeight: 48,
         }}
       >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "end",
+            minWidth: 60,
+            textAlign: "right",
+            mr: 1,
+          }}
+        >
+          <Typography variant="h6">
+            {dayjs.duration(entry.duration, "hour").format("H:mm")}
+          </Typography>
+        </Box>
         {product && (
           <DimensionChip icon={<LayersIcon fontSize="small" />} color="primary" label={product} />
         )}
@@ -74,7 +75,14 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
         {client && (
           <DimensionChip icon={<PersonIcon fontSize="small" />} color="secondary" label={client} />
         )}
-        {description && <Typography variant="subtitle2">{description}</Typography>}
+        {description && (
+          <Typography
+            variant="subtitle2"
+            sx={{ overflow: { xs: "visible", md: "hidden" }, textOverflow: "ellipsis" }}
+          >
+            {description}
+          </Typography>
+        )}
       </Box>
       {accepted ? (
         <Box>

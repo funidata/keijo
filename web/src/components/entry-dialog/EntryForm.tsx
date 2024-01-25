@@ -1,7 +1,6 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers-pro";
 import { Control, Controller } from "react-hook-form";
-import { useTranslation } from "react-i18next";
 import DimensionSelect from "./DimensionSelect";
 import { EntryFormSchema } from "./EntryDialog";
 
@@ -12,8 +11,6 @@ type EntryFormProps = {
 };
 
 const EntryForm = ({ control, reset, onSubmit }: EntryFormProps) => {
-  const { t } = useTranslation();
-
   return (
     <form onSubmit={onSubmit} onReset={reset}>
       <Grid container spacing={2}>
