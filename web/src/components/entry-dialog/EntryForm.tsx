@@ -1,8 +1,8 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers-pro";
 import { Control, Controller } from "react-hook-form";
 import DimensionSelect from "./DimensionSelect";
 import { EntryFormSchema } from "./EntryDialog";
+import ResponsiveDatePicker from "./ResponsiveDatePicker";
 
 type EntryFormProps = {
   control: Control<EntryFormSchema>;
@@ -15,11 +15,7 @@ const EntryForm = ({ control, reset, onSubmit }: EntryFormProps) => {
     <form onSubmit={onSubmit} onReset={reset}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
-          <Controller
-            name="date"
-            control={control}
-            render={({ field }) => <DatePicker {...field} />}
-          />
+          <Controller name="date" control={control} render={ResponsiveDatePicker} />
         </Grid>
         <Grid item xs={12} md={6}>
           <Controller

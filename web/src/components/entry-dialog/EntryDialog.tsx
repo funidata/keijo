@@ -120,7 +120,7 @@ const EntryDialog = ({ editEntry, date, ...props }: EntryDialogProps) => {
   };
 
   return (
-    <Dialog {...props} fullScreen={fullScreen}>
+    <Dialog maxWidth="lg" fullWidth {...props} fullScreen={fullScreen}>
       <DialogTitle>{t("entryDialog.title")}</DialogTitle>
       <DialogContent sx={{ maxWidth: "100vw" }}>
         <EntryForm control={control} onSubmit={handleSubmit(onSubmit)} reset={reset} />

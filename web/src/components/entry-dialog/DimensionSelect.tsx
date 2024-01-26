@@ -20,7 +20,7 @@ const DimensionSelect = ({ control, name, title }: DimensionSelectProps) => {
   }
 
   return (
-    <Grid item xs={12} md={6}>
+    <Grid item xs={12} md={3}>
       <FormControl fullWidth>
         <InputLabel id={labelId}>{title}</InputLabel>
         <Controller
