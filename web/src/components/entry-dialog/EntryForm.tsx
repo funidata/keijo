@@ -1,6 +1,7 @@
-import { Box, Button, Grid, TextField } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import { Control, Controller } from "react-hook-form";
 import DimensionSelect from "./DimensionSelect";
+import DurationSlider from "./DurationSlider";
 import { EntryFormSchema } from "./EntryDialog";
 import ResponsiveDatePicker from "./ResponsiveDatePicker";
 
@@ -18,11 +19,7 @@ const EntryForm = ({ control, reset, onSubmit }: EntryFormProps) => {
           <Controller name="date" control={control} render={ResponsiveDatePicker} />
         </Grid>
         <Grid item xs={12} md={6}>
-          <Controller
-            name="duration"
-            control={control}
-            render={({ field }) => <TextField {...field} />}
-          />
+          <Controller name="duration" control={control} render={DurationSlider} />
         </Grid>
         <DimensionSelect control={control} name="product" title="Tuote" />
         <DimensionSelect control={control} name="activity" title="Toiminto" />
