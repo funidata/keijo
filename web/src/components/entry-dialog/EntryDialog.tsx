@@ -1,9 +1,11 @@
 import { useMutation } from "@apollo/client";
+import CloseIcon from "@mui/icons-material/Close";
 import {
   Dialog,
   DialogContent,
   DialogProps,
   DialogTitle,
+  IconButton,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -122,6 +124,19 @@ const EntryDialog = ({ editEntry, date, ...props }: EntryDialogProps) => {
   return (
     <Dialog maxWidth="lg" fullWidth {...props} fullScreen={fullScreen}>
       <DialogTitle>{t("entryDialog.title")}</DialogTitle>
+      <IconButton
+        aria-label="close"
+        onClick={props.onClose}
+        size="large"
+        sx={{
+          position: "absolute",
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      >
+        <CloseIcon fontSize="inherit" />
+      </IconButton>
       <DialogContent sx={{ maxWidth: "100vw" }}>
         <EntryForm control={control} onSubmit={handleSubmit(onSubmit)} reset={reset} />
       </DialogContent>
