@@ -24,6 +24,7 @@ const en = {
   },
   entryDialog: {
     title: "Add New Entry",
+    description: "Comment",
   },
   entryTable: {
     accepted: "Accepted",

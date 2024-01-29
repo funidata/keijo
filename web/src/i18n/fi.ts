@@ -24,6 +24,7 @@ const fi = {
   },
   entryDialog: {
     title: "Lisää työaikakirjaus",
+    description: "Kommentti",
   },
   entryTable: {
     accepted: "Hyväksytty",

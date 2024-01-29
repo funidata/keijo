@@ -1,5 +1,6 @@
-import { Box, Button, Grid } from "@mui/material";
+import { Box, Button, Grid, TextField } from "@mui/material";
 import { Control, Controller } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import DimensionSelect from "./DimensionSelect";
 import DurationSlider from "./DurationSlider";
 import { EntryFormSchema } from "./EntryDialog";
@@ -12,6 +13,8 @@ type EntryFormProps = {
 };
 
 const EntryForm = ({ control, reset, onSubmit }: EntryFormProps) => {
+  const { t } = useTranslation();
+
   return (
     <form onSubmit={onSubmit} onReset={reset}>
       <Grid container spacing={2}>
@@ -20,6 +23,13 @@ const EntryForm = ({ control, reset, onSubmit }: EntryFormProps) => {
         </Grid>
         <Grid item xs={12} md={6}>
           <Controller name="duration" control={control} render={DurationSlider} />
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => (
+              <TextField {...field} label={t("entryDialog.description")} fullWidth />
+            )}
+          />
         </Grid>
         <DimensionSelect control={control} name="product" title="Tuote" />
         <DimensionSelect control={control} name="activity" title="Toiminto" />
