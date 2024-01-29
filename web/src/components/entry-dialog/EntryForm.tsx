@@ -37,7 +37,7 @@ const EntryForm = ({ control, reset, onSubmit }: EntryFormProps) => {
         <DimensionSelect control={control} name="client" title="Asiakas" />
         <Grid item xs={12}>
           <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
-            <Button type="reset" variant="outlined" size="large">
+            <Button type="reset" variant="outlined" size="large" onClick={reset}>
               Clear
             </Button>
             <Button type="submit" variant="contained" size="large">
