@@ -14,7 +14,7 @@ const ResponsiveDatePicker = ({ field }: ResponsiveDatePickerProps) => {
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
   if (mobile) {
-    return <DatePicker {...field} label={t("entryDialog.date")} />;
+    return <DatePicker {...field} label={t("entryDialog.date")} sx={{ width: "100%" }} />;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -27,6 +27,9 @@ const ResponsiveDatePicker = ({ field }: ResponsiveDatePickerProps) => {
       slots={{ actionBar: () => null }}
       localeText={{
         toolbarTitle: t("entryDialog.date"),
+      }}
+      sx={{
+        ".MuiPickersToolbar-content": { pb: 4 },
       }}
     />
   );

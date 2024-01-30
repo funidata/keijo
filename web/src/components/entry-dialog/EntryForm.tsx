@@ -1,4 +1,4 @@
-import { Box, Button, Grid, TextField } from "@mui/material";
+import { Box, Button, Divider, Grid, TextField, useMediaQuery, useTheme } from "@mui/material";
 import { Control, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import DimensionSelect from "./DimensionSelect";
@@ -14,10 +14,12 @@ type EntryFormProps = {
 
 const EntryForm = ({ control, reset, onSubmit }: EntryFormProps) => {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <form onSubmit={onSubmit} onReset={reset}>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} item>
         <Grid item xs={12} md={6}>
           <Controller name="date" control={control} render={ResponsiveDatePicker} />
         </Grid>
@@ -30,6 +32,7 @@ const EntryForm = ({ control, reset, onSubmit }: EntryFormProps) => {
               <TextField {...field} label={t("entryDialog.description")} fullWidth />
             )}
           />
+          {mobile && <Divider sx={{ width: "100%", mt: 3, mb: 1 }} />}
         </Grid>
         <DimensionSelect control={control} name="product" title={t("entryDialog.product")} />
         <DimensionSelect control={control} name="activity" title={t("entryDialog.activity")} />

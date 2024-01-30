@@ -35,14 +35,30 @@ const DurationSlider = ({ field }: DurationSliderProps) => {
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        mt: { xs: 2, md: 0 },
+        mb: { xs: 2, md: 4 },
+      }}
+    >
       <TimeField
         value={timeFieldValue}
         onChange={handleTimeFieldChange}
         label={t("entryDialog.duration")}
         ampm={false}
+        sx={{ width: { xs: "100%", md: "50%" } }}
       />
-      <Slider min={0} max={600} step={15} value={hoursDecimal * 60} onChange={handleSliderChange} />
+      <Slider
+        min={0}
+        max={600}
+        step={15}
+        value={hoursDecimal * 60}
+        onChange={handleSliderChange}
+        sx={{ mt: 2 }}
+      />
     </Box>
   );
 };
