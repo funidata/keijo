@@ -31,17 +31,17 @@ const EntryForm = ({ control, reset, onSubmit }: EntryFormProps) => {
             )}
           />
         </Grid>
-        <DimensionSelect control={control} name="product" title="Tuote" />
-        <DimensionSelect control={control} name="activity" title="Toiminto" />
-        <DimensionSelect control={control} name="issue" title="Tiketti" />
-        <DimensionSelect control={control} name="client" title="Asiakas" />
+        <DimensionSelect control={control} name="product" title={t("entryDialog.product")} />
+        <DimensionSelect control={control} name="activity" title={t("entryDialog.activity")} />
+        <DimensionSelect control={control} name="issue" title={t("entryDialog.issue")} />
+        <DimensionSelect control={control} name="client" title={t("entryDialog.client")} />
         <Grid item xs={12}>
           <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
             <Button type="reset" variant="outlined" size="large" onClick={reset}>
-              Clear
+              {t("entryDialog.reset")}
             </Button>
             <Button type="submit" variant="contained" size="large">
-              Save
+              {t("entryDialog.submit")}
             </Button>
           </Box>
         </Grid>

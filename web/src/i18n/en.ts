@@ -4,6 +4,7 @@ const en = {
       prevWeek: "Go to previous week",
       nextWeek: "Go to next week",
     },
+    close: "Close",
     confirm: "Confirm",
     deleteEntry: "Delete entry",
     editEntry: "Edit entry",
@@ -25,6 +26,13 @@ const en = {
   entryDialog: {
     title: "Add New Entry",
     description: "Comment",
+    duration: "Duration",
+    reset: "Reset",
+    submit: "Save",
+    product: "Product",
+    activity: "Function",
+    issue: "Issue",
+    client: "Client",
   },
   entryTable: {
     accepted: "Accepted",

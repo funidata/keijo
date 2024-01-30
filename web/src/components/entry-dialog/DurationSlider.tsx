@@ -2,6 +2,7 @@ import { Box, Slider } from "@mui/material";
 import { TimeField } from "@mui/x-date-pickers-pro";
 import { Dayjs } from "dayjs";
 import { ControllerRenderProps } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import useDayjs from "../../common/useDayjs";
 import { EntryFormSchema } from "./EntryDialog";
 
@@ -10,6 +11,7 @@ type DurationSliderProps = {
 };
 
 const DurationSlider = ({ field }: DurationSliderProps) => {
+  const { t } = useTranslation();
   const dayjs = useDayjs();
   const hoursDecimal = Number(field.value);
   const timeFieldValue = dayjs()
@@ -34,7 +36,11 @@ const DurationSlider = ({ field }: DurationSliderProps) => {
 
   return (
     <Box>
-      <TimeField value={timeFieldValue} onChange={handleTimeFieldChange} />
+      <TimeField
+        value={timeFieldValue}
+        onChange={handleTimeFieldChange}
+        label={t("entryDialog.duration")}
+      />
       <Slider min={0} max={600} step={15} value={hoursDecimal * 60} onChange={handleSliderChange} />
     </Box>
   );

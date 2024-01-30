@@ -38,7 +38,7 @@ type EntryDialogProps = DialogProps & {
   onClose: () => void;
 };
 
-const EntryDialog = ({ editEntry, date, ...props }: EntryDialogProps) => {
+const EntryDialog = ({ editEntry, date, onClose, ...props }: EntryDialogProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -117,16 +117,16 @@ const EntryDialog = ({ editEntry, date, ...props }: EntryDialogProps) => {
       await editWorkday(formValues);
     } else {
       await addWorkday(formValues);
-      props.onClose();
+      onClose();
     }
   };
 
   return (
-    <Dialog maxWidth="lg" fullWidth {...props} fullScreen={fullScreen}>
+    <Dialog maxWidth="lg" fullWidth {...props} fullScreen={fullScreen} onClose={onClose}>
       <DialogTitle>{t("entryDialog.title")}</DialogTitle>
       <IconButton
-        aria-label="close"
-        onClick={props.onClose}
+        aria-label={t("controls.close")}
+        onClick={onClose}
         size="large"
         sx={{
           position: "absolute",

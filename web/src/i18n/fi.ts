@@ -4,6 +4,7 @@ const fi = {
       prevWeek: "Mene edelliseen viikkoon",
       nextWeek: "Mene seuraavaan viikkoon",
     },
+    close: "Sulje",
     confirm: "Vahvista",
     deleteEntry: "Poista merkintä",
     editEntry: "Muokkaa merkintää",
@@ -25,6 +26,13 @@ const fi = {
   entryDialog: {
     title: "Lisää työaikakirjaus",
     description: "Kommentti",
+    duration: "Kesto",
+    reset: "Tyhjennä",
+    submit: "Tallenna",
+    product: "Tuote",
+    activity: "Toiminto",
+    issue: "Tiketti",
+    client: "Asiakas",
   },
   entryTable: {
     accepted: "Hyväksytty",
