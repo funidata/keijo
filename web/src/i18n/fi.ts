@@ -25,6 +25,7 @@ const fi = {
   },
   entryDialog: {
     title: "Lisää työaikakirjaus",
+    date: "Päivämäärä",
     description: "Kommentti",
     duration: "Kesto",
     reset: "Tyhjennä",

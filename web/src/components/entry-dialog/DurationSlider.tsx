@@ -40,6 +40,7 @@ const DurationSlider = ({ field }: DurationSliderProps) => {
         value={timeFieldValue}
         onChange={handleTimeFieldChange}
         label={t("entryDialog.duration")}
+        ampm={false}
       />
       <Slider min={0} max={600} step={15} value={hoursDecimal * 60} onChange={handleSliderChange} />
     </Box>

@@ -25,9 +25,10 @@ const en = {
   },
   entryDialog: {
     title: "Add New Entry",
+    date: "Date",
     description: "Comment",
     duration: "Duration",
-    reset: "Reset",
+    reset: "Clear",
     submit: "Save",
     product: "Product",
     activity: "Function",
