@@ -47,6 +47,12 @@ Run this command in the `web/` directory. Dev env must be running as the code ge
 npm run generate
 ```
 
+## Contributions
+
+Contributions must be made via pull requests into the protected `main` branch. Use labels and comprehensive descriptions in PR's to aid automatic release notes generation. All tests must pass before merge.
+
+Third-party contributions are accepted but you must first agree to Funidata's CLA. This repository is not currently set up for automatic CLA management. If you are interested in contributing to this project, please open an issue first to sort out these necessities!
+
 ## Releases
 
 The project is setup with an automatic release pipeline that takes care of testing the software, building, packaging and finally publishing it as a Docker image to GHCR (GitHub Container Registry).
