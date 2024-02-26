@@ -31,7 +31,7 @@ export class Logger {
     this.appLogger.log(content);
   }
 
-  debug(content: string | AppLogContent): void {
+  debug(content: unknown): void {
     this.assertContext();
     this.appLogger.debug(content);
   }

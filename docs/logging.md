@@ -16,7 +16,7 @@ Configured with `LOG_LEVEL` env var. Possible values are `error`, `warn`, `log` 
 
 If `ENABLE_JSON_LOGS` env var is `true`, all logs are written as stringified JSON. Otherwise, Nest.js's default `Logger` is used to output prettier and more readable logs.
 
-The JSON logs include more data than the default logs thus making them somewhat cumbersome to follow while developing.
+The JSON logs include more data than the default logs thus making them somewhat cumbersome to follow while developing. Debug level logs are not output as JSON at all to make developing easier while also guarding against logging failures in deployed instances.
 
 ### Output Schema
 

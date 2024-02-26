@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BadRequestException, Injectable } from "@nestjs/common";
-import axios from "axios";
 import { XMLBuilder } from "fast-xml-parser";
+import { AxiosService } from "../../axios/axios.service";
 import { Logger } from "../../logger/logger";
 import { NetvisorAuthService } from "./netvisor-auth.service";
 import { NetvisorEndpoints } from "./netvisor-endpoints.enum";
@@ -11,6 +10,7 @@ import { XmlParserService } from "./xml/xml-parser.service";
 @Injectable()
 export class NetvisorApiService {
   constructor(
+    private axiosService: AxiosService,
     private netvisorAuthService: NetvisorAuthService,
     private logger: Logger,
     private xmlParserService: XmlParserService,
@@ -19,6 +19,7 @@ export class NetvisorApiService {
   }
 
   // FIXME: Type this properly.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async get<T = any>(
     endpoint: NetvisorEndpoints,
     arrayPaths: string[] = [],
@@ -26,7 +27,7 @@ export class NetvisorApiService {
   ): Promise<T> {
     const url = this.netvisorAuthService.getUrl(endpoint);
     const headers = this.netvisorAuthService.getAuthenticationHeaders(url, params);
-    const res = await axios.get(url, { headers, params });
+    const res = await this.axiosService.get(url, { headers, params });
 
     const data = this.xmlParserService.parse(res.data, arrayPaths);
 
@@ -48,7 +49,7 @@ export class NetvisorApiService {
     const builder = new XMLBuilder({ ignoreAttributes: false });
     const xml = builder.build(data);
 
-    const res = await axios.post(url, xml, { headers });
+    const res = await this.axiosService.post(url, xml, { headers });
     const resultData = this.xmlParserService.parse(res.data);
 
     if (resultData.Root.ResponseStatus.Status !== "OK") {
