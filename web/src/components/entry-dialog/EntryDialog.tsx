@@ -150,7 +150,12 @@ const EntryDialog = ({ editEntry, date, onClose, ...props }: EntryDialogProps) =
         <CloseIcon fontSize="inherit" />
       </IconButton>
       <DialogContent sx={{ maxWidth: "100vw" }}>
-        <EntryForm control={control} onSubmit={handleSubmit(onSubmit)} reset={reset} />
+        <EntryForm
+          control={control}
+          onSubmit={handleSubmit(onSubmit)}
+          reset={reset}
+          editMode={!!editEntry}
+        />
       </DialogContent>
     </Dialog>
   );

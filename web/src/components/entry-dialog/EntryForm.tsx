@@ -10,9 +10,10 @@ type EntryFormProps = {
   control: Control<EntryFormSchema>;
   onSubmit: () => void;
   reset: () => void;
+  editMode?: boolean;
 };
 
-const EntryForm = ({ control, reset, onSubmit }: EntryFormProps) => {
+const EntryForm = ({ control, reset, onSubmit, editMode }: EntryFormProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -41,7 +42,7 @@ const EntryForm = ({ control, reset, onSubmit }: EntryFormProps) => {
         <Grid item xs={12}>
           <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
             <Button type="reset" variant="outlined" size="large" onClick={reset}>
-              {t("entryDialog.reset")}
+              {editMode ? t("entryDialog.reset") : t("entryDialog.clear")}
             </Button>
             <Button type="submit" variant="contained" size="large">
               {t("entryDialog.submit")}
