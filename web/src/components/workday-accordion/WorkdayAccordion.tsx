@@ -20,6 +20,7 @@ type WorkdayAccordionProps = {
 const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
   const dayjs = useDayjs();
   const totalHours = sum(workday.entries.map((wd) => wd.duration));
+  const totalHoursFormatted = dayjs.duration(totalHours, "hour").format("H:mm");
 
   const toggle = true;
 
@@ -37,7 +38,7 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
           <Typography sx={{ textTransform: "capitalize" }}>
             {dayjs(workday.date).format("dd L")}
           </Typography>
-          <Chip label={`${totalHours} h`} sx={{ mr: 2 }} />
+          <Chip label={`${totalHoursFormatted} h`} sx={{ mr: 2 }} />
         </Box>
       </AccordionSummary>
       <AccordionDetails>
