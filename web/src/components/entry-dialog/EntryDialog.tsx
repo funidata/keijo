@@ -10,6 +10,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { Dayjs } from "dayjs";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import dayjs from "../../common/dayjs";
@@ -69,7 +70,12 @@ const EntryDialog = ({ editEntry, date, onClose, ...props }: EntryDialogProps) =
     client: editEntry?.client || "",
   };
 
-  const { handleSubmit, control, reset } = useForm<EntryFormSchema>({ defaultValues });
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { isSubmitSuccessful },
+  } = useForm<EntryFormSchema>({ defaultValues });
 
   const addWorkday: SubmitHandler<EntryFormSchema> = async (formValues) => {
     const { date, duration, description, product, activity, issue, client } = formValues;
@@ -117,9 +123,15 @@ const EntryDialog = ({ editEntry, date, onClose, ...props }: EntryDialogProps) =
       await editWorkday(formValues);
     } else {
       await addWorkday(formValues);
-      onClose();
     }
   };
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+      onClose();
+    }
+  }, [isSubmitSuccessful, reset, onClose]);
 
   return (
     <Dialog maxWidth="lg" fullWidth {...props} fullScreen={fullScreen} onClose={onClose}>
