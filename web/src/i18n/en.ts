@@ -34,6 +34,7 @@ const en = {
     activity: "Function",
     issue: "Issue",
     client: "Client",
+    noSelection: "No selection",
   },
   entryTable: {
     accepted: "Accepted",

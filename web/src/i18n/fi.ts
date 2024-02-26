@@ -34,6 +34,7 @@ const fi = {
     activity: "Toiminto",
     issue: "Tiketti",
     client: "Asiakas",
+    noSelection: "Ei valintaa",
   },
   entryTable: {
     accepted: "Hyväksytty",
