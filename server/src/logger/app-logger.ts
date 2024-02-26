@@ -44,7 +44,11 @@ export class AppLogger extends ConsoleLogger {
 
   debug(message: unknown, context?: string): void {
     this.useConsoleLogger("debug", message, context);
-    this.useJsonLogger("debug", message, context);
+
+    // Output with raw console.log to aid debugging if it is safe to do so.
+    if (!this.configService.config.enableJsonLogs) {
+      console.log(message);
+    }
   }
 
   audit(content: AuditLogContent): void {
