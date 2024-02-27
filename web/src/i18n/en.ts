@@ -5,7 +5,7 @@ const en = {
       nextWeek: "Go to next week",
     },
     close: "Close",
-    confirm: "Confirm",
+    confirmDelete: "Confirm delete",
     deleteEntry: "Delete entry",
     editEntry: "Edit entry",
     endDate: "To",

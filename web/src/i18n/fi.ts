@@ -5,7 +5,7 @@ const fi = {
       nextWeek: "Mene seuraavaan viikkoon",
     },
     close: "Sulje",
-    confirm: "Vahvista",
+    confirmDelete: "Vahvista poisto",
     deleteEntry: "Poista merkintä",
     editEntry: "Muokkaa merkintää",
     endDate: "Loppu",
