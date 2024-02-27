@@ -5,6 +5,7 @@
   "scripts": {
     "start": "docker compose up -d --build && npm run logs",
     "stop": "docker compose down",
+    "restart": "npm stop && npm start",
     "logs": "docker compose logs -f",
     "init": "cd server && npm ci && cd ../web && npm ci",
     "preversion": "if [ $(git rev-parse --abbrev-ref HEAD) != 'main' ]; then echo \"ERROR! Not in main branch. Exiting without bumping version.\" && exit 1; fi",
