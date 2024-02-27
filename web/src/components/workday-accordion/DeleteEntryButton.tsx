@@ -49,7 +49,7 @@ const DeleteEntryButton = ({ entryKey, date }: DeleteEntryButtonProps) => {
         <DeleteIcon fontSize="inherit" />
       </IconButton>
       <Menu open={!!anchor} anchorEl={anchor} onClose={onClose}>
-        <MenuItem onClick={onConfirm}>{t("controls.confirm")}</MenuItem>
+        <MenuItem onClick={onConfirm}>{t("controls.confirmDelete")}</MenuItem>
       </Menu>
     </>
   );

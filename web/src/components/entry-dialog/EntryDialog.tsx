@@ -29,7 +29,7 @@ export type EntryFormSchema = {
   description: string;
   product: string;
   activity: string;
-  issue: string;
+  issue: string | null;
   client: string;
 };
 
@@ -66,7 +66,7 @@ const EntryDialog = ({ editEntry, date, onClose, ...props }: EntryDialogProps) =
     description: "",
     product: editEntry?.product || "",
     activity: editEntry?.activity || "",
-    issue: editEntry?.issue || "",
+    issue: editEntry?.issue || null,
     client: editEntry?.client || "",
   };
 
@@ -154,7 +154,8 @@ const EntryDialog = ({ editEntry, date, onClose, ...props }: EntryDialogProps) =
           control={control}
           onSubmit={handleSubmit(onSubmit)}
           reset={reset}
-          editMode={!!editEntry}
+          editEntry={editEntry}
+          originalDate={date}
         />
       </DialogContent>
     </Dialog>
