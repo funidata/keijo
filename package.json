@@ -1,6 +1,6 @@
 {
   "name": "keijo",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Custom UI for Netvisor",
   "scripts": {
     "start": "docker compose up -d --build && npm run logs",
