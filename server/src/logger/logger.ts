@@ -1,8 +1,9 @@
 import { Injectable, Scope } from "@nestjs/common";
 import { AppLogContent, AppLogger, AuditLogContent } from "./app-logger";
 
-// TODO: Use this class in code instead of AppLogger.
-
+/**
+ * Simple interface for using `AppLogger` when writing logging calls in code.
+ */
 @Injectable({ scope: Scope.TRANSIENT })
 export class Logger {
   private context: string | undefined;
