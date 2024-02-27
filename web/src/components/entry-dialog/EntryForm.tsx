@@ -38,12 +38,23 @@ const EntryForm = ({ control, reset, onSubmit, editEntry, originalDate }: EntryF
               <TextField {...field} label={t("entryDialog.description")} fullWidth />
             )}
           />
-          {mobile && <Divider sx={{ width: "100%", mt: 3, mb: 1 }} />}
+          {mobile && <Divider sx={{ width: "100%", mt: 3, mb: 1, bgcolor: "secondary.dark" }} />}
         </Grid>
-        <DimensionSelect control={control} name="product" title={t("entryDialog.product")} />
-        <DimensionSelect control={control} name="activity" title={t("entryDialog.activity")} />
-        <DimensionComboBox control={control} name="issue" title={t("entryDialog.issue")} />
-        <DimensionSelect control={control} name="client" title={t("entryDialog.client")} />
+        <Grid
+          item
+          xs={12}
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row", gap: 16 },
+            mt: { xs: 0, md: 3 },
+            mb: 3,
+          }}
+        >
+          <DimensionSelect control={control} name="product" title={t("entryDialog.product")} />
+          <DimensionSelect control={control} name="activity" title={t("entryDialog.activity")} />
+          <DimensionComboBox control={control} name="issue" title={t("entryDialog.issue")} />
+          <DimensionSelect control={control} name="client" title={t("entryDialog.client")} />
+        </Grid>
         {mobile ? (
           <>
             <Grid item xs={12}>
