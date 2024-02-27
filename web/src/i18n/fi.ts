@@ -36,6 +36,7 @@ const fi = {
     client: "Asiakas",
     noSelection: "Ei valintaa",
     clear: "Tyhjennä",
+    delete: "Poista",
   },
   entryTable: {
     accepted: "Hyväksytty",

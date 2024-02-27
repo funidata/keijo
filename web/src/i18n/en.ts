@@ -36,6 +36,7 @@ const en = {
     client: "Client",
     noSelection: "No selection",
     clear: "Clear",
+    delete: "Delete",
   },
   entryTable: {
     accepted: "Accepted",

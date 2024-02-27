@@ -154,7 +154,8 @@ const EntryDialog = ({ editEntry, date, onClose, ...props }: EntryDialogProps) =
           control={control}
           onSubmit={handleSubmit(onSubmit)}
           reset={reset}
-          editMode={!!editEntry}
+          editEntry={editEntry}
+          originalDate={date}
         />
       </DialogContent>
     </Dialog>

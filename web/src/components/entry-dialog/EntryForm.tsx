@@ -1,6 +1,9 @@
 import { Box, Button, Divider, Grid, TextField, useMediaQuery, useTheme } from "@mui/material";
+import { Dayjs } from "dayjs";
 import { Control, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { Entry } from "../../graphql/generated/graphql";
+import BigDeleteEntryButton from "./BigDeleteEntryButton";
 import DimensionSelect from "./DimensionSelect";
 import DurationSlider from "./DurationSlider";
 import { EntryFormSchema } from "./EntryDialog";
@@ -10,10 +13,11 @@ type EntryFormProps = {
   control: Control<EntryFormSchema>;
   onSubmit: () => void;
   reset: () => void;
-  editMode?: boolean;
+  editEntry?: Entry;
+  originalDate?: Dayjs;
 };
 
-const EntryForm = ({ control, reset, onSubmit, editMode }: EntryFormProps) => {
+const EntryForm = ({ control, reset, onSubmit, editEntry, originalDate }: EntryFormProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -48,15 +52,20 @@ const EntryForm = ({ control, reset, onSubmit, editMode }: EntryFormProps) => {
             </Grid>
             <Grid item xs={12}>
               <Button type="reset" variant="outlined" size="large" onClick={reset} fullWidth>
-                {editMode ? t("entryDialog.reset") : t("entryDialog.clear")}
+                {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
               </Button>
+            </Grid>
+            <Grid item xs={12}>
+              {editEntry && originalDate && (
+                <BigDeleteEntryButton entryKey={editEntry.key} date={originalDate} />
+              )}
             </Grid>
           </>
         ) : (
           <Grid item xs={12}>
             <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
               <Button type="reset" variant="outlined" size="large" onClick={reset}>
-                {editMode ? t("entryDialog.reset") : t("entryDialog.clear")}
+                {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
               </Button>
               <Button type="submit" variant="contained" size="large">
                 {t("entryDialog.submit")}
