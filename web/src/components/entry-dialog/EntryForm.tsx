@@ -4,6 +4,7 @@ import { Control, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Entry } from "../../graphql/generated/graphql";
 import BigDeleteEntryButton from "./BigDeleteEntryButton";
+import DimensionComboBox from "./DimensionComboBox";
 import DimensionSelect from "./DimensionSelect";
 import DurationSlider from "./DurationSlider";
 import { EntryFormSchema } from "./EntryDialog";
@@ -41,7 +42,7 @@ const EntryForm = ({ control, reset, onSubmit, editEntry, originalDate }: EntryF
         </Grid>
         <DimensionSelect control={control} name="product" title={t("entryDialog.product")} />
         <DimensionSelect control={control} name="activity" title={t("entryDialog.activity")} />
-        <DimensionSelect control={control} name="issue" title={t("entryDialog.issue")} />
+        <DimensionComboBox control={control} name="issue" title={t("entryDialog.issue")} />
         <DimensionSelect control={control} name="client" title={t("entryDialog.client")} />
         {mobile ? (
           <>
