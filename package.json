@@ -8,7 +8,6 @@
     "restart": "npm stop && npm start",
     "logs": "docker compose logs -f",
     "init": "cd server && npm ci && cd ../web && npm ci",
-    "preversion": "if [ $(git rev-parse --abbrev-ref HEAD) != 'main' ]; then echo \"ERROR! Not in main branch. Exiting without bumping version.\" && exit 1; fi",
     "version": "scripts/version_sub_projects.sh $npm_package_version",
     "postversion": "git push && git push --tags"
   },
