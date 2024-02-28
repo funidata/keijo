@@ -63,7 +63,7 @@ const EntryDialog = ({ editEntry, date, onClose, ...props }: EntryDialogProps) =
   const defaultValues: EntryFormSchema = {
     date: date ? dayjs(date) : dayjs(),
     duration: editEntry?.duration.toString() || "",
-    description: "",
+    description: editEntry?.description || "",
     product: editEntry?.product || "",
     activity: editEntry?.activity || "",
     issue: editEntry?.issue || null,
