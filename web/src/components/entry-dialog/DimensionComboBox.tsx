@@ -31,7 +31,6 @@ const DimensionComboBox = ({ control, name, title }: DimensionComboBoxProps) => 
               <Autocomplete
                 value={value}
                 onChange={(_, value) => onChange(value)}
-                disablePortal
                 options={options}
                 renderInput={(params) => (
                   <TextField {...params} label={title} onChange={onChange} />
