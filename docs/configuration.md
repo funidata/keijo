@@ -12,6 +12,7 @@ For local development, create `.env` file in repository root and populate it wit
 Key|Default|Description
 -|-|-
 `NODE_ENV`||Node environment spec. Value **MUST BE** `production` whenever you are using non-demo credentials for Netvisor.
+`NETVISOR_API_URL`|https://isvapi.netvisor.fi|URL where Netvisor API requests should be made to. Default value points to NV's demo environment.
 `NETVISOR_CUSTOMER_ID`||See Netvisor auth docs for `X-Netvisor-Authentication-CustomerId` header.
 `NETVISOR_ORGANIZATION_ID`||See Netvisor auth docs for `X-Netvisor-Organisation-ID` header.
 `NETVISOR_CUSTOMER_KEY`||See Netvisor auth docs for _"Integraatiokäyttäjän yksilöivä avain"_.

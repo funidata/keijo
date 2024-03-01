@@ -12,6 +12,7 @@ const {
   NETVISOR_PARTNER_ID,
   NETVISOR_CACHE_TTL,
   NETVISOR_ENTRY_RATIONUMBER,
+  NETVISOR_API_URL,
 } = process.env;
 
 const config = {
@@ -23,7 +24,7 @@ const config = {
   enableJsonLogs: ENABLE_JSON_LOGS?.toLowerCase() === "true",
   enableAuditLogs: ENABLE_AUDIT_LOGS?.toLowerCase() === "true",
   netvisor: {
-    host: "https://isvapi.netvisor.fi",
+    host: NETVISOR_API_URL || "https://isvapi.netvisor.fi",
     sender: "keijo",
     partnerId: NETVISOR_PARTNER_ID,
     lang: "fi",
