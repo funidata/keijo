@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Dayjs } from "dayjs";
+import { Logger } from "../../logger/logger";
 import { NetvisorApiService } from "../netvisor-api/netvisor-api.service";
 import { NetvisorEndpoints } from "../netvisor-api/netvisor-endpoints.enum";
 import { DimensionSchema } from "../netvisor-api/schema/dimension.schema";
@@ -19,7 +20,12 @@ type WorkdayQuery = {
 
 @Injectable()
 export class WorkdayService {
-  constructor(private netvisorApiService: NetvisorApiService) {}
+  constructor(
+    private netvisorApiService: NetvisorApiService,
+    private logger: Logger,
+  ) {
+    logger.setContext(WorkdayService.name);
+  }
 
   // TODO: Add validation (pipe?)
   async findMany({ employeeNumber, start, end }: WorkdayQuery): Promise<Workday[]> {
@@ -69,6 +75,7 @@ export class WorkdayService {
   private toAcceptanceStatusEnum(val: string): AcceptanceStatus {
     const acceptableValues = Object.values(AcceptanceStatus) as string[];
     if (!acceptableValues.includes(val)) {
+      this.logger.error(`Netvisor returned an unknown acceptance status value: ${val}`);
       throw new Error("Netvisor returned an unknown acceptance status value.");
     }
     return val as AcceptanceStatus;
