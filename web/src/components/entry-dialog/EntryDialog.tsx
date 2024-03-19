@@ -96,7 +96,7 @@ const EntryDialog = ({ editEntry, date, onClose, ...props }: EntryDialogProps) =
   };
 
   const editWorkday: SubmitHandler<EntryFormSchema> = async (formValues) => {
-    const { date, duration, description, product, activity, issue, client } = formValues;
+    const { date: newDate, duration, description, product, activity, issue, client } = formValues;
 
     if (!editEntry) {
       throw new Error("Original entry not given.");
@@ -104,9 +104,9 @@ const EntryDialog = ({ editEntry, date, onClose, ...props }: EntryDialogProps) =
 
     await replaceWorkdayEntryMutation({
       variables: {
-        originalEntry: { key: editEntry.key, date: date.format("YYYY-MM-DD") },
+        originalEntry: { key: editEntry.key, date: date?.format("YYYY-MM-DD") },
         replacementEntry: {
-          date: date.format("YYYY-MM-DD"),
+          date: newDate.format("YYYY-MM-DD"),
           duration: Number(duration),
           description,
           product,
