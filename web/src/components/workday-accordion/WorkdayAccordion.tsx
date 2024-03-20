@@ -28,18 +28,21 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
 
   return (
     <Accordion defaultExpanded disableGutters>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon color="primary" />}>
         <Box
           sx={{
             display: "flex",
             flexGrow: 1,
             justifyContent: "space-between",
             alignItems: "center",
+            color: "primary.light",
           }}
         >
           <Typography sx={{ textTransform: "capitalize" }}>{date.format("dd L")}</Typography>
-          <EntryDialogButton date={date} />
-          <Chip label={`${totalHoursFormatted} h`} sx={{ mr: 2 }} />
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <EntryDialogButton date={date} size="medium" />
+            <Chip label={`${totalHoursFormatted} h`} sx={{ mr: 2, color: "inherit" }} />
+          </Box>
         </Box>
       </AccordionSummary>
       <AccordionDetails>
