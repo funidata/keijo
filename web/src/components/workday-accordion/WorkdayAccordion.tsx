@@ -10,6 +10,7 @@ import {
 import { sum } from "lodash";
 import useDayjs from "../../common/useDayjs";
 import { Workday } from "../../graphql/generated/graphql";
+import EntryDialogButton from "../entry-dialog/EntryDialogButton";
 import EntryFlexRow from "./EntryFlexRow";
 import EntryTable from "./EntryTable";
 
@@ -19,6 +20,7 @@ type WorkdayAccordionProps = {
 
 const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
   const dayjs = useDayjs();
+  const date = dayjs(workday.date);
   const totalHours = sum(workday.entries.map((wd) => wd.duration));
   const totalHoursFormatted = dayjs.duration(totalHours, "hour").format("H:mm");
 
@@ -35,9 +37,8 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
             alignItems: "center",
           }}
         >
-          <Typography sx={{ textTransform: "capitalize" }}>
-            {dayjs(workday.date).format("dd L")}
-          </Typography>
+          <Typography sx={{ textTransform: "capitalize" }}>{date.format("dd L")}</Typography>
+          <EntryDialogButton date={date} />
           <Chip label={`${totalHoursFormatted} h`} sx={{ mr: 2 }} />
         </Box>
       </AccordionSummary>
@@ -45,7 +46,7 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
         {toggle ? (
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
             {workday.entries.map((entry) => (
-              <EntryFlexRow entry={entry} date={dayjs(workday.date)} key={entry.key} />
+              <EntryFlexRow entry={entry} date={date} key={entry.key} />
             ))}
           </Box>
         ) : (
