@@ -11,6 +11,7 @@ import AcceptedChip from "./AcceptedChip";
 import DeleteEntryButton from "./DeleteEntryButton";
 import DimensionChip from "./DimensionChip";
 import EditEntryButton from "./EditEntryButton";
+import PaidChip from "./PaidChip";
 
 type EntryFlexRowProps = {
   entry: Entry;
@@ -21,6 +22,7 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
   const dayjs = useDayjs();
   const { product, activity, issue, client, description } = entry;
   const accepted = entry.acceptanceStatus === AcceptanceStatus.Accepted;
+  const paid = entry.acceptanceStatus === AcceptanceStatus.Paid;
 
   return (
     <Box
@@ -28,7 +30,7 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
         bgcolor: grey[800],
         borderRadius: 4,
         pl: 1,
-        pr: accepted ? 0 : 1,
+        pr: accepted || paid ? 0 : 1,
         overflow: "hidden",
         display: "flex",
         alignItems: "stretch",
@@ -87,6 +89,10 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
       {accepted ? (
         <Box>
           <AcceptedChip />
+        </Box>
+      ) : paid ? (
+        <Box>
+          <PaidChip />
         </Box>
       ) : (
         <Box sx={{ display: "flex", alignItems: "center" }}>

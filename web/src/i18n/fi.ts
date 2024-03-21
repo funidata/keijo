@@ -42,6 +42,7 @@ const fi = {
   },
   entryTable: {
     accepted: "Hyväksytty",
+    paid: "Maksettu",
     head: {
       type: "Tyyppi",
       duration: "Kesto (h)",
