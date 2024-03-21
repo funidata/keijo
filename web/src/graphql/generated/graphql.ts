@@ -24,6 +24,7 @@ export enum AcceptanceStatus {
   Accepted = "Accepted",
   Checked = "Checked",
   Open = "Open",
+  Paid = "Paid",
 }
 
 export type AddWorkdayEntryInput = {
