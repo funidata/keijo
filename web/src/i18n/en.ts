@@ -42,6 +42,7 @@ const en = {
   },
   entryTable: {
     accepted: "Accepted",
+    paid: "Paid",
     head: {
       type: "Type",
       duration: "Duration (h)",
