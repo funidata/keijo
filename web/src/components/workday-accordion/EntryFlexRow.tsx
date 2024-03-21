@@ -7,11 +7,11 @@ import { grey } from "@mui/material/colors";
 import { Dayjs } from "dayjs";
 import useDayjs from "../../common/useDayjs";
 import { AcceptanceStatus, Entry } from "../../graphql/generated/graphql";
-import AcceptedChip from "./AcceptedChip";
 import DeleteEntryButton from "./DeleteEntryButton";
 import DimensionChip from "./DimensionChip";
 import EditEntryButton from "./EditEntryButton";
-import PaidChip from "./PaidChip";
+import AcceptedChip from "./status-chips/AcceptedChip";
+import PaidChip from "./status-chips/PaidChip";
 
 type EntryFlexRowProps = {
   entry: Entry;
