@@ -1,13 +1,13 @@
 import { Box, AppBar as MuiAppBar, Toolbar } from "@mui/material";
-import { useDarkMode } from "usehooks-ts";
 import KeijoLogo from "../../common/KeijoLogo";
 import ColorModeToggle from "../../theme/ColorModeToggle";
+import useDarkMode from "../../theme/useDarkMode";
 import EntryDialogButton from "../entry-dialog/EntryDialogButton";
 import LanguageSelect from "../language-select/LanguageSelect";
 import Title from "./Title";
 
 const AppBar = () => {
-  const { isDarkMode } = useDarkMode();
+  const { darkMode } = useDarkMode();
 
   return (
     <MuiAppBar position="sticky" sx={{ mb: 4 }}>
@@ -15,7 +15,7 @@ const AppBar = () => {
         <KeijoLogo />
         <Title />
         <Box
-          color={isDarkMode ? "primary.light" : "contrastText"}
+          color={darkMode ? "primary.light" : "contrastText"}
           sx={{ display: "flex", flexWrap: "nowrap" }}
         >
           <EntryDialogButton />
