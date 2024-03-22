@@ -1,7 +1,7 @@
 import { PaletteMode, PaletteOptions } from "@mui/material";
 import { grey } from "@mui/material/colors";
 
-const brandColors = {
+export const brandColors = {
   turquoise: {
     dark: "#4bbec8",
     main: "#93d8de",
