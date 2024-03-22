@@ -34,14 +34,13 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
         setExpanded(expd);
       }}
     >
-      <AccordionSummary expandIcon={<ExpandMoreIcon color="primary" />}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Box
           sx={{
             display: "flex",
             flexGrow: 1,
             justifyContent: "space-between",
             alignItems: "center",
-            color: "primary.light",
           }}
         >
           <Typography sx={{ textTransform: "capitalize" }}>{date.format("dd L")}</Typography>

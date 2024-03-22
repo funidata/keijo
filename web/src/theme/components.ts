@@ -20,7 +20,14 @@ const lightComponents: Components = {
   },
 };
 
-const darkComponents: Components = {};
+const darkComponents: Components = {
+  MuiAccordionSummary: {
+    styleOverrides: {
+      root: { color: brandColors.lime.light },
+      expandIconWrapper: { color: brandColors.lime.light },
+    },
+  },
+};
 
 export const getComponents = (mode: PaletteMode) =>
   mode === "light" ? lightComponents : darkComponents;
