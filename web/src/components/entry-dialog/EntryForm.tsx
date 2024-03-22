@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { Entry } from "../../graphql/generated/graphql";
 import BigDeleteEntryButton from "./BigDeleteEntryButton";
 import DimensionComboBox from "./DimensionComboBox";
-import DimensionSelect from "./DimensionSelect";
 import DurationSlider from "./DurationSlider";
 import { EntryFormSchema } from "./EntryDialog";
 import ResponsiveDatePicker from "./ResponsiveDatePicker";
@@ -50,10 +49,10 @@ const EntryForm = ({ control, reset, onSubmit, editEntry, originalDate }: EntryF
             mb: 3,
           }}
         >
-          <DimensionSelect control={control} name="product" title={t("entryDialog.product")} />
-          <DimensionSelect control={control} name="activity" title={t("entryDialog.activity")} />
+          <DimensionComboBox control={control} name="product" title={t("entryDialog.product")} />
+          <DimensionComboBox control={control} name="activity" title={t("entryDialog.activity")} />
           <DimensionComboBox control={control} name="issue" title={t("entryDialog.issue")} />
-          <DimensionSelect control={control} name="client" title={t("entryDialog.client")} />
+          <DimensionComboBox control={control} name="client" title={t("entryDialog.client")} />
         </Grid>
         {mobile ? (
           <>
