@@ -12,7 +12,7 @@ import useDayjs from "../../common/useDayjs";
 import { Workday } from "../../graphql/generated/graphql";
 import EntryDialogButton from "../entry-dialog/EntryDialogButton";
 import EntryFlexRow from "./EntryFlexRow";
-import EntryTable from "./EntryTable";
+import useWorkdayAccordionState from "./useWorkdayAccordionState";
 
 type WorkdayAccordionProps = {
   workday: Workday;
@@ -21,13 +21,19 @@ type WorkdayAccordionProps = {
 const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
   const dayjs = useDayjs();
   const date = dayjs(workday.date);
+  const { expanded, setExpanded } = useWorkdayAccordionState(date);
+
   const totalHours = sum(workday.entries.map((wd) => wd.duration));
   const totalHoursFormatted = dayjs.duration(totalHours, "hour").format("H:mm");
 
-  const toggle = true;
-
   return (
-    <Accordion defaultExpanded disableGutters>
+    <Accordion
+      disableGutters
+      expanded={expanded}
+      onChange={(_, expd) => {
+        setExpanded(expd);
+      }}
+    >
       <AccordionSummary expandIcon={<ExpandMoreIcon color="primary" />}>
         <Box
           sx={{
@@ -46,15 +52,11 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
         </Box>
       </AccordionSummary>
       <AccordionDetails>
-        {toggle ? (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-            {workday.entries.map((entry) => (
-              <EntryFlexRow entry={entry} date={date} key={entry.key} />
-            ))}
-          </Box>
-        ) : (
-          <EntryTable workday={workday} />
-        )}
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+          {workday.entries.map((entry) => (
+            <EntryFlexRow entry={entry} date={date} key={entry.key} />
+          ))}
+        </Box>
       </AccordionDetails>
     </Accordion>
   );
