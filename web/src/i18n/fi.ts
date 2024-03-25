@@ -53,6 +53,7 @@ const fi = {
       browseByWeek: "Selaa viikkoja",
       browseByDates: "Hae päivämäärillä",
     },
+    noEntries: "Ei merkintöjä",
   },
   notifications: {
     addEntry: {

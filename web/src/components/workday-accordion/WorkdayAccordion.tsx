@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { sum } from "lodash";
 import { SyntheticEvent } from "react";
+import { useTranslation } from "react-i18next";
 import useDayjs from "../../common/useDayjs";
 import { Workday } from "../../graphql/generated/graphql";
 import EntryDialogButton from "../entry-dialog/EntryDialogButton";
@@ -20,6 +21,7 @@ type WorkdayAccordionProps = {
 };
 
 const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
+  const { t } = useTranslation();
   const dayjs = useDayjs();
   const date = dayjs(workday.date);
   const { expanded, setExpanded } = useWorkdayAccordionState(date);
@@ -48,6 +50,13 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
           }}
         >
           <Typography sx={{ textTransform: "capitalize" }}>{date.format("dd L")}</Typography>
+          {empty && (
+            <Chip
+              label={t("entryTable.noEntries")}
+              variant="outlined"
+              style={{ color: "inherit", fontStyle: "italic" }}
+            />
+          )}
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <EntryDialogButton date={date} size="medium" />
             <Chip label={`${totalHoursFormatted} h`} sx={{ mr: 2, color: "inherit" }} />
