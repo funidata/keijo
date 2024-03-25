@@ -1,30 +1,25 @@
-import { Components, PaletteMode } from "@mui/material";
-import { brandColors } from "./palette";
+import { PaletteMode, ThemeOptions } from "@mui/material";
 
-const lightComponents: Components = {
+const lightComponents: ThemeOptions["components"] = {
   MuiTab: {
     styleOverrides: {
-      root: {
-        "&.Mui-selected": {
-          color: brandColors.violet.dark,
-        },
-      },
+      root: ({ theme }) => ({ "&.Mui-selected": { color: theme.palette.secondary.dark } }),
     },
   },
   MuiTabs: {
     styleOverrides: {
-      indicator: {
-        backgroundColor: brandColors.violet.dark,
-      },
+      indicator: ({ theme }) => ({
+        backgroundColor: theme.palette.secondary.dark,
+      }),
     },
   },
 };
 
-const darkComponents: Components = {
+const darkComponents: ThemeOptions["components"] = {
   MuiAccordionSummary: {
     styleOverrides: {
-      root: { color: brandColors.lime.light },
-      expandIconWrapper: { color: brandColors.lime.light },
+      root: ({ theme }) => ({ color: theme.palette.primary.light }),
+      expandIconWrapper: ({ theme }) => ({ color: theme.palette.primary.light }),
     },
   },
 };
