@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { sum } from "lodash";
+import { SyntheticEvent } from "react";
 import useDayjs from "../../common/useDayjs";
 import { Workday } from "../../graphql/generated/graphql";
 import EntryDialogButton from "../entry-dialog/EntryDialogButton";
@@ -26,14 +27,17 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
   const totalHours = sum(workday.entries.map((wd) => wd.duration));
   const totalHoursFormatted = dayjs.duration(totalHours, "hour").format("H:mm");
 
+  const empty = workday.entries.length === 0;
+
+  const toggleAccordion = (_: SyntheticEvent, expd: boolean) => {
+    if (empty) {
+      return;
+    }
+    setExpanded(expd);
+  };
+
   return (
-    <Accordion
-      disableGutters
-      expanded={expanded}
-      onChange={(_, expd) => {
-        setExpanded(expd);
-      }}
-    >
+    <Accordion disableGutters expanded={empty ? false : expanded} onChange={toggleAccordion}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Box
           sx={{
