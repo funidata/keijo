@@ -6,7 +6,6 @@ import {
   Alert,
   Box,
   Button,
-  Divider,
   Grid,
   TextField,
   useMediaQuery,
@@ -41,42 +40,47 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryForm
 
   return (
     <form onSubmit={onSubmit} onReset={reset}>
-      <Grid container spacing={2} item>
+      <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              {dayjs(date).format("dddd L")}
-            </AccordionSummary>
-            <AccordionDetails>
-              <Controller name="date" control={control} render={ResponsiveDatePicker} />
-            </AccordionDetails>
-          </Accordion>
+          <Grid container spacing={2}>
+            <DimensionComboBox control={control} name="product" title={t("entryDialog.product")} />
+            <DimensionComboBox
+              control={control}
+              name="activity"
+              title={t("entryDialog.activity")}
+            />
+            <DimensionComboBox control={control} name="issue" title={t("entryDialog.issue")} />
+            <DimensionComboBox control={control} name="client" title={t("entryDialog.client")} />
+            <Grid item xs={12}>
+              <Controller
+                name="description"
+                control={control}
+                render={({ field }) => (
+                  <TextField {...field} label={t("entryDialog.description")} fullWidth />
+                )}
+              />
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={12} md={6}>
           <Controller name="duration" control={control} render={DurationSlider} />
-          <Controller
-            name="description"
-            control={control}
-            render={({ field }) => (
-              <TextField {...field} label={t("entryDialog.description")} fullWidth />
-            )}
-          />
-          {mobile && <Divider sx={{ width: "100%", mt: 3, mb: 1, bgcolor: "secondary.dark" }} />}
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row", gap: 16 },
-            mt: { xs: 0, md: 3 },
-            mb: 3,
-          }}
-        >
-          <DimensionComboBox control={control} name="product" title={t("entryDialog.product")} />
-          <DimensionComboBox control={control} name="activity" title={t("entryDialog.activity")} />
-          <DimensionComboBox control={control} name="issue" title={t("entryDialog.issue")} />
-          <DimensionComboBox control={control} name="client" title={t("entryDialog.client")} />
+          {mobile ? (
+            <Controller name="date" control={control} render={ResponsiveDatePicker} />
+          ) : (
+            <Box>
+              <Accordion sx={{ border: 0 }}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  sx={{ textTransform: "capitalize" }}
+                >
+                  {dayjs(date).format("dddd L")}
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Controller name="date" control={control} render={ResponsiveDatePicker} />
+                </AccordionDetails>
+              </Accordion>
+            </Box>
+          )}
         </Grid>
         {editEntry && (
           <Grid item xs={12}>
@@ -85,7 +89,7 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryForm
         )}
         {mobile ? (
           <>
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ mt: 2 }}>
               <Button type="submit" variant="contained" size="large" fullWidth>
                 {t("entryDialog.submit")}
               </Button>
@@ -102,7 +106,7 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryForm
             </Grid>
           </>
         ) : (
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ mt: 2 }}>
             <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
               <Button type="reset" variant="outlined" size="large" onClick={reset}>
                 {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
