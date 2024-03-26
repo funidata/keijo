@@ -20,9 +20,14 @@ const EditEntryButton = ({ entry, date }: EditEntryButtonProps) => {
     <>
       <IconButton
         aria-label={t("controls.editEntry")}
-        color="primary"
         size="medium"
         onClick={toggleOpen}
+        sx={(theme) => ({
+          color:
+            theme.palette.mode === "dark"
+              ? theme.palette.primary.main
+              : theme.palette.secondary.dark,
+        })}
       >
         <EditIcon fontSize="inherit" />
       </IconButton>
