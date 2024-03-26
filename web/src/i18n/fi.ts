@@ -14,6 +14,7 @@ const fi = {
     selectWeek: "Viikko",
     startDate: "Alku",
     openMenu: "Avaa valikko",
+    useDarkMode: "Synkkyys",
   },
   dimensionNames: {
     product: "Tuote",
