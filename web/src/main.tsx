@@ -1,4 +1,4 @@
-import { LicenseInfo } from "@mui/x-date-pickers-pro";
+import { LicenseInfo } from "@mui/x-license";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import Home from "./Home";
