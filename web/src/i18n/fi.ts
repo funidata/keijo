@@ -13,6 +13,7 @@ const fi = {
     endDate: "Loppu",
     selectWeek: "Viikko",
     startDate: "Alku",
+    openMenu: "Avaa valikko",
   },
   dimensionNames: {
     product: "Tuote",

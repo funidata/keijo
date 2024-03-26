@@ -13,6 +13,7 @@ const en = {
     endDate: "To",
     selectWeek: "Week",
     startDate: "From",
+    openMenu: "Open menu",
   },
   dimensionNames: {
     product: "Product",
