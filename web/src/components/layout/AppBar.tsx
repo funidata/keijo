@@ -1,13 +1,16 @@
-import { Box, AppBar as MuiAppBar, Toolbar } from "@mui/material";
+import { Box, AppBar as MuiAppBar, Toolbar, useMediaQuery, useTheme } from "@mui/material";
 import KeijoLogo from "../../common/KeijoLogo";
 import ColorModeToggle from "../../theme/ColorModeToggle";
 import useDarkMode from "../../theme/useDarkMode";
 import EntryDialogButton from "../entry-dialog/EntryDialogButton";
 import LanguageSelect from "../language-select/LanguageSelect";
+import AppMenuButton from "./AppMenu";
 import Title from "./Title";
 
 const AppBar = () => {
   const { darkMode } = useDarkMode();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <MuiAppBar position="sticky" sx={{ mb: 4 }}>
@@ -18,9 +21,15 @@ const AppBar = () => {
           color={darkMode ? "primary.light" : "contrastText"}
           sx={{ display: "flex", flexWrap: "nowrap" }}
         >
-          <EntryDialogButton />
-          {process.env.NODE_ENV === "development" && <ColorModeToggle />}
-          <LanguageSelect />
+          {mobile ? (
+            <AppMenuButton />
+          ) : (
+            <>
+              <EntryDialogButton />
+              <ColorModeToggle />
+              <LanguageSelect />
+            </>
+          )}
         </Box>
       </Toolbar>
     </MuiAppBar>

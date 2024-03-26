@@ -13,6 +13,8 @@ const en = {
     endDate: "To",
     selectWeek: "Week",
     startDate: "From",
+    openMenu: "Open menu",
+    useDarkMode: "Dark Mode",
   },
   dimensionNames: {
     product: "Product",
