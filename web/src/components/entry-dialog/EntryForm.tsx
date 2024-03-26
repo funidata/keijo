@@ -1,16 +1,20 @@
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Alert,
   Box,
   Button,
-  Divider,
   Grid,
   TextField,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { Dayjs } from "dayjs";
-import { Control, Controller } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import useDayjs from "../../common/useDayjs";
 import { Entry } from "../../graphql/generated/graphql";
 import BigDeleteEntryButton from "./BigDeleteEntryButton";
 import DimensionComboBox from "./DimensionComboBox";
@@ -19,49 +23,64 @@ import { EntryFormSchema } from "./EntryDialog";
 import ResponsiveDatePicker from "./ResponsiveDatePicker";
 
 type EntryFormProps = {
-  control: Control<EntryFormSchema>;
+  form: UseFormReturn<EntryFormSchema>;
   onSubmit: () => void;
   reset: () => void;
   editEntry?: Entry;
   originalDate?: Dayjs;
 };
 
-const EntryForm = ({ control, reset, onSubmit, editEntry, originalDate }: EntryFormProps) => {
+const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryFormProps) => {
+  const dayjs = useDayjs();
   const { t } = useTranslation();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
+  const { control, watch } = form;
+  const date = watch("date");
 
   return (
     <form onSubmit={onSubmit} onReset={reset}>
-      <Grid container spacing={2} item>
+      <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <Controller name="date" control={control} render={ResponsiveDatePicker} />
+          <Grid container spacing={2}>
+            <DimensionComboBox control={control} name="product" title={t("entryDialog.product")} />
+            <DimensionComboBox
+              control={control}
+              name="activity"
+              title={t("entryDialog.activity")}
+            />
+            <DimensionComboBox control={control} name="issue" title={t("entryDialog.issue")} />
+            <DimensionComboBox control={control} name="client" title={t("entryDialog.client")} />
+            <Grid item xs={12}>
+              <Controller
+                name="description"
+                control={control}
+                render={({ field }) => (
+                  <TextField {...field} label={t("entryDialog.description")} fullWidth />
+                )}
+              />
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={12} md={6}>
           <Controller name="duration" control={control} render={DurationSlider} />
-          <Controller
-            name="description"
-            control={control}
-            render={({ field }) => (
-              <TextField {...field} label={t("entryDialog.description")} fullWidth />
-            )}
-          />
-          {mobile && <Divider sx={{ width: "100%", mt: 3, mb: 1, bgcolor: "secondary.dark" }} />}
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row", gap: 16 },
-            mt: { xs: 0, md: 3 },
-            mb: 3,
-          }}
-        >
-          <DimensionComboBox control={control} name="product" title={t("entryDialog.product")} />
-          <DimensionComboBox control={control} name="activity" title={t("entryDialog.activity")} />
-          <DimensionComboBox control={control} name="issue" title={t("entryDialog.issue")} />
-          <DimensionComboBox control={control} name="client" title={t("entryDialog.client")} />
+          {mobile ? (
+            <Controller name="date" control={control} render={ResponsiveDatePicker} />
+          ) : (
+            <Box>
+              <Accordion sx={{ border: 0 }}>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  sx={{ textTransform: "capitalize" }}
+                >
+                  {dayjs(date).format("dddd L")}
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Controller name="date" control={control} render={ResponsiveDatePicker} />
+                </AccordionDetails>
+              </Accordion>
+            </Box>
+          )}
         </Grid>
         {editEntry && (
           <Grid item xs={12}>
@@ -70,7 +89,7 @@ const EntryForm = ({ control, reset, onSubmit, editEntry, originalDate }: EntryF
         )}
         {mobile ? (
           <>
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ mt: 2 }}>
               <Button type="submit" variant="contained" size="large" fullWidth>
                 {t("entryDialog.submit")}
               </Button>
@@ -87,7 +106,7 @@ const EntryForm = ({ control, reset, onSubmit, editEntry, originalDate }: EntryF
             </Grid>
           </>
         ) : (
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ mt: 2 }}>
             <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
               <Button type="reset" variant="outlined" size="large" onClick={reset}>
                 {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
