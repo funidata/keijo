@@ -1,12 +1,9 @@
-import BuildIcon from "@mui/icons-material/Build";
-import LayersIcon from "@mui/icons-material/Layers";
-import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import PersonIcon from "@mui/icons-material/Person";
 import { Box, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { Dayjs } from "dayjs";
 import useDayjs from "../../common/useDayjs";
 import { AcceptanceStatus, Entry } from "../../graphql/generated/graphql";
+import useDarkMode from "../../theme/useDarkMode";
 import DeleteEntryButton from "./DeleteEntryButton";
 import DimensionChip from "./DimensionChip";
 import EditEntryButton from "./EditEntryButton";
@@ -19,6 +16,7 @@ type EntryFlexRowProps = {
 };
 
 const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
+  const { darkMode } = useDarkMode();
   const dayjs = useDayjs();
   const { product, activity, issue, client, description } = entry;
   const accepted = entry.acceptanceStatus === AcceptanceStatus.Accepted;
@@ -27,7 +25,7 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
   return (
     <Box
       sx={{
-        bgcolor: grey[800],
+        bgcolor: darkMode ? grey[800] : "primary.light",
         borderRadius: 4,
         pl: 1,
         pr: accepted || paid ? 0 : 1,
@@ -65,18 +63,10 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
             {dayjs.duration(entry.duration, "hour").format("H:mm")}
           </Typography>
         </Box>
-        {product && (
-          <DimensionChip icon={<LayersIcon fontSize="small" />} color="primary" label={product} />
-        )}
-        {activity && (
-          <DimensionChip icon={<BuildIcon fontSize="small" />} color="info" label={activity} />
-        )}
-        {issue && (
-          <DimensionChip icon={<LocalOfferIcon fontSize="small" />} color="success" label={issue} />
-        )}
-        {client && (
-          <DimensionChip icon={<PersonIcon fontSize="small" />} color="secondary" label={client} />
-        )}
+        {product && <DimensionChip dimension="product" label={product} />}
+        {activity && <DimensionChip dimension="activity" label={activity} />}
+        {issue && <DimensionChip dimension="issue" label={issue} />}
+        {client && <DimensionChip dimension="client" label={client} />}
         {description && (
           <Typography
             variant="subtitle2"
