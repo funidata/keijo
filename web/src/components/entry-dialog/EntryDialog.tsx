@@ -70,12 +70,12 @@ const EntryDialog = ({ editEntry, date, onClose, ...props }: EntryDialogProps) =
     client: editEntry?.client || "",
   };
 
+  const form = useForm<EntryFormSchema>({ defaultValues });
   const {
     handleSubmit,
-    control,
     reset,
     formState: { isSubmitSuccessful },
-  } = useForm<EntryFormSchema>({ defaultValues });
+  } = form;
 
   const addWorkday: SubmitHandler<EntryFormSchema> = async (formValues) => {
     const { date, duration, description, product, activity, issue, client } = formValues;
@@ -151,7 +151,7 @@ const EntryDialog = ({ editEntry, date, onClose, ...props }: EntryDialogProps) =
       </IconButton>
       <DialogContent sx={{ maxWidth: "100vw" }}>
         <EntryForm
-          control={control}
+          form={form}
           onSubmit={handleSubmit(onSubmit)}
           reset={reset}
           editEntry={editEntry}

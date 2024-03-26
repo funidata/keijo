@@ -1,4 +1,8 @@
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Alert,
   Box,
   Button,
@@ -9,8 +13,9 @@ import {
   useTheme,
 } from "@mui/material";
 import { Dayjs } from "dayjs";
-import { Control, Controller } from "react-hook-form";
+import { Controller, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import useDayjs from "../../common/useDayjs";
 import { Entry } from "../../graphql/generated/graphql";
 import BigDeleteEntryButton from "./BigDeleteEntryButton";
 import DimensionComboBox from "./DimensionComboBox";
@@ -19,23 +24,33 @@ import { EntryFormSchema } from "./EntryDialog";
 import ResponsiveDatePicker from "./ResponsiveDatePicker";
 
 type EntryFormProps = {
-  control: Control<EntryFormSchema>;
+  form: UseFormReturn<EntryFormSchema>;
   onSubmit: () => void;
   reset: () => void;
   editEntry?: Entry;
   originalDate?: Dayjs;
 };
 
-const EntryForm = ({ control, reset, onSubmit, editEntry, originalDate }: EntryFormProps) => {
+const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryFormProps) => {
+  const dayjs = useDayjs();
   const { t } = useTranslation();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
+  const { control, watch } = form;
+  const date = watch("date");
 
   return (
     <form onSubmit={onSubmit} onReset={reset}>
       <Grid container spacing={2} item>
         <Grid item xs={12} md={6}>
-          <Controller name="date" control={control} render={ResponsiveDatePicker} />
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              {dayjs(date).format("dddd L")}
+            </AccordionSummary>
+            <AccordionDetails>
+              <Controller name="date" control={control} render={ResponsiveDatePicker} />
+            </AccordionDetails>
+          </Accordion>
         </Grid>
         <Grid item xs={12} md={6}>
           <Controller name="duration" control={control} render={DurationSlider} />
