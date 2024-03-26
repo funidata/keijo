@@ -1,4 +1,13 @@
-import { Box, Button, Divider, Grid, TextField, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Divider,
+  Grid,
+  TextField,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { Dayjs } from "dayjs";
 import { Control, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -54,6 +63,11 @@ const EntryForm = ({ control, reset, onSubmit, editEntry, originalDate }: EntryF
           <DimensionComboBox control={control} name="issue" title={t("entryDialog.issue")} />
           <DimensionComboBox control={control} name="client" title={t("entryDialog.client")} />
         </Grid>
+        {editEntry && (
+          <Grid item xs={12}>
+            <Alert severity="info">{t("entryDialog.editingNote")}</Alert>
+          </Grid>
+        )}
         {mobile ? (
           <>
             <Grid item xs={12}>

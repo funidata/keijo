@@ -41,6 +41,8 @@ const fi = {
     noSelection: "Ei valintaa",
     clear: "Tyhjennä",
     delete: "Poista",
+    editingNote:
+      "Olet muokkaamassa olemassa olevaa kirjausta. Huomaa, että muokattu kirjaus tulee siirtymään listan viimeiseksi. Tämä johtuu siitä, että Netvisor API ei tue kirjauksen muokkaamista, vaan pellin alla vanha poistetaan ja sen tilalle luodaan uusi kirjaus.",
   },
   entryTable: {
     accepted: "Hyväksytty",

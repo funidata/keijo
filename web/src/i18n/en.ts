@@ -41,6 +41,8 @@ const en = {
     noSelection: "No selection",
     clear: "Clear",
     delete: "Delete",
+    editingNote:
+      "You are editing an existing entry. Note that this entry will move to the end of the list. This is due to Netvisor API not supporting actually editing entries, rather the old entry will be deleted and a new one created in its place.",
   },
   entryTable: {
     accepted: "Accepted",
