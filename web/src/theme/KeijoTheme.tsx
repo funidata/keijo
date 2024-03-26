@@ -6,18 +6,26 @@ import "@fontsource/roboto/700.css";
 import { PaletteMode } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ReactNode, useMemo } from "react";
-import { getPalette } from "./get-palette";
-import useDarkModeDisabled from "./useDarkModeDisabled";
+import { getComponents } from "./components";
+import { getPalette } from "./palette";
+import useDarkMode from "./useDarkMode";
 
 type KeijoThemeProps = {
   children: ReactNode;
 };
 
 const KeijoTheme = ({ children }: KeijoThemeProps) => {
-  const { isDarkMode } = useDarkModeDisabled();
-  const mode: PaletteMode = isDarkMode ? "dark" : "light";
+  const { darkMode } = useDarkMode();
+  const mode: PaletteMode = darkMode ? "dark" : "light";
 
-  const theme = useMemo(() => createTheme(getPalette(mode)), [mode]);
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: getPalette(mode),
+        components: getComponents(mode),
+      }),
+    [mode],
+  );
 
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };

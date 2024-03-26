@@ -53,6 +53,7 @@ const en = {
       browseByWeek: "Browse by week",
       browseByDates: "Browse by dates",
     },
+    noEntries: "No entries",
   },
   notifications: {
     addEntry: {

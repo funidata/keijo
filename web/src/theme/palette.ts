@@ -49,8 +49,6 @@ const darkPalette: PaletteOptions = {
 };
 
 export const getPalette = (mode: PaletteMode) => ({
-  palette: {
-    mode,
-    ...(mode === "light" ? lightPalette : darkPalette),
-  },
+  mode,
+  ...(mode === "light" ? lightPalette : darkPalette),
 });
