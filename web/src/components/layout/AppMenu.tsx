@@ -1,6 +1,7 @@
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import CheckIcon from "@mui/icons-material/Check";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
   Box,
@@ -21,7 +22,10 @@ import useDarkMode from "../../theme/useDarkMode";
 import EntryDialog from "../entry-dialog/EntryDialog";
 
 const AppMenuButton = () => {
-  const { t } = useTranslation();
+  const {
+    t,
+    i18n: { changeLanguage, language },
+  } = useTranslation();
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [menuOpen, setMenuOpen] = useState(false);
   const [entryDialogOpen, setEntryDialogOpen] = useState(false);
@@ -33,6 +37,13 @@ const AppMenuButton = () => {
   const toggleEntryDialog = () => {
     setEntryDialogOpen((prev) => !prev);
   };
+
+  const selectLanguage = (languageCode: string) => {
+    changeLanguage(languageCode);
+    document.documentElement.lang = languageCode;
+  };
+
+  const visibilityFor = (lang: string) => (language === lang ? "visible" : "hidden");
 
   const iconProps: IconPropsSizeOverrides = { fontSize: "large" };
 
@@ -56,7 +67,7 @@ const AppMenuButton = () => {
               }}
             >
               <ListItemIcon>
-                <AddCircleIcon fontSize="large" />
+                <AddCircleIcon {...iconProps} />
               </ListItemIcon>
               <ListItemText primaryTypographyProps={{ variant: "h5" }}>
                 {t("entryDialog.title")}
@@ -72,6 +83,23 @@ const AppMenuButton = () => {
               {t("controls.useDarkMode")}
             </ListItemText>
             <Switch edge="end" onChange={toggleDarkMode} checked={darkMode} sx={{ mr: 2 }} />
+          </ListItem>
+          <Divider />
+          <ListItem>
+            <ListItemButton onClick={() => selectLanguage("fi")}>
+              <ListItemIcon>
+                <CheckIcon {...iconProps} visibility={visibilityFor("fi")} />
+              </ListItemIcon>
+              <ListItemText primaryTypographyProps={{ variant: "h5" }}>Suomi</ListItemText>
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton onClick={() => selectLanguage("en")}>
+              <ListItemIcon>
+                <CheckIcon {...iconProps} visibility={visibilityFor("en")} />
+              </ListItemIcon>
+              <ListItemText primaryTypographyProps={{ variant: "h5" }}>English</ListItemText>
+            </ListItemButton>
           </ListItem>
         </List>
       </Drawer>
