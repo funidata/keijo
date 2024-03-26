@@ -13,6 +13,14 @@ const lightComponents: ThemeOptions["components"] = {
       }),
     },
   },
+  MuiButton: {
+    styleOverrides: {
+      outlined: ({ theme }) => ({
+        color: theme.palette.secondary.dark,
+        borderColor: theme.palette.secondary.dark,
+      }),
+    },
+  },
 };
 
 const darkComponents: ThemeOptions["components"] = {
