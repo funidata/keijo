@@ -2,7 +2,7 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import { DatePicker, StaticDatePicker } from "@mui/x-date-pickers-pro";
 import { ControllerRenderProps } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { EntryFormSchema } from "./EntryDialog";
+import { EntryFormSchema } from "./useEntryForm";
 
 type ResponsiveDatePickerProps = {
   field: ControllerRenderProps<EntryFormSchema, "date">;
