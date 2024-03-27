@@ -43,6 +43,8 @@ const fi = {
     delete: "Poista",
     editingNote:
       "Olet muokkaamassa olemassa olevaa kirjausta. Huomaa, että muokattu kirjaus tulee siirtymään listan viimeiseksi. Tämä johtuu siitä, että Netvisor API ei tue kirjauksen muokkaamista, vaan pellin alla vanha poistetaan ja sen tilalle luodaan uusi kirjaus.",
+    openStatusNote:
+      "Tämä kirjaus on jätetty Netvisorissa avoimeen tilaan. Voit muuttaa sen kuitatuksi Keijossa tallentamalla kirjauksen sellaisenaan tai vaihtoehtoisesti käydä päivittämässä tilan Netvisorin kautta.",
     validation: {
       productRequired: "Tuote on pakollinen tieto.",
       activityRequired: "Toiminto on pakollinen tieto.",
@@ -64,6 +66,7 @@ const fi = {
       browseByDates: "Hae päivämäärillä",
     },
     noEntries: "Ei merkintöjä",
+    open: "Avoin",
   },
   notifications: {
     addEntry: {

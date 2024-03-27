@@ -8,6 +8,7 @@ import DeleteEntryButton from "./DeleteEntryButton";
 import DimensionChip from "./DimensionChip";
 import EditEntryButton from "./EditEntryButton";
 import AcceptedChip from "./status-chips/AcceptedChip";
+import OpenChip from "./status-chips/OpenChip";
 import PaidChip from "./status-chips/PaidChip";
 
 type EntryFlexRowProps = {
@@ -21,6 +22,7 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
   const { product, activity, issue, client, description } = entry;
   const accepted = entry.acceptanceStatus === AcceptanceStatus.Accepted;
   const paid = entry.acceptanceStatus === AcceptanceStatus.Paid;
+  const open = entry.acceptanceStatus === AcceptanceStatus.Open;
 
   return (
     <Box
@@ -28,7 +30,7 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
         bgcolor: darkMode ? grey[800] : "primary.light",
         borderRadius: 4,
         pl: 1,
-        pr: accepted || paid ? 0 : 1,
+        pr: accepted || paid || open ? 0 : 1,
         overflow: "hidden",
         display: "flex",
         alignItems: "stretch",
@@ -76,24 +78,31 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
           </Typography>
         )}
       </Box>
-      {accepted ? (
-        <Box>
-          <AcceptedChip />
-        </Box>
-      ) : paid ? (
-        <Box>
-          <PaidChip />
-        </Box>
-      ) : (
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+      <Box sx={{ display: "flex" }}>
+        {accepted ? (
           <Box>
-            <EditEntryButton date={date} entry={entry} />
+            <AcceptedChip />
           </Box>
-          <Box sx={{ display: { xs: "none", md: "block" }, ml: -0.5 }}>
-            <DeleteEntryButton date={date} entryKey={entry.key} />
+        ) : paid ? (
+          <Box>
+            <PaidChip />
           </Box>
-        </Box>
-      )}
+        ) : (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box>
+              <EditEntryButton date={date} entry={entry} />
+            </Box>
+            <Box sx={{ display: { xs: "none", md: "block" }, ml: -0.5 }}>
+              <DeleteEntryButton date={date} entryKey={entry.key} />
+            </Box>
+          </Box>
+        )}
+        {open && (
+          <Box>
+            <OpenChip />
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 };

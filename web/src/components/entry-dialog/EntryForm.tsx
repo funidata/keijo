@@ -15,7 +15,7 @@ import { Dayjs } from "dayjs";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import useDayjs from "../../common/useDayjs";
-import { Entry } from "../../graphql/generated/graphql";
+import { AcceptanceStatus, Entry } from "../../graphql/generated/graphql";
 import BigDeleteEntryButton from "./BigDeleteEntryButton";
 import DimensionComboBox from "./DimensionComboBox";
 import DurationSlider from "./DurationSlider";
@@ -112,6 +112,11 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryForm
             </Box>
           )}
         </Grid>
+        {editEntry?.acceptanceStatus === AcceptanceStatus.Open && (
+          <Grid item xs={12}>
+            <Alert severity="warning">{t("entryDialog.openStatusNote")}</Alert>
+          </Grid>
+        )}
         {editEntry && (
           <Grid item xs={12}>
             <Alert severity="info">{t("entryDialog.editingNote")}</Alert>
