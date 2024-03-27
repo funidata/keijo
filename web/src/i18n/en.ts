@@ -64,6 +64,7 @@ const en = {
       browseByDates: "Browse by dates",
     },
     noEntries: "No entries",
+    open: "Open",
   },
   notifications: {
     addEntry: {

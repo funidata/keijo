@@ -64,6 +64,7 @@ const fi = {
       browseByDates: "Hae päivämäärillä",
     },
     noEntries: "Ei merkintöjä",
+    open: "Avoin",
   },
   notifications: {
     addEntry: {
