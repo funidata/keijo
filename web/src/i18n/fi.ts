@@ -43,6 +43,12 @@ const fi = {
     delete: "Poista",
     editingNote:
       "Olet muokkaamassa olemassa olevaa kirjausta. Huomaa, että muokattu kirjaus tulee siirtymään listan viimeiseksi. Tämä johtuu siitä, että Netvisor API ei tue kirjauksen muokkaamista, vaan pellin alla vanha poistetaan ja sen tilalle luodaan uusi kirjaus.",
+    validation: {
+      productRequired: "Tuote on pakollinen tieto.",
+      activityRequired: "Toiminto on pakollinen tieto.",
+      descriptionRequired: "Kommentti on pakollinen tieto.",
+      ticketOrDescriptionRequired: "Lisää kommentti, mikäli työlle ei löydy tikettiä.",
+    },
   },
   entryTable: {
     accepted: "Hyväksytty",

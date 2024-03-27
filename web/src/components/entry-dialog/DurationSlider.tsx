@@ -4,7 +4,7 @@ import { Dayjs } from "dayjs";
 import { ControllerRenderProps } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import useDayjs from "../../common/useDayjs";
-import { EntryFormSchema } from "./EntryDialog";
+import { EntryFormSchema } from "./useEntryForm";
 
 type DurationSliderProps = {
   field: ControllerRenderProps<EntryFormSchema, "duration">;

@@ -1,17 +1,17 @@
 import { useQuery } from "@apollo/client";
 import { Autocomplete, FormControl, Grid, TextField } from "@mui/material";
-import { Control, Controller } from "react-hook-form";
+import { Control, Controller, ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
 import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
-import { EntryFormSchema } from "./EntryDialog";
+import { EntryFormSchema } from "./useEntryForm";
 
 type DimensionComboBoxProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  control: Control<EntryFormSchema, any>;
+  form: UseFormReturn<EntryFormSchema>;
   name: "product" | "activity" | "issue" | "client";
   title: string;
+  rules?: ControllerProps["rules"];
 };
 
-const DimensionComboBox = ({ control, name, title }: DimensionComboBoxProps) => {
+const DimensionComboBox = ({ form, name, title, rules }: DimensionComboBoxProps) => {
   const { data } = useQuery(FindDimensionOptionsDocument);
 
   const options = data?.findDimensionOptions[name] || [];
@@ -20,8 +20,9 @@ const DimensionComboBox = ({ control, name, title }: DimensionComboBoxProps) => 
     <Grid item xs={12} md={6}>
       <FormControl fullWidth>
         <Controller
-          control={control}
+          control={form.control as unknown as Control<FieldValues>}
           name={name}
+          rules={rules}
           render={({ field: { value, onChange } }) => {
             return (
               <Autocomplete
@@ -31,7 +32,13 @@ const DimensionComboBox = ({ control, name, title }: DimensionComboBoxProps) => 
                 autoHighlight
                 autoSelect
                 renderInput={(params) => (
-                  <TextField {...params} label={title} onChange={onChange} />
+                  <TextField
+                    {...params}
+                    label={title}
+                    onChange={onChange}
+                    error={!!form.formState.errors[name]}
+                    helperText={form.formState.errors[name]?.message}
+                  />
                 )}
               />
             );

@@ -43,6 +43,12 @@ const en = {
     delete: "Delete",
     editingNote:
       "You are editing an existing entry. Note that this entry will move to the end of the list. This is due to Netvisor API not supporting actually editing entries, rather the old entry will be deleted and a new one created in its place.",
+    validation: {
+      productRequired: "Product is required",
+      activityRequired: "Function is required",
+      descriptionRequired: "Description is required.",
+      ticketOrDescriptionRequired: "Description is required if there is no relevant issue.",
+    },
   },
   entryTable: {
     accepted: "Accepted",

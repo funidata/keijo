@@ -30,6 +30,15 @@ const darkComponents: ThemeOptions["components"] = {
       expandIconWrapper: ({ theme }) => ({ color: theme.palette.primary.light }),
     },
   },
+  MuiFormHelperText: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        "&.Mui-error": {
+          color: theme.palette.error.contrastText,
+        },
+      }),
+    },
+  },
 };
 
 export const getComponents = (mode: PaletteMode) =>

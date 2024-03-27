@@ -19,8 +19,8 @@ import { Entry } from "../../graphql/generated/graphql";
 import BigDeleteEntryButton from "./BigDeleteEntryButton";
 import DimensionComboBox from "./DimensionComboBox";
 import DurationSlider from "./DurationSlider";
-import { EntryFormSchema } from "./EntryDialog";
 import ResponsiveDatePicker from "./ResponsiveDatePicker";
+import { EntryFormSchema } from "./useEntryForm";
 
 type EntryFormProps = {
   form: UseFormReturn<EntryFormSchema>;
@@ -43,20 +43,50 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryForm
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <Grid container spacing={2}>
-            <DimensionComboBox control={control} name="product" title={t("entryDialog.product")} />
             <DimensionComboBox
-              control={control}
+              form={form}
+              name="product"
+              title={t("entryDialog.product")}
+              rules={{ required: t("entryDialog.validation.productRequired") }}
+            />
+            <DimensionComboBox
+              form={form}
               name="activity"
               title={t("entryDialog.activity")}
+              rules={{ required: t("entryDialog.validation.activityRequired") }}
             />
-            <DimensionComboBox control={control} name="issue" title={t("entryDialog.issue")} />
-            <DimensionComboBox control={control} name="client" title={t("entryDialog.client")} />
+            <DimensionComboBox form={form} name="issue" title={t("entryDialog.issue")} />
+            <DimensionComboBox form={form} name="client" title={t("entryDialog.client")} />
             <Grid item xs={12}>
               <Controller
                 name="description"
                 control={control}
+                rules={{
+                  validate: (descriptionValue) => {
+                    const activity = watch("activity");
+                    const ticketRequired = activity === "Toteutus";
+
+                    if (ticketRequired && !watch("issue") && !descriptionValue) {
+                      return t("entryDialog.validation.ticketOrDescriptionRequired");
+                    }
+
+                    const descriptionRequired = activity === "Sisäiset palaverit ja tapahtumat";
+
+                    if (descriptionRequired && !descriptionValue) {
+                      return t("entryDialog.validation.descriptionRequired");
+                    }
+
+                    return true;
+                  },
+                }}
                 render={({ field }) => (
-                  <TextField {...field} label={t("entryDialog.description")} fullWidth />
+                  <TextField
+                    {...field}
+                    label={t("entryDialog.description")}
+                    error={!!form.formState.errors.description}
+                    helperText={form.formState.errors.description?.message}
+                    fullWidth
+                  />
                 )}
               />
             </Grid>
