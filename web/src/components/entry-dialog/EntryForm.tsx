@@ -38,6 +38,12 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryForm
   const { control, watch } = form;
   const date = watch("date");
 
+  // FIXME: This is really hacky and I'm sorry.
+  const activitiesRequiringTicket =
+    process.env.NODE_ENV === "development"
+      ? ["tunkkaus"]
+      : ["Suunnittelu", "Toteutus", "Testaus", "DevOps", "Datamigraatio"];
+
   return (
     <form onSubmit={onSubmit} onReset={reset}>
       <Grid container spacing={3}>
@@ -61,8 +67,25 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryForm
               <Controller
                 name="description"
                 control={control}
+                rules={{
+                  validate: () => {
+                    const ticketRequired = activitiesRequiringTicket.includes(watch("activity"));
+
+                    if (ticketRequired && !watch("issue")) {
+                      return "ticket";
+                    }
+
+                    return true;
+                  },
+                }}
                 render={({ field }) => (
-                  <TextField {...field} label={t("entryDialog.description")} fullWidth />
+                  <TextField
+                    {...field}
+                    label={t("entryDialog.description")}
+                    error={!!form.formState.errors.description}
+                    helperText={form.formState.errors.description?.message}
+                    fullWidth
+                  />
                 )}
               />
             </Grid>
