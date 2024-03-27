@@ -38,12 +38,6 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryForm
   const { control, watch } = form;
   const date = watch("date");
 
-  // FIXME: This is really hacky and I'm sorry.
-  const activitiesRequiringTicket =
-    process.env.NODE_ENV === "development"
-      ? ["tunkkaus"]
-      : ["Suunnittelu", "Toteutus", "Testaus", "DevOps", "Datamigraatio"];
-
   return (
     <form onSubmit={onSubmit} onReset={reset}>
       <Grid container spacing={3}>
@@ -68,11 +62,18 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryForm
                 name="description"
                 control={control}
                 rules={{
-                  validate: () => {
-                    const ticketRequired = activitiesRequiringTicket.includes(watch("activity"));
+                  validate: (descriptionValue) => {
+                    const activity = watch("activity");
+                    const ticketRequired = activity === "Toteutus";
 
-                    if (ticketRequired && !watch("issue")) {
-                      return "ticket";
+                    if (ticketRequired && !watch("issue") && !descriptionValue) {
+                      return t("entryDialog.validation.ticketOrDescriptionRequired");
+                    }
+
+                    const descriptionRequired = activity === "Sisäiset palaverit ja tapahtumat";
+
+                    if (descriptionRequired && !descriptionValue) {
+                      return t("entryDialog.validation.descriptionRequired");
                     }
 
                     return true;

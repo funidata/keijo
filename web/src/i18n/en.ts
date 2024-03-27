@@ -46,6 +46,8 @@ const en = {
     validation: {
       productRequired: "Product is required",
       activityRequired: "Function is required",
+      descriptionRequired: "Description is required.",
+      ticketOrDescriptionRequired: "Description is required if there is no relevant issue.",
     },
   },
   entryTable: {
