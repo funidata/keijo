@@ -14,11 +14,7 @@ type DimensionComboBoxProps = {
 const DimensionComboBox = ({ control, name, title }: DimensionComboBoxProps) => {
   const { data } = useQuery(FindDimensionOptionsDocument);
 
-  if (!data) {
-    return null;
-  }
-
-  const options = data.findDimensionOptions[name];
+  const options = data?.findDimensionOptions[name] || [];
 
   return (
     <Grid item xs={12} md={6}>
