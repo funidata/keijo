@@ -43,8 +43,18 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryForm
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <Grid container spacing={2}>
-            <DimensionComboBox form={form} name="product" title={t("entryDialog.product")} />
-            <DimensionComboBox form={form} name="activity" title={t("entryDialog.activity")} />
+            <DimensionComboBox
+              form={form}
+              name="product"
+              title={t("entryDialog.product")}
+              rules={{ required: t("entryDialog.validation.productRequired") }}
+            />
+            <DimensionComboBox
+              form={form}
+              name="activity"
+              title={t("entryDialog.activity")}
+              rules={{ required: t("entryDialog.validation.activityRequired") }}
+            />
             <DimensionComboBox form={form} name="issue" title={t("entryDialog.issue")} />
             <DimensionComboBox form={form} name="client" title={t("entryDialog.client")} />
             <Grid item xs={12}>

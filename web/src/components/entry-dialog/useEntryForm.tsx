@@ -105,6 +105,7 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
   };
 
   const onSubmit: SubmitHandler<EntryFormSchema> = async (formValues) => {
+    return console.log(form.formState.errors);
     if (editEntry) {
       await editWorkday(formValues);
     } else {
