@@ -13,6 +13,8 @@ const WorkdayList = () => {
 
   const { data } = useQuery(FindWorkdaysDocument, {
     variables: { start: start.format("YYYY-MM-DD"), end: end.format("YYYY-MM-DD") },
+    // Poll every 5 minutes, mainly to keep IDP session alive.
+    pollInterval: 5 * 60 * 1000,
   });
 
   if (!data) {
