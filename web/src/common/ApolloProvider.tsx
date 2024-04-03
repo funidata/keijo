@@ -1,4 +1,4 @@
-import { ApolloClient, HttpLink, InMemoryCache, ServerError, from } from "@apollo/client";
+import { ApolloClient, HttpLink, InMemoryCache, from } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import { useNotificationState } from "../components/global-notification/useNotification";
 
@@ -23,17 +23,6 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
         autoHide: false,
       }),
     );
-
-  // Server will respond with 302 redirect if IDP session has expired. As Apollo will not
-  // follow this redirect to initialize a new session, we reload the whole application.
-  // This (combined with polling) prevents situations where the user has left Keijo idling until
-  // the session expires and the next operation they try would fail.
-  if (networkError && Object.keys(networkError as object).includes("statusCode")) {
-    const { statusCode } = networkError as ServerError;
-    if (statusCode === 302) {
-      location.reload();
-    }
-  }
 
   if (networkError) {
     useNotificationState.getState().setNotification({
