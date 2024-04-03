@@ -8,6 +8,8 @@ import { SessionService } from "./session.service";
 export class SessionResolver {
   constructor(private sessionService: SessionService) {}
 
+  // FIXME: Rename; this checks for employee number, not session status per se.
+  // TODO: Also check for EPPN here?
   @BypassHeadersGuard()
   @Query(() => SessionStatus)
   getSessionStatus(@EmployeeNumber() employeeNumber: number | undefined): SessionStatus {
