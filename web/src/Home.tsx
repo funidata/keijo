@@ -1,4 +1,5 @@
 import { useQuery } from "@apollo/client";
+import axios from "axios";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import MissingHeadersAlert from "./components/MissingHeadersAlert";
@@ -14,6 +15,15 @@ const Home = () => {
   const { data } = useQuery(GetSessionStatusDocument);
 
   useEffect(() => setTitle(t("titles.workdayBrowser")), [t, setTitle]);
+
+  useEffect(() => {
+    (async () => {
+      const ses = await axios.get("/Shibboleth.sso/Session", {
+        headers: { "Content-Type": "application/json" },
+      });
+      console.log(ses);
+    })();
+  }, []);
 
   if (!data) {
     return null;
