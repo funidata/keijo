@@ -10,6 +10,7 @@ import {
 import { sum } from "lodash";
 import { SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
+import { roundToFullMinutes } from "../../common/duration";
 import useDayjs from "../../common/useDayjs";
 import { Workday } from "../../graphql/generated/graphql";
 import EntryDialogButton from "../entry-dialog/EntryDialogButton";
@@ -27,7 +28,8 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
   const { expanded, setExpanded } = useWorkdayAccordionState(date);
 
   const totalHours = sum(workday.entries.map((wd) => wd.duration));
-  const totalHoursFormatted = dayjs.duration(totalHours, "hour").format("H:mm");
+  const totalDuration = dayjs.duration(totalHours, "hour");
+  const totalHoursFormatted = roundToFullMinutes(totalDuration).format("H:mm");
 
   const empty = workday.entries.length === 0;
 

@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { Dayjs } from "dayjs";
-import useDayjs from "../../common/useDayjs";
+import dayjs, { Dayjs } from "dayjs";
+import { roundToFullMinutes } from "../../common/duration";
 import { AcceptanceStatus, Entry } from "../../graphql/generated/graphql";
 import useDarkMode from "../../theme/useDarkMode";
 import DeleteEntryButton from "./DeleteEntryButton";
@@ -18,11 +18,11 @@ type EntryFlexRowProps = {
 
 const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
   const { darkMode } = useDarkMode();
-  const dayjs = useDayjs();
   const { product, activity, issue, client, description } = entry;
   const accepted = entry.acceptanceStatus === AcceptanceStatus.Accepted;
   const paid = entry.acceptanceStatus === AcceptanceStatus.Paid;
   const open = entry.acceptanceStatus === AcceptanceStatus.Open;
+  const roundedDuration = roundToFullMinutes(dayjs.duration(entry.duration, "hour"));
 
   return (
     <Box
@@ -61,9 +61,7 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
             mr: 1,
           }}
         >
-          <Typography variant="h6">
-            {dayjs.duration(entry.duration, "hour").format("H:mm")}
-          </Typography>
+          <Typography variant="h6">{roundedDuration.format("HH:mm")}</Typography>
         </Box>
         {product && <DimensionChip dimension="product" label={product} />}
         {activity && <DimensionChip dimension="activity" label={activity} />}
