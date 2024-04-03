@@ -16,7 +16,7 @@ const DurationSlider = ({ field }: DurationSliderProps) => {
   const hoursDecimal = Number(field.value);
   const timeFieldValue = dayjs()
     .hour(hoursDecimal)
-    .minute((hoursDecimal % 1) * 60);
+    .minute(Math.round((hoursDecimal % 1) * 60));
 
   const handleTimeFieldChange = (value: Dayjs | null) => {
     if (!value) {
