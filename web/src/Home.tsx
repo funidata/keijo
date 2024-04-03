@@ -19,7 +19,7 @@ const Home = () => {
   useEffect(() => {
     (async () => {
       const ses = await axios.get("/Shibboleth.sso/Session", {
-        headers: { "Content-Type": "application/json" },
+        headers: { Accept: "application/json" },
       });
       console.log(ses);
     })();
