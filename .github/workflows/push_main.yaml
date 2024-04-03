@@ -42,6 +42,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Tag image
-        run: docker tag keijo ghcr.io/funidata/keijo:next
+        run: docker tag keijo ghcr.io/funidata/keijo:next.2
       - name: Push image to GHCR
-        run: docker push ghcr.io/funidata/keijo:next
+        run: docker push ghcr.io/funidata/keijo:next.2
