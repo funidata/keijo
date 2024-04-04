@@ -36,7 +36,7 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryForm
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const { control, watch } = form;
-  const date = watch("date");
+  const date = dayjs(watch("date")).locale(dayjs.locale());
 
   return (
     <form onSubmit={onSubmit} onReset={reset}>
@@ -103,7 +103,7 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryForm
                   expandIcon={<ExpandMoreIcon />}
                   sx={{ textTransform: "capitalize" }}
                 >
-                  {dayjs(date).format("dddd L")}
+                  {date.format("dddd L")}
                 </AccordionSummary>
                 <AccordionDetails>
                   <Controller name="date" control={control} render={ResponsiveDatePicker} />

@@ -24,7 +24,7 @@ type WorkdayAccordionProps = {
 const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
   const { t } = useTranslation();
   const dayjs = useDayjs();
-  const date = dayjs(workday.date);
+  const date = dayjs(workday.date).locale(dayjs.locale());
   const { expanded, setExpanded } = useWorkdayAccordionState(date);
 
   const totalHours = sum(workday.entries.map((wd) => wd.duration));
@@ -51,7 +51,7 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
             alignItems: "center",
           }}
         >
-          <Typography sx={{ textTransform: "capitalize" }}>{date.format("dd L")}</Typography>
+          <Typography sx={{ textTransform: "capitalize" }}>{date.format("dd l")}</Typography>
           {empty && (
             <Chip
               label={t("entryTable.noEntries")}
