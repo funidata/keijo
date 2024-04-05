@@ -68,6 +68,7 @@ const fi = {
     noEntries: "Ei merkintöjä",
     open: "Avoin",
     holiday: "Vapaapäivä",
+    weekend: "Viikonloppu",
   },
   notifications: {
     addEntry: {

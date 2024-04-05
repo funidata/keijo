@@ -1,6 +1,7 @@
 import { Accordion, AccordionDetails, Box } from "@mui/material";
 import { SyntheticEvent } from "react";
 import { isHoliday } from "../../common/isHoliday";
+import { isWeekend } from "../../common/isWeekend";
 import useDayjs from "../../common/useDayjs";
 import { Workday } from "../../graphql/generated/graphql";
 import EntryFlexRow from "./EntryFlexRow";
@@ -15,6 +16,7 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
   const dayjs = useDayjs();
   const date = dayjs(workday.date).locale(dayjs.locale());
   const holiday = isHoliday(date);
+  const weekend = isWeekend(date);
 
   const { expanded, setExpanded } = useWorkdayAccordionState(date);
 
@@ -34,10 +36,12 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
       onChange={toggleAccordion}
       sx={{
         bgcolor: (theme) => {
-          if (!holiday) {
-            return "";
+          if (holiday || weekend) {
+            return theme.palette.mode === "dark"
+              ? theme.palette.grey[900]
+              : theme.palette.grey[300];
           }
-          return theme.palette.mode === "dark" ? theme.palette.grey[900] : theme.palette.grey[300];
+          return "";
         },
       }}
     >
