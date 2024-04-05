@@ -67,6 +67,7 @@ const en = {
     },
     noEntries: "No entries",
     open: "Open",
+    holiday: "Holiday",
   },
   notifications: {
     addEntry: {

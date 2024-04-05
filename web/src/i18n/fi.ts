@@ -67,6 +67,7 @@ const fi = {
     },
     noEntries: "Ei merkintöjä",
     open: "Avoin",
+    holiday: "Vapaapäivä",
   },
   notifications: {
     addEntry: {
