@@ -69,6 +69,7 @@ const en = {
     open: "Open",
     holiday: "Holiday",
     weekend: "Weekend",
+    vacation: "Vacation",
   },
   notifications: {
     addEntry: {
