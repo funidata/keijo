@@ -30,7 +30,6 @@ const DimensionComboBox = ({ form, name, title, rules }: DimensionComboBoxProps)
                 onChange={(_, value) => onChange(value)}
                 options={options}
                 autoHighlight
-                autoSelect
                 renderInput={(params) => (
                   <TextField
                     {...params}
