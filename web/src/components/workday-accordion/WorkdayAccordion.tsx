@@ -1,20 +1,11 @@
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Chip,
-  Typography,
-} from "@mui/material";
-import { sum } from "lodash";
+import { Accordion, AccordionDetails, Box } from "@mui/material";
 import { SyntheticEvent } from "react";
-import { useTranslation } from "react-i18next";
-import { roundToFullMinutes } from "../../common/duration";
+import { isHoliday } from "../../common/isHoliday";
+import { isWeekend } from "../../common/isWeekend";
 import useDayjs from "../../common/useDayjs";
 import { Workday } from "../../graphql/generated/graphql";
-import EntryDialogButton from "../entry-dialog/EntryDialogButton";
 import EntryFlexRow from "./EntryFlexRow";
+import WorkdaySummary from "./WorkdaySummary";
 import useWorkdayAccordionState from "./useWorkdayAccordionState";
 
 type WorkdayAccordionProps = {
@@ -22,14 +13,12 @@ type WorkdayAccordionProps = {
 };
 
 const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
-  const { t } = useTranslation();
   const dayjs = useDayjs();
   const date = dayjs(workday.date).locale(dayjs.locale());
-  const { expanded, setExpanded } = useWorkdayAccordionState(date);
+  const holiday = isHoliday(date);
+  const weekend = isWeekend(date);
 
-  const totalHours = sum(workday.entries.map((wd) => wd.duration));
-  const totalDuration = dayjs.duration(totalHours, "hour");
-  const totalHoursFormatted = roundToFullMinutes(totalDuration).format("H:mm");
+  const { expanded, setExpanded } = useWorkdayAccordionState(date);
 
   const empty = workday.entries.length === 0;
 
@@ -41,30 +30,22 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
   };
 
   return (
-    <Accordion disableGutters expanded={empty ? false : expanded} onChange={toggleAccordion}>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Box
-          sx={{
-            display: "flex",
-            flexGrow: 1,
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Typography sx={{ textTransform: "capitalize" }}>{date.format("dd l")}</Typography>
-          {empty && (
-            <Chip
-              label={t("entryTable.noEntries")}
-              variant="outlined"
-              style={{ color: "inherit", fontStyle: "italic" }}
-            />
-          )}
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <EntryDialogButton date={date} size="medium" />
-            <Chip label={`${totalHoursFormatted} h`} sx={{ mr: 2, color: "inherit" }} />
-          </Box>
-        </Box>
-      </AccordionSummary>
+    <Accordion
+      disableGutters
+      expanded={empty ? false : expanded}
+      onChange={toggleAccordion}
+      sx={{
+        bgcolor: (theme) => {
+          if (holiday || weekend) {
+            return theme.palette.mode === "dark"
+              ? theme.palette.grey[900]
+              : theme.palette.grey[300];
+          }
+          return "";
+        },
+      }}
+    >
+      <WorkdaySummary workday={workday} />
       <AccordionDetails>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           {workday.entries.map((entry) => (
