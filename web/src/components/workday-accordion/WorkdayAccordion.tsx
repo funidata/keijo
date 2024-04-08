@@ -45,6 +45,11 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
           }
           return "";
         },
+        borderTop: expanded ? "1px solid" : "",
+        borderColor: "rgba(255, 255, 255, 0.12)",
+        "&:first-of-type": {
+          border: "none",
+        },
       }}
     >
       <WorkdaySummary workday={workday} />
