@@ -1,9 +1,9 @@
 import { Box, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import dayjs, { Dayjs } from "dayjs";
-import { roundToFullMinutes } from "../../common/duration";
-import { AcceptanceStatus, Entry } from "../../graphql/generated/graphql";
-import useDarkMode from "../../theme/useDarkMode";
+import { roundToFullMinutes } from "../../../common/duration";
+import { AcceptanceStatus, Entry } from "../../../graphql/generated/graphql";
+import useDarkMode from "../../../theme/useDarkMode";
 import DeleteEntryButton from "./DeleteEntryButton";
 import DimensionChip from "./DimensionChip";
 import EditEntryButton from "./EditEntryButton";
@@ -16,7 +16,7 @@ type EntryFlexRowProps = {
   date: Dayjs;
 };
 
-const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
+const EntryRow = ({ entry, date }: EntryFlexRowProps) => {
   const { darkMode } = useDarkMode();
   const { product, activity, issue, client, description } = entry;
   const accepted = entry.acceptanceStatus === AcceptanceStatus.Accepted;
@@ -105,4 +105,4 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
   );
 };
 
-export default EntryFlexRow;
+export default EntryRow;

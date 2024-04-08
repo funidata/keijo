@@ -5,8 +5,8 @@ import { isVacation } from "../../common/isVacation";
 import { isWeekend } from "../../common/isWeekend";
 import useDayjs from "../../common/useDayjs";
 import { Workday } from "../../graphql/generated/graphql";
-import EntryFlexRow from "./EntryFlexRow";
 import WorkdaySummary from "./WorkdaySummary";
+import EntryRow from "./entry-row/EntryRow";
 import useWorkdayAccordionState from "./useWorkdayAccordionState";
 
 type WorkdayAccordionProps = {
@@ -56,7 +56,7 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
       <AccordionDetails>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           {workday.entries.map((entry) => (
-            <EntryFlexRow entry={entry} date={date} key={entry.key} />
+            <EntryRow entry={entry} date={date} key={entry.key} />
           ))}
         </Box>
       </AccordionDetails>

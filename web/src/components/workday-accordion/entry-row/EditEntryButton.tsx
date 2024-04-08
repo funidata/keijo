@@ -3,8 +3,8 @@ import { IconButton } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Entry } from "../../graphql/generated/graphql";
-import EntryDialog from "../entry-dialog/EntryDialog";
+import { Entry } from "../../../graphql/generated/graphql";
+import EntryDialog from "../../entry-dialog/EntryDialog";
 
 type EditEntryButtonProps = {
   entry: Entry;
