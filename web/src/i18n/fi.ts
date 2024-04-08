@@ -69,6 +69,7 @@ const fi = {
     open: "Avoin",
     holiday: "Vapaapäivä",
     weekend: "Viikonloppu",
+    vacation: "Vuosiloma",
   },
   notifications: {
     addEntry: {

@@ -1,6 +1,7 @@
 import { Accordion, AccordionDetails, Box } from "@mui/material";
 import { SyntheticEvent } from "react";
 import { isHoliday } from "../../common/isHoliday";
+import { isVacation } from "../../common/isVacation";
 import { isWeekend } from "../../common/isWeekend";
 import useDayjs from "../../common/useDayjs";
 import { Workday } from "../../graphql/generated/graphql";
@@ -17,13 +18,14 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
   const date = dayjs(workday.date).locale(dayjs.locale());
   const holiday = isHoliday(date);
   const weekend = isWeekend(date);
+  const disabled = isVacation(workday);
 
-  const { expanded, setExpanded } = useWorkdayAccordionState(date);
-
+  const { expanded: preferExpanded, setExpanded } = useWorkdayAccordionState(date);
   const empty = workday.entries.length === 0;
+  const expanded = empty || disabled ? false : preferExpanded;
 
   const toggleAccordion = (_: SyntheticEvent, expd: boolean) => {
-    if (empty) {
+    if (empty || disabled) {
       return;
     }
     setExpanded(expd);
@@ -32,16 +34,21 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
   return (
     <Accordion
       disableGutters
-      expanded={empty ? false : expanded}
+      expanded={expanded}
       onChange={toggleAccordion}
       sx={{
         bgcolor: (theme) => {
-          if (holiday || weekend) {
+          if (holiday || weekend || disabled) {
             return theme.palette.mode === "dark"
               ? theme.palette.grey[900]
               : theme.palette.grey[300];
           }
           return "";
+        },
+        borderTop: expanded ? "1px solid" : "",
+        borderColor: "rgba(255, 255, 255, 0.12)",
+        "&:first-of-type": {
+          border: "none",
         },
       }}
     >
