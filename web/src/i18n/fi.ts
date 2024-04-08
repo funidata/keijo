@@ -70,6 +70,7 @@ const fi = {
     holiday: "Vapaapäivä",
     weekend: "Viikonloppu",
     vacation: "Vuosiloma",
+    flexLeave: "Saldovapaa",
   },
   notifications: {
     addEntry: {

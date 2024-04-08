@@ -1,7 +1,7 @@
 import { Accordion, AccordionDetails, Box } from "@mui/material";
 import { SyntheticEvent } from "react";
 import useDayjs from "../../common/useDayjs";
-import { isHoliday, isVacation, isWeekend } from "../../common/workdayUtils";
+import { isHoliday, isSpecialSingleEntryDay, isWeekend } from "../../common/workdayUtils";
 import { Workday } from "../../graphql/generated/graphql";
 import WorkdaySummary from "./WorkdaySummary";
 import EntryRow from "./entry-row/EntryRow";
@@ -16,7 +16,7 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
   const date = dayjs(workday.date).locale(dayjs.locale());
   const holiday = isHoliday(date);
   const weekend = isWeekend(date);
-  const disabled = isVacation(workday);
+  const disabled = isSpecialSingleEntryDay(workday);
 
   const { expanded: preferExpanded, setExpanded } = useWorkdayAccordionState(date);
   const empty = workday.entries.length === 0;
