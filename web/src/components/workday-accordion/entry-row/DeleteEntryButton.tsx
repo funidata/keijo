@@ -4,8 +4,11 @@ import { IconButton, Menu, MenuItem } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { MouseEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FindWorkdaysDocument, RemoveWorkdayEntryDocument } from "../../graphql/generated/graphql";
-import { useNotification } from "../global-notification/useNotification";
+import {
+  FindWorkdaysDocument,
+  RemoveWorkdayEntryDocument,
+} from "../../../graphql/generated/graphql";
+import { useNotification } from "../../global-notification/useNotification";
 
 type DeleteEntryButtonProps = {
   entryKey: string;

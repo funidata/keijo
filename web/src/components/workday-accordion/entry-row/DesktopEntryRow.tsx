@@ -1,22 +1,18 @@
 import { Box, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import dayjs, { Dayjs } from "dayjs";
-import { roundToFullMinutes } from "../../common/duration";
-import { AcceptanceStatus, Entry } from "../../graphql/generated/graphql";
-import useDarkMode from "../../theme/useDarkMode";
+import dayjs from "dayjs";
+import { roundToFullMinutes } from "../../../common/duration";
+import { AcceptanceStatus } from "../../../graphql/generated/graphql";
+import useDarkMode from "../../../theme/useDarkMode";
 import DeleteEntryButton from "./DeleteEntryButton";
 import DimensionChip from "./DimensionChip";
 import EditEntryButton from "./EditEntryButton";
+import { EntryRowProps } from "./EntryRow";
 import AcceptedChip from "./status-chips/AcceptedChip";
 import OpenChip from "./status-chips/OpenChip";
 import PaidChip from "./status-chips/PaidChip";
 
-type EntryFlexRowProps = {
-  entry: Entry;
-  date: Dayjs;
-};
-
-const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
+const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
   const { darkMode } = useDarkMode();
   const { product, activity, issue, client, description } = entry;
   const accepted = entry.acceptanceStatus === AcceptanceStatus.Accepted;
@@ -61,7 +57,7 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
             mr: 1,
           }}
         >
-          <Typography variant="h6">{roundedDuration.format("HH:mm")}</Typography>
+          <Typography variant="h6">{roundedDuration.format("H:mm")}</Typography>
         </Box>
         {product && <DimensionChip dimension="product" label={product} />}
         {activity && <DimensionChip dimension="activity" label={activity} />}
@@ -105,4 +101,4 @@ const EntryFlexRow = ({ entry, date }: EntryFlexRowProps) => {
   );
 };
 
-export default EntryFlexRow;
+export default DesktopEntryRow;
