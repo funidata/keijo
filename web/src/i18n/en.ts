@@ -72,6 +72,7 @@ const en = {
     vacation: "Vacation",
     flexLeave: "Flex Leave",
     sickLeave: "Sick Leave",
+    unknownEntry: "Unknown entry type",
   },
   notifications: {
     addEntry: {

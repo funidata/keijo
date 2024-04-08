@@ -72,6 +72,7 @@ const fi = {
     vacation: "Vuosiloma",
     flexLeave: "Saldovapaa",
     sickLeave: "Sairauspoissaolo",
+    unknownEntry: "Tuntematon kirjauslaji",
   },
   notifications: {
     addEntry: {
