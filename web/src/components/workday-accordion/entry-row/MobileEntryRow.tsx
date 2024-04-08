@@ -32,7 +32,7 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
         flexDirection: "column",
       }}
     >
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", minHeight: 40 }}>
         <Box
           sx={{
             display: "flex",
