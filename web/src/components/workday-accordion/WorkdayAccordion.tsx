@@ -1,9 +1,7 @@
 import { Accordion, AccordionDetails, Box } from "@mui/material";
 import { SyntheticEvent } from "react";
-import { isHoliday } from "../../common/isHoliday";
-import { isVacation } from "../../common/isVacation";
-import { isWeekend } from "../../common/isWeekend";
 import useDayjs from "../../common/useDayjs";
+import { isHoliday, isVacation, isWeekend } from "../../common/workdayUtils";
 import { Workday } from "../../graphql/generated/graphql";
 import WorkdaySummary from "./WorkdaySummary";
 import EntryRow from "./entry-row/EntryRow";
