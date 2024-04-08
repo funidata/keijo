@@ -6,6 +6,7 @@ import useDayjs from "../../common/useDayjs";
 import {
   isFlexLeaveDay,
   isHoliday,
+  isSickLeave,
   isSpecialSingleEntryDay,
   isVacation,
   isWeekend,
@@ -15,6 +16,7 @@ import EntryDialogButton from "../entry-dialog/EntryDialogButton";
 import FlexLeaveChip from "./info-chips/FlexLeaveChip";
 import HolidayChip from "./info-chips/HolidayChip";
 import NoEntriesChip from "./info-chips/NoEntriesChip";
+import SickLeaveChip from "./info-chips/SickLeaveChip";
 import VacationChip from "./info-chips/VacationChip";
 import WeekendChip from "./info-chips/WeekendChip";
 
@@ -31,6 +33,7 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
   const weekend = isWeekend(date);
   const vacation = isVacation(workday);
   const flexLeave = isFlexLeaveDay(workday);
+  const sickLeave = isSickLeave(workday);
   const disabled = isSpecialSingleEntryDay(workday);
 
   const totalHours = sum(workday.entries.map((wd) => wd.duration));
@@ -45,6 +48,9 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
     }
     if (flexLeave) {
       return <FlexLeaveChip />;
+    }
+    if (sickLeave) {
+      return <SickLeaveChip />;
     }
     if (weekend) {
       return <WeekendChip />;

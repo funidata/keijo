@@ -71,6 +71,7 @@ const en = {
     weekend: "Weekend",
     vacation: "Vacation",
     flexLeave: "Flex Leave",
+    sickLeave: "Sick Leave",
   },
   notifications: {
     addEntry: {

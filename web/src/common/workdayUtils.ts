@@ -25,7 +25,15 @@ export const isFlexLeaveDay = (workday: Workday): boolean => {
   return entry.entryType === EntryType.FlexLeave;
 };
 
+export const isSickLeave = (workday: Workday): boolean => {
+  if (workday.entries.length !== 1) {
+    return false;
+  }
+  const entry = workday.entries[0];
+  return entry.entryType === EntryType.SickLeave;
+};
+
 export const isWeekend = (date: Dayjs): boolean => date.weekday() === 5 || date.weekday() === 6;
 
 export const isSpecialSingleEntryDay = (workday: Workday): boolean =>
-  isVacation(workday) || isFlexLeaveDay(workday);
+  isVacation(workday) || isFlexLeaveDay(workday) || isSickLeave(workday);

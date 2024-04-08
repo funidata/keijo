@@ -71,6 +71,7 @@ const fi = {
     weekend: "Viikonloppu",
     vacation: "Vuosiloma",
     flexLeave: "Saldovapaa",
+    sickLeave: "Sairauspoissaolo",
   },
   notifications: {
     addEntry: {
