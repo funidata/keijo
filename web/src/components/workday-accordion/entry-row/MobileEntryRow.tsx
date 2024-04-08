@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import { roundToFullMinutes } from "../../../common/duration";
 import { AcceptanceStatus } from "../../../graphql/generated/graphql";
 import useDarkMode from "../../../theme/useDarkMode";
-import DeleteEntryButton from "./DeleteEntryButton";
 import DimensionChip from "./DimensionChip";
 import EditEntryButton from "./EditEntryButton";
 import { EntryRowProps } from "./EntryRow";
@@ -57,9 +56,6 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Box>
                 <EditEntryButton date={date} entry={entry} />
-              </Box>
-              <Box sx={{ display: "block", ml: -0.5 }}>
-                <DeleteEntryButton date={date} entryKey={entry.key} />
               </Box>
             </Box>
           )}
