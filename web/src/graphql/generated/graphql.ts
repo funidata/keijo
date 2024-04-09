@@ -144,6 +144,7 @@ export type FindWorkdaysQuery = {
       __typename?: "Entry";
       key: string;
       duration: number;
+      durationInHours: boolean;
       description: string;
       acceptanceStatus: AcceptanceStatus;
       entryType: string;
@@ -303,6 +304,7 @@ export const FindWorkdaysDocument = {
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "key" } },
                       { kind: "Field", name: { kind: "Name", value: "duration" } },
+                      { kind: "Field", name: { kind: "Name", value: "durationInHours" } },
                       { kind: "Field", name: { kind: "Name", value: "description" } },
                       { kind: "Field", name: { kind: "Name", value: "acceptanceStatus" } },
                       { kind: "Field", name: { kind: "Name", value: "entryType" } },

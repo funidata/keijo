@@ -5,6 +5,7 @@ import useDayjs from "../../common/useDayjs";
 import { FindWorkdaysDocument } from "../../graphql/generated/graphql";
 import WorkdayAccordion from "../workday-accordion/WorkdayAccordion";
 import LoadingIndicator from "./LoadingIndicator";
+import TotalHours from "./TotalHours";
 import useWorkdayBrowser from "./useWorkdayBrowser";
 
 const WorkdayList = () => {
@@ -34,11 +35,14 @@ const WorkdayList = () => {
   });
 
   return (
-    <Paper>
-      {workdays.map((wd) => (
-        <WorkdayAccordion workday={wd} key={wd.date.toString()} />
-      ))}
-    </Paper>
+    <>
+      <TotalHours workdays={workdays} />
+      <Paper>
+        {workdays.map((wd) => (
+          <WorkdayAccordion workday={wd} key={wd.date.toString()} />
+        ))}
+      </Paper>
+    </>
   );
 };
 
