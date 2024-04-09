@@ -12,6 +12,9 @@ export class Entry {
   duration: number;
 
   @Field()
+  durationInHours: boolean;
+
+  @Field()
   description: string;
 
   @Field(() => AcceptanceStatus)

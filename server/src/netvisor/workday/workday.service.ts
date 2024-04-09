@@ -8,6 +8,8 @@ import {
   GetWorkdaysNvSchema,
   getWorkdaysNvArrays,
 } from "../netvisor-api/schema/get-workdays-nv.schema";
+import { RecordType } from "../record-type/dto/record-type.dto";
+import { RecordTypeService } from "../record-type/record-type.service";
 import { EntryDimensions } from "./dto/entry.dto";
 import { Workday } from "./dto/workday.dto";
 import { AcceptanceStatus } from "./enum/acceptance-status.enum";
@@ -22,6 +24,7 @@ type WorkdayQuery = {
 export class WorkdayService {
   constructor(
     private netvisorApiService: NetvisorApiService,
+    private recordTypeService: RecordTypeService,
     private logger: Logger,
   ) {
     logger.setContext(WorkdayService.name);
@@ -41,17 +44,20 @@ export class WorkdayService {
       params,
     );
 
-    const workdays = this.toLocalWorkdays(data.Root);
+    const workdays = await this.toLocalWorkdays(data.Root);
     return workdays;
   }
 
-  private toLocalWorkdays(apiResult: GetWorkdaysNvSchema): Workday[] {
+  private async toLocalWorkdays(apiResult: GetWorkdaysNvSchema): Promise<Workday[]> {
+    const recordTypes = await this.recordTypeService.getRecordTypes();
+
     return apiResult.WorkDays.Workday.map((wd) => ({
       date: new Date(wd.Date),
       entries: wd.WorkdayHour.map((wdh) => ({
         key: wdh["@_netvisorkey"],
         acceptanceStatus: this.toAcceptanceStatusEnum(wdh.AcceptanceStatus),
         duration: wdh.Hours,
+        durationInHours: this.durationInHours(wdh.CollectorRatio["#text"], recordTypes),
         description: wdh.Description,
         entryType: wdh.CollectorRatio["#text"],
         ...this.transformDimensionsToObject(wdh.Dimension),
@@ -79,5 +85,9 @@ export class WorkdayService {
       throw new Error("Netvisor returned an unknown acceptance status value.");
     }
     return val as AcceptanceStatus;
+  }
+
+  private durationInHours(entryType: string, recordTypes: RecordType[]): boolean {
+    return recordTypes.find((rec) => rec.name === entryType)?.unitIsHour || false;
   }
 }

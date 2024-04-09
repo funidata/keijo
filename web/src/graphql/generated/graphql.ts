@@ -52,6 +52,7 @@ export type Entry = {
   client?: Maybe<Scalars["String"]["output"]>;
   description: Scalars["String"]["output"];
   duration: Scalars["Float"]["output"];
+  durationInHours: Scalars["Boolean"]["output"];
   entryType: Scalars["String"]["output"];
   issue?: Maybe<Scalars["String"]["output"]>;
   key: Scalars["String"]["output"];
