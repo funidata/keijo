@@ -41,7 +41,6 @@ const DurationSlider = ({ field }: DurationSliderProps) => {
         flexDirection: "column",
         alignItems: "center",
         mt: { xs: 2, md: 0 },
-        mb: { xs: 2, md: 4 },
       }}
     >
       <TimeField
