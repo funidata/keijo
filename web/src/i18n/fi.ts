@@ -51,6 +51,7 @@ const fi = {
       descriptionRequired: "Kommentti on pakollinen tieto.",
       ticketOrDescriptionRequired: "Lisää kommentti, mikäli työlle ei löydy tikettiä.",
     },
+    totalHoursToday: "Päivän työaika ennen tätä kirjausta",
   },
   entryTable: {
     accepted: "Hyväksytty",

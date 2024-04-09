@@ -20,6 +20,7 @@ import BigDeleteEntryButton from "./BigDeleteEntryButton";
 import DimensionComboBox from "./DimensionComboBox";
 import DurationSlider from "./DurationSlider";
 import ResponsiveDatePicker from "./ResponsiveDatePicker";
+import WorkdayHours from "./WorkdayHours";
 import { EntryFormSchema } from "./useEntryForm";
 
 type EntryFormProps = {
@@ -94,6 +95,9 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryForm
         </Grid>
         <Grid item xs={12} md={6}>
           <Controller name="duration" control={control} render={DurationSlider} />
+          <Box sx={{ mt: 2, mb: 3 }}>
+            <WorkdayHours date={date} />
+          </Box>
           {mobile ? (
             <Controller name="date" control={control} render={ResponsiveDatePicker} />
           ) : (

@@ -51,6 +51,7 @@ const en = {
       descriptionRequired: "Description is required.",
       ticketOrDescriptionRequired: "Description is required if there is no relevant issue.",
     },
+    totalHoursToday: "Time on selected day before this entry",
   },
   entryTable: {
     accepted: "Accepted",
