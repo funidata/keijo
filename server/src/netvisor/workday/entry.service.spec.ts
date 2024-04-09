@@ -10,6 +10,7 @@ import config from "../../config/config";
 import { Logger } from "../../logger/logger";
 import { NetvisorApiService } from "../netvisor-api/netvisor-api.service";
 import { NetvisorEndpoints } from "../netvisor-api/netvisor-endpoints.enum";
+import { Entry } from "./dto/entry.dto";
 import { Workday } from "./dto/workday.dto";
 import { EntryService } from "./entry.service";
 import { AcceptanceStatus } from "./enum/acceptance-status.enum";
@@ -19,9 +20,10 @@ const key = "100";
 const date = dayjs();
 const employeeNumber = 123;
 
-const entry = {
+const entry: Entry = {
   key,
   duration: 1,
+  durationInHours: true,
   description: "jee",
   acceptanceStatus: AcceptanceStatus.Checked,
   entryType: "tuntityö",

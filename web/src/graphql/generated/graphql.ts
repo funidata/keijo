@@ -52,6 +52,7 @@ export type Entry = {
   client?: Maybe<Scalars["String"]["output"]>;
   description: Scalars["String"]["output"];
   duration: Scalars["Float"]["output"];
+  durationInHours: Scalars["Boolean"]["output"];
   entryType: Scalars["String"]["output"];
   issue?: Maybe<Scalars["String"]["output"]>;
   key: Scalars["String"]["output"];
@@ -143,6 +144,7 @@ export type FindWorkdaysQuery = {
       __typename?: "Entry";
       key: string;
       duration: number;
+      durationInHours: boolean;
       description: string;
       acceptanceStatus: AcceptanceStatus;
       entryType: string;
@@ -302,6 +304,7 @@ export const FindWorkdaysDocument = {
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "key" } },
                       { kind: "Field", name: { kind: "Name", value: "duration" } },
+                      { kind: "Field", name: { kind: "Name", value: "durationInHours" } },
                       { kind: "Field", name: { kind: "Name", value: "description" } },
                       { kind: "Field", name: { kind: "Name", value: "acceptanceStatus" } },
                       { kind: "Field", name: { kind: "Name", value: "entryType" } },

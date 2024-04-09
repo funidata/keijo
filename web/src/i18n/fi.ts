@@ -73,6 +73,8 @@ const fi = {
     flexLeave: "Saldovapaa",
     sickLeave: "Sairauspoissaolo",
     unknownEntry: "Tuntematon kirjauslaji",
+    totalHoursInWeek: "Työaika tällä viikolla",
+    totalHoursInRange: "Työaika valitulla jaksolla",
   },
   notifications: {
     addEntry: {

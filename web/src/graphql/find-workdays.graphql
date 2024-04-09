@@ -4,6 +4,7 @@ query FindWorkdays($start: DateTime!, $end: DateTime!) {
     entries {
       key
       duration
+      durationInHours
       description
       acceptanceStatus
       entryType

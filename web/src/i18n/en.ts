@@ -73,6 +73,8 @@ const en = {
     flexLeave: "Flex Leave",
     sickLeave: "Sick Leave",
     unknownEntry: "Unknown entry type",
+    totalHoursInWeek: "Total hours this week",
+    totalHoursInRange: "Total hours in range",
   },
   notifications: {
     addEntry: {
