@@ -1,8 +1,7 @@
 import { Box, Chip, Typography } from "@mui/material";
 import { t } from "i18next";
-import { flatMap, sumBy } from "lodash";
-import { roundToFullMinutes } from "../../common/duration";
-import useDayjs from "../../common/useDayjs";
+import { flatMap } from "lodash";
+import { roundToFullMinutes, totalDurationOfEntries } from "../../common/duration";
 import { Workday } from "../../graphql/generated/graphql";
 import useWorkdayBrowser from "./useWorkdayBrowser";
 
@@ -11,15 +10,10 @@ type TotalHoursProps = {
 };
 
 const TotalHours = ({ workdays }: TotalHoursProps) => {
-  const dayjs = useDayjs();
   const { start, end } = useWorkdayBrowser();
 
   const entries = flatMap(workdays, (wd) => wd.entries);
-  const totalHours = sumBy(
-    entries.filter((entry) => entry.durationInHours),
-    "duration",
-  );
-  const totalDuration = dayjs.duration(totalHours, "hour");
+  const totalDuration = totalDurationOfEntries(entries);
   const totalHoursFormatted = roundToFullMinutes(totalDuration).format("H:mm");
 
   const weekView = start.weekday() === 0 && end.weekday() === 6;

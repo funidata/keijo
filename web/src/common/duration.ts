@@ -1,4 +1,7 @@
+import dayjs from "dayjs";
 import { Duration } from "dayjs/plugin/duration";
+import { sumBy } from "lodash";
+import { Entry } from "../graphql/generated/graphql";
 
 /**
  * Rounds duration to minute-precision.
@@ -24,4 +27,17 @@ export const roundToFullMinutes = (duration: Duration): Duration => {
   dur.$d.seconds = 0;
 
   return dur;
+};
+
+/**
+ * Sum durations of given entries.
+ *
+ * Ignores entries which are not hour-based.
+ */
+export const totalDurationOfEntries = (entries: Entry[]): Duration => {
+  const totalHours = sumBy(
+    entries.filter((entry) => entry.durationInHours),
+    "duration",
+  );
+  return dayjs.duration(totalHours, "hour");
 };

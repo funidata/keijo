@@ -1,7 +1,6 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { AccordionSummary, Box, Chip, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { sum } from "lodash";
-import { roundToFullMinutes } from "../../common/duration";
+import { roundToFullMinutes, totalDurationOfEntries } from "../../common/duration";
 import useDayjs from "../../common/useDayjs";
 import {
   isFlexLeaveDay,
@@ -36,8 +35,7 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
   const sickLeave = isSickLeave(workday);
   const disabled = isSpecialSingleEntryDay(workday);
 
-  const totalHours = sum(workday.entries.map((wd) => wd.duration));
-  const totalDuration = dayjs.duration(totalHours, "hour");
+  const totalDuration = totalDurationOfEntries(workday.entries);
   const totalHoursFormatted = roundToFullMinutes(totalDuration).format("H:mm");
 
   const empty = workday.entries.length === 0;
