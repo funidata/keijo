@@ -16,6 +16,8 @@ const UnknownEntry = ({ entry }: EntryRowProps) => {
           <i>{entry.description}</i>
         </>
       )}
+      <br />
+      {t("entryTable.unknownEntryNote")}
     </Alert>
   );
 };
