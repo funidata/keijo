@@ -74,6 +74,7 @@ const fi = {
     flexLeave: "Saldovapaa",
     sickLeave: "Sairauspoissaolo",
     unknownEntry: "Tuntematon kirjauslaji",
+    unknownEntryNote: "Käytä Netvisoria tämän kirjauslajin tarkastelemiseen ja muokkamiseen.",
     totalHoursInWeek: "Työaika tällä viikolla",
     totalHoursInRange: "Työaika valitulla jaksolla",
   },

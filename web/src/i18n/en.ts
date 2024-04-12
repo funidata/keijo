@@ -74,6 +74,7 @@ const en = {
     flexLeave: "Flex Leave",
     sickLeave: "Sick Leave",
     unknownEntry: "Unknown entry type",
+    unknownEntryNote: "Use Netvisor for this type of entry.",
     totalHoursInWeek: "Total hours this week",
     totalHoursInRange: "Total hours in range",
   },

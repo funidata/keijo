@@ -21,7 +21,10 @@ export class Entry {
   acceptanceStatus: AcceptanceStatus;
 
   @Field()
-  entryType: string;
+  typeName: string;
+
+  @Field(() => Number, { nullable: true })
+  ratioNumber: number | null;
 
   @Field(() => String, { nullable: true })
   product: string | null;
