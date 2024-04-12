@@ -56,6 +56,7 @@ export type Entry = {
   issue?: Maybe<Scalars["String"]["output"]>;
   key: Scalars["String"]["output"];
   product?: Maybe<Scalars["String"]["output"]>;
+  ratioNumber?: Maybe<Scalars["Float"]["output"]>;
   typeName: Scalars["String"]["output"];
 };
 
@@ -148,6 +149,7 @@ export type FindWorkdaysQuery = {
       description: string;
       acceptanceStatus: AcceptanceStatus;
       typeName: string;
+      ratioNumber?: number | null;
       product?: string | null;
       activity?: string | null;
       issue?: string | null;
@@ -308,6 +310,7 @@ export const FindWorkdaysDocument = {
                       { kind: "Field", name: { kind: "Name", value: "description" } },
                       { kind: "Field", name: { kind: "Name", value: "acceptanceStatus" } },
                       { kind: "Field", name: { kind: "Name", value: "typeName" } },
+                      { kind: "Field", name: { kind: "Name", value: "ratioNumber" } },
                       { kind: "Field", name: { kind: "Name", value: "product" } },
                       { kind: "Field", name: { kind: "Name", value: "activity" } },
                       { kind: "Field", name: { kind: "Name", value: "issue" } },

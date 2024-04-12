@@ -60,6 +60,7 @@ export class WorkdayService {
         durationInHours: this.durationInHours(wdh.CollectorRatio["#text"], recordTypes),
         description: wdh.Description,
         typeName: wdh.CollectorRatio["#text"],
+        ratioNumber: Number(wdh.CollectorRatio["@_number"]) || null,
         ...this.transformDimensionsToObject(wdh.Dimension),
       })),
     }));

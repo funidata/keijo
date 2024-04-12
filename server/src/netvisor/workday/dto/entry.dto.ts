@@ -23,6 +23,9 @@ export class Entry {
   @Field()
   typeName: string;
 
+  @Field(() => Number, { nullable: true })
+  ratioNumber: number | null;
+
   @Field(() => String, { nullable: true })
   product: string | null;
 

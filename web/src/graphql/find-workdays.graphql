@@ -8,6 +8,7 @@ query FindWorkdays($start: DateTime!, $end: DateTime!) {
       description
       acceptanceStatus
       typeName
+      ratioNumber
       product
       activity
       issue
