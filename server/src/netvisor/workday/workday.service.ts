@@ -50,6 +50,7 @@ export class WorkdayService {
 
   private async toLocalWorkdays(apiResult: GetWorkdaysNvSchema): Promise<Workday[]> {
     const recordTypes = await this.recordTypeService.getRecordTypes();
+    console.dir(recordTypes, { depth: null });
 
     return apiResult.WorkDays.Workday.map((wd) => ({
       date: new Date(wd.Date),
@@ -57,7 +58,10 @@ export class WorkdayService {
         key: wdh["@_netvisorkey"],
         acceptanceStatus: this.toAcceptanceStatusEnum(wdh.AcceptanceStatus),
         duration: wdh.Hours,
-        durationInHours: this.durationInHours(wdh.CollectorRatio["#text"], recordTypes),
+        durationInHours: this.durationInHours(
+          Number(wdh.CollectorRatio["@_number"]) || null,
+          recordTypes,
+        ),
         description: wdh.Description,
         typeName: wdh.CollectorRatio["#text"],
         ratioNumber: Number(wdh.CollectorRatio["@_number"]) || null,
@@ -88,7 +92,10 @@ export class WorkdayService {
     return val as AcceptanceStatus;
   }
 
-  private durationInHours(typeName: string, recordTypes: RecordType[]): boolean {
-    return recordTypes.find((rec) => rec.name === typeName)?.unitIsHour || false;
+  private durationInHours(ratioNumber: number | null, recordTypes: RecordType[]): boolean {
+    if (ratioNumber === null) {
+      return false;
+    }
+    return recordTypes.find((rec) => rec.ratioNumber === ratioNumber)?.unitIsHour || false;
   }
 }
