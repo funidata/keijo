@@ -59,7 +59,7 @@ export class WorkdayService {
         duration: wdh.Hours,
         durationInHours: this.durationInHours(wdh.CollectorRatio["#text"], recordTypes),
         description: wdh.Description,
-        entryType: wdh.CollectorRatio["#text"],
+        typeName: wdh.CollectorRatio["#text"],
         ...this.transformDimensionsToObject(wdh.Dimension),
       })),
     }));
@@ -87,7 +87,7 @@ export class WorkdayService {
     return val as AcceptanceStatus;
   }
 
-  private durationInHours(entryType: string, recordTypes: RecordType[]): boolean {
-    return recordTypes.find((rec) => rec.name === entryType)?.unitIsHour || false;
+  private durationInHours(typeName: string, recordTypes: RecordType[]): boolean {
+    return recordTypes.find((rec) => rec.name === typeName)?.unitIsHour || false;
   }
 }

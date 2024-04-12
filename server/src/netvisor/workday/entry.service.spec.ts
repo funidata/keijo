@@ -26,7 +26,7 @@ const entry: Entry = {
   durationInHours: true,
   description: "jee",
   acceptanceStatus: AcceptanceStatus.Checked,
-  entryType: "tuntityö",
+  typeName: "tuntityö",
   product: "testituote",
   activity: "testitunkkaus",
   issue: "TIKSU-007",

@@ -8,7 +8,7 @@ const UnknownEntry = ({ entry }: EntryRowProps) => {
   return (
     <Alert severity="info">
       {`${t("entryTable.unknownEntry")}: `}
-      <i>{entry.entryType}</i>
+      <i>{entry.typeName}</i>
       {entry.description && (
         <>
           <br />

@@ -4,6 +4,8 @@ import { Workday } from "../graphql/generated/graphql";
 import dayjs from "./dayjs";
 import { EntryType } from "./entryType.enum";
 
+// FIXME: Use rationumbers instead of entryType (typeName).
+
 const holidays = holidaysRaw.map(dayjs);
 
 export const isHoliday = (date: Dayjs): boolean =>
@@ -14,7 +16,7 @@ export const isVacation = (workday: Workday): boolean => {
     return false;
   }
   const entry = workday.entries[0];
-  return entry.entryType === EntryType.Vacation;
+  return entry.typeName === EntryType.Vacation;
 };
 
 export const isFlexLeaveDay = (workday: Workday): boolean => {
@@ -22,7 +24,7 @@ export const isFlexLeaveDay = (workday: Workday): boolean => {
     return false;
   }
   const entry = workday.entries[0];
-  return entry.entryType === EntryType.FlexLeave;
+  return entry.typeName === EntryType.FlexLeave;
 };
 
 export const isSickLeave = (workday: Workday): boolean => {
@@ -30,7 +32,7 @@ export const isSickLeave = (workday: Workday): boolean => {
     return false;
   }
   const entry = workday.entries[0];
-  return entry.entryType === EntryType.SickLeave;
+  return entry.typeName === EntryType.SickLeave;
 };
 
 export const isWeekend = (date: Dayjs): boolean => date.weekday() === 5 || date.weekday() === 6;

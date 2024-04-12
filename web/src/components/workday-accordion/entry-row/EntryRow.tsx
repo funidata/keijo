@@ -16,7 +16,7 @@ const EntryRow = (props: EntryRowProps) => {
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const entryTypes = Object.values(EntryType) as string[];
-  const unknownEntryType = !entryTypes.includes(props.entry.entryType);
+  const unknownEntryType = !entryTypes.includes(props.entry.typeName);
 
   if (unknownEntryType) {
     return <UnknownEntry {...props} />;
