@@ -5,7 +5,7 @@ export class RecordType {
   @Field()
   name: string;
 
-  @Field({ nullable: true })
+  @Field(() => Number, { nullable: true })
   ratioNumber: number | null;
 
   @Field()
