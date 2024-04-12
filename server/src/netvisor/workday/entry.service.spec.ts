@@ -27,6 +27,7 @@ const entry: Entry = {
   description: "jee",
   acceptanceStatus: AcceptanceStatus.Checked,
   typeName: "tuntityö",
+  ratioNumber:100,
   product: "testituote",
   activity: "testitunkkaus",
   issue: "TIKSU-007",
