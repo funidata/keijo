@@ -1,4 +1,4 @@
-FROM node:18.17
+FROM node:20.12
 
 
 # Install dependencies.
