@@ -50,7 +50,6 @@ export class WorkdayService {
 
   private async toLocalWorkdays(apiResult: GetWorkdaysNvSchema): Promise<Workday[]> {
     const recordTypes = await this.recordTypeService.getRecordTypes();
-    console.dir(recordTypes, { depth: null });
 
     return apiResult.WorkDays.Workday.map((wd) => ({
       date: new Date(wd.Date),
