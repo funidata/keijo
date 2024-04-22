@@ -13,8 +13,8 @@ const TotalHours = ({ workdays }: TotalHoursProps) => {
   const { start, end } = useWorkdayBrowser();
 
   const entries = flatMap(workdays, (wd) => wd.entries);
-  const totalDuration = totalDurationOfEntries(entries);
-  const totalHoursFormatted = roundToFullMinutes(totalDuration).format("H:mm");
+  const duration = roundToFullMinutes(totalDurationOfEntries(entries));
+  const totalHoursFormatted = `${duration.days() * 24 + duration.hours()}:${duration.format("mm")}`;
 
   const weekView = start.weekday() === 0 && end.weekday() === 6;
 
