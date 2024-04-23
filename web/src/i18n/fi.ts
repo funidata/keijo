@@ -26,6 +26,7 @@ const fi = {
     error: "Virhe",
     missingEmployeeNumber:
       "Palkansaajanumeroasi ei löytynyt HTTP-otsakkeista. Keijoa ei voi käyttää ilman tätä tietoa. Ilmoita ongelmasta esihenkilöllesi.",
+    unknownError: "Keijo kohtasi tuntemattoman virheen. Ota yhteyttä Kettu-tiimiin.",
   },
   entryDialog: {
     title: "Lisää työaikakirjaus",

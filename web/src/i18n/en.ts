@@ -26,6 +26,7 @@ const en = {
     error: "Error",
     missingEmployeeNumber:
       "Your employee number was not found in HTTP headers. Keijo cannot be used without this information. Please report this problem to your superior.",
+    unknownError: "Unknown error occured. Please get in touch with Team Fox.",
   },
   entryDialog: {
     title: "Add New Entry",
