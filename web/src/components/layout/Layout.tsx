@@ -1,14 +1,13 @@
 import { useQuery } from "@apollo/client";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { RouterProvider } from "react-router-dom";
 import { GetSessionStatusDocument } from "../../graphql/generated/graphql";
+import router from "../../router";
 import MissingHeadersAlert from "../MissingHeadersAlert";
-import WorkdayBrowser from "../workday-browser/WorkdayBrowser";
 import AppBar from "./AppBar";
 import ContentContainer from "./ContentContainer";
 import useTitle from "./useTitle";
-
-// FIXME: Reimplement this with router. Moved from Next.js.
 
 const Layout = () => {
   const { t } = useTranslation();
@@ -23,6 +22,7 @@ const Layout = () => {
 
   // FIXME: Use router error boundary instead of this?
   if (!data.getSessionStatus.employeeNumber) {
+    // FIXME: This is no longer wrapped in layout and just shows up as the only thing on page.
     return <MissingHeadersAlert />;
   }
 
@@ -30,7 +30,7 @@ const Layout = () => {
     <>
       <AppBar />
       <ContentContainer>
-        <WorkdayBrowser />
+        <RouterProvider router={router} />
       </ContentContainer>
     </>
   );
