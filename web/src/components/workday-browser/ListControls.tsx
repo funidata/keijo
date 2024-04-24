@@ -6,11 +6,17 @@ import { useSessionStorage } from "usehooks-ts";
 import DateControl from "./DateControl";
 import WeekControl from "./WeekControl";
 
+export type BrowsingMode = "week" | "range";
+export const SELECTED_BROWSING_MODE_KEY = "selected-browsing-mode";
+
 const ListControls = () => {
   const { t } = useTranslation();
-  const [selectedTab, setSelectedTab] = useSessionStorage("selected-list-control-tab", "1");
+  const [selectedTab, setSelectedTab] = useSessionStorage<BrowsingMode>(
+    SELECTED_BROWSING_MODE_KEY,
+    "week",
+  );
 
-  const handleChange = (_: SyntheticEvent, newValue: string) => {
+  const handleChange = (_: SyntheticEvent, newValue: BrowsingMode) => {
     setSelectedTab(newValue);
   };
 
@@ -19,14 +25,14 @@ const ListControls = () => {
       <TabContext value={selectedTab}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label={t("entryTable.tabs.aria")}>
-            <Tab label={t("entryTable.tabs.browseByWeek")} value="1" />
-            <Tab label={t("entryTable.tabs.browseByDates")} value="2" />
+            <Tab label={t("entryTable.tabs.browseByWeek")} value="week" />
+            <Tab label={t("entryTable.tabs.browseByDates")} value="range" />
           </TabList>
         </Box>
-        <TabPanel value="1">
+        <TabPanel value="week">
           <WeekControl />
         </TabPanel>
-        <TabPanel value="2">
+        <TabPanel value="range">
           <DateControl />
         </TabPanel>
       </TabContext>
