@@ -2,11 +2,12 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Box, Tab } from "@mui/material";
 import { SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSessionStorage } from "usehooks-ts";
 import useDayjs from "../../common/useDayjs";
 import DateControl from "./DateControl";
 import WeekControl from "./WeekControl";
+import { useWorkdayBrowserParams } from "./useWorkdayBrowserParams";
 
 export type BrowsingMode = "week" | "range";
 export const SELECTED_BROWSING_MODE_KEY = "selected-browsing-mode";
@@ -15,7 +16,7 @@ const ListControls = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dayjs = useDayjs();
-  const { browsingMode, from } = useParams();
+  const { from, fromFormatted, toFormatted } = useWorkdayBrowserParams();
 
   const [selectedTab, setSelectedTab] = useSessionStorage<BrowsingMode>(
     SELECTED_BROWSING_MODE_KEY,
@@ -24,36 +25,16 @@ const ListControls = () => {
 
   const handleChange = (_: SyntheticEvent, newValue: BrowsingMode) => {
     setSelectedTab(newValue);
-    // TODO: Converting between week and date range must be done here.
-
-    // Exit early if tab did not actually change.
-    if (newValue === browsingMode) {
-      return;
-    }
-
-    const dateFormat = "YYYY-MM-DD";
 
     if (newValue === "range") {
-      let year = dayjs().year();
-      let week = dayjs().week();
-
-      if (from) {
-        // FIXME: Parsing should be done elsewhere?
-        const parsedFromParam = from.split("-");
-        year = parsedFromParam.length === 2 ? Number(parsedFromParam[0]) : dayjs().year();
-        week = parsedFromParam.length === 2 ? Number(parsedFromParam[1]) : Number(from);
-      }
-
-      const newFrom = dayjs().year(year).week(week).weekday(0);
-      const newTo = newFrom.weekday(6);
-      const newPath = `/entries/range/${newFrom.format(dateFormat)}/${newTo.format(dateFormat)}`;
+      const newPath = `/entries/range/${fromFormatted}/${toFormatted}`;
       navigate(newPath);
     }
 
     if (newValue === "week") {
-      const fromDay = dayjs(from);
+      // TODO: Move this to hook?
       const weekParam =
-        fromDay.year() === dayjs().year() ? fromDay.week() : `${fromDay.year()}-${fromDay.week()}`;
+        from.year() === dayjs().year() ? from.week() : `${from.year()}-${from.week()}`;
       navigate(`/entries/week/${weekParam}`);
     }
   };
