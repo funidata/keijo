@@ -1,4 +1,5 @@
-import { useParams } from "react-router-dom";
+import { Dayjs } from "dayjs";
+import { useNavigate, useParams } from "react-router-dom";
 import useDayjs from "../../common/useDayjs";
 import { BrowsingMode } from "./ListControls";
 
@@ -6,6 +7,7 @@ const dateFormat = "YYYY-MM-DD";
 
 export const useWorkdayBrowserParams = () => {
   const dayjs = useDayjs();
+  const navigate = useNavigate();
   const { browsingMode, from: fromParam, to: toParam } = useParams();
 
   /**
@@ -54,10 +56,31 @@ export const useWorkdayBrowserParams = () => {
 
   const { from, to } = datesFromParams(browsingMode as BrowsingMode, fromParam, toParam);
 
+  /**
+   * Navigate to week including given day.
+   */
+  const goToWeek = (day: Dayjs) => {
+    const weekParam = day.year() === dayjs().year() ? day.week() : `${day.year()}-${day.week()}`;
+    navigate(`/entries/week/${weekParam}`);
+  };
+
+  /**
+   * Navigate to given date range.
+   *
+   * Will not allow an invalid range, i.e., end before start.
+   */
+  const goToRange = (targetFrom: Dayjs, targetTo: Dayjs) => {
+    const safeTo = targetTo.isBefore(targetFrom) ? targetFrom : targetTo;
+    const newPath = `/entries/range/${targetFrom.format(dateFormat)}/${safeTo.format(dateFormat)}`;
+    navigate(newPath);
+  };
+
   return {
     from,
     to,
     formattedFrom: from.format(dateFormat),
     formattedTo: to.format(dateFormat),
+    goToWeek,
+    goToRange,
   };
 };
