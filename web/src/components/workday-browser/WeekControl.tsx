@@ -11,17 +11,16 @@ import {
   SxProps,
   Typography,
 } from "@mui/material";
-import { Dayjs } from "dayjs";
 import { range } from "lodash";
 import { useTranslation } from "react-i18next";
 import useDayjs from "../../common/useDayjs";
-import useWorkdayBrowser from "./useWorkdayBrowser";
+import { useWorkdayBrowserParams } from "./useWorkdayBrowserParams";
 
 const WeekControl = () => {
   const dayjs = useDayjs();
   const { t } = useTranslation();
-  const { start, setStart, setEnd } = useWorkdayBrowser();
-  const selectedValue = start.week().toString();
+  const { from, goToWeek } = useWorkdayBrowserParams();
+  const selectedValue = from.week().toString();
 
   // Current (NOT selected!) week serves as middle point for dropdown options.
   const currentWeek = dayjs().week();
@@ -32,32 +31,27 @@ const WeekControl = () => {
   }));
 
   // If user navigates beyond the options list, add current selection to the list.
-  if (start.isBefore(weeks[0].start, "week")) {
+  if (from.isBefore(weeks[0].start, "week")) {
     weeks.unshift({
-      no: start.week(),
-      start: start.weekday(0),
+      no: from.week(),
+      start: from.weekday(0),
     });
   }
-  if (start.isAfter(weeks.at(-1)?.start, "week")) {
+  if (from.isAfter(weeks.at(-1)?.start, "week")) {
     weeks.push({
-      no: start.week(),
-      start: start.weekday(0),
+      no: from.week(),
+      start: from.weekday(0),
     });
   }
-
-  const selectWeek = (start: Dayjs) => {
-    setStart(start);
-    setEnd(start.add(6, "day"));
-  };
 
   const handleChange = (event: SelectChangeEvent) => {
     const value = Number(event.target.value);
     const start = weeks.find((week) => week.no === value)?.start || dayjs();
-    selectWeek(start);
+    goToWeek(start);
   };
 
-  const goToPreviousWeek = () => selectWeek(start.subtract(7, "day"));
-  const goToNextWeek = () => selectWeek(start.add(7, "day"));
+  const goToPreviousWeek = () => goToWeek(from.subtract(7, "day"));
+  const goToNextWeek = () => goToWeek(from.add(7, "day"));
 
   const iconButtonSx: SxProps = { borderRadius: 1, pl: 2, pr: 2 };
 
