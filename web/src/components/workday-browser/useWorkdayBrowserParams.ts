@@ -1,14 +1,20 @@
 import { Dayjs } from "dayjs";
 import { useNavigate, useParams } from "react-router-dom";
 import useDayjs from "../../common/useDayjs";
-import { BrowsingMode } from "./ListControls";
+import { NotFoundException } from "../error/NotFoundException";
 
+export type BrowsingMode = "week" | "range";
 const dateFormat = "YYYY-MM-DD";
 
 export const useWorkdayBrowserParams = () => {
   const dayjs = useDayjs();
   const navigate = useNavigate();
   const { browsingMode, from: fromParam, to: toParam } = useParams();
+
+  // Validate browsing mode.
+  if (!browsingMode || !["week", "range"].includes(browsingMode)) {
+    throw new NotFoundException();
+  }
 
   /**
    * Parse "from" and "to" dates from given week param.
@@ -76,6 +82,7 @@ export const useWorkdayBrowserParams = () => {
   };
 
   return {
+    browsingMode,
     from,
     to,
     formattedFrom: from.format(dateFormat),
