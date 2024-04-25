@@ -2,26 +2,15 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Box, Tab } from "@mui/material";
 import { SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { useSessionStorage } from "usehooks-ts";
 import DateControl from "./DateControl";
 import WeekControl from "./WeekControl";
-import { useWorkdayBrowserParams } from "./useWorkdayBrowserParams";
-
-export type BrowsingMode = "week" | "range";
-export const SELECTED_BROWSING_MODE_KEY = "selected-browsing-mode";
+import { BrowsingMode, useWorkdayBrowserParams } from "./useWorkdayBrowserParams";
 
 const ListControls = () => {
   const { t } = useTranslation();
-  const { from, to, goToWeek, goToRange } = useWorkdayBrowserParams();
-
-  const [selectedTab, setSelectedTab] = useSessionStorage<BrowsingMode>(
-    SELECTED_BROWSING_MODE_KEY,
-    "week",
-  );
+  const { browsingMode, from, to, goToWeek, goToRange } = useWorkdayBrowserParams();
 
   const handleChange = (_: SyntheticEvent, newValue: BrowsingMode) => {
-    setSelectedTab(newValue);
-
     if (newValue === "range") {
       goToRange(from, to);
     }
@@ -33,7 +22,7 @@ const ListControls = () => {
 
   return (
     <Box sx={{ width: "100%", typography: "body1" }}>
-      <TabContext value={selectedTab}>
+      <TabContext value={browsingMode}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label={t("entryTable.tabs.aria")}>
             <Tab label={t("entryTable.tabs.browseByWeek")} value="week" />
