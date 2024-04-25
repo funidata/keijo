@@ -16,7 +16,7 @@ const ListControls = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dayjs = useDayjs();
-  const { from, fromFormatted, toFormatted } = useWorkdayBrowserParams();
+  const { from, formattedFrom, formattedTo } = useWorkdayBrowserParams();
 
   const [selectedTab, setSelectedTab] = useSessionStorage<BrowsingMode>(
     SELECTED_BROWSING_MODE_KEY,
@@ -27,7 +27,7 @@ const ListControls = () => {
     setSelectedTab(newValue);
 
     if (newValue === "range") {
-      const newPath = `/entries/range/${fromFormatted}/${toFormatted}`;
+      const newPath = `/entries/range/${formattedFrom}/${formattedTo}`;
       navigate(newPath);
     }
 
