@@ -3,20 +3,18 @@ import { t } from "i18next";
 import { flatMap } from "lodash";
 import { roundToFullMinutes, totalDurationOfEntries } from "../../common/duration";
 import { Workday } from "../../graphql/generated/graphql";
-import useWorkdayBrowser from "./useWorkdayBrowser";
+import { useWorkdayBrowserParams } from "./useWorkdayBrowserParams";
 
 type TotalHoursProps = {
   workdays: Workday[];
 };
 
 const TotalHours = ({ workdays }: TotalHoursProps) => {
-  const { start, end } = useWorkdayBrowser();
+  const { browsingMode } = useWorkdayBrowserParams();
 
   const entries = flatMap(workdays, (wd) => wd.entries);
   const duration = roundToFullMinutes(totalDurationOfEntries(entries));
   const totalHoursFormatted = `${duration.days() * 24 + duration.hours()}:${duration.format("mm")}`;
-
-  const weekView = start.weekday() === 0 && end.weekday() === 6;
 
   return (
     <Box
@@ -30,7 +28,10 @@ const TotalHours = ({ workdays }: TotalHoursProps) => {
       }}
     >
       <Typography variant="button">
-        {t(weekView ? "entryTable.totalHoursInWeek" : "entryTable.totalHoursInRange")}:
+        {t(
+          browsingMode === "week" ? "entryTable.totalHoursInWeek" : "entryTable.totalHoursInRange",
+        )}
+        :
       </Typography>
       <Chip
         label={
