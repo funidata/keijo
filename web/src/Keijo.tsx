@@ -1,10 +1,11 @@
 import { CssBaseline } from "@mui/material";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { RouterProvider } from "react-router-dom";
 import GlobalNotification from "./components/global-notification/GlobalNotification";
-import Layout from "./components/layout/Layout";
 import LocalizationProvider from "./i18n/LocalizationProvider";
 import "./i18n/i18n-config";
+import router from "./router";
 import KeijoTheme from "./theme/KeijoTheme";
 
 const Keijo = () => {
@@ -23,7 +24,7 @@ const Keijo = () => {
       <CssBaseline />
       <GlobalNotification />
       <LocalizationProvider>
-        <Layout />
+        <RouterProvider router={router} />
       </LocalizationProvider>
     </KeijoTheme>
   );

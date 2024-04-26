@@ -1,6 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
+import EntryDialog from "./components/entry-dialog/EntryDialog";
 import Error from "./components/error/Error";
 import HeaderGuard from "./components/error/HeaderGuard";
+import Layout from "./components/layout/Layout";
 import WorkdayBrowser from "./components/workday-browser/WorkdayBrowser";
 import WorkdayBrowserRedirect from "./components/workday-browser/WorkdayBrowserRedirect";
 
@@ -20,16 +22,24 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <WorkdayBrowserRedirect />,
-      },
-      {
-        path: "/entries",
-        element: <WorkdayBrowserRedirect />,
-      },
-      {
-        path: "entries/:browsingMode?/:from?/:to?",
-        element: <WorkdayBrowser />,
+        element: <Layout />,
         errorElement: <Error />,
+        children: [
+          {
+            path: "/",
+            element: <WorkdayBrowserRedirect />,
+          },
+          {
+            path: "/entries",
+            element: <WorkdayBrowserRedirect />,
+          },
+          {
+            path: "entries/:browsingMode?/:from?/:to?",
+            element: <WorkdayBrowser />,
+            errorElement: <Error />,
+            children: [{ path: "create", element: <EntryDialog /> }],
+          },
+        ],
       },
     ],
   },

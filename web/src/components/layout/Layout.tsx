@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { RouterProvider } from "react-router-dom";
-import router from "../../router";
+import { Outlet } from "react-router-dom";
 import AppBar from "./AppBar";
 import ContentContainer from "./ContentContainer";
 import useTitle from "./useTitle";
@@ -16,7 +15,7 @@ const Layout = () => {
     <>
       <AppBar />
       <ContentContainer>
-        <RouterProvider router={router} />
+        <Outlet />
       </ContentContainer>
     </>
   );
