@@ -36,20 +36,26 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
   const { t } = useTranslation();
   const { showSuccessNotification } = useNotification();
 
-  const [addWorkdayEntryMutation] = useMutation(AddWorkdayEntryDocument, {
-    refetchQueries: [FindWorkdaysDocument],
-    onCompleted: () => {
-      showSuccessNotification(t("notifications.addEntry.success"));
+  const [addWorkdayEntryMutation, { loading: addQueryLoading }] = useMutation(
+    AddWorkdayEntryDocument,
+    {
+      refetchQueries: [FindWorkdaysDocument],
+      onCompleted: () => {
+        showSuccessNotification(t("notifications.addEntry.success"));
+      },
     },
-  });
+  );
 
-  const [replaceWorkdayEntryMutation] = useMutation(ReplaceWorkdayEntryDocument, {
-    refetchQueries: [FindWorkdaysDocument],
-    notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
-      showSuccessNotification(t("notifications.editEntry.success"));
+  const [replaceWorkdayEntryMutation, { loading: replaceMutationLoading }] = useMutation(
+    ReplaceWorkdayEntryDocument,
+    {
+      refetchQueries: [FindWorkdaysDocument],
+      notifyOnNetworkStatusChange: true,
+      onCompleted: () => {
+        showSuccessNotification(t("notifications.editEntry.success"));
+      },
     },
-  });
+  );
 
   const defaultValues: EntryFormSchema = {
     date: date ? dayjs(date) : dayjs(),
@@ -112,7 +118,9 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
     }
   };
 
-  return { form, onSubmit };
+  const loading = addQueryLoading || replaceMutationLoading;
+
+  return { form, onSubmit, loading };
 };
 
 export default useEntryForm;

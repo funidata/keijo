@@ -1,4 +1,5 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { LoadingButton } from "@mui/lab";
 import {
   Accordion,
   AccordionDetails,
@@ -29,13 +30,15 @@ type EntryFormProps = {
   reset: () => void;
   editEntry?: Entry;
   originalDate?: Dayjs;
+  loading?: boolean;
 };
 
-const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryFormProps) => {
+const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form, loading }: EntryFormProps) => {
   const dayjs = useDayjs();
   const { t } = useTranslation();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
+
   const { control, watch } = form;
   const date = dayjs(watch("date")).locale(dayjs.locale());
 
@@ -129,9 +132,15 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryForm
         {mobile ? (
           <>
             <Grid item xs={12} sx={{ mt: 2 }}>
-              <Button type="submit" variant="contained" size="large" fullWidth>
+              <LoadingButton
+                loading={loading}
+                type="submit"
+                variant="contained"
+                size="large"
+                fullWidth
+              >
                 {t("entryDialog.submit")}
-              </Button>
+              </LoadingButton>
             </Grid>
             <Grid item xs={12}>
               <Button type="reset" variant="outlined" size="large" onClick={reset} fullWidth>
@@ -150,9 +159,9 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form }: EntryForm
               <Button type="reset" variant="outlined" size="large" onClick={reset}>
                 {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
               </Button>
-              <Button type="submit" variant="contained" size="large">
+              <LoadingButton loading={loading} type="submit" variant="contained" size="large">
                 {t("entryDialog.submit")}
-              </Button>
+              </LoadingButton>
             </Box>
           </Grid>
         )}
