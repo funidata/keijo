@@ -24,7 +24,7 @@ const EntryDialog = ({ ...props }: EntryDialogProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const { form, onSubmit } = useEntryForm({ editEntry, date });
+  const { form, onSubmit, loading } = useEntryForm({ editEntry, date });
 
   const {
     handleSubmit,
@@ -66,6 +66,7 @@ const EntryDialog = ({ ...props }: EntryDialogProps) => {
           reset={reset}
           editEntry={editEntry}
           originalDate={date}
+          loading={loading}
         />
       </DialogContent>
     </Dialog>
