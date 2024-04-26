@@ -1,10 +1,9 @@
 import EditIcon from "@mui/icons-material/Edit";
 import { IconButton } from "@mui/material";
 import { Dayjs } from "dayjs";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Entry } from "../../../graphql/generated/graphql";
-import EntryDialog from "../../entry-dialog/EntryDialog";
 
 type EditEntryButtonProps = {
   entry: Entry;
@@ -12,16 +11,16 @@ type EditEntryButtonProps = {
 };
 
 const EditEntryButton = ({ entry, date }: EditEntryButtonProps) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
-  const toggleOpen = () => setOpen((prev) => !prev);
 
   return (
     <>
       <IconButton
         aria-label={t("controls.editEntry")}
         size="medium"
-        onClick={toggleOpen}
+        onClick={() => navigate(`${location.pathname}/edit`, { state: { date, editEntry: entry } })}
         sx={(theme) => ({
           color:
             theme.palette.mode === "dark"
@@ -31,7 +30,6 @@ const EditEntryButton = ({ entry, date }: EditEntryButtonProps) => {
       >
         <EditIcon fontSize="inherit" />
       </IconButton>
-      <EntryDialog open={open} onClose={toggleOpen} editEntry={entry} date={date} />
     </>
   );
 };

@@ -37,7 +37,10 @@ const router = createBrowserRouter([
             path: "entries/:browsingMode?/:from?/:to?",
             element: <WorkdayBrowser />,
             errorElement: <Error />,
-            children: [{ path: "create", element: <EntryDialog /> }],
+            children: [
+              { path: "create", element: <EntryDialog /> },
+              { path: "edit", element: <EntryDialog /> },
+            ],
           },
         ],
       },

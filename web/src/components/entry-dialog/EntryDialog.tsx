@@ -12,16 +12,15 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import EntryForm from "./EntryForm";
-import useEntryForm, { useEntryProps } from "./useEntryForm";
+import useEntryForm from "./useEntryForm";
 
-type EntryDialogProps = Omit<DialogProps, "open"> &
-  useEntryProps & {
-    onClose?: () => void;
-  };
+type EntryDialogProps = Omit<DialogProps, "open"> & {
+  onClose?: () => void;
+};
 
-const EntryDialog = ({ editEntry, onClose, ...props }: EntryDialogProps) => {
+const EntryDialog = ({ onClose, ...props }: EntryDialogProps) => {
   const {
-    state: { date },
+    state: { date, editEntry },
   } = useLocation();
   const { t } = useTranslation();
   const theme = useTheme();
