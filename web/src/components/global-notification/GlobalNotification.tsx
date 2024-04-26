@@ -25,7 +25,7 @@ const GlobalNotification = () => {
       TransitionProps={{ onExited: resetNotification }}
       autoHideDuration={autoHideDuration}
     >
-      <Alert severity={type} variant="filled" onClose={close}>
+      <Alert severity={type} variant="filled" onClose={close} sx={{ color: "white" }}>
         {message}
       </Alert>
     </Snackbar>
