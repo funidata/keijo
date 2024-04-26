@@ -8,17 +8,19 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
 import EntryForm from "./EntryForm";
-import useEntryForm, { useEntryProps } from "./useEntryForm";
+import useEntryForm from "./useEntryForm";
 
-type EntryDialogProps = DialogProps &
-  useEntryProps & {
-    onClose: () => void;
-  };
+type EntryDialogProps = Omit<DialogProps, "open">;
 
-const EntryDialog = ({ editEntry, date, onClose, ...props }: EntryDialogProps) => {
+const EntryDialog = ({ ...props }: EntryDialogProps) => {
+  const {
+    state: { date, editEntry },
+  } = useLocation();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -30,6 +32,10 @@ const EntryDialog = ({ editEntry, date, onClose, ...props }: EntryDialogProps) =
     formState: { isSubmitSuccessful },
   } = form;
 
+  const onClose = useCallback(() => {
+    navigate("..");
+  }, [navigate]);
+
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset();
@@ -38,7 +44,7 @@ const EntryDialog = ({ editEntry, date, onClose, ...props }: EntryDialogProps) =
   }, [isSubmitSuccessful, reset, onClose]);
 
   return (
-    <Dialog maxWidth="lg" fullWidth {...props} fullScreen={fullScreen} onClose={onClose}>
+    <Dialog maxWidth="lg" fullWidth {...props} fullScreen={fullScreen} onClose={onClose} open>
       <DialogTitle>{t("entryDialog.title")}</DialogTitle>
       <IconButton
         aria-label={t("controls.close")}

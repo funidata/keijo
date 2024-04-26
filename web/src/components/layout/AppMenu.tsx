@@ -18,24 +18,21 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
 import useDarkMode from "../../theme/useDarkMode";
-import EntryDialog from "../entry-dialog/EntryDialog";
 
 const AppMenuButton = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const {
     t,
     i18n: { changeLanguage, language },
   } = useTranslation();
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [entryDialogOpen, setEntryDialogOpen] = useState(false);
 
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
-  };
-
-  const toggleEntryDialog = () => {
-    setEntryDialogOpen((prev) => !prev);
   };
 
   const selectLanguage = (languageCode: string) => {
@@ -62,7 +59,7 @@ const AppMenuButton = () => {
           <ListItem>
             <ListItemButton
               onClick={() => {
-                toggleEntryDialog();
+                navigate(`${location.pathname}/create`, { state: { date: undefined } });
                 toggleMenu();
               }}
             >
@@ -103,7 +100,6 @@ const AppMenuButton = () => {
           </ListItem>
         </List>
       </Drawer>
-      <EntryDialog open={entryDialogOpen} onClose={toggleEntryDialog} />
     </Box>
   );
 };
