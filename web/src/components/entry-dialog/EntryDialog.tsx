@@ -10,15 +10,19 @@ import {
 } from "@mui/material";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 import EntryForm from "./EntryForm";
 import useEntryForm, { useEntryProps } from "./useEntryForm";
 
-type EntryDialogProps = DialogProps &
+type EntryDialogProps = Omit<DialogProps, "open"> &
   useEntryProps & {
-    onClose: () => void;
+    onClose?: () => void;
   };
 
-const EntryDialog = ({ editEntry, date, onClose, ...props }: EntryDialogProps) => {
+const EntryDialog = ({ editEntry, onClose, ...props }: EntryDialogProps) => {
+  const {
+    state: { date },
+  } = useLocation();
   const { t } = useTranslation();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -33,12 +37,12 @@ const EntryDialog = ({ editEntry, date, onClose, ...props }: EntryDialogProps) =
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset();
-      onClose();
+      // onClose();
     }
   }, [isSubmitSuccessful, reset, onClose]);
 
   return (
-    <Dialog maxWidth="lg" fullWidth {...props} fullScreen={fullScreen} onClose={onClose}>
+    <Dialog maxWidth="lg" fullWidth {...props} fullScreen={fullScreen} onClose={onClose} open>
       <DialogTitle>{t("entryDialog.title")}</DialogTitle>
       <IconButton
         aria-label={t("controls.close")}
