@@ -13,6 +13,9 @@
     "format:check": "prettier --check ."
   },
   "author": "Joonas Häkkinen <joonas.hakkinen@funidata.fi>",
+  "contributors": [
+    "Kimi Kuru <kimi.kuru@funidata.fi>"
+  ],
   "license": "MIT",
   "dependencies": {
     "prettier": "^3.2.5"

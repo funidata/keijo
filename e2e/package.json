@@ -5,8 +5,6 @@
   "scripts": {
     "test": "playwright test"
   },
-  "author": "",
-  "license": "MIT",
   "devDependencies": {
     "@playwright/test": "^1.44.0",
     "@types/node": "^20.12.10"
