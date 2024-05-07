@@ -80,6 +80,8 @@ const en = {
     unknownEntryNote: "Use Netvisor for this type of entry.",
     totalHoursInWeek: "Total hours this week",
     totalHoursInRange: "Total hours in range",
+    addZeroEntry: "Add Zero Entry",
+    zeroEntryAlert: "Entry with zero hours is required for flex leave.",
   },
   notifications: {
     addEntry: {
