@@ -18,11 +18,17 @@ export const isVacation = (workday: Workday): boolean => {
 };
 
 export const isFlexLeaveDay = (workday: Workday): boolean => {
-  if (workday.entries.length !== 1) {
+  if (workday.entries.length !== 2) {
     return false;
   }
-  const entry = workday.entries[0];
-  return entry.ratioNumber === EntryType.FlexLeave;
+  const hasFlexLeaveEntry = !!workday.entries.find(
+    (entry) => entry.ratioNumber === EntryType.FlexLeave,
+  );
+  const hasZeroEntry = !!workday.entries.find(
+    (entry) => entry.ratioNumber === EntryType.NormalWork && entry.duration === 0,
+  );
+
+  return hasFlexLeaveEntry && hasZeroEntry;
 };
 
 export const isSickLeave = (workday: Workday): boolean => {
