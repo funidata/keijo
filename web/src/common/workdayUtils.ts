@@ -43,3 +43,6 @@ export const isWeekend = (date: Dayjs): boolean => date.weekday() === 5 || date.
 
 export const isSpecialSingleEntryDay = (workday: Workday): boolean =>
   isVacation(workday) || isFlexLeaveDay(workday) || isSickLeave(workday);
+
+export const hasOnlyFlexLeaveEntry = (workday: Workday): boolean =>
+  workday.entries.length === 1 && workday.entries[0].ratioNumber === EntryType.FlexLeave;
