@@ -1,5 +1,6 @@
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import TodayIcon from "@mui/icons-material/Today";
 import {
   Box,
   FormControl,
@@ -52,6 +53,7 @@ const WeekControl = () => {
 
   const goToPreviousWeek = () => goToWeek(from.subtract(7, "day"));
   const goToNextWeek = () => goToWeek(from.add(7, "day"));
+  const goToCurrentWeek = () => goToWeek(dayjs().week(currentWeek));
 
   const iconButtonSx: SxProps = { borderRadius: 1, pl: 2, pr: 2 };
 
@@ -100,6 +102,13 @@ const WeekControl = () => {
       </FormControl>
       <IconButton sx={iconButtonSx} onClick={goToNextWeek} aria-label={t("controls.aria.nextWeek")}>
         <ArrowForwardIcon />
+      </IconButton>
+      <IconButton
+        sx={iconButtonSx}
+        onClick={goToCurrentWeek}
+        aria-label={t("controls.aria.currentWeek")}
+      >
+        <TodayIcon />
       </IconButton>
     </Box>
   );

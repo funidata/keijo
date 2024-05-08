@@ -3,6 +3,7 @@ const fi = {
     aria: {
       prevWeek: "Mene edelliseen viikkoon",
       nextWeek: "Mene seuraavaan viikkoon",
+      currentWeek: "Mene nykyiseen viikkoon",
     },
     cancel: "Peruuta",
     close: "Sulje",
