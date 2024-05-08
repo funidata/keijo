@@ -11,8 +11,7 @@ import { Workday } from "../../graphql/generated/graphql";
 import WorkdaySummary from "./WorkdaySummary";
 import EntryRow from "./entry-row/EntryRow";
 import useWorkdayAccordionState from "./useWorkdayAccordionState";
-
-import ZeroEntryAlert from "./workday-alert/ZeroEntryAlert";
+import AddZeroEntryAlert from "./workday-alert/AddZeroEntryAlert";
 
 type WorkdayAccordionProps = {
   workday: Workday;
@@ -64,7 +63,7 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
           {workday.entries.map((entry) => (
             <EntryRow entry={entry} date={date} key={entry.key} />
           ))}
-          {onlyFlexLeaveEntry ? <ZeroEntryAlert date={date} /> : null}
+          {onlyFlexLeaveEntry && <AddZeroEntryAlert date={date} />}
         </Box>
       </AccordionDetails>
     </Accordion>

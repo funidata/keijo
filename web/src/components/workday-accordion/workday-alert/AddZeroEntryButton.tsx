@@ -5,11 +5,11 @@ import { useTranslation } from "react-i18next";
 import { useNotification } from "../../global-notification/useNotification";
 import { Dayjs } from "dayjs";
 
-type ZeroEntryButtonProps = {
+type AddZeroEntryButtonProps = {
   date: Dayjs;
 };
 
-const ZeroEntryButton = ({ date }: ZeroEntryButtonProps) => {
+const AddZeroEntryButton = ({ date }: AddZeroEntryButtonProps) => {
   const { t } = useTranslation();
   const { showSuccessNotification } = useNotification();
 
@@ -48,4 +48,4 @@ const ZeroEntryButton = ({ date }: ZeroEntryButtonProps) => {
   );
 };
 
-export default ZeroEntryButton;
+export default AddZeroEntryButton;
