@@ -56,6 +56,7 @@ const fi = {
       ticketOrDescriptionRequired: "Lisää kommentti, mikäli työlle ei löydy tikettiä.",
     },
     totalHoursToday: "Päivän työaika ennen tätä kirjausta",
+    setRemainingHours: "Aseta jäljellä olevat tunnit automaattisesti"
   },
   entryTable: {
     accepted: "Hyväksytty",
