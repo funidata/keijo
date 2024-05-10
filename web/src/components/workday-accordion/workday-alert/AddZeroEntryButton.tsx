@@ -42,6 +42,7 @@ const AddZeroEntryButton = ({ date }: AddZeroEntryButtonProps) => {
       type="submit"
       variant="text"
       size="medium"
+      color="inherit"
     >
       {t("entryTable.addZeroEntry")}
     </LoadingButton>
