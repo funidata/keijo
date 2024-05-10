@@ -11,18 +11,25 @@ import {
   TextField,
   useMediaQuery,
   useTheme,
+  Switch,
+  FormGroup,
+  FormControlLabel,
 } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import useDayjs from "../../common/useDayjs";
-import { AcceptanceStatus, Entry } from "../../graphql/generated/graphql";
+import { AcceptanceStatus, Entry, FindWorkdaysDocument } from "../../graphql/generated/graphql";
 import BigDeleteEntryButton from "./BigDeleteEntryButton";
 import DimensionComboBox from "./DimensionComboBox";
 import DurationSlider from "./DurationSlider";
 import ResponsiveDatePicker from "./ResponsiveDatePicker";
 import WorkdayHours from "./WorkdayHours";
 import { EntryFormSchema } from "./useEntryForm";
+import { useQuery } from "@apollo/client";
+import { useCallback, useEffect } from "react";
+import { roundToFullMinutes, totalDurationOfEntries } from "../../common/duration";
+import usePreferSetRemainingHours from "../user-preferences/usePreferSetRemainingHours";
 
 type EntryFormProps = {
   form: UseFormReturn<EntryFormSchema>;
@@ -38,9 +45,32 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form, loading }: 
   const { t } = useTranslation();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
-
+  const { userPrefersSetRemainingHours, toggleRemainingHours } = usePreferSetRemainingHours();
   const { control, watch } = form;
   const date = dayjs(watch("date")).locale(dayjs.locale());
+
+  const queryDate = date.format("YYYY-MM-DD");
+  const { data, loading: wdLoading } = useQuery(FindWorkdaysDocument, {
+    variables: { start: queryDate, end: queryDate },
+  });
+
+  const setDuration = useCallback((hours: string) => form.setValue("duration", hours), [form]);
+  useEffect(() => {
+    if (!wdLoading && userPrefersSetRemainingHours) {
+      const totalDuration = totalDurationOfEntries(
+        data?.findWorkdays.length === 1 ? data.findWorkdays[0].entries : [],
+      );
+      const workDayFullHours = dayjs.duration(7.5, "hour");
+      const remainingHours =
+        workDayFullHours > totalDuration
+          ? workDayFullHours.subtract(totalDuration)
+          : dayjs.duration(0);
+      const remainingHoursFormatted = roundToFullMinutes(remainingHours).asHours().toString();
+      setDuration(remainingHoursFormatted);
+    } else {
+      setDuration("0");
+    }
+  }, [wdLoading, date, data?.findWorkdays, setDuration, dayjs, userPrefersSetRemainingHours]);
 
   return (
     <form onSubmit={onSubmit} onReset={reset}>
@@ -93,6 +123,18 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form, loading }: 
                   />
                 )}
               />
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      aria-label={t("entryDialog.setRemainingHours")}
+                      checked={userPrefersSetRemainingHours}
+                      onChange={toggleRemainingHours}
+                    />
+                  }
+                  label={t("entryDialog.setRemainingHours")}
+                />
+              </FormGroup>
             </Grid>
           </Grid>
         </Grid>
