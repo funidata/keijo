@@ -10,6 +10,7 @@ import {
   Select,
   SelectChangeEvent,
   SxProps,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { range } from "lodash";
@@ -59,13 +60,15 @@ const WeekControl = () => {
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center", gap: 1 }}>
-      <IconButton
-        sx={iconButtonSx}
-        onClick={goToPreviousWeek}
-        aria-label={t("controls.aria.prevWeek")}
-      >
-        <ArrowBackIcon />
-      </IconButton>
+      <Tooltip title={t("controls.aria.prevWeek")}>
+        <IconButton
+          sx={iconButtonSx}
+          onClick={goToPreviousWeek}
+          aria-label={t("controls.aria.prevWeek")}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+      </Tooltip>
       <FormControl sx={{ minWidth: 170 }}>
         <InputLabel id="week-control-select-label">{t("controls.selectWeek")}</InputLabel>
         <Select
@@ -100,16 +103,24 @@ const WeekControl = () => {
           ))}
         </Select>
       </FormControl>
-      <IconButton sx={iconButtonSx} onClick={goToNextWeek} aria-label={t("controls.aria.nextWeek")}>
-        <ArrowForwardIcon />
-      </IconButton>
-      <IconButton
-        sx={iconButtonSx}
-        onClick={goToCurrentWeek}
-        aria-label={t("controls.aria.currentWeek")}
-      >
-        <TodayIcon />
-      </IconButton>
+      <Tooltip title={t("controls.aria.nextWeek")}>
+        <IconButton
+          sx={iconButtonSx}
+          onClick={goToNextWeek}
+          aria-label={t("controls.aria.nextWeek")}
+        >
+          <ArrowForwardIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title={t("controls.aria.currentWeek")}>
+        <IconButton
+          sx={iconButtonSx}
+          onClick={goToCurrentWeek}
+          aria-label={t("controls.aria.currentWeek")}
+        >
+          <TodayIcon />
+        </IconButton>
+      </Tooltip>
     </Box>
   );
 };
