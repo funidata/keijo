@@ -16,6 +16,7 @@ const en = {
     startDate: "From",
     openMenu: "Open menu",
     useDarkMode: "Dark Mode",
+    selectLanguage: "Select language",
   },
   dimensionNames: {
     product: "Product",

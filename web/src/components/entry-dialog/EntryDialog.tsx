@@ -7,6 +7,7 @@ import {
   IconButton,
   useMediaQuery,
   useTheme,
+  Tooltip,
 } from "@mui/material";
 import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -46,19 +47,21 @@ const EntryDialog = ({ ...props }: EntryDialogProps) => {
   return (
     <Dialog maxWidth="lg" fullWidth {...props} fullScreen={fullScreen} onClose={onClose} open>
       <DialogTitle>{t("entryDialog.title")}</DialogTitle>
-      <IconButton
-        aria-label={t("controls.close")}
-        onClick={onClose}
-        size="large"
-        sx={{
-          position: "absolute",
-          right: 8,
-          top: 8,
-          color: (theme) => theme.palette.grey[500],
-        }}
-      >
-        <CloseIcon fontSize="inherit" />
-      </IconButton>
+      <Tooltip title={t("controls.close")}>
+        <IconButton
+          aria-label={t("controls.close")}
+          onClick={onClose}
+          size="large"
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon fontSize="inherit" />
+        </IconButton>
+      </Tooltip>
       <DialogContent sx={{ maxWidth: "100vw" }}>
         <EntryForm
           form={form}

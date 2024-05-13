@@ -1,5 +1,5 @@
 import EditIcon from "@mui/icons-material/Edit";
-import { IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -17,19 +17,21 @@ const EditEntryButton = ({ entry, date }: EditEntryButtonProps) => {
 
   return (
     <>
-      <IconButton
-        aria-label={t("controls.editEntry")}
-        size="medium"
-        onClick={() => navigate(`${location.pathname}/edit`, { state: { date, editEntry: entry } })}
-        sx={(theme) => ({
-          color:
+      <Tooltip title={t("controls.editEntry")}>
+        <IconButton
+          aria-label={t("controls.editEntry")}
+          size="medium"
+          onClick={() => navigate(`${location.pathname}/edit`, { state: { date, editEntry: entry } })}
+          sx={(theme) => ({
+            color:
             theme.palette.mode === "dark"
-              ? theme.palette.primary.main
-              : theme.palette.secondary.dark,
-        })}
-      >
-        <EditIcon fontSize="inherit" />
-      </IconButton>
+            ? theme.palette.primary.main
+            : theme.palette.secondary.dark,
+          })}
+          >
+          <EditIcon fontSize="inherit" />
+        </IconButton>
+      </Tooltip>
     </>
   );
 };
