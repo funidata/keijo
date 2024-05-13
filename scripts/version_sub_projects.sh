@@ -9,6 +9,7 @@
 projects=(
   "server"
   "web"
+  "e2e"
 )
 
 new_version=$1
