@@ -97,18 +97,20 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form, loading }: 
                   />
                 )}
               />
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      aria-label={t("entryDialog.setRemainingHours")}
-                      checked={userPrefersSetRemainingHours}
-                      onChange={toggleRemainingHours}
-                    />
-                  }
-                  label={t("entryDialog.setRemainingHours")}
-                />
-              </FormGroup>
+              {!editEntry && (
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        aria-label={t("entryDialog.setRemainingHours")}
+                        checked={userPrefersSetRemainingHours}
+                        onChange={toggleRemainingHours}
+                      />
+                    }
+                    label={t("entryDialog.setRemainingHours")}
+                  />
+                </FormGroup>
+              )}
             </Grid>
           </Grid>
         </Grid>
