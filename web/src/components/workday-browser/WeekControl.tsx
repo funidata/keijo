@@ -1,5 +1,6 @@
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import TodayIcon from "@mui/icons-material/Today";
 import {
   Box,
   FormControl,
@@ -9,6 +10,7 @@ import {
   Select,
   SelectChangeEvent,
   SxProps,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { range } from "lodash";
@@ -52,18 +54,21 @@ const WeekControl = () => {
 
   const goToPreviousWeek = () => goToWeek(from.subtract(7, "day"));
   const goToNextWeek = () => goToWeek(from.add(7, "day"));
+  const goToCurrentWeek = () => goToWeek(dayjs().week(currentWeek));
 
   const iconButtonSx: SxProps = { borderRadius: 1, pl: 2, pr: 2 };
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center", gap: 1 }}>
-      <IconButton
-        sx={iconButtonSx}
-        onClick={goToPreviousWeek}
-        aria-label={t("controls.aria.prevWeek")}
-      >
-        <ArrowBackIcon />
-      </IconButton>
+      <Tooltip title={t("controls.aria.prevWeek")}>
+        <IconButton
+          sx={iconButtonSx}
+          onClick={goToPreviousWeek}
+          aria-label={t("controls.aria.prevWeek")}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+      </Tooltip>
       <FormControl sx={{ minWidth: 170 }}>
         <InputLabel id="week-control-select-label">{t("controls.selectWeek")}</InputLabel>
         <Select
@@ -98,9 +103,24 @@ const WeekControl = () => {
           ))}
         </Select>
       </FormControl>
-      <IconButton sx={iconButtonSx} onClick={goToNextWeek} aria-label={t("controls.aria.nextWeek")}>
-        <ArrowForwardIcon />
-      </IconButton>
+      <Tooltip title={t("controls.aria.nextWeek")}>
+        <IconButton
+          sx={iconButtonSx}
+          onClick={goToNextWeek}
+          aria-label={t("controls.aria.nextWeek")}
+        >
+          <ArrowForwardIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title={t("controls.aria.currentWeek")}>
+        <IconButton
+          sx={iconButtonSx}
+          onClick={goToCurrentWeek}
+          aria-label={t("controls.aria.currentWeek")}
+        >
+          <TodayIcon />
+        </IconButton>
+      </Tooltip>
     </Box>
   );
 };
