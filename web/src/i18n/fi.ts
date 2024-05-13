@@ -1,9 +1,9 @@
 const fi = {
   controls: {
     aria: {
-      prevWeek: "Mene edelliseen viikkoon",
-      nextWeek: "Mene seuraavaan viikkoon",
-      currentWeek: "Mene nykyiseen viikkoon",
+      prevWeek: "Näytä edellinen viikko",
+      nextWeek: "Näytä seuraava viikko",
+      currentWeek: "Näytä kuluva viikko",
     },
     cancel: "Peruuta",
     close: "Sulje",
