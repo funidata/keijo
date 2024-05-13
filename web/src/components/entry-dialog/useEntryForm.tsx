@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { Dayjs } from "dayjs";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -10,6 +10,9 @@ import {
   ReplaceWorkdayEntryDocument,
 } from "../../graphql/generated/graphql";
 import { useNotification } from "../global-notification/useNotification";
+import { useCallback, useEffect } from "react";
+import { roundToFullMinutes, totalDurationOfEntries } from "../../common/duration";
+import usePreferSetRemainingHours from "../user-preferences/usePreferSetRemainingHours";
 
 export type EntryFormSchema = {
   date: Dayjs;
@@ -35,6 +38,7 @@ export type useEntryProps = {
 const useEntryForm = ({ editEntry, date }: useEntryProps) => {
   const { t } = useTranslation();
   const { showSuccessNotification } = useNotification();
+  const { userPrefersSetRemainingHours } = usePreferSetRemainingHours();
 
   const [addWorkdayEntryMutation, { loading: addQueryLoading }] = useMutation(
     AddWorkdayEntryDocument,
@@ -68,6 +72,32 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
   };
 
   const form = useForm<EntryFormSchema>({ defaultValues });
+
+  const { watch } = form;
+  const dateWatch = dayjs(watch("date")).locale(dayjs.locale());
+
+  const queryDate = dateWatch.format("YYYY-MM-DD");
+  const { data, loading: wdLoading } = useQuery(FindWorkdaysDocument, {
+    variables: { start: queryDate, end: queryDate },
+  });
+  const setDuration = useCallback((hours: string) => form.setValue("duration", hours), [form]);
+
+  useEffect(() => {
+    if (!wdLoading && userPrefersSetRemainingHours) {
+      const totalDuration = totalDurationOfEntries(
+        data?.findWorkdays.length === 1 ? data.findWorkdays[0].entries : [],
+      );
+      const workDayFullHours = dayjs.duration(7.5, "hour");
+      const remainingHours =
+        workDayFullHours > totalDuration
+          ? workDayFullHours.subtract(totalDuration)
+          : dayjs.duration(0);
+      const remainingHoursFormatted = roundToFullMinutes(remainingHours).asHours().toString();
+      setDuration(remainingHoursFormatted);
+    } else if (!userPrefersSetRemainingHours) {
+      setDuration("0");
+    }
+  }, [wdLoading, date, data?.findWorkdays, setDuration, userPrefersSetRemainingHours]);
 
   const addWorkday: SubmitHandler<EntryFormSchema> = async (formValues) => {
     const { date, duration, description, product, activity, issue, client } = formValues;
@@ -118,7 +148,7 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
     }
   };
 
-  const loading = addQueryLoading || replaceMutationLoading;
+  const loading = addQueryLoading || replaceMutationLoading || wdLoading;
 
   return { form, onSubmit, loading };
 };
