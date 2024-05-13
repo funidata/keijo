@@ -80,6 +80,8 @@ const fi = {
     unknownEntryNote: "Käytä Netvisoria tämän kirjauslajin tarkastelemiseen ja muokkamiseen.",
     totalHoursInWeek: "Työaika tällä viikolla",
     totalHoursInRange: "Työaika valitulla jaksolla",
+    addZeroEntry: "Lisää nollatuntikirjaus",
+    zeroEntryAlert: "Nollatuntikirjaus vaaditaan saldovapaan laskemiseen.",
   },
   notifications: {
     addEntry: {

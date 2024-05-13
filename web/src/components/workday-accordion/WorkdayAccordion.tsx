@@ -1,11 +1,17 @@
 import { Accordion, AccordionDetails, Box } from "@mui/material";
 import { SyntheticEvent } from "react";
 import useDayjs from "../../common/useDayjs";
-import { isHoliday, isSpecialSingleEntryDay, isWeekend } from "../../common/workdayUtils";
+import {
+  hasOnlyFlexLeaveEntry,
+  isHoliday,
+  isSpecialSingleEntryDay,
+  isWeekend,
+} from "../../common/workdayUtils";
 import { Workday } from "../../graphql/generated/graphql";
 import WorkdaySummary from "./WorkdaySummary";
 import EntryRow from "./entry-row/EntryRow";
 import useWorkdayAccordionState from "./useWorkdayAccordionState";
+import AddZeroEntryAlert from "./workday-alert/AddZeroEntryAlert";
 
 type WorkdayAccordionProps = {
   workday: Workday;
@@ -17,6 +23,7 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
   const holiday = isHoliday(date);
   const weekend = isWeekend(date);
   const disabled = isSpecialSingleEntryDay(workday);
+  const onlyFlexLeaveEntry = hasOnlyFlexLeaveEntry(workday);
 
   const { expanded: preferExpanded, setExpanded } = useWorkdayAccordionState(date);
   const empty = workday.entries.length === 0;
@@ -56,6 +63,7 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
           {workday.entries.map((entry) => (
             <EntryRow entry={entry} date={date} key={entry.key} />
           ))}
+          {onlyFlexLeaveEntry && <AddZeroEntryAlert date={date} />}
         </Box>
       </AccordionDetails>
     </Accordion>
