@@ -16,6 +16,7 @@ const fi = {
     startDate: "Alku",
     openMenu: "Avaa valikko",
     useDarkMode: "Synkkyys",
+    selectLanguage: "Valitse kieli"
   },
   dimensionNames: {
     product: "Tuote",

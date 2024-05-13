@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { IconButton, Menu, MenuItem } from "@mui/material";
+import { IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { MouseEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -43,14 +43,16 @@ const DeleteEntryButton = ({ entryKey, date }: DeleteEntryButtonProps) => {
 
   return (
     <>
-      <IconButton
-        aria-label={t("controls.deleteEntry")}
-        onClick={onOpen}
-        color="error"
-        size="medium"
-      >
-        <DeleteIcon fontSize="inherit" />
-      </IconButton>
+      <Tooltip title={t("controls.deleteEntry")}>
+        <IconButton
+          aria-label={t("controls.deleteEntry")}
+          onClick={onOpen}
+          color="error"
+          size="medium"
+        >
+          <DeleteIcon fontSize="inherit" />
+        </IconButton>
+      </Tooltip>
       <Menu open={!!anchor} anchorEl={anchor} onClose={onClose}>
         <MenuItem onClick={onConfirm}>{t("controls.confirmDelete")}</MenuItem>
       </Menu>
