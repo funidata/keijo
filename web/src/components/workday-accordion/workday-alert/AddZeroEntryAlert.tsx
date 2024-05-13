@@ -11,7 +11,11 @@ const AddZeroEntryAlert = ({ date }: AddZeroEntryProps) => {
   const { t } = useTranslation();
 
   return (
-    <Alert severity="warning" action={<AddZeroEntryButton date={date} />}>
+    <Alert
+      severity="warning"
+      action={<AddZeroEntryButton date={date} />}
+      sx={{ alignItems: "center" }}
+    >
       {`${t("entryTable.zeroEntryAlert")}`}
     </Alert>
   );
