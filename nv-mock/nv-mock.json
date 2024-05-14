@@ -36,12 +36,45 @@
         }
       ],
       "responseMode": null
+    },
+    {
+      "uuid": "2dad420b-c11e-40ea-bef6-b2d1a644bc0e",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "dimensionlist.nv",
+      "responses": [
+        {
+          "uuid": "7c2fdec4-3a8e-43f4-a57b-6c2d11168d0a",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "/Users/joonas/code/keijo/nv-mock/data/dimensionlist.nv.xml",
+          "databucketID": "",
+          "sendFileAsBody": true,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
     }
   ],
   "rootChildren": [
     {
       "type": "route",
       "uuid": "6a3accc4-7c1c-4d66-a614-002db759e4f1"
+    },
+    {
+      "type": "route",
+      "uuid": "2dad420b-c11e-40ea-bef6-b2d1a644bc0e"
     }
   ],
   "proxyMode": false,
