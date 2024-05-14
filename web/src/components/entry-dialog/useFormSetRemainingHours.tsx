@@ -16,16 +16,11 @@ export type useEntryProps = {
 type useFormRemainingHoursProps = {
   form: UseFormReturn<EntryFormSchema>;
   isEnabled: boolean;
-  defaultValues: EntryFormSchema;
 };
 
-const useFormSetRemainingHours = ({
-  form,
-  isEnabled,
-  defaultValues,
-}: useFormRemainingHoursProps) => {
+const useFormSetRemainingHours = ({ form, isEnabled }: useFormRemainingHoursProps) => {
   const { userPrefersSetRemainingHours } = usePreferSetRemainingHours();
-  const { getValues, reset } = form;
+  const { getValues, resetField, setValue, getFieldState } = form;
   const formInputDate = dayjs(getValues("date")).locale(dayjs.locale());
   const queryDate = formInputDate.format("YYYY-MM-DD");
   const { data, loading: wdLoading } = useQuery(FindWorkdaysDocument, {
@@ -33,16 +28,7 @@ const useFormSetRemainingHours = ({
   });
 
   useEffect(() => {
-    if (!isEnabled) return;
-    const defaultVals: EntryFormSchema = {
-      date: defaultValues.date,
-      duration: defaultValues.duration,
-      description: defaultValues.description,
-      product: defaultValues.product,
-      activity: defaultValues.activity,
-      issue: defaultValues.issue,
-      client: defaultValues.client,
-    };
+    if (!isEnabled || getFieldState("duration").isDirty) return;
     if (!wdLoading && userPrefersSetRemainingHours) {
       const totalDuration = totalDurationOfEntries(
         data?.findWorkdays.length === 1 ? data.findWorkdays[0].entries : [],
@@ -53,21 +39,19 @@ const useFormSetRemainingHours = ({
           ? workDayFullHours.subtract(totalDuration)
           : dayjs.duration(0);
       const remainingHoursFormatted = roundToFullMinutes(remainingHours).asHours().toString();
-      reset({ ...defaultVals, duration: remainingHoursFormatted }, { keepDirtyValues: true });
+
+      resetField("duration", { defaultValue: remainingHoursFormatted });
+      setValue("duration", remainingHoursFormatted);
     } else if (!userPrefersSetRemainingHours) {
-      reset({ ...defaultVals, duration: "0" }, { keepDirtyValues: true });
+      resetField("duration", { defaultValue: "0" });
+      setValue("duration", "0");
     }
   }, [
     data?.findWorkdays,
-    defaultValues.activity,
-    defaultValues.client,
-    defaultValues.date,
-    defaultValues.description,
-    defaultValues.duration,
-    defaultValues.issue,
-    defaultValues.product,
+    getFieldState,
     isEnabled,
-    reset,
+    resetField,
+    setValue,
     userPrefersSetRemainingHours,
     wdLoading,
   ]);

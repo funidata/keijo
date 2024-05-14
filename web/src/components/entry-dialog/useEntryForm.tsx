@@ -10,7 +10,6 @@ import {
   ReplaceWorkdayEntryDocument,
 } from "../../graphql/generated/graphql";
 import { useNotification } from "../global-notification/useNotification";
-import { useMemo } from "react";
 import useFormSetRemainingHours from "./useFormSetRemainingHours";
 
 export type EntryFormSchema = {
@@ -59,25 +58,20 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
     },
   );
 
-  const defaultValues: EntryFormSchema = useMemo(
-    () => ({
-      date: date ? dayjs(date) : dayjs(),
-      duration: editEntry?.duration.toString() || "",
-      description: editEntry?.description || "",
-      product: editEntry?.product || "",
-      activity: editEntry?.activity || "",
-      issue: editEntry?.issue || null,
-      client: editEntry?.client || "",
-    }),
-    [date, editEntry],
-  );
-
+  const defaultValues = {
+    date: date ? dayjs(date) : dayjs(),
+    duration: editEntry?.duration.toString() || "",
+    description: editEntry?.description || "",
+    product: editEntry?.product || "",
+    activity: editEntry?.activity || "",
+    issue: editEntry?.issue || null,
+    client: editEntry?.client || "",
+  };
   const form = useForm<EntryFormSchema>({ defaultValues });
 
   const { loading: hoursLoading } = useFormSetRemainingHours({
     form,
     isEnabled: editEntry === undefined,
-    defaultValues,
   });
 
   const addWorkday: SubmitHandler<EntryFormSchema> = async (formValues) => {

@@ -147,7 +147,13 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form, loading }: 
               </LoadingButton>
             </Grid>
             <Grid item xs={12}>
-              <Button type="reset" variant="outlined" size="large" onClick={reset} fullWidth>
+              <Button
+                type="reset"
+                variant="outlined"
+                size="large"
+                onClick={() => reset()}
+                fullWidth
+              >
                 {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
               </Button>
             </Grid>
@@ -179,14 +185,7 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form, loading }: 
             </Grid>
             <Grid item xs={8} sx={{ mt: 2 }}>
               <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
-                <Button
-                  type="reset"
-                  variant="outlined"
-                  size="large"
-                  onClick={() => {
-                    reset();
-                  }}
-                >
+                <Button type="reset" variant="outlined" size="large" onClick={() => reset()}>
                   {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
                 </Button>
                 <LoadingButton loading={loading} type="submit" variant="contained" size="large">
