@@ -28,3 +28,12 @@ services:
       - 3001:3001
     volumes:
       - ./server/src:/usr/src/app/src
+
+  nv-mock:
+    image: mockoon/cli
+    container_name: nv-mock
+    ports:
+      - 4002:4002
+    volumes:
+      - ./nv-mock:/data
+    command: "--port 4002 --data /data/nv-mock.json"
