@@ -1,0 +1,80 @@
+{
+  "uuid": "a2f1930b-94e1-48da-b1b8-1280073f780d",
+  "lastMigration": 32,
+  "name": "NV Mock XML API",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 4002,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "6a3accc4-7c1c-4d66-a614-002db759e4f1",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "getrecordtypelist.nv",
+      "responses": [
+        {
+          "uuid": "9b32de97-534f-4eb6-a3e6-adf6932c40ec",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "/Users/joonas/code/keijo/nv-mock/data/getrecordtypelist.nv.xml",
+          "databucketID": "",
+          "sendFileAsBody": true,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "6a3accc4-7c1c-4d66-a614-002db759e4f1"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [],
+  "callbacks": []
+}
