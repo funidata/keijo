@@ -25,9 +25,9 @@ const useFormSetRemainingHours = ({
   defaultValues,
 }: useFormRemainingHoursProps) => {
   const { userPrefersSetRemainingHours } = usePreferSetRemainingHours();
-  const { watch, reset } = form;
-  const dateWatch = dayjs(watch("date")).locale(dayjs.locale());
-  const queryDate = dateWatch.format("YYYY-MM-DD");
+  const { getValues, reset } = form;
+  const formInputDate = dayjs(getValues("date")).locale(dayjs.locale());
+  const queryDate = formInputDate.format("YYYY-MM-DD");
   const { data, loading: wdLoading } = useQuery(FindWorkdaysDocument, {
     variables: { start: queryDate, end: queryDate },
   });
