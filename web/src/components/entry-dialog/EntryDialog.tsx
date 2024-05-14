@@ -21,7 +21,6 @@ const EntryDialog = ({ ...props }: EntryDialogProps) => {
   const { state } = useLocation();
   // state is possibly null
   const { date, editEntry } = state || {};
-  console.log(date);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const theme = useTheme();
