@@ -65,6 +65,35 @@
         }
       ],
       "responseMode": null
+    },
+    {
+      "uuid": "781e6605-6ed0-4a67-9925-7d7917ab37dd",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "getworkdays.nv",
+      "responses": [
+        {
+          "uuid": "18ba4e63-3c95-4828-b62f-fb0839a8cf88",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "/Users/joonas/code/keijo/nv-mock/data/getworkdays.nv.xml",
+          "databucketID": "",
+          "sendFileAsBody": true,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
     }
   ],
   "rootChildren": [
@@ -75,6 +104,10 @@
     {
       "type": "route",
       "uuid": "2dad420b-c11e-40ea-bef6-b2d1a644bc0e"
+    },
+    {
+      "type": "route",
+      "uuid": "781e6605-6ed0-4a67-9925-7d7917ab37dd"
     }
   ],
   "proxyMode": false,
