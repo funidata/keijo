@@ -158,37 +158,43 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form, loading }: 
             </Grid>
           </>
         ) : (
-          <Grid item xs={12} sx={{ mt: 2 }}>
-            <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
-              {!editEntry && (
-                <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        aria-label={t("entryDialog.setRemainingHours")}
-                        checked={userPrefersSetRemainingHours}
-                        onChange={toggleRemainingHours}
-                      />
-                    }
-                    label={t("entryDialog.setRemainingHours")}
-                  />
-                </FormGroup>
-              )}
-              <Button
-                type="reset"
-                variant="outlined"
-                size="large"
-                onClick={() => {
-                  reset();
-                }}
-              >
-                {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
-              </Button>
-              <LoadingButton loading={loading} type="submit" variant="contained" size="large">
-                {t("entryDialog.submit")}
-              </LoadingButton>
-            </Box>
-          </Grid>
+          <>
+            <Grid item xs={4} sx={{ mt: 2 }}>
+              <Box sx={{ display: "flex", justifyContent: "start", gap: 2 }}>
+                {!editEntry && (
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          aria-label={t("entryDialog.setRemainingHours")}
+                          checked={userPrefersSetRemainingHours}
+                          onChange={toggleRemainingHours}
+                        />
+                      }
+                      label={t("entryDialog.setRemainingHours")}
+                    />
+                  </FormGroup>
+                )}
+              </Box>
+            </Grid>
+            <Grid item xs={8} sx={{ mt: 2 }}>
+              <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
+                <Button
+                  type="reset"
+                  variant="outlined"
+                  size="large"
+                  onClick={() => {
+                    reset();
+                  }}
+                >
+                  {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
+                </Button>
+                <LoadingButton loading={loading} type="submit" variant="contained" size="large">
+                  {t("entryDialog.submit")}
+                </LoadingButton>
+              </Box>
+            </Grid>
+          </>
         )}
       </Grid>
     </form>
