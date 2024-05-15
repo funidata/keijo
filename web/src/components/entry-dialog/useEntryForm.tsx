@@ -10,6 +10,7 @@ import {
   ReplaceWorkdayEntryDocument,
 } from "../../graphql/generated/graphql";
 import { useNotification } from "../global-notification/useNotification";
+import useFormSetRemainingHours from "./useFormSetRemainingHours";
 
 export type EntryFormSchema = {
   date: Dayjs;
@@ -66,8 +67,12 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
     issue: editEntry?.issue || null,
     client: editEntry?.client || "",
   };
-
   const form = useForm<EntryFormSchema>({ defaultValues });
+
+  const { loading: hoursLoading } = useFormSetRemainingHours({
+    form,
+    isEnabled: editEntry === undefined,
+  });
 
   const addWorkday: SubmitHandler<EntryFormSchema> = async (formValues) => {
     const { date, duration, description, product, activity, issue, client } = formValues;
@@ -118,7 +123,7 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
     }
   };
 
-  const loading = addQueryLoading || replaceMutationLoading;
+  const loading = addQueryLoading || replaceMutationLoading || hoursLoading;
 
   return { form, onSubmit, loading };
 };

@@ -11,6 +11,9 @@ import {
   TextField,
   useMediaQuery,
   useTheme,
+  Switch,
+  FormGroup,
+  FormControlLabel,
 } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { Controller, UseFormReturn } from "react-hook-form";
@@ -23,6 +26,7 @@ import DurationSlider from "./DurationSlider";
 import ResponsiveDatePicker from "./ResponsiveDatePicker";
 import WorkdayHours from "./WorkdayHours";
 import { EntryFormSchema } from "./useEntryForm";
+import usePreferSetRemainingHours from "../user-preferences/usePreferSetRemainingHours";
 
 type EntryFormProps = {
   form: UseFormReturn<EntryFormSchema>;
@@ -38,12 +42,12 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form, loading }: 
   const { t } = useTranslation();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
-
+  const { userPrefersSetRemainingHours, toggleRemainingHours } = usePreferSetRemainingHours();
   const { control, watch } = form;
   const date = dayjs(watch("date")).locale(dayjs.locale());
 
   return (
-    <form onSubmit={onSubmit} onReset={reset}>
+    <form onSubmit={onSubmit}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <Grid container spacing={2}>
@@ -143,7 +147,13 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form, loading }: 
               </LoadingButton>
             </Grid>
             <Grid item xs={12}>
-              <Button type="reset" variant="outlined" size="large" onClick={reset} fullWidth>
+              <Button
+                type="reset"
+                variant="outlined"
+                size="large"
+                onClick={() => reset()}
+                fullWidth
+              >
                 {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
               </Button>
             </Grid>
@@ -152,18 +162,54 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form, loading }: 
                 <BigDeleteEntryButton entryKey={editEntry.key} date={originalDate} />
               )}
             </Grid>
+            <Grid item xs={12}>
+              {!editEntry && (
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        aria-label={t("entryDialog.setRemainingHours")}
+                        checked={userPrefersSetRemainingHours}
+                        onChange={toggleRemainingHours}
+                      />
+                    }
+                    label={t("entryDialog.setRemainingHours")}
+                  />
+                </FormGroup>
+              )}
+            </Grid>
           </>
         ) : (
-          <Grid item xs={12} sx={{ mt: 2 }}>
-            <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
-              <Button type="reset" variant="outlined" size="large" onClick={reset}>
-                {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
-              </Button>
-              <LoadingButton loading={loading} type="submit" variant="contained" size="large">
-                {t("entryDialog.submit")}
-              </LoadingButton>
-            </Box>
-          </Grid>
+          <>
+            <Grid item xs={4} sx={{ mt: 2 }}>
+              <Box sx={{ display: "flex", justifyContent: "start", gap: 2 }}>
+                {!editEntry && (
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          aria-label={t("entryDialog.setRemainingHours")}
+                          checked={userPrefersSetRemainingHours}
+                          onChange={toggleRemainingHours}
+                        />
+                      }
+                      label={t("entryDialog.setRemainingHours")}
+                    />
+                  </FormGroup>
+                )}
+              </Box>
+            </Grid>
+            <Grid item xs={8} sx={{ mt: 2 }}>
+              <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
+                <Button type="reset" variant="outlined" size="large" onClick={() => reset()}>
+                  {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
+                </Button>
+                <LoadingButton loading={loading} type="submit" variant="contained" size="large">
+                  {t("entryDialog.submit")}
+                </LoadingButton>
+              </Box>
+            </Grid>
+          </>
         )}
       </Grid>
     </form>
