@@ -9,8 +9,12 @@
     "logs": "docker compose logs -f",
     "init": "cd server && npm ci && cd ../web && npm ci",
     "version": "scripts/version_sub_projects.sh $npm_package_version",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "format:check": "prettier --check ."
   },
   "author": "Joonas Häkkinen <joonas.hakkinen@funidata.fi>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "prettier": "^3.2.5"
+  }
 }
