@@ -162,6 +162,22 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form, loading }: 
                 <BigDeleteEntryButton entryKey={editEntry.key} date={originalDate} />
               )}
             </Grid>
+            <Grid item xs={12}>
+              {!editEntry && (
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        aria-label={t("entryDialog.setRemainingHours")}
+                        checked={userPrefersSetRemainingHours}
+                        onChange={toggleRemainingHours}
+                      />
+                    }
+                    label={t("entryDialog.setRemainingHours")}
+                  />
+                </FormGroup>
+              )}
+            </Grid>
           </>
         ) : (
           <>
