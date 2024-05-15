@@ -58,7 +58,7 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
     },
   );
 
-  const defaultValues = {
+  const defaultValues: EntryFormSchema = {
     date: date ? dayjs(date) : dayjs(),
     duration: editEntry?.duration.toString() || "",
     description: editEntry?.description || "",
