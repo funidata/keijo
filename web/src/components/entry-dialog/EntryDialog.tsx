@@ -18,9 +18,9 @@ import useEntryForm from "./useEntryForm";
 type EntryDialogProps = Omit<DialogProps, "open">;
 
 const EntryDialog = ({ ...props }: EntryDialogProps) => {
-  const {
-    state: { date, editEntry },
-  } = useLocation();
+  const { state } = useLocation();
+  // state is possibly null
+  const { date, editEntry } = state || {};
   const navigate = useNavigate();
   const { t } = useTranslation();
   const theme = useTheme();
