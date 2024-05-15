@@ -18,8 +18,7 @@ const LanguageMenu = ({ anchor, onClose }: LanguageMenuProps) => {
     onClose();
   };
 
-  const visibilityFor = (lang: string) =>
-    language === lang ? "visible" : "hidden";
+  const visibilityFor = (lang: string) => (language === lang ? "visible" : "hidden");
 
   return (
     <Menu anchorEl={anchor} open={!!anchor} keepMounted onClose={onClose}>
