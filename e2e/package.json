@@ -4,7 +4,8 @@
   "description": "End-to-end test suite for Keijo",
   "scripts": {
     "start": "playwright test --ui",
-    "test": "playwright test"
+    "test": "playwright test",
+    "postinstall": "playwright install --with-deps"
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0",
