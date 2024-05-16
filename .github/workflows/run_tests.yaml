@@ -59,8 +59,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Start mock NV API
-        run: docker run -p 4002:4002 mockoon/cli --port 4002 --data ./nv-mock.json
-        working-directory: nv-mock
+        run: docker run -d -p 4002:4002 --mount type=bind,source=./nv-mock,target=/data,readonly mockoon/cli --port 4002 --data /data/nv-mock.json
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Download artifact
@@ -78,6 +77,8 @@ jobs:
           node-version-file: .nvmrc
       - name: Install Playwright
         run: npm ci
+        env:
+          CI: true
         working-directory: e2e
       - name: Run E2E tests
         run: npm test
