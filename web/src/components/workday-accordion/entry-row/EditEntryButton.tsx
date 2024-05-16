@@ -21,14 +21,16 @@ const EditEntryButton = ({ entry, date }: EditEntryButtonProps) => {
         <IconButton
           aria-label={t("controls.editEntry")}
           size="medium"
-          onClick={() => navigate(`${location.pathname}/edit`, { state: { date, editEntry: entry } })}
+          onClick={() =>
+            navigate(`${location.pathname}/edit`, { state: { date, editEntry: entry } })
+          }
           sx={(theme) => ({
             color:
-            theme.palette.mode === "dark"
-            ? theme.palette.primary.main
-            : theme.palette.secondary.dark,
+              theme.palette.mode === "dark"
+                ? theme.palette.primary.main
+                : theme.palette.secondary.dark,
           })}
-          >
+        >
           <EditIcon fontSize="inherit" />
         </IconButton>
       </Tooltip>

@@ -56,7 +56,7 @@ const en = {
       ticketOrDescriptionRequired: "Description is required if there is no relevant issue.",
     },
     totalHoursToday: "Time on selected day before this entry",
-    setRemainingHours: "Set remaining hours automatically"
+    setRemainingHours: "Set remaining hours automatically",
   },
   entryTable: {
     accepted: "Accepted",
