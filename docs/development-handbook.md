@@ -11,7 +11,7 @@
 1. Clone this repository.
 2. Make sure your system satisfies [the requirements](#requirements) and Docker daemon is running.
 3. Create `.env` file in repository root and populate it as detailed [here](./configuration.md).
-4. In repository root, run `npm run init` to install Node modules locally. (While the Docker containers don't need these to run, in practice a lot of development tooling depends on Node modules being installed locally.)
+4. In repository root, run `npm ci` to install Node modules locally. Post-install script will take care of installing the sub-projects' dependencies, too. (While the Docker containers don't need these to run, in practice a lot of development tooling depends on Node modules being installed locally.)
 5. Run `npm start` to bring up the development server containers.
 6. Make sure your IDE is set up to use `eslint` and `prettier` from local `package.json` definitions and there are no global overrides in effect.
 

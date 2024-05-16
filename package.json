@@ -9,7 +9,7 @@
     "stop": "docker compose down",
     "restart": "npm stop && npm start",
     "logs": "docker compose logs -f server web",
-    "init": "cd server && npm ci && cd ../web && npm ci",
+    "postinstall": "cd server && npm ci && cd ../web && npm ci && cd ../e2e && npm ci",
     "version": "scripts/version_sub_projects.sh $npm_package_version",
     "postversion": "git push && git push --tags",
     "format:check": "prettier --check ."

@@ -11,7 +11,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Setup
-        run: npm run init
+        run: npm ci
       - name: Lint backend
         working-directory: server
         run: npm run lint
