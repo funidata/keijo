@@ -45,6 +45,8 @@ services:
   server-test:
     extends: server-base
     container_name: keijo-server-test
+    environment:
+      - NETVISOR_API_URL=http://nv-mock:4002
     ports:
       - 4001:3001
 
