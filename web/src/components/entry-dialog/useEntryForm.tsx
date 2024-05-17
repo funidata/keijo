@@ -11,6 +11,7 @@ import {
 } from "../../graphql/generated/graphql";
 import { useNotification } from "../global-notification/useNotification";
 import useFormSetRemainingHours from "./useFormSetRemainingHours";
+import useDefaultEntryValues from "../user-preferences/useDefaultEntryValues";
 
 export type EntryFormSchema = {
   date: Dayjs;
@@ -58,6 +59,8 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
     },
   );
 
+  const { defaultEntryValues } = useDefaultEntryValues();
+
   const defaultValues: EntryFormSchema = {
     date: date ? dayjs(date) : dayjs(),
     duration: editEntry?.duration.toString() || "",
@@ -66,6 +69,7 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
     activity: editEntry?.activity || "",
     issue: editEntry?.issue || null,
     client: editEntry?.client || "",
+    ...((!editEntry && defaultEntryValues) || {}),
   };
   const form = useForm<EntryFormSchema>({ defaultValues });
 
