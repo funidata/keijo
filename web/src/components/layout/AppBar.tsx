@@ -6,6 +6,7 @@ import EntryDialogButton from "../entry-dialog/EntryDialogButton";
 import LanguageSelect from "../language-select/LanguageSelect";
 import AppMenuButton from "./AppMenu";
 import Title from "./Title";
+import SettingsSelect from "../settings/SettingsSelect";
 
 const AppBar = () => {
   const { darkMode } = useDarkMode();
@@ -28,6 +29,7 @@ const AppBar = () => {
               <EntryDialogButton />
               <ColorModeToggle />
               <LanguageSelect />
+              <SettingsSelect />
             </>
           )}
         </Box>
