@@ -60,6 +60,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Start mock NV API
         run: docker run -d -p 4002:4002 --mount type=bind,source=./nv-mock,target=/data,readonly mockoon/cli --port 4002 --data /data/nv-mock.json
+      - name: Wait for NV API
+        run: curl -v --head -X GET --retry 10 --retry-all-errors --retry-delay 5 http://localhost:4002
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Download artifact
@@ -71,6 +73,8 @@ jobs:
         run: docker load --input /tmp/keijo-test.tar
       - name: Start backend
         run: docker run -d --env-file e2e/ci.env -p 4000:3001 keijo-test
+      - name: Wait for backend
+        run: curl -v --head -X GET --retry 10 --retry-all-errors --retry-delay 5 http://localhost:4000
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
