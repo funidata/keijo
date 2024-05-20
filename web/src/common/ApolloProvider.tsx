@@ -6,12 +6,9 @@ const apiUrl = import.meta.env.VITE_API_URL_OVERRIDE || import.meta.env.VITE_API
 
 const httpLink = new HttpLink({
   uri: apiUrl,
-  headers:
-    import.meta.env.NODE_ENV === "production"
-      ? {}
-      : {
-          "x-shib-employeeid": import.meta.env.VITE_MOCK_EMPLOYEE_NUMBER || "",
-        },
+  headers: import.meta.env.VITE_MOCK_EMPLOYEE_NUMBER
+    ? { "x-shib-employeeid": import.meta.env.VITE_MOCK_EMPLOYEE_NUMBER || "" }
+    : {},
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
