@@ -1,5 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
-
+import { test } from "./i18n-fixture";
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -26,22 +26,27 @@ export default defineConfig({
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
+      grepInvert: /mobile/,
     },
     {
       name: "firefox",
       use: { ...devices["Desktop Firefox"] },
+      grepInvert: /mobile/,
     },
     {
       name: "webkit",
       use: { ...devices["Desktop Safari"] },
+      grepInvert: /mobile/,
     },
     {
       name: "Mobile Chrome",
       use: { ...devices["Pixel 5"] },
+      grep: /mobile/,
     },
     {
       name: "Mobile Safari",
       use: { ...devices["iPhone 12"] },
+      grep: /mobile/,
     },
   ],
 
@@ -52,3 +57,5 @@ export default defineConfig({
   //   reuseExistingServer: !process.env.CI,
   // },
 });
+
+export { test };
