@@ -55,11 +55,15 @@ jobs:
   e2e-tests:
     name: E2E tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: e2e
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Start mock NV API
-        run: docker run -d -p 4002:4002 --mount type=bind,source=./nv-mock,target=/data,readonly mockoon/cli --port 4002 --data /data/nv-mock.json
+        run: docker run -d -p 4002:4002 --mount type=bind,source=./,target=/data,readonly mockoon/cli --port 4002 --data /data/nv-mock.json
+        working-directory: nv-mock
       - name: Wait for NV API
         run: curl -v --head -X GET --retry 10 --retry-all-errors --retry-delay 5 http://localhost:4002
       - name: Set up Docker Buildx
@@ -72,7 +76,7 @@ jobs:
       - name: Load image
         run: docker load --input /tmp/keijo.tar
       - name: Start backend
-        run: docker run -d --env-file e2e/ci.env -p 4000:3001 keijo
+        run: docker run -d --env-file ci.env -p 4000:3001 keijo
       - name: Wait for backend
         run: curl -v --head -X GET --retry 10 --retry-all-errors --retry-delay 5 http://localhost:4000
       - name: Set up Node.js
@@ -83,19 +87,17 @@ jobs:
         run: npm ci
         env:
           CI: true
-        working-directory: e2e
       - name: Run E2E tests
         run: npm test
-        working-directory: e2e
       - name: Upload test report
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
-          path: test/playwright-report/
+          path: e2e/playwright-report/
       - name: Upload test results on failure
         uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: test-results
-          path: test/test-results/
+          path: e2e/test-results/
