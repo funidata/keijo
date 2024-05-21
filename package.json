@@ -16,9 +16,10 @@
     "postversion": "git push && git push --tags",
     "format:check": "prettier --check .",
     "e2e:open": "npm run start:test && cd e2e && npm start",
-    "e2e": "npm run start:test && cd e2e && npm test",
+    "e2e": "npm run start:test && npm run wait-for-server && cd e2e && npm test",
     "unit-tests": "cd server && npm test",
-    "test": "npm run unit-tests:run && npm run e2e:run"
+    "test": "npm run unit-tests && npm run e2e",
+    "wait-for-server": "curl -sX GET --retry 10 --retry-delay 1 --retry-all-errors http://localhost:4001/ > /dev/null"
   },
   "author": "Joonas Häkkinen <joonas.hakkinen@funidata.fi>",
   "contributors": [
