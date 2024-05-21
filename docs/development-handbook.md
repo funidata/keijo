@@ -33,6 +33,14 @@ npm start
 npm stop
 ```
 
+#### Build Docker Services
+
+Rebuilding is necessary, e.g., after installing new NPM packages or making configuration changes in files not mounted to the containers. You can also use `npm run recycle` to stop a running development environment, rebuild the services, and start up again.
+
+```bash
+npm run build
+```
+
 #### View Logs
 
 ```bash
