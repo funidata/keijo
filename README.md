@@ -7,5 +7,6 @@ Implemented with a stateless Nest.js backend and a Next.js frontend. The backend
 ## Documentation
 
 - [Development Handbook](docs/development-handbook.md)
+- [Tests](docs/tests.md)
 - [Configuration](docs/configuration.md)
 - [Logging](docs/logging.md)

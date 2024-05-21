@@ -47,6 +47,14 @@ Run this command in the `web/` directory. Dev env must be running as the code ge
 npm run generate
 ```
 
+#### Run Tests
+
+See [test documentation](./tests.md) for more testing commands and information.
+
+```bash
+npm test
+```
+
 ## Contributions
 
 Contributions must be made via pull requests into the protected `main` branch. Use labels and comprehensive descriptions in PR's to aid automatic release notes generation. All tests must pass before merge.
