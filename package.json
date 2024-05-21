@@ -4,18 +4,21 @@
   "description": "Custom UI for Netvisor",
   "scripts": {
     "start": "docker compose up -d --build server web && npm run logs",
-    "start:test": "docker compose up -d --build server-test web-test nv-mock",
+    "start:test": "docker compose up -d server-test web-test nv-mock",
     "start:all": "docker compose up -d --build",
     "stop": "docker compose down",
     "stop:test": "docker compose down server-test web-test nv-mock",
     "restart": "npm stop && npm start",
     "logs": "docker compose logs -f server web",
+    "logs:test": "docker compose logs -f server-test web-test nv-mock",
     "postinstall": "cd server && npm ci && cd ../web && npm ci && cd ../e2e && npm ci",
     "version": "scripts/version_sub_projects.sh $npm_package_version",
     "postversion": "git push && git push --tags",
     "format:check": "prettier --check .",
     "e2e:open": "npm run start:test && cd e2e && npm start",
-    "e2e:run": "npm run start:test && cd e2e && npm test"
+    "e2e": "npm run start:test && cd e2e && npm test",
+    "unit-tests": "cd server && npm test",
+    "test": "npm run unit-tests:run && npm run e2e:run"
   },
   "author": "Joonas Häkkinen <joonas.hakkinen@funidata.fi>",
   "contributors": [
