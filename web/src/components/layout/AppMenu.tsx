@@ -3,6 +3,7 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import CheckIcon from "@mui/icons-material/Check";
 import MenuIcon from "@mui/icons-material/Menu";
+import TuneIcon from "@mui/icons-material/Tune";
 import {
   Box,
   Divider,
@@ -18,7 +19,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
+import { generatePath, useLocation, useNavigate } from "react-router-dom";
 import useDarkMode from "../../theme/useDarkMode";
 
 const AppMenuButton = () => {
@@ -68,6 +69,22 @@ const AppMenuButton = () => {
               </ListItemIcon>
               <ListItemText primaryTypographyProps={{ variant: "h5" }}>
                 {t("entryDialog.title")}
+              </ListItemText>
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem>
+            <ListItemButton
+              onClick={() => {
+                navigate(generatePath(`${location.pathname}/set-defaults`));
+                toggleMenu();
+              }}
+            >
+              <ListItemIcon>
+                <TuneIcon {...iconProps} />
+              </ListItemIcon>
+              <ListItemText primaryTypographyProps={{ variant: "h5" }}>
+                {t("entryDialog.setDefaultsTitle")}
               </ListItemText>
             </ListItemButton>
           </ListItem>

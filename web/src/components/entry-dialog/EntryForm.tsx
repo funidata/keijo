@@ -25,10 +25,12 @@ import DimensionComboBox from "./DimensionComboBox";
 import DurationSlider from "./DurationSlider";
 import ResponsiveDatePicker from "./ResponsiveDatePicker";
 import WorkdayHours from "./WorkdayHours";
-import { EntryFormSchema } from "./useEntryForm";
+import useEntryForm, { EntryFormSchema } from "./useEntryForm";
 import usePreferSetRemainingHours from "../user-preferences/usePreferSetRemainingHours";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-type EntryFormProps = {
+export type EntryFormProps = {
   form: UseFormReturn<EntryFormSchema>;
   onSubmit: () => void;
   reset: () => void;
@@ -37,17 +39,36 @@ type EntryFormProps = {
   loading?: boolean;
 };
 
-const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form, loading }: EntryFormProps) => {
+const EntryForm = () => {
+  const { state } = useLocation();
+  // state is possibly null
+  const { date: originalDate, editEntry } = state || {};
+  const { form, onSubmit, loading } = useEntryForm({ editEntry, date: originalDate });
+  const navigate = useNavigate();
+
+  const {
+    handleSubmit,
+    reset,
+    formState: { isSubmitSuccessful },
+  } = form;
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+      navigate("..");
+    }
+  }, [isSubmitSuccessful, navigate, reset]);
+
   const dayjs = useDayjs();
   const { t } = useTranslation();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const { userPrefersSetRemainingHours, toggleRemainingHours } = usePreferSetRemainingHours();
   const { control, watch } = form;
-  const date = dayjs(watch("date")).locale(dayjs.locale());
+  const dateWatch = dayjs(watch("date")).locale(dayjs.locale());
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <Grid container spacing={2}>
@@ -103,7 +124,7 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form, loading }: 
         <Grid item xs={12} md={6}>
           <Controller name="duration" control={control} render={DurationSlider} />
           <Box sx={{ mt: 2, mb: 3 }}>
-            <WorkdayHours date={date} />
+            <WorkdayHours date={dateWatch} />
           </Box>
           {mobile ? (
             <Controller name="date" control={control} render={ResponsiveDatePicker} />
@@ -114,7 +135,7 @@ const EntryForm = ({ reset, onSubmit, editEntry, originalDate, form, loading }: 
                   expandIcon={<ExpandMoreIcon />}
                   sx={{ textTransform: "capitalize" }}
                 >
-                  {date.format("dddd L")}
+                  {dateWatch.format("dddd L")}
                 </AccordionSummary>
                 <AccordionDetails>
                   <Controller name="date" control={control} render={ResponsiveDatePicker} />

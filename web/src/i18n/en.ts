@@ -17,6 +17,7 @@ const en = {
     openMenu: "Open menu",
     useDarkMode: "Dark Mode",
     selectLanguage: "Select language",
+    settingsMenu: "Settings",
   },
   dimensionNames: {
     product: "Product",
@@ -33,6 +34,7 @@ const en = {
   },
   entryDialog: {
     title: "Add New Entry",
+    setDefaultsTitle: "Edit Entry Default Values",
     date: "Date",
     description: "Comment",
     duration: "Duration",

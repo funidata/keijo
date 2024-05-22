@@ -17,6 +17,7 @@ const fi = {
     openMenu: "Avaa valikko",
     useDarkMode: "Synkkyys",
     selectLanguage: "Valitse kieli",
+    settingsMenu: "Asetukset",
   },
   dimensionNames: {
     product: "Tuote",
@@ -33,6 +34,7 @@ const fi = {
   },
   entryDialog: {
     title: "Lisää työaikakirjaus",
+    setDefaultsTitle: "Muuta kirjauksen oletusarvoja",
     date: "Päivämäärä",
     description: "Kommentti",
     duration: "Kesto",
