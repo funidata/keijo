@@ -22,7 +22,9 @@ const EditEntryButton = ({ entry, date }: EditEntryButtonProps) => {
           aria-label={t("controls.editEntry")}
           size="medium"
           onClick={() =>
-            navigate(`${location.pathname}/edit`, { state: { date, editEntry: entry } })
+            navigate(`${location.pathname}/edit`, {
+              state: { date: date?.format("YYYY-MM-DD"), editEntry: entry },
+            })
           }
           sx={(theme) => ({
             color:
