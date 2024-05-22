@@ -35,7 +35,7 @@ const getMockIssueNames = () => {
 
 const getMockClientNames = () => {
   const names = dimensions
-    ?.find((x) => x.Name === "3 Tiketti")
+    ?.find((x) => x.Name === "4 Asiakas")
     ?.DimensionDetails.DimensionDetail.map((x) => x.Name)!;
   return names;
 };
