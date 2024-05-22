@@ -9,7 +9,8 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0",
-    "@types/node": "^20.12.12"
+    "@types/node": "^20.12.12",
+    "playwright-i18next-fixture": "^1.0.0"
   },
   "dependencies": {
     "fast-xml-parser": "^4.4.0"

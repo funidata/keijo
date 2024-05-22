@@ -1,5 +1,5 @@
 import { test as base } from "@playwright/test";
-import { createI18nFixture, getI18nInstance } from "playwright-i18next-fixture";
+import { createI18nFixture } from "playwright-i18next-fixture";
 import en from "../web/src/i18n/en";
 import fi from "../web/src/i18n/fi";
 
