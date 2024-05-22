@@ -19,12 +19,17 @@ type TestEntry = {
   client: string;
 };
 
+const productNames = getMockProductNames();
+const activityNames = getMockActivityNames();
+const issueNames = getMockIssueNames();
+const clientNames = getMockClientNames();
+
 const entries: Array<TestEntry> = [
   {
-    product: getMockProductNames()[0],
-    activity: getMockActivityNames()[0],
-    issue: getMockIssueNames()[0],
-    client: getMockClientNames()[0],
+    product: productNames[0],
+    activity: activityNames[0],
+    issue: issueNames[0],
+    client: clientNames[0],
     description: "no comment",
     duration: "3.00",
     date: "21.5.2024",
@@ -44,7 +49,7 @@ test.describe("Landing page", () => {
 });
 
 test.describe("Add Entries", () => {
-  // TODO: add nv post endpoint and check that entry is added
+  // TODO: Some way to check added entries?
   test("Should add entry from app bar", async ({ page, t }) => {
     // Open entry dialog
     await page
@@ -56,11 +61,12 @@ test.describe("Add Entries", () => {
     await fillEntryForm(page, t, entries[0]);
     // Submit
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
+    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
   });
 });
 
 test.describe("Add Entries mobile", () => {
-  // TODO: add nv post endpoint and check that entry is added
+  // TODO: Some way to check added entries?
   test("Should add entry from app bar", async ({ page, t }) => {
     // Open entry dialog
     await page.getByRole("banner").getByLabel(t("controls.openMenu")).click();
@@ -70,6 +76,7 @@ test.describe("Add Entries mobile", () => {
     await fillEntryFormMobile(page, t, entries[0]);
     // Submit
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
+    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
   });
 });
 
