@@ -1,11 +1,11 @@
-name: Build and save image
+name: Build and save images
 
 on:
   workflow_call:
 
 jobs:
   build:
-    name: Build and save test image
+    name: Build and save images
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

@@ -3,16 +3,30 @@
   "version": "1.1.1",
   "description": "Custom UI for Netvisor",
   "scripts": {
-    "start": "docker compose up -d --build && npm run logs",
+    "start": "docker compose up -d server web && npm run logs",
+    "start:test": "docker compose up -d server-test web-test nv-mock",
+    "start:all": "docker compose up -d",
     "stop": "docker compose down",
+    "stop:test": "docker compose down server-test web-test nv-mock",
     "restart": "npm stop && npm start",
-    "logs": "docker compose logs -f",
-    "init": "cd server && npm ci && cd ../web && npm ci",
+    "recycle": "npm stop && npm run build && npm start",
+    "logs": "docker compose logs -f server web",
+    "logs:test": "docker compose logs -f server-test web-test nv-mock",
+    "postinstall": "cd server && npm ci && cd ../web && npm ci && cd ../e2e && npm ci",
     "version": "scripts/version_sub_projects.sh $npm_package_version",
     "postversion": "git push && git push --tags",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "e2e:open": "npm run start:test && cd e2e && npm start",
+    "e2e": "npm run start:test && npm run wait-for-server && cd e2e && npm test",
+    "unit-tests": "cd server && npm test",
+    "test": "npm run unit-tests && npm run e2e",
+    "wait-for-server": "curl -sX GET --retry 10 --retry-delay 1 --retry-all-errors http://localhost:4001/ > /dev/null",
+    "build": "docker compose build"
   },
   "author": "Joonas Häkkinen <joonas.hakkinen@funidata.fi>",
+  "contributors": [
+    "Kimi Kuru <kimi.kuru@funidata.fi>"
+  ],
   "license": "MIT",
   "dependencies": {
     "prettier": "^3.2.5"

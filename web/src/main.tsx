@@ -3,7 +3,7 @@ import { LicenseInfo } from "@mui/x-license";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import Keijo from "./Keijo";
-import { apolloClient } from "./common/ApolloProvider";
+import { apolloClient } from "./common/apolloClient";
 import "./common/session";
 
 LicenseInfo.setLicenseKey(import.meta.env.VITE_MUI_X_LICENSE);

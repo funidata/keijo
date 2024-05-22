@@ -1,0 +1,146 @@
+{
+  "uuid": "a2f1930b-94e1-48da-b1b8-1280073f780d",
+  "lastMigration": 32,
+  "name": "NV Mock XML API",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 4002,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "6a3accc4-7c1c-4d66-a614-002db759e4f1",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "getrecordtypelist.nv",
+      "responses": [
+        {
+          "uuid": "9b32de97-534f-4eb6-a3e6-adf6932c40ec",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "data/getrecordtypelist.nv.xml",
+          "databucketID": "",
+          "sendFileAsBody": true,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "2dad420b-c11e-40ea-bef6-b2d1a644bc0e",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "dimensionlist.nv",
+      "responses": [
+        {
+          "uuid": "7c2fdec4-3a8e-43f4-a57b-6c2d11168d0a",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "data/dimensionlist.nv.xml",
+          "databucketID": "",
+          "sendFileAsBody": true,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "781e6605-6ed0-4a67-9925-7d7917ab37dd",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "getworkdays.nv",
+      "responses": [
+        {
+          "uuid": "18ba4e63-3c95-4828-b62f-fb0839a8cf88",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "data/getworkdays.nv.xml",
+          "databucketID": "",
+          "sendFileAsBody": true,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "6a3accc4-7c1c-4d66-a614-002db759e4f1"
+    },
+    {
+      "type": "route",
+      "uuid": "2dad420b-c11e-40ea-bef6-b2d1a644bc0e"
+    },
+    {
+      "type": "route",
+      "uuid": "781e6605-6ed0-4a67-9925-7d7917ab37dd"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [],
+  "callbacks": []
+}

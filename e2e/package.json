@@ -1,0 +1,14 @@
+{
+  "name": "e2e",
+  "version": "1.1.0",
+  "description": "End-to-end test suite for Keijo",
+  "scripts": {
+    "start": "playwright test --ui",
+    "test": "playwright test",
+    "postinstall": "playwright install --with-deps"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "@types/node": "^20.12.10"
+  }
+}

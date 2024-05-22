@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Root>
+    <ResponseStatus>
+        <Status>OK</Status>
+        <TimeStamp>14.5.2024 12:44:57</TimeStamp>
+    </ResponseStatus>
+    <RecordTypes>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">01. Normaali tuntityö</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>3</NetvisorKey>
+            <RatioNumber>100</RatioNumber>
+            <CharacterType>1</CharacterType>
+            <UnitType>1</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">02. Saldovapaa</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>4</NetvisorKey>
+            <RatioNumber>101</RatioNumber>
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">04. Ylityötunnit vrk 50%</Name>
+                <Name ISO639-1Code="en">Overtime hours with 50% increase</Name>
+                <Name ISO639-1Code="sv">Övertimmar med 50%:s höjning</Name>
+            </Names>
+            <NetvisorKey>5</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>1</CharacterType>
+            <UnitType>1</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">05. Ylityötunnit vrk 100%</Name>
+                <Name ISO639-1Code="en">Overtime hours with 100% increase</Name>
+                <Name ISO639-1Code="sv">Övertimmar med 100 %:s höjning</Name>
+            </Names>
+            <NetvisorKey>6</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>1</CharacterType>
+            <UnitType>1</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">06. Ylityötunnit vko 50%</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>7</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>1</CharacterType>
+            <UnitType>1</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">07. Ylityötunnit vko 100%</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>8</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>1</CharacterType>
+            <UnitType>1</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">10. Koulutus palkallinen</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>9</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">101. Koulutus palkaton</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>10</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">20. Sunnuntai-/pyhätyö</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>11</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>1</CharacterType>
+            <UnitType>1</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">21. Iltalisä</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>12</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>1</CharacterType>
+            <UnitType>1</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">22. Yölisä</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>13</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>1</CharacterType>
+            <UnitType>1</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">52. Arkipyhä</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>14</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">60. Sairauspoissaolo palkallinen</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>15</NetvisorKey>
+            <RatioNumber>109</RatioNumber>
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">601. Sairauspoissaolo palkaton</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>16</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">602. Osa-aikainen sairauspoissaolo palkallinen</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>17</NetvisorKey>
+            <RatioNumber>111</RatioNumber>
+            <CharacterType>5</CharacterType>
+            <UnitType>1</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">603. Osa-aikainen sairauspoissaolo palkaton</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>18</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>1</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">61. Työtapaturma</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>19</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">62. Lapsen sairaus tai pakottava perhesyy palkall</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>20</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">621. Lapsen sairaus tai pakottava perhes palkaton</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>21</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>1</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">63. Vuosiloma</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>22</NetvisorKey>
+            <RatioNumber>116</RatioNumber>
+            <CharacterType>2</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">631. Lisälomapäivä</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>23</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">64. Äitiysvapaa palkallinen</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>24</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">641. Äitiysvapaa palkaton</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>25</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">642. Erityisäitiysvapaa palkallinen</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>26</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">643. Erityisäitiysvapaa palkaton</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>27</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">65. Vanhempainvapaa palkallinen</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>28</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">651. Vanhempainvapaa palkaton</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>29</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">66. Isyysvapaa palkallinen</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>30</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">661. Isyysvapaa palkaton</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>31</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">67. Muu syy Palkallinen poissaolo</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>32</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">69. Kuntoutus palkallinen</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>33</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">691. Kuntoutus palkaton</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>34</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">691. Osittainen poissaolo kuntoutus palkallinen</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>35</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>1</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">70. Vuorotteluvapaa palkaton</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>36</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">71. Opintovapaa palkallinen</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>37</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">711. Opintovapaa palkaton</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>38</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">72. Lakko tai työsulku</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>39</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">73. Työtarjonnan keskeytyminen</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>40</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">74. Virkavapaa palkallinen</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>41</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">741. Virkavapaa palkaton</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>42</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">75. Kertausharjoitus palkallinen</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>43</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">751. Kertausharjoitus palkaton</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>44</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">76. Varusmiespalvelus tai siviilipalvelus</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>45</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">77. Hoitovapaa palkaton</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>46</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">771. Osittainen hoitovapaa palkaton</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>47</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+        <RecordType>
+            <Names>
+                <Name ISO639-1Code="fi">78. Lomautus</Name>
+                <Name ISO639-1Code="en" />
+                <Name ISO639-1Code="sv" />
+            </Names>
+            <NetvisorKey>48</NetvisorKey>
+            <RatioNumber />
+            <CharacterType>5</CharacterType>
+            <UnitType>2</UnitType>
+        </RecordType>
+    </RecordTypes>
+</Root>
