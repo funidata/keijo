@@ -94,6 +94,35 @@
         }
       ],
       "responseMode": null
+    },
+    {
+      "uuid": "9ec15207-83c9-4172-a277-0784a96ab725",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "workday.nv",
+      "responses": [
+        {
+          "uuid": "e07d4aad-99dd-4bbd-b9bf-81dab1bc182e",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "data/workday.nv.xml",
+          "databucketID": "",
+          "sendFileAsBody": true,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
     }
   ],
   "rootChildren": [
@@ -108,6 +137,10 @@
     {
       "type": "route",
       "uuid": "781e6605-6ed0-4a67-9925-7d7917ab37dd"
+    },
+    {
+      "type": "route",
+      "uuid": "9ec15207-83c9-4172-a277-0784a96ab725"
     }
   ],
   "proxyMode": false,
