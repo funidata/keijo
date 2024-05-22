@@ -1,6 +1,12 @@
 import { Page, expect } from "@playwright/test";
 import { test } from "../playwright.config";
 import { TFunction } from "i18next";
+import {
+  getMockProductNames,
+  getMockActivityNames,
+  getMockIssueNames,
+  getMockClientNames,
+} from "mock-data";
 import { Entry } from "../../web/src/graphql/generated/graphql";
 
 type TestEntry = {
@@ -15,10 +21,10 @@ type TestEntry = {
 
 const entries: Array<TestEntry> = [
   {
-    product: "Sisu",
-    activity: "Toteutus",
-    issue: "tiketti-111",
-    client: "klientti",
+    product: getMockProductNames()[0],
+    activity: getMockActivityNames()[0],
+    issue: getMockIssueNames()[0],
+    client: getMockClientNames()[0],
     description: "no comment",
     duration: "3.00",
     date: "21.5.2024",
@@ -38,6 +44,7 @@ test.describe("Landing page", () => {
 });
 
 test.describe("Add Entries", () => {
+  // TODO: add nv post endpoint and check that entry is added
   test("Should add entry from app bar", async ({ page, t }) => {
     // Open entry dialog
     await page
@@ -53,6 +60,7 @@ test.describe("Add Entries", () => {
 });
 
 test.describe("Add Entries mobile", () => {
+  // TODO: add nv post endpoint and check that entry is added
   test("Should add entry from app bar", async ({ page, t }) => {
     // Open entry dialog
     await page.getByRole("banner").getByLabel(t("controls.openMenu")).click();
