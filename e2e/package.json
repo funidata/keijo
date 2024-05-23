@@ -13,6 +13,7 @@
     "playwright-i18next-fixture": "^1.0.0"
   },
   "dependencies": {
+    "dayjs": "^1.11.11",
     "fast-xml-parser": "^4.4.0"
   }
 }

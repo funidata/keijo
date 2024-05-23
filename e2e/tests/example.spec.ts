@@ -7,7 +7,10 @@ import {
   getMockIssueNames,
   getMockClientNames,
 } from "mock-data";
-import { Entry } from "../../web/src/graphql/generated/graphql";
+import dayjs from "dayjs";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+
+dayjs.extend(weekOfYear);
 
 type TestEntry = {
   product: string;
@@ -63,6 +66,18 @@ test.describe("Add Entries", () => {
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
     await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
   });
+
+  test("Should add entry from entry row", async ({ page, t }) => {
+    await page
+      .getByRole("button")
+      .getByRole("button", { name: t("entryDialog.title") })
+      .first()
+      .click();
+    await expect(page).toHaveURL(/.*\/create$/);
+    await fillEntryForm(page, t, entries[0]);
+    await page.getByRole("button", { name: t("entryDialog.submit") }).click();
+    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
+  });
 });
 
 test.describe("Add Entries mobile", () => {
@@ -77,6 +92,45 @@ test.describe("Add Entries mobile", () => {
     // Submit
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
     await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
+  });
+
+  test("Should add entry from entry row", async ({ page, t }) => {
+    await page
+      .getByRole("button")
+      .getByRole("button", { name: t("entryDialog.title") })
+      .first()
+      .click();
+    await expect(page).toHaveURL(/.*\/create$/);
+    await fillEntryFormMobile(page, t, entries[0]);
+    await page.getByRole("button", { name: t("entryDialog.submit") }).click();
+    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
+  });
+});
+
+test.describe("Browse dates", () => {
+  const startingWeek = 21;
+  test.beforeEach(async ({ page }) => {
+    await page.goto(`/entries/week/${startingWeek}`);
+  });
+
+  test("Should browse weeks forward", async ({ page, t }) => {
+    const jump = 3;
+    for (let i = 0; i < jump; i++) await page.getByLabel(t("controls.aria.nextWeek")).click();
+    await expect(page).toHaveURL(`/entries/week/${startingWeek + jump}`);
+  });
+
+  test("Should browse weeks backward", async ({ page, t }) => {
+    const jump = 3;
+    for (let i = 0; i < jump; i++) await page.getByLabel(t("controls.aria.prevWeek")).click();
+    await expect(page).toHaveURL(`/entries/week/${startingWeek - jump}`);
+  });
+
+  test("Should go to current week", async ({ page, t }) => {
+    const jump = 10;
+    const currentWeek = dayjs().week();
+    await page.goto(`/entries/week/${currentWeek + jump}`);
+    await page.getByLabel(t("controls.aria.currentWeek")).click();
+    await expect(page).toHaveURL(`/entries/week/${currentWeek}`);
   });
 });
 
@@ -98,3 +152,5 @@ const fillEntryForm = async (page: Page, t: TFunction, entry: TestEntry) => {
   await page.getByRole("button", { name: /.*\d\d.*/ }).click();
   await page.getByRole("gridcell", { name: entry.date.split(".")[0] }).click();
 };
+
+const checkWeekPage = () => {};
