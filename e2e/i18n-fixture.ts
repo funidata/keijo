@@ -1,9 +1,8 @@
-import { test as base } from "@playwright/test";
 import { createI18nFixture } from "playwright-i18next-fixture";
 import en from "../web/src/i18n/en";
 import fi from "../web/src/i18n/fi";
 
-const i18nFixture = createI18nFixture({
+export const i18nFixture = createI18nFixture({
   // i18n configuration options
   options: {
     lng: "en",
@@ -23,5 +22,3 @@ const i18nFixture = createI18nFixture({
   // Default: true
   auto: true,
 });
-
-export const test = base.extend(i18nFixture);

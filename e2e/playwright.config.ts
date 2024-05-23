@@ -1,5 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
-import { test } from "./i18n-fixture";
+import { test as base } from "@playwright/test";
+import { i18nFixture } from "./i18n-fixture";
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -20,6 +21,7 @@ export default defineConfig({
     baseURL: "http://localhost:4000",
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
+    locale: "en-gb",
   },
   /* Configure projects for major browsers */
   projects: [
@@ -57,5 +59,7 @@ export default defineConfig({
   //   reuseExistingServer: !process.env.CI,
   // },
 });
+
+const test = base.extend(i18nFixture);
 
 export { test };
