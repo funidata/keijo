@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import { Dayjs } from "dayjs";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import dayjs from "../../common/dayjs";
+import useDayjs from "../../common/useDayjs";
 import {
   AddWorkdayEntryDocument,
   Entry,
@@ -37,6 +37,7 @@ export type useEntryProps = {
 const useEntryForm = ({ editEntry, date }: useEntryProps) => {
   const { t } = useTranslation();
   const { showSuccessNotification } = useNotification();
+  const dayjs = useDayjs();
 
   const [addWorkdayEntryMutation, { loading: addQueryLoading }] = useMutation(
     AddWorkdayEntryDocument,

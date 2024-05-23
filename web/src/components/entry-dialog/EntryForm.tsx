@@ -41,9 +41,10 @@ export type EntryFormProps = {
 
 const EntryForm = () => {
   const { state } = useLocation();
+  const dayjs = useDayjs();
   // state is possibly null
   const { date: originalDate, editEntry } = state || {};
-  const { form, onSubmit, loading } = useEntryForm({ editEntry, date: originalDate });
+  const { form, onSubmit, loading } = useEntryForm({ editEntry, date: dayjs(originalDate) });
   const navigate = useNavigate();
 
   const {
@@ -59,7 +60,6 @@ const EntryForm = () => {
     }
   }, [isSubmitSuccessful, navigate, reset]);
 
-  const dayjs = useDayjs();
   const { t } = useTranslation();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));

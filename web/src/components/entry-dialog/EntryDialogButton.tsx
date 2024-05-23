@@ -18,7 +18,11 @@ const EntryDialogButton = ({ date, ...props }: EntryDialogButtonProps) => {
       <Tooltip title={t("entryDialog.title")}>
         <IconButton
           aria-label={t("entryDialog.title")}
-          onClick={() => navigate(generatePath(`${location.pathname}/create`), { state: { date } })}
+          onClick={() =>
+            navigate(generatePath(`${location.pathname}/create`), {
+              state: { date: date?.format("YYYY-MM-DD") },
+            })
+          }
           color="inherit"
           size="large"
           {...props}
