@@ -1,8 +1,8 @@
 import FlagCircleIcon from "@mui/icons-material/FlagCircle";
-import { IconButton, Tooltip } from "@mui/material";
 import { MouseEvent, useState } from "react";
-import LanguageMenu from "./LanguageMenu";
 import { useTranslation } from "react-i18next";
+import LabelledIconButton from "../LabelledIconButton";
+import LanguageMenu from "./LanguageMenu";
 
 const LanguageSelect = () => {
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
@@ -18,16 +18,9 @@ const LanguageSelect = () => {
 
   return (
     <>
-      <Tooltip title={t("controls.selectLanguage")}>
-        <IconButton
-          aria-label={t("controls.selectLanguage")}
-          size="large"
-          color="inherit"
-          onClick={openMenu}
-        >
-          <FlagCircleIcon fontSize="inherit" />
-        </IconButton>
-      </Tooltip>
+      <LabelledIconButton label={t("controls.selectLanguage")} onClick={openMenu}>
+        <FlagCircleIcon fontSize="inherit" />
+      </LabelledIconButton>
       <LanguageMenu anchor={menuAnchor} onClose={closeMenu} />
     </>
   );

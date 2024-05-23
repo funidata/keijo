@@ -1,9 +1,9 @@
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { IconPropsSizeOverrides, Tooltip } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import useDarkMode from "./useDarkMode";
+import { IconPropsSizeOverrides } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import LabelledIconButton from "../components/LabelledIconButton";
+import useDarkMode from "./useDarkMode";
 
 const ColorModeToggle = () => {
   const { darkMode, toggleDarkMode } = useDarkMode();
@@ -12,11 +12,9 @@ const ColorModeToggle = () => {
   const iconProps: IconPropsSizeOverrides = { fontSize: "inherit" };
 
   return (
-    <Tooltip title={t("controls.useDarkMode")}>
-      <IconButton onClick={toggleDarkMode} size="large" color="inherit">
-        {darkMode ? <Brightness7Icon {...iconProps} /> : <Brightness4Icon {...iconProps} />}
-      </IconButton>
-    </Tooltip>
+    <LabelledIconButton label={t("controls.useDarkMode")} onClick={toggleDarkMode}>
+      {darkMode ? <Brightness7Icon {...iconProps} /> : <Brightness4Icon {...iconProps} />}
+    </LabelledIconButton>
   );
 };
 

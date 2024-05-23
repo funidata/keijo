@@ -4,14 +4,13 @@ import {
   DialogContent,
   DialogProps,
   DialogTitle,
-  IconButton,
   useMediaQuery,
   useTheme,
-  Tooltip,
 } from "@mui/material";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useNavigate } from "react-router-dom";
+import LabelledIconButton from "../LabelledIconButton";
 
 type EntryDialogProps = Omit<DialogProps, "open">;
 
@@ -28,21 +27,19 @@ const EntryDialog = ({ title, ...props }: EntryDialogProps) => {
   return (
     <Dialog maxWidth="lg" fullWidth {...props} fullScreen={fullScreen} onClose={onClose} open>
       <DialogTitle>{t(title || "entryDialog.title")}</DialogTitle>
-      <Tooltip title={t("controls.close")}>
-        <IconButton
-          aria-label={t("controls.close")}
-          onClick={onClose}
-          size="large"
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon fontSize="inherit" />
-        </IconButton>
-      </Tooltip>
+      <LabelledIconButton
+        label={t("controls.close")}
+        onClick={onClose}
+        sx={{
+          position: "absolute",
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+        tooltipProps={{ placement: "left" }}
+      >
+        <CloseIcon fontSize="inherit" />
+      </LabelledIconButton>
       <DialogContent sx={{ maxWidth: "100vw" }}>
         <Outlet />
       </DialogContent>

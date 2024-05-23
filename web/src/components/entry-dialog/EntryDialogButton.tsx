@@ -1,8 +1,9 @@
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { Box, IconButton, IconButtonProps, Tooltip } from "@mui/material";
+import { Box, IconButtonProps } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { useTranslation } from "react-i18next";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
+import LabelledIconButton from "../LabelledIconButton";
 
 type EntryDialogButtonProps = IconButtonProps & {
   date?: Dayjs;
@@ -15,21 +16,17 @@ const EntryDialogButton = ({ date, ...props }: EntryDialogButtonProps) => {
 
   return (
     <Box onClick={(e) => e.stopPropagation()}>
-      <Tooltip title={t("entryDialog.title")}>
-        <IconButton
-          aria-label={t("entryDialog.title")}
-          onClick={() =>
-            navigate(generatePath(`${location.pathname}/create`), {
-              state: { date: date?.format("YYYY-MM-DD") },
-            })
-          }
-          color="inherit"
-          size="large"
-          {...props}
-        >
-          <AddCircleIcon fontSize="inherit" />
-        </IconButton>
-      </Tooltip>
+      <LabelledIconButton
+        label={t("entryDialog.title")}
+        onClick={() =>
+          navigate(generatePath(`${location.pathname}/create`), {
+            state: { date: date?.format("YYYY-MM-DD") },
+          })
+        }
+        {...props}
+      >
+        <AddCircleIcon fontSize="inherit" />
+      </LabelledIconButton>
     </Box>
   );
 };
