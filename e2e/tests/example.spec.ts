@@ -9,8 +9,12 @@ import {
 } from "mock-data";
 import dayjs from "dayjs";
 import weekOfYear from "dayjs/plugin/weekOfYear";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import "dayjs/locale/en-gb";
+import "dayjs/locale/fi";
 
 dayjs.extend(weekOfYear);
+dayjs.extend(localizedFormat);
 
 type TestEntry = {
   product: string;
@@ -39,15 +43,26 @@ const entries: Array<TestEntry> = [
   },
 ];
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page, locale }) => {
+  dayjs.locale(locale);
   await page.goto("/");
 });
 
 test.describe("Landing page", () => {
-  test("has title", async ({ page }) => {
+  test("has title", async ({ page, t }) => {
     await page.goto("/entries/week/20");
     await expect(page).toHaveTitle(/Keijo/);
     await expect(page.locator("html")).toContainText("Hieno tuote");
+  });
+
+  test("Should have page elements", async ({ page, t }) => {
+    await page.goto("/entries/week/20");
+    await checkWeekdays(page, 20, t);
+    await checkAppBar(page, t);
+  });
+
+  test("should have mock entries", async ({ page, t, locale }) => {
+    await page.goto("/entries/week/20");
   });
 });
 
@@ -163,4 +178,35 @@ const fillEntryForm = async (page: Page, t: TFunction, entry: TestEntry) => {
   await page.getByRole("gridcell", { name: entry.date.split(".")[0] }).click();
 };
 
-const checkWeekPage = () => {};
+const checkWeekdays = async (page: Page, week: number, t: TFunction) => {
+  const date = dayjs().week(week).startOf("week").locale("en-gb");
+  // check Weekday dropdowns exist
+  await expect(page.getByRole("button", { name: date.format("dd l") })).toBeVisible();
+  await expect(page.getByRole("button", { name: date.add(1, "day").format("dd l") })).toBeVisible();
+  await expect(page.getByRole("button", { name: date.add(2, "day").format("dd l") })).toBeVisible();
+  await expect(page.getByRole("button", { name: date.add(3, "day").format("dd l") })).toBeVisible();
+  await expect(page.getByRole("button", { name: date.add(4, "day").format("dd l") })).toBeVisible();
+  const saturday = page.getByRole("button", { name: date.add(5, "day").format("dd l") });
+  await expect(saturday).toBeVisible();
+  await expect(saturday.getByText(t("entryTable.weekend"))).toBeVisible();
+  const sunday = page.getByRole("button", { name: date.add(6, "day").format("dd l") });
+  await expect(sunday).toBeVisible();
+  await expect(sunday.getByText(t("entryTable.weekend"))).toBeVisible();
+};
+
+const checkAppBar = async (page: Page, t: TFunction) => {
+  await expect(page.getByRole("img", { name: "Keijo logo" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: t("titles.workdayBrowser") })).toBeVisible();
+  await expect(
+    page.getByRole("banner").getByRole("button", { name: t("entryDialog.title") }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("banner").getByRole("button", { name: t("controls.useDarkMode") }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("banner").getByRole("button", { name: t("controls.selectLanguage") }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("banner").getByRole("button", { name: t("controls.settingsMenu") }),
+  ).toBeVisible();
+};
