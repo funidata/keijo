@@ -107,7 +107,7 @@ test.describe("Add Entries mobile", () => {
   });
 });
 
-test.describe("Browse dates", () => {
+test.describe("Browse week", () => {
   const startingWeek = 21;
   test.beforeEach(async ({ page }) => {
     await page.goto(`/entries/week/${startingWeek}`);
@@ -115,13 +115,15 @@ test.describe("Browse dates", () => {
 
   test("Should browse weeks forward", async ({ page, t }) => {
     const jump = 3;
-    for (let i = 0; i < jump; i++) await page.getByLabel(t("controls.aria.nextWeek")).click();
+    for (let i = 0; i < jump; i++)
+      await page.getByRole("button", { name: t("controls.aria.nextWeek") }).click();
     await expect(page).toHaveURL(`/entries/week/${startingWeek + jump}`);
   });
 
   test("Should browse weeks backward", async ({ page, t }) => {
     const jump = 3;
-    for (let i = 0; i < jump; i++) await page.getByLabel(t("controls.aria.prevWeek")).click();
+    for (let i = 0; i < jump; i++)
+      await page.getByRole("button", { name: t("controls.aria.prevWeek") }).click();
     await expect(page).toHaveURL(`/entries/week/${startingWeek - jump}`);
   });
 
@@ -129,8 +131,16 @@ test.describe("Browse dates", () => {
     const jump = 10;
     const currentWeek = dayjs().week();
     await page.goto(`/entries/week/${currentWeek + jump}`);
-    await page.getByLabel(t("controls.aria.currentWeek")).click();
+    await page.getByRole("button", { name: t("controls.aria.currentWeek") }).click();
     await expect(page).toHaveURL(`/entries/week/${currentWeek}`);
+  });
+
+  test("Should go to specific week", async ({ page, t }) => {
+    const jump = 4;
+    const currentWeek = dayjs().week();
+    await page.getByRole("combobox", { name: String(startingWeek) }).click();
+    await page.getByRole("option", { name: String(startingWeek + jump) }).click();
+    await expect(page).toHaveURL(`/entries/week/${startingWeek + jump}`);
   });
 });
 
