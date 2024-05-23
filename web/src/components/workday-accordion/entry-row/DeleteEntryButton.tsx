@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
+import { Menu, MenuItem } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { MouseEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -8,6 +8,7 @@ import {
   FindWorkdaysDocument,
   RemoveWorkdayEntryDocument,
 } from "../../../graphql/generated/graphql";
+import LabelledIconButton from "../../LabelledIconButton";
 import { useNotification } from "../../global-notification/useNotification";
 
 type DeleteEntryButtonProps = {
@@ -43,16 +44,15 @@ const DeleteEntryButton = ({ entryKey, date }: DeleteEntryButtonProps) => {
 
   return (
     <>
-      <Tooltip title={t("controls.deleteEntry")}>
-        <IconButton
-          aria-label={t("controls.deleteEntry")}
-          onClick={onOpen}
-          color="error"
-          size="medium"
-        >
-          <DeleteIcon fontSize="inherit" />
-        </IconButton>
-      </Tooltip>
+      <LabelledIconButton
+        label={t("controls.deleteEntry")}
+        onClick={onOpen}
+        color="error"
+        size="medium"
+      >
+        <DeleteIcon />
+      </LabelledIconButton>
+
       <Menu open={!!anchor} anchorEl={anchor} onClose={onClose}>
         <MenuItem onClick={onConfirm}>{t("controls.confirmDelete")}</MenuItem>
       </Menu>

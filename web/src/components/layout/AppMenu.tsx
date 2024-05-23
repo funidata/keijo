@@ -8,7 +8,6 @@ import {
   Box,
   Divider,
   Drawer,
-  IconButton,
   IconPropsSizeOverrides,
   List,
   ListItem,
@@ -21,6 +20,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
 import useDarkMode from "../../theme/useDarkMode";
+import LabelledIconButton from "../LabelledIconButton";
 
 const AppMenuButton = () => {
   const navigate = useNavigate();
@@ -47,14 +47,9 @@ const AppMenuButton = () => {
 
   return (
     <Box onClick={(e) => e.stopPropagation()}>
-      <IconButton
-        aria-label={t("controls.openMenu")}
-        onClick={toggleMenu}
-        color="inherit"
-        size="large"
-      >
+      <LabelledIconButton label={t("controls.openMenu")} onClick={toggleMenu}>
         <MenuIcon fontSize="inherit" />
-      </IconButton>
+      </LabelledIconButton>
       <Drawer open={menuOpen} onClose={toggleMenu} anchor="top">
         <List>
           <ListItem>
