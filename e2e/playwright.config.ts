@@ -1,6 +1,11 @@
 import { defineConfig, devices } from "@playwright/test";
 import { test as base } from "@playwright/test";
 import { i18nFixture } from "./i18n-fixture";
+import dayjs, { Dayjs } from "dayjs";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import "dayjs/locale/en-gb";
+import "dayjs/locale/fi";
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -60,6 +65,22 @@ export default defineConfig({
   // },
 });
 
-const test = base.extend(i18nFixture);
+type DayjsFixture = {
+  dayjs: (
+    date?: dayjs.ConfigType,
+    format?: dayjs.OptionType,
+    locale?: string,
+    strict?: boolean,
+  ) => dayjs.Dayjs;
+};
+
+const test = base.extend(i18nFixture).extend<DayjsFixture>({
+  dayjs: async ({ locale }, use) => {
+    dayjs.extend(weekOfYear);
+    dayjs.extend(localizedFormat);
+    dayjs.locale(locale);
+    await use(dayjs);
+  },
+});
 
 export { test };
