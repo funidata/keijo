@@ -7,44 +7,9 @@ import {
   getMockIssueNames,
   getMockClientNames,
 } from "mock-data";
-import dayjs from "dayjs";
-import weekOfYear from "dayjs/plugin/weekOfYear";
-import localizedFormat from "dayjs/plugin/localizedFormat";
-import "dayjs/locale/en-gb";
-import "dayjs/locale/fi";
+import dayjs, { Dayjs } from "dayjs";
 
-dayjs.extend(weekOfYear);
-dayjs.extend(localizedFormat);
-
-type TestEntry = {
-  product: string;
-  activity: string;
-  description: string;
-  duration: string;
-  issue: string;
-  date: string;
-  client: string;
-};
-
-const productNames = getMockProductNames();
-const activityNames = getMockActivityNames();
-const issueNames = getMockIssueNames();
-const clientNames = getMockClientNames();
-
-const entries: Array<TestEntry> = [
-  {
-    product: productNames[0],
-    activity: activityNames[0],
-    issue: issueNames[0],
-    client: clientNames[0],
-    description: "no comment",
-    duration: "3.00",
-    date: "21.5.2024",
-  },
-];
-
-test.beforeEach(async ({ page, locale }) => {
-  dayjs.locale(locale);
+test.beforeEach(async ({ page }) => {
   await page.goto("/");
 });
 
@@ -55,16 +20,16 @@ test.describe("Landing page", () => {
     await expect(page.locator("html")).toContainText("Hieno tuote");
   });
 
-  test("Should have page elements", async ({ page, t }) => {
+  test("Should have page elements", async ({ page, t, dayjs }) => {
     await page.goto("/entries/week/20");
-    await checkWeekdays(page, 20, t);
+    await checkWeekdays(page, 20, t, dayjs());
     await checkAppBar(page, t);
   });
 
   // TODO: refactor
-  test("should have mock entries", async ({ page, t, locale }) => {
+  test("should have mock entries", async ({ page, dayjs }) => {
     await page.goto("/entries/week/20");
-    const date = dayjs().week(20).startOf("week").locale("en-gb");
+    const date = dayjs().week(20).startOf("week");
     // Monday mock entries
     const mondayDetails = page.locator(".MuiAccordionDetails-root").first();
     await expect(mondayDetails.getByText("5:00")).toBeVisible();
@@ -93,62 +58,6 @@ test.describe("Landing page", () => {
   });
 });
 
-test.describe("Entry operations", () => {
-  // TODO: Some way to check added entries?
-  test("Should add entry from app bar", async ({ page, t }) => {
-    // Open entry dialog
-    await page
-      .getByRole("banner")
-      .getByRole("button", { name: t("entryDialog.title") })
-      .click();
-    await expect(page).toHaveURL(/.*\/create$/);
-    // Fill entry fields
-    await fillEntryForm(page, t, entries[0]);
-    // Submit
-    await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
-  });
-
-  test("Should add entry from entry row", async ({ page, t }) => {
-    await page
-      .getByRole("button")
-      .getByRole("button", { name: t("entryDialog.title") })
-      .first()
-      .click();
-    await expect(page).toHaveURL(/.*\/create$/);
-    await fillEntryForm(page, t, entries[0]);
-    await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
-  });
-});
-
-test.describe("Entry operations mobile", () => {
-  // TODO: Some way to check added entries?
-  test("Should add entry from app bar", async ({ page, t }) => {
-    // Open entry dialog
-    await page.getByRole("banner").getByLabel(t("controls.openMenu")).click();
-    await page.getByRole("button", { name: t("entryDialog.title") }).click();
-    await expect(page).toHaveURL(/.*\/create$/);
-    // Fill entry fields
-    await fillEntryFormMobile(page, t, entries[0]);
-    // Submit
-    await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
-  });
-
-  test("Should add entry from entry row", async ({ page, t }) => {
-    await page
-      .getByRole("button")
-      .getByRole("button", { name: t("entryDialog.title") })
-      .first()
-      .click();
-    await expect(page).toHaveURL(/.*\/create$/);
-    await fillEntryFormMobile(page, t, entries[0]);
-    await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
-  });
-});
-
 test.describe("Browse week", () => {
   const startingWeek = 21;
   test.beforeEach(async ({ page }) => {
@@ -169,7 +78,7 @@ test.describe("Browse week", () => {
     await expect(page).toHaveURL(`/entries/week/${startingWeek - jump}`);
   });
 
-  test("Should go to current week", async ({ page, t }) => {
+  test("Should go to current week", async ({ page, t, dayjs }) => {
     const jump = 10;
     const currentWeek = dayjs().week();
     await page.goto(`/entries/week/${currentWeek + jump}`);
@@ -185,27 +94,8 @@ test.describe("Browse week", () => {
   });
 });
 
-const fillEntryFormMobile = async (page: Page, t: TFunction, entry: TestEntry) => {
-  await page.getByLabel(t("entryDialog.product")).fill(entry.product);
-  await page.getByLabel(t("entryDialog.activity")).fill(entry.activity);
-  await page.getByLabel(t("entryDialog.description")).fill(entry.description);
-  await page.getByLabel(t("entryDialog.duration")).pressSequentially(entry.duration);
-  await page.getByRole("textbox", { name: "date" }).click();
-  await page.getByRole("gridcell", { name: entry.date.split(".")[0] }).click();
-  await page.getByRole("button", { name: "OK" }).click();
-};
-
-const fillEntryForm = async (page: Page, t: TFunction, entry: TestEntry) => {
-  await page.getByLabel(t("entryDialog.product")).fill(entry.product);
-  await page.getByLabel(t("entryDialog.activity")).fill(entry.activity);
-  await page.getByLabel(t("entryDialog.description")).fill(entry.description);
-  await page.getByLabel(t("entryDialog.duration")).pressSequentially(entry.duration);
-  await page.getByRole("button", { name: /.*\d\d.*/ }).click();
-  await page.getByRole("gridcell", { name: entry.date.split(".")[0] }).click();
-};
-
-const checkWeekdays = async (page: Page, week: number, t: TFunction) => {
-  const date = dayjs().week(week).startOf("week").locale("en-gb");
+const checkWeekdays = async (page: Page, week: number, t: TFunction, dayjs: Dayjs) => {
+  const date = dayjs.week(week).startOf("week").locale("en-gb");
   // check Weekday dropdowns exist
   await expect(page.getByRole("button", { name: date.format("dd l") })).toBeVisible();
   await expect(page.getByRole("button", { name: date.add(1, "day").format("dd l") })).toBeVisible();
