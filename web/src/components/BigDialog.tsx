@@ -9,21 +9,21 @@ import {
 } from "@mui/material";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import LabelledIconButton from "./LabelledIconButton";
 
-type BigDialogProps = Omit<DialogProps, "open"> & {
-  open: boolean;
-};
+type BigDialogProps = Omit<DialogProps, "open">;
 
 /**
  * Generic dialog that becomes fullscreen on smaller viewports.
  *
- * This component sets the dialog to be open by default to accommodate controlling
- * its visibility with routing. However, the `open` prop (optional) can be overridden
- * for classic use.
+ * This component sets the dialog to be always open to accommodate controlling
+ * its visibility with routing.
+ *
+ * Pass content as `children`.
  */
-const BigDialog = ({ title, open, ...props }: BigDialogProps) => {
+const BigDialog = ({ title, children, ...props }: BigDialogProps) => {
+  console.log(open);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const theme = useTheme();
@@ -34,14 +34,7 @@ const BigDialog = ({ title, open, ...props }: BigDialogProps) => {
   }, [navigate]);
 
   return (
-    <Dialog
-      maxWidth="lg"
-      fullWidth
-      fullScreen={fullScreen}
-      onClose={onClose}
-      {...props}
-      open={open}
-    >
+    <Dialog maxWidth="lg" fullWidth fullScreen={fullScreen} onClose={onClose} {...props} open>
       <DialogTitle>{title}</DialogTitle>
       <LabelledIconButton
         label={t("controls.close")}
@@ -56,15 +49,9 @@ const BigDialog = ({ title, open, ...props }: BigDialogProps) => {
       >
         <CloseIcon fontSize="inherit" />
       </LabelledIconButton>
-      <DialogContent sx={{ maxWidth: "100vw" }}>
-        <Outlet />
-      </DialogContent>
+      <DialogContent sx={{ maxWidth: "100vw" }}>{children}</DialogContent>
     </Dialog>
   );
-};
-
-BigDialog.defaultProps = {
-  open: false,
 };
 
 export default BigDialog;
