@@ -33,7 +33,7 @@ const fi = {
     notFound: "Pyydettyä sivua ei löytynyt. Tarkasta osoite.",
   },
   entryDialog: {
-    title: "Lisää työaikakirjaus",
+    title: { create: "Lisää työaikakirjaus", edit: "Muokkaa kirjausta" },
     setDefaultsTitle: "Muuta kirjauksen oletusarvoja",
     date: "Päivämäärä",
     description: "Kommentti",

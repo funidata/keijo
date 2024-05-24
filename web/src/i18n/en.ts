@@ -33,7 +33,7 @@ const en = {
     notFound: "Page was not found. Please check the address.",
   },
   entryDialog: {
-    title: "Add New Entry",
+    title: { create: "Add New Entry", edit: "Edit Entry" },
     setDefaultsTitle: "Edit Entry Default Values",
     date: "Date",
     description: "Comment",
