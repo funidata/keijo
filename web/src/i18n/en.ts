@@ -9,6 +9,7 @@ const en = {
     close: "Close",
     confirmDelete: "Confirm delete",
     confirmDeleteForDialog: "Really delete this entry?",
+    addEntry: "Add New Entry",
     deleteEntry: "Delete entry",
     editEntry: "Edit entry",
     endDate: "To",
@@ -18,6 +19,7 @@ const en = {
     useDarkMode: "Dark Mode",
     selectLanguage: "Select language",
     settingsMenu: "Settings",
+    defaultsView: "Default Values",
   },
   dimensionNames: {
     product: "Product",
@@ -34,7 +36,7 @@ const en = {
   },
   entryDialog: {
     title: { create: "Add New Entry", edit: "Edit Entry" },
-    setDefaultsTitle: "Edit Entry Default Values",
+    setDefaultsTitle: "Workday Entry Default Values",
     date: "Date",
     description: "Comment",
     duration: "Duration",

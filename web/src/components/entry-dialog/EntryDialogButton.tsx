@@ -17,7 +17,7 @@ const EntryDialogButton = ({ date, ...props }: EntryDialogButtonProps) => {
   return (
     <Box onClick={(e) => e.stopPropagation()}>
       <LabelledIconButton
-        label={t("entryDialog.title")}
+        label={t("controls.addEntry")}
         onClick={() =>
           navigate(generatePath(`${location.pathname}/create`), {
             state: { date: date?.format("YYYY-MM-DD") },

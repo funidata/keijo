@@ -9,6 +9,7 @@ const fi = {
     close: "Sulje",
     confirmDelete: "Vahvista poisto",
     confirmDeleteForDialog: "Vahvista merkinnän poisto",
+    addEntry: "Lisää työaikakirjaus",
     deleteEntry: "Poista merkintä",
     editEntry: "Muokkaa merkintää",
     endDate: "Loppu",
@@ -18,6 +19,7 @@ const fi = {
     useDarkMode: "Synkkyys",
     selectLanguage: "Valitse kieli",
     settingsMenu: "Asetukset",
+    defaultsView: "Oletusarvot",
   },
   dimensionNames: {
     product: "Tuote",
@@ -34,7 +36,7 @@ const fi = {
   },
   entryDialog: {
     title: { create: "Lisää työaikakirjaus", edit: "Muokkaa kirjausta" },
-    setDefaultsTitle: "Muuta kirjauksen oletusarvoja",
+    setDefaultsTitle: "Työaikakirjauksen oletusarvot",
     date: "Päivämäärä",
     description: "Kommentti",
     duration: "Kesto",

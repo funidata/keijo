@@ -27,11 +27,11 @@ const SettingsMenu = ({ anchor, onClose }: SettingsMenuProps) => {
       open={!!anchor}
       onClose={onClose}
     >
-      <MenuItem key={t("entryDialog.setDefaultsTitle")} onClick={handleSetDefaultValues}>
+      <MenuItem onClick={handleSetDefaultValues}>
         <ListItemIcon>
           <TuneIcon />
         </ListItemIcon>
-        {t("entryDialog.setDefaultsTitle")}
+        {t("controls.defaultsView")}
       </MenuItem>
     </Menu>
   );
