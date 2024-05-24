@@ -180,7 +180,7 @@ const EntryForm = () => {
             </Grid>
             <Grid item xs={12}>
               {editEntry && originalDate && (
-                <BigDeleteEntryButton entryKey={editEntry.key} date={originalDate} />
+                <BigDeleteEntryButton entryKey={editEntry.key} date={dayjs(originalDate)} />
               )}
             </Grid>
             <Grid item xs={12}>
