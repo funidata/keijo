@@ -23,14 +23,13 @@ type BigDialogProps = Omit<DialogProps, "open">;
  * Pass content as `children`.
  */
 const BigDialog = ({ title, children, ...props }: BigDialogProps) => {
-  console.log(open);
   const navigate = useNavigate();
   const { t } = useTranslation();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const onClose = useCallback(() => {
-    navigate(".");
+    navigate("..");
   }, [navigate]);
 
   return (

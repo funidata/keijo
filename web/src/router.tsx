@@ -1,12 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
+import DefaultsDialog from "./components/defaults-dialog/DefaultsDialog";
 import EntryDialog from "./components/entry-dialog/EntryDialog";
 import Error from "./components/error/Error";
 import HeaderGuard from "./components/error/HeaderGuard";
 import Layout from "./components/layout/Layout";
 import WorkdayBrowser from "./components/workday-browser/WorkdayBrowser";
 import WorkdayBrowserRedirect from "./components/workday-browser/WorkdayBrowserRedirect";
-import EntryForm from "./components/entry-dialog/EntryForm";
-import DefaultsForm from "./components/entry-dialog/DefaultsForm";
 
 const router = createBrowserRouter([
   {
@@ -40,17 +39,9 @@ const router = createBrowserRouter([
             element: <WorkdayBrowser />,
             errorElement: <Error />,
             children: [
-              {
-                element: <EntryDialog title="entryDialog.title" />,
-                children: [
-                  { path: "create", element: <EntryForm /> },
-                  { path: "edit", element: <EntryForm /> },
-                ],
-              },
-              {
-                element: <EntryDialog title="entryDialog.setDefaultsTitle" />,
-                children: [{ path: "set-defaults", element: <DefaultsForm /> }],
-              },
+              { path: "create", element: <EntryDialog /> },
+              { path: "edit", element: <EntryDialog variant="edit" /> },
+              { path: "set-defaults", element: <DefaultsDialog /> },
             ],
           },
         ],
