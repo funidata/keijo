@@ -22,6 +22,7 @@ const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
 
   return (
     <Box
+      role={"listitem"}
       sx={{
         bgcolor: darkMode ? grey[800] : "primary.light",
         borderRadius: 4,
