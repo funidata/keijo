@@ -11,7 +11,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/");
 });
 
-test.describe("Landing page", () => {
+test.describe("Landing page mobile", () => {
   test("has title", async ({ page }) => {
     await page.goto(mockEntryWeekUrl);
     await expect(page).toHaveTitle(/Keijo/);
@@ -20,14 +20,14 @@ test.describe("Landing page", () => {
 
   test("Should have page elements", async ({ page, t, dayjs }) => {
     await page.goto(mockEntryWeekUrl);
-    await checkAppBar(page, t);
+    await checkWeekdays(page, 20, t, dayjs());
     await expect(page.getByText(t("entryTable.totalHoursInWeek"))).toBeVisible();
     await expect(page.getByText(t("entryTable.tabs.browseByWeek"))).toBeVisible();
     await expect(page.getByText(t("entryTable.tabs.browseByDates"))).toBeVisible();
-    await checkWeekdays(page, 20, t, dayjs());
+    await checkAppBarMobile(page, t);
   });
 
-  test("Should have correct mock entries", async ({ page, dayjs }) => {
+  test("Should have mock entries", async ({ page, dayjs }) => {
     for (const entry of mockEntries) {
       const date = dayjs(entry.date);
       await page.goto(`/entries/week/${date.week()}`);
@@ -37,7 +37,6 @@ test.describe("Landing page", () => {
         })
         .last()
         .getByRole("list");
-
       const hour = Math.floor(Number(entry.hours));
       const minute = (Number(entry.hours) * 60) % 60;
       let entryRows = workdayEntryList.getByRole("listitem");
@@ -86,19 +85,13 @@ const checkWeekdays = async (page: Page, week: number, t: TFunction, dayjs: Dayj
   await expect(sunday.getByText(t("entryTable.weekend"))).toBeVisible();
 };
 
-const checkAppBar = async (page: Page, t: TFunction) => {
+const checkAppBarMobile = async (page: Page, t: TFunction) => {
   await expect(page.getByRole("img", { name: "Keijo logo" })).toBeVisible();
   await expect(page.getByRole("heading", { name: t("titles.workdayBrowser") })).toBeVisible();
-  await expect(
-    page.getByRole("banner").getByRole("button", { name: t("entryDialog.title") }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("banner").getByRole("button", { name: t("controls.useDarkMode") }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("banner").getByRole("button", { name: t("controls.selectLanguage") }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("banner").getByRole("button", { name: t("controls.settingsMenu") }),
-  ).toBeVisible();
+  await page.getByRole("banner").getByLabel(t("controls.openMenu")).click();
+  await expect(page.getByRole("button", { name: t("entryDialog.title") })).toBeVisible();
+  await expect(page.getByRole("button", { name: t("entryDialog.setDefaultsTitle") })).toBeVisible();
+  await expect(page.getByRole("heading", { name: t("controls.useDarkMode") })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Suomi" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "English" })).toBeVisible();
 };

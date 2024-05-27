@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 import { test } from "../playwright.config";
 
-test.describe("Browse week", () => {
+test.describe("Browse week mobile", () => {
   const startingWeek = 21;
   test.beforeEach(async ({ page }) => {
     await page.goto(`/entries/week/${startingWeek}`);

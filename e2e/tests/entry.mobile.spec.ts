@@ -41,16 +41,14 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/");
 });
 
-test.describe("Add entry", () => {
+test.describe("Add entry mobile", () => {
   test("Should add entry from app bar", async ({ page, t }) => {
     // Open entry dialog
-    await page
-      .getByRole("banner")
-      .getByRole("button", { name: t("entryDialog.title") })
-      .click();
+    await page.getByRole("banner").getByLabel(t("controls.openMenu")).click();
+    await page.getByRole("button", { name: t("entryDialog.title") }).click();
     await expect(page).toHaveURL(/.*\/create$/);
     // Fill entry fields
-    await fillEntryForm(page, t, entries[0]);
+    await fillEntryFormMobile(page, t, entries[0]);
     // Submit
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
     await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
@@ -63,13 +61,13 @@ test.describe("Add entry", () => {
       .first()
       .click();
     await expect(page).toHaveURL(/.*\/create$/);
-    await fillEntryForm(page, t, entries[0]);
+    await fillEntryFormMobile(page, t, entries[0]);
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
     await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
   });
 });
 
-test.describe("Edit entry", () => {
+test.describe("Edit entry mobile", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(mockEntryWeekUrl);
   });
@@ -80,28 +78,29 @@ test.describe("Edit entry", () => {
       .first()
       .click();
     await expect(page).toHaveURL(/.*\/edit$/);
-    await fillEntryForm(page, t, entries[0]);
+    await fillEntryFormMobile(page, t, { ...entries[0] });
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
     await expect(page.getByText(t("notifications.editEntry.success"))).toBeAttached();
   });
 });
 
-test.describe("Delete entry", () => {
+test.describe("Delete entry mobile", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(mockEntryWeekUrl);
   });
 
   test("Should delete entry", async ({ page, t }) => {
     await page
-      .getByRole("button", { name: t("controls.deleteEntry") })
+      .getByRole("button", { name: t("controls.editEntry") })
       .first()
       .click();
-    await page.getByRole("menuitem", { name: t("controls.confirmDelete") }).click();
+    await page.getByRole("button", { name: t("entryDialog.delete") }).click();
+    await page.getByRole("button", { name: t("controls.deleteEntry") }).click();
     await expect(page.getByText(t("notifications.deleteEntry.success"))).toBeAttached();
   });
 });
 
-test.describe("Entry defaults", () => {
+test.describe("Entry defaults mobile", () => {
   test("Should set remaining hours when enabled", async ({ page, t }) => {
     await page.goto(emptyWeekUrl);
     await page
@@ -118,8 +117,8 @@ test.describe("Entry defaults", () => {
     await page.goto(emptyWeekUrl + "/create");
     await expect(page.getByRole("combobox", { name: t("entryDialog.product") })).toHaveValue("");
     await page.goto(emptyWeekUrl);
-    await page.getByLabel(t("controls.settingsMenu")).click();
-    await page.getByRole("menuitem", { name: t("entryDialog.setDefaultsTitle") }).click();
+    await page.getByRole("banner").getByLabel(t("controls.openMenu")).click();
+    await page.getByRole("button", { name: t("entryDialog.setDefaultsTitle") }).click();
     await page.getByRole("combobox", { name: t("entryDialog.product") }).fill(entries[0].product);
     await page.getByRole("combobox", { name: t("entryDialog.activity") }).fill(entries[0].activity);
     await page.goto(emptyWeekUrl + "/create");
@@ -132,11 +131,12 @@ test.describe("Entry defaults", () => {
   });
 });
 
-const fillEntryForm = async (page: Page, t: TFunction, entry: TestEntry) => {
+const fillEntryFormMobile = async (page: Page, t: TFunction, entry: TestEntry) => {
   await page.getByLabel(t("entryDialog.product")).fill(entry.product);
   await page.getByLabel(t("entryDialog.activity")).fill(entry.activity);
   await page.getByLabel(t("entryDialog.description")).fill(entry.description);
   await page.getByLabel(t("entryDialog.duration")).pressSequentially(entry.duration);
-  await page.getByRole("button", { name: /.*\d\d.*/ }).click();
+  await page.getByRole("textbox", { name: "date" }).click();
   await page.getByRole("gridcell", { name: entry.date.split(".")[0] }).click();
+  await page.getByRole("button", { name: "OK" }).click();
 };
