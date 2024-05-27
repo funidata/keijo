@@ -1,10 +1,10 @@
 import { Grid } from "@mui/material";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import DimensionComboBox from "./DimensionComboBox";
-import { EntryFormSchema } from "./useEntryForm";
+import DimensionComboBox from "../entry-dialog/DimensionComboBox";
+import { EntryFormSchema } from "../entry-dialog/useEntryForm";
 import useDefaultEntryValues from "../user-preferences/useDefaultEntryValues";
-import { useEffect } from "react";
 
 const DefaultsForm = () => {
   const { t } = useTranslation();

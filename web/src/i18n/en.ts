@@ -9,6 +9,7 @@ const en = {
     close: "Close",
     confirmDelete: "Confirm delete",
     confirmDeleteForDialog: "Really delete this entry?",
+    addEntry: "Add New Entry",
     deleteEntry: "Delete entry",
     editEntry: "Edit entry",
     endDate: "To",
@@ -18,6 +19,7 @@ const en = {
     useDarkMode: "Dark Mode",
     selectLanguage: "Select language",
     settingsMenu: "Settings",
+    defaultsView: "Default Values",
   },
   dimensionNames: {
     product: "Product",
@@ -33,8 +35,8 @@ const en = {
     notFound: "Page was not found. Please check the address.",
   },
   entryDialog: {
-    title: "Add New Entry",
-    setDefaultsTitle: "Edit Entry Default Values",
+    title: { create: "Add New Entry", edit: "Edit Entry" },
+    setDefaultsTitle: "Workday Entry Default Values",
     date: "Date",
     description: "Comment",
     duration: "Duration",

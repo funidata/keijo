@@ -63,7 +63,7 @@ const AppMenuButton = () => {
                 <AddCircleIcon {...iconProps} />
               </ListItemIcon>
               <ListItemText primaryTypographyProps={{ variant: "h5" }}>
-                {t("entryDialog.title")}
+                {t("controls.addEntry")}
               </ListItemText>
             </ListItemButton>
           </ListItem>
@@ -79,7 +79,7 @@ const AppMenuButton = () => {
                 <TuneIcon {...iconProps} />
               </ListItemIcon>
               <ListItemText primaryTypographyProps={{ variant: "h5" }}>
-                {t("entryDialog.setDefaultsTitle")}
+                {t("controls.defaultsView")}
               </ListItemText>
             </ListItemButton>
           </ListItem>
