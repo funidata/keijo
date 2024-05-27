@@ -165,6 +165,7 @@ const checkAppBarMobile = async (page: Page, t: TFunction) => {
   await expect(page.getByRole("heading", { name: t("titles.workdayBrowser") })).toBeVisible();
   await page.getByRole("banner").getByLabel(t("controls.openMenu")).click();
   await expect(page.getByRole("button", { name: t("entryDialog.title") })).toBeVisible();
+  await expect(page.getByRole("button", { name: t("entryDialog.setDefaultsTitle") })).toBeVisible();
   await expect(page.getByRole("heading", { name: t("controls.useDarkMode") })).toBeVisible();
   await expect(page.getByRole("button", { name: "Suomi" })).toBeVisible();
   await expect(page.getByRole("button", { name: "English" })).toBeVisible();

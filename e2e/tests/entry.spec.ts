@@ -99,8 +99,38 @@ test.describe("Delete entry", () => {
   });
 });
 
+test.describe("Entry defaults", () => {
+  test("Should set remaining hours when enabled", async ({ page, t }) => {
+    await page.goto("/entries/week/21");
+    await page
+      .getByRole("button")
+      .getByRole("button", { name: t("entryDialog.title") })
+      .first()
+      .click();
+    await expect(page.getByRole("textbox", { name: "Duration" })).toHaveValue("00:00");
+    await page.getByRole("checkbox", { name: t("entryDialog.setRemainingHours") }).click();
+    await expect(page.getByRole("textbox", { name: "Duration" })).toHaveValue("07:30");
+  });
+
+  test("Should use set default values", async ({ page, t }) => {
+    await page.goto("/entries/week/21/create");
+    await expect(page.getByRole("combobox", { name: t("entryDialog.product") })).toHaveValue("");
+    await page.goto("/entries/week/21");
+    await page.getByLabel(t("controls.settingsMenu")).click();
+    await page.getByRole("menuitem", { name: t("entryDialog.setDefaultsTitle") }).click();
+    await page.getByRole("combobox", { name: t("entryDialog.product") }).fill(entries[0].product);
+    await page.getByRole("combobox", { name: t("entryDialog.activity") }).fill(entries[0].activity);
+    await page.goto("/entries/week/21/create");
+    await expect(page.getByRole("combobox", { name: t("entryDialog.product") })).toHaveValue(
+      entries[0].product,
+    );
+    await expect(page.getByRole("combobox", { name: t("entryDialog.activity") })).toHaveValue(
+      entries[0].activity,
+    );
+  });
+});
+
 test.describe("Add entry mobile", () => {
-  // TODO: Some way to check added entries?
   test("Should add entry from app bar", async ({ page, t }) => {
     // Open entry dialog
     await page.getByRole("banner").getByLabel(t("controls.openMenu")).click();
@@ -156,6 +186,37 @@ test.describe("Delete entry mobile", () => {
     await page.getByRole("button", { name: t("entryDialog.delete") }).click();
     await page.getByRole("button", { name: t("controls.deleteEntry") }).click();
     await expect(page.getByText(t("notifications.deleteEntry.success"))).toBeAttached();
+  });
+});
+
+test.describe("Entry defaults mobile", () => {
+  test("Should set remaining hours when enabled", async ({ page, t }) => {
+    await page.goto("/entries/week/21");
+    await page
+      .getByRole("button")
+      .getByRole("button", { name: t("entryDialog.title") })
+      .first()
+      .click();
+    await expect(page.getByRole("textbox", { name: "Duration" })).toHaveValue("00:00");
+    await page.getByRole("checkbox", { name: t("entryDialog.setRemainingHours") }).click();
+    await expect(page.getByRole("textbox", { name: "Duration" })).toHaveValue("07:30");
+  });
+
+  test("Should use set default values", async ({ page, t }) => {
+    await page.goto("/entries/week/21/create");
+    await expect(page.getByRole("combobox", { name: t("entryDialog.product") })).toHaveValue("");
+    await page.goto("/entries/week/21");
+    await page.getByRole("banner").getByLabel(t("controls.openMenu")).click();
+    await page.getByRole("button", { name: t("entryDialog.setDefaultsTitle") }).click();
+    await page.getByRole("combobox", { name: t("entryDialog.product") }).fill(entries[0].product);
+    await page.getByRole("combobox", { name: t("entryDialog.activity") }).fill(entries[0].activity);
+    await page.goto("/entries/week/21/create");
+    await expect(page.getByRole("combobox", { name: t("entryDialog.product") })).toHaveValue(
+      entries[0].product,
+    );
+    await expect(page.getByRole("combobox", { name: t("entryDialog.activity") })).toHaveValue(
+      entries[0].activity,
+    );
   });
 });
 
