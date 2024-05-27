@@ -46,7 +46,7 @@ test.describe("Add entry", () => {
     // Open entry dialog
     await page
       .getByRole("banner")
-      .getByRole("button", { name: t("entryDialog.title") })
+      .getByRole("button", { name: t("entryDialog.title.create") })
       .click();
     await expect(page).toHaveURL(/.*\/create$/);
     // Fill entry fields
@@ -59,7 +59,7 @@ test.describe("Add entry", () => {
   test("Should add entry from entry row", async ({ page, t }) => {
     await page
       .getByRole("button")
-      .getByRole("button", { name: t("entryDialog.title") })
+      .getByRole("button", { name: t("entryDialog.title.create") })
       .first()
       .click();
     await expect(page).toHaveURL(/.*\/create$/);
@@ -106,7 +106,7 @@ test.describe("Entry defaults", () => {
     await page.goto(emptyWeekUrl);
     await page
       .getByRole("button")
-      .getByRole("button", { name: t("entryDialog.title") })
+      .getByRole("button", { name: t("entryDialog.title.create") })
       .first()
       .click();
     await expect(page.getByRole("textbox", { name: "Duration" })).toHaveValue("00:00");
@@ -119,7 +119,7 @@ test.describe("Entry defaults", () => {
     await expect(page.getByRole("combobox", { name: t("entryDialog.product") })).toHaveValue("");
     await page.goto(emptyWeekUrl);
     await page.getByLabel(t("controls.settingsMenu")).click();
-    await page.getByRole("menuitem", { name: t("entryDialog.setDefaultsTitle") }).click();
+    await page.getByRole("menuitem", { name: t("controls.defaultsView") }).click();
     await page.getByRole("combobox", { name: t("entryDialog.product") }).fill(entries[0].product);
     await page.getByRole("combobox", { name: t("entryDialog.activity") }).fill(entries[0].activity);
     await page.goto(emptyWeekUrl + "/create");

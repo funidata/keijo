@@ -90,7 +90,7 @@ const checkAppBar = async (page: Page, t: TFunction) => {
   await expect(page.getByRole("img", { name: "Keijo logo" })).toBeVisible();
   await expect(page.getByRole("heading", { name: t("titles.workdayBrowser") })).toBeVisible();
   await expect(
-    page.getByRole("banner").getByRole("button", { name: t("entryDialog.title") }),
+    page.getByRole("banner").getByRole("button", { name: t("entryDialog.title.create") }),
   ).toBeVisible();
   await expect(
     page.getByRole("banner").getByRole("button", { name: t("controls.useDarkMode") }),

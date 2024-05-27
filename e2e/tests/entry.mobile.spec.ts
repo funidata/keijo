@@ -45,7 +45,7 @@ test.describe("Add entry mobile", () => {
   test("Should add entry from app bar", async ({ page, t }) => {
     // Open entry dialog
     await page.getByRole("banner").getByLabel(t("controls.openMenu")).click();
-    await page.getByRole("button", { name: t("entryDialog.title") }).click();
+    await page.getByRole("button", { name: t("entryDialog.title.create") }).click();
     await expect(page).toHaveURL(/.*\/create$/);
     // Fill entry fields
     await fillEntryFormMobile(page, t, entries[0]);
@@ -57,7 +57,7 @@ test.describe("Add entry mobile", () => {
   test("Should add entry from entry row", async ({ page, t }) => {
     await page
       .getByRole("button")
-      .getByRole("button", { name: t("entryDialog.title") })
+      .getByRole("button", { name: t("entryDialog.title.create") })
       .first()
       .click();
     await expect(page).toHaveURL(/.*\/create$/);
@@ -105,7 +105,7 @@ test.describe("Entry defaults mobile", () => {
     await page.goto(emptyWeekUrl);
     await page
       .getByRole("button")
-      .getByRole("button", { name: t("entryDialog.title") })
+      .getByRole("button", { name: t("entryDialog.title.create") })
       .first()
       .click();
     await expect(page.getByRole("textbox", { name: "Duration" })).toHaveValue("00:00");
@@ -118,7 +118,7 @@ test.describe("Entry defaults mobile", () => {
     await expect(page.getByRole("combobox", { name: t("entryDialog.product") })).toHaveValue("");
     await page.goto(emptyWeekUrl);
     await page.getByRole("banner").getByLabel(t("controls.openMenu")).click();
-    await page.getByRole("button", { name: t("entryDialog.setDefaultsTitle") }).click();
+    await page.getByRole("button", { name: t("controls.defaultsView") }).click();
     await page.getByRole("combobox", { name: t("entryDialog.product") }).fill(entries[0].product);
     await page.getByRole("combobox", { name: t("entryDialog.activity") }).fill(entries[0].activity);
     await page.goto(emptyWeekUrl + "/create");
