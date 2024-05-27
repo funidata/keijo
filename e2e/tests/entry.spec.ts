@@ -78,7 +78,7 @@ test.describe("Edit entry", () => {
       .first()
       .click();
     await expect(page).toHaveURL(/.*\/edit$/);
-    await fillEntryForm(page, t, { ...entries[0] });
+    await fillEntryForm(page, t, entries[0]);
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
     await expect(page.getByText(t("notifications.editEntry.success"))).toBeAttached();
   });
