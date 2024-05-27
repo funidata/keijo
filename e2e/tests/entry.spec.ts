@@ -40,7 +40,6 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe("Add entry", () => {
-  // TODO: Some way to check added entries?
   test("Should add entry from app bar", async ({ page, t }) => {
     // Open entry dialog
     await page
