@@ -70,7 +70,7 @@ test.describe("Landing page", () => {
 });
 
 test.describe("Landing page mobile", () => {
-  test("has title", async ({ page, t }) => {
+  test("has title", async ({ page }) => {
     await page.goto("/entries/week/20");
     await expect(page).toHaveTitle(/Keijo/);
     await expect(page.locator("html")).toContainText("Hieno tuote");

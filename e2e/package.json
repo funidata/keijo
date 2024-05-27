@@ -5,11 +5,17 @@
   "scripts": {
     "start": "playwright test --ui",
     "test": "playwright test",
-    "postinstall": "playwright install --with-deps"
+    "postinstall": "playwright install --with-deps",
+    "lint": "eslint tests",
+    "lint:fix": "eslint tests --fix"
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0",
     "@types/node": "^20.12.12",
+    "@typescript-eslint/eslint-plugin": "^7.10.0",
+    "@typescript-eslint/parser": "^7.10.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
     "playwright-i18next-fixture": "^1.0.0"
   },
   "dependencies": {

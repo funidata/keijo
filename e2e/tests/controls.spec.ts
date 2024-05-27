@@ -1,4 +1,4 @@
-import { Page, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { test } from "../playwright.config";
 
 test.describe("Browse week", () => {
@@ -29,7 +29,7 @@ test.describe("Browse week", () => {
     await expect(page).toHaveURL(`/entries/week/${currentWeek}`);
   });
 
-  test("Should go to specific week", async ({ page, t }) => {
+  test("Should go to specific week", async ({ page }) => {
     const jump = 4;
     await page.getByRole("combobox", { name: String(startingWeek) }).click();
     await page.getByRole("option", { name: String(startingWeek + jump) }).click();
@@ -65,7 +65,7 @@ test.describe("Browse week mobile", () => {
     await expect(page).toHaveURL(`/entries/week/${currentWeek}`);
   });
 
-  test("Should go to specific week", async ({ page, t }) => {
+  test("Should go to specific week", async ({ page }) => {
     const jump = 4;
     await page.getByRole("combobox", { name: String(startingWeek) }).click();
     await page.getByRole("option", { name: String(startingWeek + jump) }).click();
