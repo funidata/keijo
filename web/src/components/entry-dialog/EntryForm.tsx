@@ -39,11 +39,16 @@ export type EntryFormProps = {
   loading?: boolean;
 };
 
+type LocationState = {
+  date?: string;
+  editEntry?: Entry;
+};
+
 const EntryForm = () => {
   const { state } = useLocation();
   const dayjs = useDayjs();
   // state is possibly null
-  const { date: originalDate, editEntry } = state || {};
+  const { date: originalDate, editEntry }: LocationState = state || {};
   const { form, onSubmit, loading } = useEntryForm({ editEntry, date: dayjs(originalDate) });
   const navigate = useNavigate();
 
@@ -180,7 +185,7 @@ const EntryForm = () => {
             </Grid>
             <Grid item xs={12}>
               {editEntry && originalDate && (
-                <BigDeleteEntryButton entryKey={editEntry.key} date={originalDate} />
+                <BigDeleteEntryButton entryKey={editEntry.key} date={dayjs(originalDate)} />
               )}
             </Grid>
             <Grid item xs={12}>
