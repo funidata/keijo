@@ -26,35 +26,26 @@ const workdays: {
   }>;
 } = entryDoc.Root.WorkDays;
 
-const getMockProductNames = () => {
-  const names = dimensions
-    ?.find((x) => x.Name === "1 Tuote")
-    ?.DimensionDetails.DimensionDetail.map((x) => x.Name)!;
-  return names;
+export enum dimensionNames {
+  product = "1 Tuote",
+  activity = "2 Toiminto",
+  issue = "3 Tiketti",
+  client = "4 Asiakas",
+}
+const getDimensionValues = (dimensionName: string) => {
+  const dimension = dimensions?.find((dim) => dim.Name === dimensionName);
+  if (!dimension) {
+    throw new Error(`Could not find dimension "${dimensionName}".`);
+  }
+  return dimension.DimensionDetails.DimensionDetail.map((x) => x.Name);
 };
 
-const getMockActivityNames = () => {
-  const names = dimensions
-    ?.find((x) => x.Name === "2 Toiminto")
-    ?.DimensionDetails.DimensionDetail.map((x) => x.Name)!;
-  return names;
-};
+const getMockProductNames = () => getDimensionValues(dimensionNames.product);
+const getMockActivityNames = () => getDimensionValues(dimensionNames.activity);
+const getMockIssueNames = () => getDimensionValues(dimensionNames.issue);
+const getMockClientNames = () => getDimensionValues(dimensionNames.product);
 
-const getMockIssueNames = () => {
-  const names = dimensions
-    ?.find((x) => x.Name === "3 Tiketti")
-    ?.DimensionDetails.DimensionDetail.map((x) => x.Name)!;
-  return names;
-};
-
-const getMockClientNames = () => {
-  const names = dimensions
-    ?.find((x) => x.Name === "4 Asiakas")
-    ?.DimensionDetails.DimensionDetail.map((x) => x.Name)!;
-  return names;
-};
-
-export const getMockEntries = (): Array<{
+const getMockEntries = (): Array<{
   date: string;
   hours: string;
   fields: Array<{
@@ -81,4 +72,10 @@ export const getMockEntries = (): Array<{
   });
 };
 
-export { getMockProductNames, getMockActivityNames, getMockIssueNames, getMockClientNames };
+export {
+  getMockProductNames,
+  getMockActivityNames,
+  getMockIssueNames,
+  getMockClientNames,
+  getMockEntries,
+};
