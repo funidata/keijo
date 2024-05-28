@@ -30,8 +30,5 @@
   "license": "MIT",
   "dependencies": {
     "prettier": "^3.2.5"
-  },
-  "devDependencies": {
-    "playwright-i18next-fixture": "^1.0.0"
   }
 }
