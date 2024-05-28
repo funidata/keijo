@@ -59,7 +59,7 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
     >
       <WorkdaySummary workday={workday} />
       <AccordionDetails>
-        <Box role={"list"} sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        <Box role="list" sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           {workday.entries.map((entry) => (
             <EntryRow entry={entry} date={date} key={entry.key} />
           ))}
