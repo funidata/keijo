@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, Box, List } from "@mui/material";
+import { Accordion, AccordionDetails, List } from "@mui/material";
 import { SyntheticEvent } from "react";
 import useDayjs from "../../common/useDayjs";
 import {
