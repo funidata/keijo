@@ -1,6 +1,6 @@
 import { createI18nFixture } from "playwright-i18next-fixture";
-import en from "../web/src/i18n/en";
-import fi from "../web/src/i18n/fi";
+import en from "translations/en";
+import fi from "translations/fi";
 
 export const i18nFixture = createI18nFixture({
   // i18n configuration options
