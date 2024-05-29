@@ -20,9 +20,10 @@ const DeleteEntryButton = ({ entryKey, date }: DeleteEntryButtonProps) => {
   const { showSuccessNotification } = useNotification();
   const { t } = useTranslation();
   const [anchor, setAnchor] = useState<Element | null>(null);
-  const [removeWorkdayEntry] = useMutation(RemoveWorkdayEntryDocument, {
+  const [removeWorkdayEntry, { client }] = useMutation(RemoveWorkdayEntryDocument, {
     refetchQueries: [FindWorkdaysDocument],
-    onCompleted: () => {
+    onCompleted: async () => {
+      await client.resetStore();
       showSuccessNotification(t("notifications.deleteEntry.success"));
     },
   });

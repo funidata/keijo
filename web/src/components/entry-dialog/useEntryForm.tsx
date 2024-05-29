@@ -39,11 +39,12 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
   const { showSuccessNotification } = useNotification();
   const dayjs = useDayjs();
 
-  const [addWorkdayEntryMutation, { loading: addQueryLoading }] = useMutation(
+  const [addWorkdayEntryMutation, { loading: addQueryLoading, client }] = useMutation(
     AddWorkdayEntryDocument,
     {
       refetchQueries: [FindWorkdaysDocument],
-      onCompleted: () => {
+      onCompleted: async () => {
+        await client.resetStore();
         showSuccessNotification(t("notifications.addEntry.success"));
       },
     },
@@ -54,7 +55,8 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
     {
       refetchQueries: [FindWorkdaysDocument],
       notifyOnNetworkStatusChange: true,
-      onCompleted: () => {
+      onCompleted: async () => {
+        await client.resetStore();
         showSuccessNotification(t("notifications.editEntry.success"));
       },
     },

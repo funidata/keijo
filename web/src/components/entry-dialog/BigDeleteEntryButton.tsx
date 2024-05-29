@@ -15,9 +15,10 @@ const BigDeleteEntryButton = ({ entryKey, date }: DeleteEntryButtonProps) => {
   const { showSuccessNotification } = useNotification();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const [removeWorkdayEntry] = useMutation(RemoveWorkdayEntryDocument, {
+  const [removeWorkdayEntry, { client }] = useMutation(RemoveWorkdayEntryDocument, {
     refetchQueries: [FindWorkdaysDocument],
-    onCompleted: () => {
+    onCompleted: async () => {
+      await client.resetStore();
       showSuccessNotification(t("notifications.deleteEntry.success"));
     },
   });
