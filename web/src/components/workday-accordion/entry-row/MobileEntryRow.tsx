@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, ListItem, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import dayjs from "dayjs";
 import { roundToFullMinutes } from "../../../common/duration";
@@ -20,16 +20,18 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
   const roundedDuration = roundToFullMinutes(dayjs.duration(entry.duration, "hour"));
 
   return (
-    <Box
-      role="listitem"
+    <ListItem
       sx={{
         bgcolor: darkMode ? grey[800] : "primary.light",
         borderRadius: 4,
         pl: 1,
         pr: accepted || paid || open ? 0 : 1,
+        pt: 0,
+        pb: 0,
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
+        alignItems: "stretch",
       }}
     >
       <Box sx={{ display: "flex", justifyContent: "space-between", minHeight: 40 }}>
@@ -88,7 +90,7 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
           </Typography>
         )}
       </Box>
-    </Box>
+    </ListItem>
   );
 };
 
