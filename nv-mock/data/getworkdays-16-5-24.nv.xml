@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Root>
+    <ResponseStatus>
+        <Status>OK</Status>
+        <TimeStamp>14.5.2024 14:35:56</TimeStamp>
+    </ResponseStatus>
+    <WorkDays>
+        <Workday>
+            <Date>2024-05-16</Date>
+            <WorkdayHour netvisorkey="2415">
+                <Hours>3</Hours>
+                <CollectorRatio number="100" netvisorkey="3">01. Normaali tuntityö</CollectorRatio>
+                <AcceptanceStatus>Kuitattu</AcceptanceStatus>
+                <Description />
+                <CrmProcessName />
+                <Dimension>
+                    <DimensionName>1 Tuote</DimensionName>
+                    <DimensionItem>Hintava tuote</DimensionItem>
+                </Dimension>
+                <Dimension>
+                    <DimensionName>2 Toiminto</DimensionName>
+                    <DimensionItem>Suunnittelu</DimensionItem>
+                </Dimension>
+            </WorkdayHour>
+        </Workday>
+    </WorkDays>
+</Root>

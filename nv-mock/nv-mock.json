@@ -74,7 +74,7 @@
       "endpoint": "getworkdays.nv",
       "responses": [
         {
-          "uuid": "18ba4e63-3c95-4828-b62f-fb0839a8cf88",
+          "uuid": "ece252de-1d7f-45a8-884b-cae1c19dc0fe",
           "body": "{}",
           "latency": 0,
           "statusCode": 200,
@@ -82,6 +82,132 @@
           "headers": [],
           "bodyType": "FILE",
           "filePath": "data/getworkdays.nv.xml",
+          "databucketID": "",
+          "sendFileAsBody": true,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "95bcd0dc-864f-4193-95c1-46ba1cfee18e",
+          "body": "",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "data/getworkdays-16-5-24.nv.xml",
+          "databucketID": "",
+          "sendFileAsBody": true,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "workhourstartdate",
+              "value": "2024-05-16",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "workhourenddate",
+              "value": "2024-05-16",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "e737a176-c879-44c0-92c6-a52dba040d45",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "data/getworkdays-14-5-24.nv.xml",
+          "databucketID": "",
+          "sendFileAsBody": true,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "workhourstartdate",
+              "value": "2024-05-14",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "workhourenddate",
+              "value": "2024-05-14",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "9ec15207-83c9-4172-a277-0784a96ab725",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "workday.nv",
+      "responses": [
+        {
+          "uuid": "e07d4aad-99dd-4bbd-b9bf-81dab1bc182e",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "data/workday.nv.xml",
+          "databucketID": "",
+          "sendFileAsBody": true,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "13c8a720-fbaf-4552-b36e-50ab641cbb71",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "deleteworkdayhour.nv",
+      "responses": [
+        {
+          "uuid": "2c5ae10b-7c04-447b-a571-1cabf287b599",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "data/deleteworkdayhour.nv.xml",
           "databucketID": "",
           "sendFileAsBody": true,
           "rules": [],
@@ -108,6 +234,14 @@
     {
       "type": "route",
       "uuid": "781e6605-6ed0-4a67-9925-7d7917ab37dd"
+    },
+    {
+      "type": "route",
+      "uuid": "9ec15207-83c9-4172-a277-0784a96ab725"
+    },
+    {
+      "type": "route",
+      "uuid": "13c8a720-fbaf-4552-b36e-50ab641cbb71"
     }
   ],
   "proxyMode": false,

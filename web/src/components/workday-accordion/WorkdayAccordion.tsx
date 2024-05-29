@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, Box } from "@mui/material";
+import { Accordion, AccordionDetails, List } from "@mui/material";
 import { SyntheticEvent } from "react";
 import useDayjs from "../../common/useDayjs";
 import {
@@ -59,12 +59,12 @@ const WorkdayAccordion = ({ workday }: WorkdayAccordionProps) => {
     >
       <WorkdaySummary workday={workday} />
       <AccordionDetails>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+        <List sx={{ display: "flex", flexDirection: "column", gap: 1, pt: 0, pb: 0 }}>
           {workday.entries.map((entry) => (
             <EntryRow entry={entry} date={date} key={entry.key} />
           ))}
           {onlyFlexLeaveEntry && <AddZeroEntryAlert date={date} />}
-        </Box>
+        </List>
       </AccordionDetails>
     </Accordion>
   );

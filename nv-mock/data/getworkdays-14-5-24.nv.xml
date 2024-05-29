@@ -6,24 +6,6 @@
     </ResponseStatus>
     <WorkDays>
         <Workday>
-            <Date>2024-05-13</Date>
-            <WorkdayHour netvisorkey="2412">
-                <Hours>5</Hours>
-                <CollectorRatio number="100" netvisorkey="3">01. Normaali tuntityö</CollectorRatio>
-                <AcceptanceStatus>Kuitattu</AcceptanceStatus>
-                <Description />
-                <CrmProcessName />
-                <Dimension>
-                    <DimensionName>1 Tuote</DimensionName>
-                    <DimensionItem>Hieno tuote</DimensionItem>
-                </Dimension>
-                <Dimension>
-                    <DimensionName>2 Toiminto</DimensionName>
-                    <DimensionItem>Toteutus</DimensionItem>
-                </Dimension>
-            </WorkdayHour>
-        </Workday>
-        <Workday>
             <Date>2024-05-14</Date>
             <WorkdayHour netvisorkey="2413">
                 <Hours>3,5</Hours>
@@ -56,23 +38,4 @@
                 </Dimension>
             </WorkdayHour>
         </Workday>
-        <Workday>
-            <Date>2024-05-16</Date>
-            <WorkdayHour netvisorkey="2415">
-                <Hours>3</Hours>
-                <CollectorRatio number="100" netvisorkey="3">01. Normaali tuntityö</CollectorRatio>
-                <AcceptanceStatus>Kuitattu</AcceptanceStatus>
-                <Description />
-                <CrmProcessName />
-                <Dimension>
-                    <DimensionName>1 Tuote</DimensionName>
-                    <DimensionItem>Hintava tuote</DimensionItem>
-                </Dimension>
-                <Dimension>
-                    <DimensionName>2 Toiminto</DimensionName>
-                    <DimensionItem>Suunnittelu</DimensionItem>
-                </Dimension>
-            </WorkdayHour>
-        </Workday>
-    </WorkDays>
 </Root>
