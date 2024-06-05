@@ -6,7 +6,6 @@ import { ConfigService } from "./config/config.service";
 import { AppLogger } from "./logger/app-logger";
 import cookieParser from "cookie-parser";
 import session from "express-session";
-import passport from "passport";
 
 const options =
   process.env.NODE_ENV === "development"
@@ -32,8 +31,6 @@ const options =
       },
     }),
   );
-  app.use(passport.initialize());
-  app.use(passport.session());
   app.use(cookieParser());
   await app.listen(configService.config.port);
 })();
