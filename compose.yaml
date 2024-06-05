@@ -1,14 +1,9 @@
-# Bootstraps the local development environment. Not for production use.
+# Bootstraps the local development environment.
 services:
-  web-base:
-    build: ./web/
-    env_file:
-      - .env
-    volumes:
-      - ./web/src:/usr/src/app/src
-      - ./web/public:/usr/src/app/public
   web:
-    extends: web-base
+    extends:
+      file: compose.base.yaml
+      service: web-base
     container_name: keijo-web
     environment:
       - VITE_API_URL=http://localhost:3001/graphql
@@ -16,34 +11,27 @@ services:
       - 3000:5173
 
   web-test:
-    extends: web-base
+    extends:
+      file: compose.base.yaml
+      service: web-base
     container_name: keijo-web-test
     environment:
       - VITE_API_URL=http://localhost:4001/graphql
     ports:
       - 4000:5173
 
-  server-base:
-    build:
-      context: ./server/
-      dockerfile: Dockerfile.dev
-      target: dev
-    env_file:
-      - .env
-    environment:
-      - NODE_ENV=development
-      - PORT=3001
-    volumes:
-      - ./server/src:/usr/src/app/src
-
   server:
-    extends: server-base
+    extends:
+      file: compose.base.yaml
+      service: server-base
     container_name: keijo-server
     ports:
       - 3001:3001
 
   server-test:
-    extends: server-base
+    extends:
+      file: compose.base.yaml
+      service: server-base
     container_name: keijo-server-test
     environment:
       - NETVISOR_API_URL=http://nv-mock:4002
@@ -51,10 +39,6 @@ services:
       - 4001:3001
 
   nv-mock:
-    image: mockoon/cli
-    container_name: nv-mock
-    ports:
-      - 4002:4002
-    volumes:
-      - ./nv-mock:/data
-    command: "--port 4002 --data /data/nv-mock.json"
+    extends:
+      file: compose.services.yaml
+      service: nv-mock

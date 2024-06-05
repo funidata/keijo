@@ -1,0 +1,10 @@
+# Service containers for the development environment.
+services:
+  nv-mock:
+    image: mockoon/cli
+    container_name: nv-mock
+    ports:
+      - 4002:4002
+    volumes:
+      - ./nv-mock:/data
+    command: "--port 4002 --data /data/nv-mock.json"
