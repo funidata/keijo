@@ -25,6 +25,8 @@ services:
       file: compose.base.yaml
       service: server-base
     container_name: keijo-server
+    environment:
+      DATABASE_NAME: keijo_dev
     ports:
       - 3001:3001
 
@@ -34,7 +36,8 @@ services:
       service: server-base
     container_name: keijo-server-test
     environment:
-      - NETVISOR_API_URL=http://nv-mock:4002
+      NETVISOR_API_URL: http://nv-mock:4002
+      DATABASE_NAME: keijo_test
     ports:
       - 4001:3001
 
