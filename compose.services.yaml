@@ -1,5 +1,18 @@
 # Service containers for the development environment.
 services:
+  db:
+    image: postgres:14.10
+    container_name: keijo-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - type: volume
+        source: keijo-pg
+        target: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
   nv-mock:
     image: mockoon/cli
     container_name: nv-mock

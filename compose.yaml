@@ -42,3 +42,11 @@ services:
     extends:
       file: compose.services.yaml
       service: nv-mock
+
+  db:
+    extends:
+      file: compose.services.yaml
+      service: db
+
+volumes:
+  keijo-pg:
