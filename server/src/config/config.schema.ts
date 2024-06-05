@@ -26,6 +26,19 @@ export const configSchema = object({
     host: string(),
     port: number(),
   }),
+  jira: object({
+    tokenUrl: string(),
+    clientId: string(),
+    clientSecret: string(),
+    authorizationUrl: string(),
+    callbackUrl: string(),
+    scopes: string(),
+    callbackRedirectUrl: string(),
+  }),
+  session: object({
+    name: string(),
+    secret: string(),
+  }),
 });
 
 export type Config = zod.infer<typeof configSchema>;
