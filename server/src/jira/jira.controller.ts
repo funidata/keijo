@@ -1,11 +1,12 @@
-import { Controller, Get, Req, Res, Session, UseGuards } from "@nestjs/common";
+import { Controller, Get, Res, UseGuards } from "@nestjs/common";
 import { Response } from "express";
 import { BypassHeadersGuard } from "src/decorators/bypass-headers-guard.decorator";
 import { JiraAuthGuard } from "./jira.guard";
 import { JiraService } from "./jira.service";
-import { tokenGuard } from "./token.guard";
+import { SessionTokenGuard } from "./token.guard";
 import { ConfigService } from "src/config/config.service";
-import { RequestWithTokens, SessionWithTokens } from "./jira.types";
+import { JiraTokens } from "./jira.types";
+import { SessionUser, ReqUser } from "./user.decorator";
 
 @Controller("jira")
 export class JiraController {
@@ -22,34 +23,24 @@ export class JiraController {
   @BypassHeadersGuard()
   @UseGuards(JiraAuthGuard)
   @Get("callback")
-  async handleRedirect(
-    @Res({ passthrough: true }) response: Response,
-    @Req()
-    request: RequestWithTokens,
-    @Session() session: SessionWithTokens,
-  ) {
-    session.user = {
-      accessToken: request.user.accessToken,
-      refreshToken: request.user.refreshToken,
-    };
+  async handleRedirect(@Res() response: Response, @ReqUser() jiraTokens: JiraTokens) {
+    this.jiraService.setJiraSessionTokens(jiraTokens);
     response.redirect(301, this.configService.config.jira.callbackRedirectUrl);
   }
 
   @BypassHeadersGuard()
-  @UseGuards(tokenGuard)
+  @UseGuards(SessionTokenGuard)
   @Get("refresh")
-  async refreshTokens(@Session() session: SessionWithTokens) {
-    const { accessToken, refreshToken } = await this.jiraService.getFreshTokens(
-      session.user.refreshToken,
-    );
-    session.user = { accessToken: accessToken, refreshToken: refreshToken };
-    return { access_token: accessToken };
+  async refreshTokens(@SessionUser() jiraTokens: JiraTokens) {
+    const freshTokens = await this.jiraService.getFreshTokens(jiraTokens.refreshToken);
+    this.jiraService.setJiraSessionTokens(freshTokens);
+    return { access_token: freshTokens.accessToken };
   }
 
   @BypassHeadersGuard()
-  @UseGuards(tokenGuard)
+  @UseGuards(SessionTokenGuard)
   @Get("access-token")
-  async getAccessToken(@Session() session: SessionWithTokens) {
-    return { access_token: session.user.accessToken };
+  async getAccessToken(@SessionUser() jiraTokens: JiraTokens) {
+    return { access_token: jiraTokens.accessToken };
   }
 }

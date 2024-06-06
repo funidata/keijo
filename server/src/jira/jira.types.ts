@@ -1,6 +1,11 @@
-import { Session, SessionData } from "express-session";
+export type JiraTokens = { refreshToken: string; accessToken: string };
+export interface JiraUser {
+  user?: JiraTokens;
+}
 
-export type Tokens = { user: { refreshToken: string; accessToken: string } };
-export type SessionPartialTokens = Session & Partial<SessionData & Tokens>;
-export type RequestWithTokens = Request & Tokens;
-export type SessionWithTokens = Session & SessionData & Tokens;
+declare module "express-session" {
+  interface SessionData extends JiraUser {}
+}
+declare module "express" {
+  export interface Request extends JiraUser {}
+}
