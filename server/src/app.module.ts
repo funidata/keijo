@@ -3,7 +3,7 @@ import { Module } from "@nestjs/common";
 import { GraphQLModule } from "@nestjs/graphql";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
-import { CustomCacheModule } from "./cache.module";
+import { CacheModule } from "./cache/cache.module";
 import { ConfigModule } from "./config/config.module";
 import { ConfigService } from "./config/config.service";
 import { appGuards } from "./guards/app-guards";
@@ -25,7 +25,7 @@ import { SessionModule } from "./session/session.module";
         autoSchemaFile: true,
       }),
     }),
-    CustomCacheModule,
+    CacheModule,
     ConfigModule,
     LoggerModule,
     NetvisorModule,
