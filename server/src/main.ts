@@ -7,7 +7,15 @@ import { AppLogger } from "./logger/app-logger";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 
-const options = process.env.NODE_ENV === "development" ? { cors: { origin: "*" } } : {};
+const options =
+  process.env.NODE_ENV === "development"
+    ? {
+        cors: {
+          origin: `http://localhost:${process.env.DEV_FRONTEND_PORT || 3000}`,
+          credentials: true,
+        },
+      }
+    : {};
 
 (async () => {
   const app = await NestFactory.create(AppModule, { bufferLogs: true, ...options });
