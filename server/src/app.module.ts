@@ -6,6 +6,7 @@ import { join } from "path";
 import { CacheModule } from "./cache/cache.module";
 import { ConfigModule } from "./config/config.module";
 import { ConfigService } from "./config/config.service";
+import { DatabaseModule } from "./database/database.module";
 import { appGuards } from "./guards/app-guards";
 import { LoggerModule } from "./logger/logger.module";
 import { NetvisorModule } from "./netvisor/netvisor.module";
@@ -30,6 +31,7 @@ import { SessionModule } from "./session/session.module";
     LoggerModule,
     NetvisorModule,
     SessionModule,
+    DatabaseModule,
   ],
   providers: [...appGuards],
 })
