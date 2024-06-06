@@ -40,6 +40,8 @@ services:
     environment:
       NETVISOR_API_URL: http://nv-mock:4002
       DATABASE_NAME: keijo_test
+      DEV_FRONTEND_PORT: 4000
+
     ports:
       - 4001:3001
 
