@@ -50,6 +50,10 @@ services:
     extends:
       file: compose.services.yaml
       service: db
+    volumes:
+      - type: volume
+        source: keijo-pg
+        target: /var/lib/postgresql/data
 
 volumes:
   keijo-pg:
