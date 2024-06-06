@@ -24,7 +24,7 @@ export const defaultMockConfig: Config = {
     username: "",
     password: "",
     name: "",
-    url: "",
+    host: "",
     port: 0,
   },
 };

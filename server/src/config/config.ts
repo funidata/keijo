@@ -16,7 +16,7 @@ const {
   DATABASE_USERNAME,
   DATABASE_PASSWORD,
   DATABASE_NAME,
-  DATABASE_URL,
+  DATABASE_HOST,
   DATABASE_PORT,
 } = process.env;
 
@@ -44,7 +44,7 @@ const config = {
     username: DATABASE_USERNAME,
     password: DATABASE_PASSWORD,
     name: DATABASE_NAME,
-    url: DATABASE_URL,
+    host: DATABASE_HOST,
     port: Number(DATABASE_PORT),
   },
 };

@@ -23,7 +23,7 @@ export const configSchema = object({
     username: string(),
     password: string(),
     name: string(),
-    url: string(),
+    host: string(),
     port: number(),
   }),
 });

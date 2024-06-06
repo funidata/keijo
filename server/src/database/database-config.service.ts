@@ -12,11 +12,7 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
 
     return {
       type: "postgres",
-      host: database.url,
-      port: database.port,
-      username: database.username,
-      password: database.password,
-      database: database.name,
+      ...database,
       entities: [],
       synchronize: config.inDev,
     };
