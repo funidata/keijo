@@ -19,6 +19,13 @@ export const configSchema = object({
     organizationKey: string(),
     cacheTtl: number(),
   }),
+  database: object({
+    username: string(),
+    password: string(),
+    name: string(),
+    url: string(),
+    port: number(),
+  }),
 });
 
 export type Config = zod.infer<typeof configSchema>;

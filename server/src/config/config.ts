@@ -13,6 +13,11 @@ const {
   NETVISOR_CACHE_TTL,
   NETVISOR_ENTRY_RATIONUMBER,
   NETVISOR_API_URL,
+  DATABASE_USERNAME,
+  DATABASE_PASSWORD,
+  DATABASE_NAME,
+  DATABASE_URL,
+  DATABASE_PORT,
 } = process.env;
 
 const config = {
@@ -34,6 +39,13 @@ const config = {
     organizationKey: NETVISOR_ORGANIZATION_KEY,
     cacheTtl: Number(NETVISOR_CACHE_TTL) || 60,
     ratioNumber: Number(NETVISOR_ENTRY_RATIONUMBER) || 100,
+  },
+  database: {
+    username: DATABASE_USERNAME,
+    password: DATABASE_PASSWORD,
+    name: DATABASE_NAME,
+    url: DATABASE_URL,
+    port: Number(DATABASE_PORT),
   },
 };
 
