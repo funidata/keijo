@@ -1,7 +1,7 @@
 # Service containers for the development environment.
 services:
   db:
-    image: postgres:14.10
+    image: postgres:16
     container_name: keijo-db
     environment:
       POSTGRES_USER: postgres
