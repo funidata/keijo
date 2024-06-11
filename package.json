@@ -21,7 +21,8 @@
     "unit-tests": "cd server && npm test",
     "test": "npm run unit-tests && npm run e2e",
     "wait-for-server": "curl -sX GET --retry 10 --retry-delay 1 --retry-all-errors http://localhost:4001/ > /dev/null",
-    "build": "docker compose build"
+    "build": "docker compose build",
+    "prune": "docker compose down && docker volume rm keijo-local_keijo-pg"
   },
   "author": "Joonas Häkkinen <joonas.hakkinen@funidata.fi>",
   "contributors": [

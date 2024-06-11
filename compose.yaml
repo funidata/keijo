@@ -1,4 +1,6 @@
 # Bootstraps the local development environment.
+name: keijo-local
+
 services:
   web:
     extends:
