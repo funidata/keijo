@@ -37,11 +37,14 @@ const DimensionComboBox = <T extends FieldValues>({
               <Autocomplete
                 value={value || null}
                 onChange={(_, value) => onChange(value)}
-                options={
-                  !issuesEnabled
-                    ? options
-                    : options.map((x) => (keyToSummary[x] ? `${x}: ${keyToSummary[x]}` : x))
-                }
+                options={options}
+                renderOption={(props, option) => {
+                  return (
+                    <li {...props}>
+                      {keyToSummary[option] ? `${option}: ${keyToSummary[option]}` : option}
+                    </li>
+                  );
+                }}
                 autoHighlight
                 renderInput={(params) => (
                   <TextField
