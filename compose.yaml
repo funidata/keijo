@@ -9,6 +9,7 @@ services:
     container_name: keijo-web
     environment:
       - VITE_API_URL=http://localhost:3001/graphql
+      - VITE_KEIJO_JIRA_API_URL=http://localhost:3001/jira
     ports:
       - 3000:5173
 
@@ -19,6 +20,7 @@ services:
     container_name: keijo-web-test
     environment:
       - VITE_API_URL=http://localhost:4001/graphql
+      - VITE_KEIJO_JIRA_API_URL=http://localhost:4001/jira
     ports:
       - 4000:5173
 
