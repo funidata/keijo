@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useNotificationState } from "../components/global-notification/useNotification";
-import { JiraAuthLink } from "./jiraAuthLink";
 import { jiraApiUrl, keijoJiraApiUrl } from "./jiraConfig";
 import { queryClient } from "./queryClient";
+import { JiraAuthLink } from "./JiraAuthLink";
 
 export const axiosJira = axios.create({
   baseURL: jiraApiUrl,
