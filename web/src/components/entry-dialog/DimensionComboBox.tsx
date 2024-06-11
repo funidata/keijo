@@ -2,6 +2,8 @@ import { useQuery } from "@apollo/client";
 import { Autocomplete, FormControl, Grid, TextField } from "@mui/material";
 import { Control, Controller, ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
 import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
+import { useGetIssues } from "../../jira/jiraApi";
+import { issueKeyToSummary } from "../../jira/jiraUtils";
 
 type DimensionComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -16,9 +18,12 @@ const DimensionComboBox = <T extends FieldValues>({
   title,
   rules,
 }: DimensionComboBoxProps<T>) => {
-  const { data } = useQuery(FindDimensionOptionsDocument);
-
+  const { data, loading } = useQuery(FindDimensionOptionsDocument);
   const options = data?.findDimensionOptions[name] || [];
+
+  const issuesEnabled = name === "issue" && !loading;
+  const { data: issueData } = useGetIssues(options, issuesEnabled);
+  const keyToSummary = issueData ? issueKeyToSummary(issueData) : {};
 
   return (
     <Grid item xs={12} md={6}>
@@ -32,7 +37,11 @@ const DimensionComboBox = <T extends FieldValues>({
               <Autocomplete
                 value={value || null}
                 onChange={(_, value) => onChange(value)}
-                options={options}
+                options={
+                  !issuesEnabled
+                    ? options
+                    : options.map((x) => (keyToSummary[x] ? `${x}: ${keyToSummary[x]}` : x))
+                }
                 autoHighlight
                 renderInput={(params) => (
                   <TextField
