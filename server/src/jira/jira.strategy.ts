@@ -2,6 +2,7 @@ import { Strategy, StrategyOptions } from "passport-oauth2";
 import { PassportStrategy } from "@nestjs/passport";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "src/config/config.service";
+import { JiraTokens } from "./jira.types";
 
 @Injectable()
 export class JiraStrategy extends PassportStrategy(Strategy, "jira") {
@@ -26,10 +27,7 @@ export class JiraStrategy extends PassportStrategy(Strategy, "jira") {
     };
   }
 
-  async validate(
-    accessToken: string,
-    refreshToken: string,
-  ): Promise<{ accessToken: string; refreshToken: string }> {
+  async validate(accessToken: string, refreshToken: string): Promise<JiraTokens> {
     return { accessToken, refreshToken };
   }
 }

@@ -14,9 +14,7 @@ export class JiraService {
     @Inject(REQUEST) private request: Request,
   ) {}
 
-  async getFreshTokens(
-    refreshToken: string,
-  ): Promise<{ refreshToken: string; accessToken: string }> {
+  async getFreshTokens(refreshToken: string): Promise<JiraTokens> {
     const { clientId, clientSecret, tokenUrl } = this.configService.config.jira;
     const res: AxiosResponse<{ refresh_token: string; access_token: string }> =
       await this.axiosService.post(
