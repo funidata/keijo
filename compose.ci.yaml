@@ -1,0 +1,32 @@
+# Compose configuration for running E2E tests in CI.
+services:
+  server:
+    image: keijo
+    environment:
+      ENABLE_AUDIT_LOGS: true
+      ENABLE_JSON_LOGS: false
+      LOG_LEVEL: debug
+      NETVISOR_CUSTOMER_ID: mock_customer_id
+      NETVISOR_ORGANIZATION_ID: mock_org_id
+      NETVISOR_CUSTOMER_KEY: mock_customer_key
+      NETVISOR_ORGANIZATION_KEY: mock_org_key
+      NETVISOR_PARTNER_ID: mock_partner_id
+      NETVISOR_API_URL: http://nv-mock:4002
+      NODE_ENV: production
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: keijo_test
+    ports:
+      - 4000:3001
+
+  nv-mock:
+    extends:
+      file: compose.services.yaml
+      service: nv-mock
+
+  db:
+    extends:
+      file: compose.services.yaml
+      service: db

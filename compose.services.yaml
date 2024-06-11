@@ -1,0 +1,21 @@
+# Service containers for the development environment.
+services:
+  db:
+    image: postgres:16
+    container_name: keijo-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./db/init:/docker-entrypoint-initdb.d
+    ports:
+      - 5432:5432
+
+  nv-mock:
+    image: mockoon/cli
+    container_name: nv-mock
+    ports:
+      - 4002:4002
+    volumes:
+      - ./nv-mock:/data
+    command: "--port 4002 --data /data/nv-mock.json"

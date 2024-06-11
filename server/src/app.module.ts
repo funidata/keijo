@@ -3,9 +3,10 @@ import { Module } from "@nestjs/common";
 import { GraphQLModule } from "@nestjs/graphql";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
-import { CustomCacheModule } from "./cache.module";
+import { CacheModule } from "./cache/cache.module";
 import { ConfigModule } from "./config/config.module";
 import { ConfigService } from "./config/config.service";
+import { DatabaseModule } from "./database/database.module";
 import { appGuards } from "./guards/app-guards";
 import { LoggerModule } from "./logger/logger.module";
 import { NetvisorModule } from "./netvisor/netvisor.module";
@@ -25,11 +26,12 @@ import { SessionModule } from "./session/session.module";
         autoSchemaFile: true,
       }),
     }),
-    CustomCacheModule,
+    CacheModule,
     ConfigModule,
     LoggerModule,
     NetvisorModule,
     SessionModule,
+    DatabaseModule,
   ],
   providers: [...appGuards],
 })

@@ -1,12 +1,12 @@
-import { CacheModule } from "@nestjs/cache-manager";
+import { CacheModule as NestCache } from "@nestjs/cache-manager";
 import { Global, Module } from "@nestjs/common";
-import { ConfigModule } from "./config/config.module";
-import { ConfigService } from "./config/config.service";
+import { ConfigModule } from "../config/config.module";
+import { ConfigService } from "../config/config.service";
 
 @Global()
 @Module({
   imports: [
-    CacheModule.registerAsync({
+    NestCache.registerAsync({
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         ttl: configService.config.netvisor.cacheTtl * 1000,
@@ -14,6 +14,6 @@ import { ConfigService } from "./config/config.service";
     }),
     ConfigModule,
   ],
-  exports: [CacheModule],
+  exports: [NestCache],
 })
-export class CustomCacheModule {}
+export class CacheModule {}

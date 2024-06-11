@@ -1,0 +1,2 @@
+CREATE DATABASE keijo_dev;
+CREATE DATABASE keijo_test;

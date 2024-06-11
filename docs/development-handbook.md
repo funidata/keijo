@@ -63,6 +63,12 @@ See [test documentation](./tests.md) for more testing commands and information.
 npm test
 ```
 
+#### Remove Local Database Volume
+
+```
+npm run prune
+```
+
 ## Contributions
 
 Contributions must be made via pull requests into the protected `main` branch. Use labels and comprehensive descriptions in PR's to aid automatic release notes generation. All tests must pass before merge.

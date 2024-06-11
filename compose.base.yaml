@@ -1,0 +1,27 @@
+# Common bases for dev containers.
+# Not to be used directly, see compose.yaml.
+services:
+  web-base:
+    build: ./web/
+    env_file:
+      - .env
+    volumes:
+      - ./web/src:/usr/src/app/src
+      - ./web/public:/usr/src/app/public
+
+  server-base:
+    build:
+      context: ./server/
+      dockerfile: Dockerfile.dev
+      target: dev
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+    volumes:
+      - ./server/src:/usr/src/app/src

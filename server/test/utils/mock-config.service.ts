@@ -20,6 +20,13 @@ export const defaultMockConfig: Config = {
     organizationKey: "test-org-key",
     cacheTtl: 60,
   },
+  database: {
+    username: "",
+    password: "",
+    name: "",
+    host: "",
+    port: 0,
+  },
 };
 
 const mockConfigProvider = (override: Partial<Config> = {}) => ({

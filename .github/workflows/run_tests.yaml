@@ -55,16 +55,12 @@ jobs:
   e2e-tests:
     name: E2E tests
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: e2e
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Start mock NV API
-        run: docker run -d -p 4002:4002 --mount type=bind,source=./,target=/data,readonly mockoon/cli --port 4002 --data /data/nv-mock.json
-        working-directory: nv-mock
-      - name: Wait for NV API
+      - name: Start backend services
+        run: docker compose -f compose.ci.yaml up -d db nv-mock
+      - name: Wait for mock NV API
         run: curl -v --head -X GET --retry 10 --retry-all-errors --retry-delay 5 http://localhost:4002
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -76,9 +72,15 @@ jobs:
       - name: Load image
         run: docker load --input /tmp/keijo.tar
       - name: Start backend
-        run: docker run -d --env-file ci.env -p 4000:3001 --add-host=host.docker.internal:host-gateway keijo
+        run: docker compose -f compose.ci.yaml up -d server
       - name: Wait for backend
         run: curl -v --head -X GET --retry 10 --retry-all-errors --retry-delay 5 http://localhost:4000
+      - name: Print debug output
+        if: failure()
+        run: |
+          docker ps
+          docker compose -f compose.ci.yaml logs server
+          docker compose -f compose.ci.yaml logs db
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -87,8 +89,10 @@ jobs:
         run: npm ci
         env:
           CI: true
+        working-directory: e2e
       - name: Run E2E tests
         run: npm test
+        working-directory: e2e
       - name: Upload test report
         uses: actions/upload-artifact@v4
         if: always()
