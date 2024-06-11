@@ -16,7 +16,6 @@ const axiosKeijo = axios.create({
 axiosJira.interceptors.response.use(
   (res) => res,
   async (err) => {
-    console.log(err.response.status);
     if (err.response.status === 403 || err.response.status === 401) {
       await queryClient.fetchQuery({
         queryKey: ["accessToken"],
@@ -30,10 +29,9 @@ axiosJira.interceptors.response.use(
 axiosKeijo.interceptors.response.use(
   (res) => res,
   (err) => {
-    console.log(err.response.status);
     if (err.response.status === 401) {
       useNotificationState.getState().setNotification({
-        message: "Jira is not authenticated for Keijo",
+        message: "Jira is not authenticated. Keijo uses Jira for e.g., receiving issue summaries.",
         type: "warning",
         autoHide: false,
         action: JiraAuthLink,
