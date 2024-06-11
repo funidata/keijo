@@ -33,7 +33,7 @@ axiosKeijo.interceptors.response.use(
       useNotificationState.getState().setNotification({
         message: "Jira is not authenticated. Keijo uses Jira for e.g., receiving issue summaries.",
         type: "warning",
-        autoHide: false,
+        autoHide: true,
         action: JiraAuthLink,
       });
     }
