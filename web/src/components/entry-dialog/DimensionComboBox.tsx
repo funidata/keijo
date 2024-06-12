@@ -24,6 +24,8 @@ const DimensionComboBox = <T extends FieldValues>({
   const issuesEnabled = name === "issue" && !loading;
   const { data: issueData } = useGetIssues(options, issuesEnabled);
   const keyToSummary = issueData ? issueKeyToSummary(issueData) : {};
+  const getOptionText = (option: string) =>
+    keyToSummary[option] ? `${option}: ${keyToSummary[option]}` : option;
 
   return (
     <Grid item xs={12} md={6}>
@@ -39,12 +41,16 @@ const DimensionComboBox = <T extends FieldValues>({
                 onChange={(_, value) => onChange(value)}
                 options={options}
                 renderOption={(props, option) => {
-                  return (
-                    <li {...props}>
-                      {keyToSummary[option] ? `${option}: ${keyToSummary[option]}` : option}
-                    </li>
-                  );
+                  return <li {...props}>{getOptionText(option)}</li>;
                 }}
+                filterOptions={(options, state) =>
+                  options.filter((option) =>
+                    getOptionText(option)
+                      .toLowerCase()
+                      .trim()
+                      .includes(state.inputValue.toLowerCase().trim()),
+                  )
+                }
                 autoHighlight
                 renderInput={(params) => (
                   <TextField
