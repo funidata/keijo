@@ -6,6 +6,8 @@ import { ConfigService } from "./config/config.service";
 import { AppLogger } from "./logger/app-logger";
 import cookieParser from "cookie-parser";
 import session from "express-session";
+import pgSession from "connect-pg-simple";
+import pg from "pg";
 
 const options =
   process.env.NODE_ENV === "development"
@@ -23,9 +25,20 @@ const options =
   app.useLogger(new AppLogger(configService));
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   app.useGlobalPipes(new ValidationPipe());
+  const { username, password, host, port, name } = configService.config.database;
+  const pgPool = new pg.Pool({
+    database: name,
+    user: username,
+    password,
+    host,
+    port,
+  });
   app.use(
-    // TODO: change default store to pg store
     session({
+      store: new (pgSession(session))({
+        pool: pgPool,
+        createTableIfMissing: true,
+      }),
       name: configService.config.session.name,
       secret: configService.config.session.secret,
       resave: false,
@@ -33,6 +46,7 @@ const options =
       cookie: {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development",
+        maxAge: 90 * 24 * 60 * 60 * 1000,
       },
     }),
   );
