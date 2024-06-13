@@ -1,10 +1,16 @@
-import { UseQueryResult, useQuery } from "@tanstack/react-query";
+import {
+  UseQueryResult,
+  useQuery,
+  useInfiniteQuery,
+  UseInfiniteQueryResult,
+} from "@tanstack/react-query";
 import { axiosJira, axiosKeijo } from "./axiosInstance";
 import { jiraQueryMaxResults } from "./jiraConfig";
 
-export type JiraIssueResults = Array<{
+export type JiraIssueResult = {
   issues: Array<{ key: string; fields: { summary: string } }>;
-}>;
+};
+export type JiraIssueResults = Array<JiraIssueResult>;
 
 const getAccessToken = async () => {
   return (await axiosKeijo.get("/access-token")).data;
@@ -39,25 +45,26 @@ const getIssues = async (
   ).data;
 };
 
-const getAllIssues = async (issueKeys: Array<string>, accessToken: string) => {
-  const promises = [];
-  const issues = Array.from(issueKeys);
-  while (issues.length) {
-    const issuesToGet = issues.splice(0, jiraQueryMaxResults);
-    promises.push(getIssues(issuesToGet, accessToken));
-  }
-  return await Promise.all(promises);
-};
-
 export const useGetIssues = (
   issueKeys: Array<string>,
   enabled: boolean = true,
-): UseQueryResult<JiraIssueResults> => {
+): UseInfiniteQueryResult<{ pages: JiraIssueResults; pageParams: Array<number> }> => {
   const { data: tokenData } = useGetAccessToken();
-  return useQuery({
-    queryKey: ["issue", ...issueKeys],
-    queryFn: async () => await getAllIssues(issueKeys, tokenData?.access_token || ""),
-    retry: 1,
+
+  return useInfiniteQuery({
+    queryKey: ["issues"],
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    queryFn: async ({ pageParam }) =>
+      await getIssues(issueKeys, tokenData?.access_token || "", pageParam),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, _allPages, lastPageParam) => {
+      const allResultsFetched = lastPage && lastPage.total === lastPage.issues.length;
+      const nextPageStartIndex = lastPageParam + jiraQueryMaxResults;
+      if (allResultsFetched || nextPageStartIndex >= issueKeys.length - 1) return;
+      return nextPageStartIndex;
+    },
     enabled: enabled && !!tokenData?.access_token,
   });
 };

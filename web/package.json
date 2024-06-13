@@ -34,6 +34,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.46.1",
     "react-i18next": "^13.2.1",
+    "react-infinite-scroll-hook": "^4.1.1",
     "react-router-dom": "^6.22.3",
     "typescript": "5.1.6",
     "usehooks-ts": "^2.16.0",
