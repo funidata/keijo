@@ -52,7 +52,7 @@ const JiraIssueAutoComplete = <T extends FieldValues>({
     ...(pagedIssueData || []),
     ...(searchedIssueData ? [searchedIssueData] : []),
   ];
-  const keyToSummary = { ...issueKeyToSummary(queriedKeys) };
+  const keyToSummary = issueKeyToSummary(queriedKeys);
   const queriedOptions = [
     ...new Set([
       ...options.slice(0, (dataPages?.pages.length || 1) * jiraQueryMaxResults),
