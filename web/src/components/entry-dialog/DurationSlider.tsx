@@ -13,7 +13,7 @@ type DurationSliderProps = {
 const DurationSlider = ({ field }: DurationSliderProps) => {
   const { t } = useTranslation();
   const dayjs = useDayjs();
-  const hoursDecimal = Number(field.value);
+  const hoursDecimal = Number(field.value || 0);
   const timeFieldValue = dayjs()
     .hour(hoursDecimal)
     .minute(Math.round((hoursDecimal % 1) * 60));
