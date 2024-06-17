@@ -9,11 +9,16 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): TypeOrmModuleOptions {
     const { config } = this.configService;
     const { database } = config;
+    const { host, name, password, port, username } = database;
 
     return {
       type: "postgres",
-      ...database,
-      entities: [],
+      host,
+      port,
+      username,
+      password,
+      database: name,
+      autoLoadEntities: true,
       synchronize: config.inDev,
     };
   }
