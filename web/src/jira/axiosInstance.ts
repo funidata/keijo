@@ -2,9 +2,9 @@ import axios from "axios";
 import { useNotificationState } from "../components/global-notification/useNotification";
 import { jiraApiUrl, keijoJiraApiUrl } from "./jiraConfig";
 import { queryClient } from "./queryClient";
-import { JiraAuthLink } from "./JiraAuthLink";
+import { JiraAuthLink } from "./components/JiraAuthLink";
 
-export const axiosJira = axios.create({
+const axiosJira = axios.create({
   baseURL: jiraApiUrl,
 });
 
@@ -42,4 +42,4 @@ axiosKeijo.interceptors.response.use(
   },
 );
 
-export { axiosKeijo };
+export { axiosKeijo, axiosJira };
