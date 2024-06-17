@@ -1,19 +1,34 @@
+import { useLazyQuery } from "@apollo/client";
 import { Grid } from "@mui/material";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { GetMySettingsDocument } from "../../graphql/generated/graphql";
 import DimensionComboBox from "../entry-dialog/DimensionComboBox";
-import { EntryFormSchema } from "../entry-dialog/useEntryForm";
 import useDefaultEntryValues from "../user-preferences/useDefaultEntryValues";
+
+type DefaultsFormSchema = {
+  activity: string;
+  product: string;
+};
 
 const DefaultsForm = () => {
   const { t } = useTranslation();
-  const { defaultEntryValues, setDefaultValues } = useDefaultEntryValues();
-  const form = useForm<Partial<EntryFormSchema>>({
-    defaultValues: defaultEntryValues || {
-      product: "",
-      activity: "",
-    },
+
+  const [getMySettings] = useLazyQuery(GetMySettingsDocument);
+
+  const getDefaultValues = async (): Promise<DefaultsFormSchema> => {
+    const { data: settingsData } = await getMySettings();
+
+    return {
+      product: settingsData?.getMySettings.productPreset || "",
+      activity: settingsData?.getMySettings.activityPreset || "",
+    };
+  };
+
+  const { setDefaultValues } = useDefaultEntryValues();
+  const form = useForm<DefaultsFormSchema>({
+    defaultValues: getDefaultValues,
   });
 
   const { watch } = form;
