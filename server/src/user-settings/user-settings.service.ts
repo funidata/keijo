@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+import { UpdateSettingsDto } from "./dto/update-settings.dto";
 import { UserSettings } from "./user-settings.model";
 
 @Injectable()
@@ -23,6 +24,12 @@ export class UserSettingsService {
     }
 
     return existing;
+  }
+
+  async update(employeeNumber: number, settingsUpdate: UpdateSettingsDto): Promise<UserSettings> {
+    await this.userSettings.update({ employeeNumber }, settingsUpdate);
+
+    return this.findOneByEmployeeNumber(employeeNumber);
   }
 
   /**

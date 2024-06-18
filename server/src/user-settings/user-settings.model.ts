@@ -4,7 +4,7 @@ import { Column, Entity, PrimaryColumn } from "typeorm";
 @Entity()
 @ObjectType()
 export class UserSettings {
-  @PrimaryColumn()
+  @PrimaryColumn({ update: false })
   @Field()
   employeeNumber: number;
 
