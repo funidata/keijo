@@ -1,22 +1,23 @@
-import { useQuery } from "@apollo/client";
-import { Autocomplete, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { Control, ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
 import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
-import DimensionController from "./DimensionController";
+import { useQuery } from "@apollo/client";
+import DimensionController from "../../components/entry-dialog/DimensionController";
+import JiraIssueAutoComplete from "./JiraIssueAutoComplete";
 
-type DimensionComboBoxProps<T extends FieldValues> = {
+type JiraIssueComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
-  name: "product" | "activity" | "issue" | "client";
+  name: "issue";
   title: string;
   rules?: ControllerProps["rules"];
 };
 
-const DimensionComboBox = <T extends FieldValues>({
+const JiraIssueComboBox = <T extends FieldValues>({
   form,
   name,
   title,
   rules,
-}: DimensionComboBoxProps<T>) => {
+}: JiraIssueComboBoxProps<T>) => {
   const { data } = useQuery(FindDimensionOptionsDocument);
   const options = data?.findDimensionOptions[name] || [];
 
@@ -26,10 +27,10 @@ const DimensionComboBox = <T extends FieldValues>({
       name={name}
       rules={rules}
       render={({ field: { value, onChange } }) => (
-        <Autocomplete
+        <JiraIssueAutoComplete
+          options={options}
           value={value}
           onChange={(_, value) => onChange(value)}
-          options={options}
           autoHighlight
           renderInput={(params) => (
             <TextField
@@ -46,4 +47,4 @@ const DimensionComboBox = <T extends FieldValues>({
   );
 };
 
-export default DimensionComboBox;
+export default JiraIssueComboBox;

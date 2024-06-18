@@ -1,5 +1,4 @@
-import { Autocomplete, ListItem, TextField } from "@mui/material";
-import { FieldValues, UseFormReturn } from "react-hook-form";
+import { Autocomplete, AutocompleteProps, ListItem } from "@mui/material";
 import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
 import { useGetIssues, useSearchIssues } from "../../jira/jiraApi";
 import { issueKeyToSummary } from "../../jira/jiraUtils";
@@ -8,23 +7,17 @@ import useInfiniteScroll from "react-infinite-scroll-hook";
 import { useDebounceValue } from "usehooks-ts";
 import { useQuery } from "@apollo/client";
 
-type JiraIssueFieldProps<T extends FieldValues> = {
-  form: UseFormReturn<T>;
-  title: string;
+type JiraIssueFieldProps = AutocompleteProps<
+  string,
+  boolean | undefined,
+  boolean | undefined,
+  boolean | undefined
+> & {
   options: Array<string>;
-  value: unknown;
-  onChange: (val: unknown) => void;
 };
 
-const JiraIssueAutoComplete = <T extends FieldValues>({
-  form,
-  title,
-  options,
-  value,
-  onChange,
-}: JiraIssueFieldProps<T>) => {
+const JiraIssueAutoComplete = ({ options, ...params }: JiraIssueFieldProps) => {
   const { loading } = useQuery(FindDimensionOptionsDocument);
-
   const [issueFilter, setIssueFilter] = useDebounceValue("", 300);
   const {
     data: dataPages,
@@ -64,9 +57,8 @@ const JiraIssueAutoComplete = <T extends FieldValues>({
 
   return (
     <Autocomplete
-      value={value}
+      {...params}
       loading={pagesLoading || searchLoading}
-      onChange={(_, value) => onChange(value)}
       options={queriedOptions}
       renderOption={(props, option, state) => {
         const shouldLoadMore = (state.index + 1) % jiraQueryMaxResults === 0 && state.index > 0;
@@ -89,16 +81,6 @@ const JiraIssueAutoComplete = <T extends FieldValues>({
       ListboxProps={{
         ref: rootRef,
       }}
-      autoHighlight
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label={title}
-          onChange={onChange}
-          error={!!form.formState.errors["issue"]}
-          helperText={form.formState.errors["issue"]?.message as string}
-        />
-      )}
     />
   );
 };
