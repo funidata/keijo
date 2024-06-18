@@ -78,11 +78,7 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
   };
 
   const form = useForm<EntryFormSchema>({
-    defaultValues: async () => {
-      const asd = await getDefaultValues();
-      console.log(asd);
-      return asd;
-    },
+    defaultValues: getDefaultValues,
   });
 
   const { loading: hoursLoading } = useFormSetRemainingHours({

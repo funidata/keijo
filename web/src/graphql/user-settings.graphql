@@ -5,3 +5,9 @@ query GetMySettings {
     activityPreset
   }
 }
+
+mutation UpdateSettings($settings: UpdateSettingsDto!) {
+  updateSettings(settings: $settings) {
+    employeeNumber
+  }
+}
