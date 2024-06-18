@@ -77,19 +77,17 @@ const JiraIssueAutoComplete = <T extends FieldValues>({
         );
       }}
       filterOptions={(options, state) => {
-        if ((state.inputValue && state.inputValue !== issueFilter) || searchLoading) return [];
-        return options.filter((option) =>
+        const filtered = options.filter((option) =>
           getOptionText(option as string)
             .toLowerCase()
             .trim()
             .includes(state.inputValue.toLowerCase().trim()),
         );
+        if (filtered.length === 0) setIssueFilter(state.inputValue.toLowerCase().trim());
+        return filtered;
       }}
       ListboxProps={{
         ref: rootRef,
-      }}
-      onInputChange={(_, value, reason) => {
-        if (reason === "input") setIssueFilter(value);
       }}
       autoHighlight
       renderInput={(params) => (
