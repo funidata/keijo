@@ -1,12 +1,12 @@
-import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
+import { ApolloDriverConfig } from "@nestjs/apollo";
 import { Module } from "@nestjs/common";
 import { GraphQLModule } from "@nestjs/graphql";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
 import { CacheModule } from "./cache/cache.module";
 import { ConfigModule } from "./config/config.module";
-import { ConfigService } from "./config/config.service";
 import { DatabaseModule } from "./database/database.module";
+import graphQlModuleConfig from "./graphql-module-config";
 import { appGuards } from "./guards/app-guards";
 import { LoggerModule } from "./logger/logger.module";
 import { NetvisorModule } from "./netvisor/netvisor.module";
@@ -19,14 +19,7 @@ import { UserSettingsModule } from "./user-settings/user-settings.module";
       rootPath: join(__dirname, "..", "public"),
       exclude: ["/graphql/(.*)"],
     }),
-    GraphQLModule.forRootAsync<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      inject: [ConfigService],
-      useFactory: ({ config }: ConfigService) => ({
-        playground: config.inDev,
-        autoSchemaFile: true,
-      }),
-    }),
+    GraphQLModule.forRoot<ApolloDriverConfig>(graphQlModuleConfig),
     CacheModule,
     ConfigModule,
     LoggerModule,
