@@ -23,7 +23,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
   const { data, loading } = useQuery(FindDimensionOptionsDocument);
   const options = data?.findDimensionOptions[name] || [];
 
-  const [issueFilter, setIssueFilter] = useDebounceValue("", 300);
+  const [issueFilter, setIssueFilter] = useDebounceValue("", 500);
   const {
     data: dataPages,
     error,
@@ -51,12 +51,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
     ...(searchedIssueData ? [searchedIssueData] : []),
   ];
   const keyToSummary = issueKeyToSummary(queriedKeys);
-  const queriedOptions = [
-    ...new Set([
-      ...options.slice(0, (dataPages?.pages.length || 1) * jiraQueryMaxResults),
-      ...Object.keys(keyToSummary),
-    ]),
-  ];
+
   const getOptionText = (option: string) =>
     keyToSummary[option] ? `${option}: ${keyToSummary[option]}` : option;
 
@@ -65,13 +60,16 @@ const JiraIssueComboBox = <T extends FieldValues>({
       {...params}
       name={name}
       autoCompleteProps={{
-        loading: pagesLoading || searchLoading,
-        options: queriedOptions,
+        options: options,
         renderOption: (props, option, state) => {
           const shouldLoadMore = (state.index + 1) % jiraQueryMaxResults === 0 && state.index > 0;
+          if (state.index + 1 > (dataPages?.pageParams.length || 1) * jiraQueryMaxResults)
+            return null;
           return (
             <ListItem {...props} ref={shouldLoadMore ? sentryRef : undefined}>
               {getOptionText(option as string)}
+
+              {!keyToSummary[option] && searchLoading && " ..."}
             </ListItem>
           );
         },
@@ -82,11 +80,15 @@ const JiraIssueComboBox = <T extends FieldValues>({
               .trim()
               .includes(state.inputValue.toLowerCase().trim()),
           );
-          if (filtered.length === 0) setIssueFilter(state.inputValue.toLowerCase().trim());
           return filtered;
         },
         ListboxProps: {
           ref: rootRef,
+        },
+        onInputChange: (_, value, reason) => {
+          if (reason === "input") {
+            setIssueFilter(value);
+          }
         },
       }}
     />
