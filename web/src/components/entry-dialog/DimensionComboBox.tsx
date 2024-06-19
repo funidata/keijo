@@ -34,7 +34,7 @@ const DimensionComboBox = <T extends FieldValues>({
           render={({ field: { value, onChange } }) => (
             <Autocomplete
               value={value}
-              onChange={(_, value) => onChange(value)}
+              onChange={(_, value) => onChange(value.label || value)}
               options={options}
               autoHighlight
               renderInput={(params) => (
