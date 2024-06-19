@@ -9,7 +9,8 @@ type DimensionComboBoxProps<T extends FieldValues> = {
   title: string;
   rules?: ControllerProps["rules"];
   autoCompleteProps?: Partial<
-    AutocompleteProps<string, boolean | undefined, boolean | undefined, boolean | undefined>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    AutocompleteProps<any, boolean | undefined, boolean | undefined, boolean | undefined>
   >;
 };
 
