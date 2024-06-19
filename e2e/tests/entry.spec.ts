@@ -143,5 +143,8 @@ const fillEntryForm = async (page: Page, t: TFunction, entry: TestEntry) => {
   await page.getByLabel(t("entryDialog.description")).fill(entry.description);
   await page.getByLabel(t("entryDialog.duration")).pressSequentially(entry.duration);
   await page.getByRole("button", { name: /.*\d\d.*/ }).click();
-  await page.getByRole("gridcell", { name: entry.date.split(".")[0] }).click();
+  await page
+    .getByRole("gridcell", { name: entry.date.split(".")[0] })
+    .first()
+    .click();
 };
