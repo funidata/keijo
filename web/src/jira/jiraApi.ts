@@ -3,6 +3,7 @@ import {
   useQuery,
   useInfiniteQuery,
   UseInfiniteQueryResult,
+  keepPreviousData,
 } from "@tanstack/react-query";
 import { axiosJira, axiosKeijo } from "./axiosInstance";
 import { jiraQueryMaxResults } from "./jiraConfig";
@@ -99,6 +100,7 @@ export const useSearchIssues = ({
   );
   return useQuery({
     queryKey: ["issueSearch", searchFilter],
+    staleTime: Infinity,
     queryFn: async () => {
       return await getIssues(
         `${filteredKeys.length ? `key in (${filteredKeys.map((key) => `'${key}'`).join(", ")}) OR ` : ""}key in (${issueKeys
@@ -109,6 +111,7 @@ export const useSearchIssues = ({
       );
     },
     enabled: !!searchFilter,
+    placeholderData: keepPreviousData,
   });
 };
 
