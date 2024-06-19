@@ -1,12 +1,12 @@
 import { Page, expect } from "@playwright/test";
-import { test } from "../playwright.config";
 import { TFunction } from "i18next";
 import {
-  getMockProductNames,
   getMockActivityNames,
-  getMockIssueNames,
   getMockClientNames,
+  getMockIssueNames,
+  getMockProductNames,
 } from "mock-data";
+import { test } from "../playwright.config";
 
 type TestEntry = {
   product: string;
@@ -118,10 +118,15 @@ test.describe("Entry defaults", () => {
     await page.goto(emptyWeekUrl + "/create");
     await expect(page.getByRole("combobox", { name: t("entryDialog.product") })).toHaveValue("");
     await page.goto(emptyWeekUrl);
+
     await page.getByLabel(t("controls.settingsMenu")).click();
     await page.getByRole("menuitem", { name: t("controls.defaultsView") }).click();
-    await page.getByRole("combobox", { name: t("entryDialog.product") }).fill(entries[0].product);
-    await page.getByRole("combobox", { name: t("entryDialog.activity") }).fill(entries[0].activity);
+
+    await page.getByRole("combobox", { name: t("entryDialog.product") }).click();
+    await page.getByRole("option", { name: entries[0].product }).click();
+    await page.getByRole("combobox", { name: t("entryDialog.activity") }).click();
+    await page.getByRole("option", { name: entries[0].activity }).click();
+
     await page.goto(emptyWeekUrl + "/create");
     await expect(page.getByRole("combobox", { name: t("entryDialog.product") })).toHaveValue(
       entries[0].product,
