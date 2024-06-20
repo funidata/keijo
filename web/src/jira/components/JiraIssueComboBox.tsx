@@ -75,7 +75,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
           const shouldLoadMore = (state.index + 1) % jiraQueryMaxResults === 0 && state.index > 0;
           if (option.type === "loader")
             return (
-              <ListItem>
+              <ListItem {...props}>
                 <Typography color="GrayText">{option.label}</Typography>
               </ListItem>
             );
