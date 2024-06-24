@@ -75,6 +75,32 @@ Contributions must be made via pull requests into the protected `main` branch. U
 
 Third-party contributions are accepted but you must first agree to Funidata's CLA. This repository is not currently set up for automatic CLA management. If you are interested in contributing to this project, please open an issue first to sort out these necessities!
 
+## Database Migrations
+
+Database migrations are required whenever changes are made to the database schema.
+
+When running in development mode, TypeORM will synchronize the schema automatically. It is the developer's responsibility, however, to write migrations for CI and production environments. (E2E tests run on CI require migrations but in local development environment TypeORM sync is on.)
+
+Reverse migrations (`MigrationInterface.down()`) are not necessary.
+
+### Migration Commands
+
+These commands are run in the `server/` directory.
+
+#### Run Migrations
+
+```bash
+npm run migration:run
+```
+
+#### Create New Migration File
+
+TypeORM is particular about migration filenames, so this command should be used to initialize new migration files.
+
+```
+npm run migration:create
+```
+
 ## Releases
 
 The project is setup with an automatic release pipeline that takes care of testing the software, building, packaging and finally publishing it as a Docker image to GHCR (GitHub Container Registry).
