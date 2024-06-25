@@ -1,7 +1,7 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 import { Column, Entity, PrimaryColumn } from "typeorm";
 
-@Entity()
+@Entity({ name: "user_settings" })
 @ObjectType()
 export class UserSettings {
   @PrimaryColumn({ update: false })
