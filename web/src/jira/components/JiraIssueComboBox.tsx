@@ -36,26 +36,28 @@ const JiraIssueComboBox = <T extends FieldValues>({
     isLoading: pagesLoading,
   } = useGetIssues({ issueKeys: options, enabled: !loading });
 
-  const { data: searchedIssueData, isLoading: searchLoading } = useSearchIssues({
+  const {
+    data: searchedIssueData,
+    isLoading: searchLoading,
+    fetchNextPage: searchFetchNext,
+    hasNextPage: searchHasNext,
+  } = useSearchIssues({
     issueKeys: options,
     searchFilter: issueFilter,
   });
 
   const [sentryRef, { rootRef }] = useInfiniteScroll({
-    loading: pagesLoading,
-    hasNextPage,
+    loading: pagesLoading || searchLoading,
+    hasNextPage: issueFilter ? searchHasNext : hasNextPage,
     disabled: !!error,
-    onLoadMore: fetchNextPage,
+    onLoadMore: issueFilter ? searchFetchNext : fetchNextPage,
     delayInMs: 0,
   });
 
   useEffect(() => {
-    const queriedKeys = [
-      ...(dataPages?.pages || []),
-      ...(searchedIssueData ? [searchedIssueData] : []),
-    ];
+    const queriedKeys = [...(dataPages?.pages || []), ...(searchedIssueData?.pages || [])];
     setKeyToSummary((prev) => ({ ...prev, ...issueKeyToSummary(queriedKeys) }));
-  }, [dataPages?.pages, searchedIssueData]);
+  }, [dataPages?.pages, searchedIssueData?.pages]);
 
   useEffect(() => {
     if (issueFilter) setDebounceLoading(false);
@@ -71,7 +73,10 @@ const JiraIssueComboBox = <T extends FieldValues>({
       autoCompleteProps={{
         options: options.map((text) => ({ label: text, type: "option" })),
         renderOption: (props, option, state) => {
-          const maxIndex = (dataPages?.pageParams.length || 1) * jiraQueryMaxResults - 1;
+          const maxIndex =
+            ((issueFilter ? searchedIssueData : dataPages)?.pageParams.length || 1) *
+              jiraQueryMaxResults -
+            1;
           const shouldLoadMore = (state.index + 1) % jiraQueryMaxResults === 0 && state.index > 0;
           if (option.type === "loader")
             return (

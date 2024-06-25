@@ -3,7 +3,6 @@ import {
   useQuery,
   useInfiniteQuery,
   UseInfiniteQueryResult,
-  keepPreviousData,
 } from "@tanstack/react-query";
 import { axiosJira, axiosKeijo } from "./axiosInstance";
 import { jiraQueryMaxResults } from "./jiraConfig";
@@ -92,26 +91,35 @@ export const useGetIssues = ({
 export const useSearchIssues = ({
   issueKeys,
   searchFilter,
-}: UseSearchIssuesProps): UseQueryResult<JiraIssueResult> => {
+}: UseSearchIssuesProps): UseInfiniteQueryResult<{
+  pages: JiraIssueResults;
+  pageParams: Array<number>;
+}> => {
   const { data: tokenData } = useGetAccessToken();
-
   const filteredKeys = issueKeys.filter((option) =>
     option.toLowerCase().trim().includes(searchFilter.toLowerCase().trim()),
   );
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: ["issueSearch", searchFilter],
     staleTime: Infinity,
-    queryFn: async () => {
+    queryFn: async ({ pageParam }) => {
       return await getIssues(
         `${filteredKeys.length ? `key in (${filteredKeys.map((key) => `'${key}'`).join(", ")}) OR ` : ""}key in (${issueKeys
           .map((key) => `'${key}'`)
-          .join(", ")}) ${searchFilter ? `AND summary ~ '${searchFilter.trim()}*'` : ""}`,
+          .join(
+            ", ",
+          )}) ${searchFilter ? `AND summary ~ '${searchFilter.trim()}*'` : ""} ORDER BY key ASC`,
         tokenData?.access_token || "",
-        0,
+        pageParam,
       );
     },
     enabled: !!searchFilter,
-    placeholderData: keepPreviousData,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, _allPages, lastPageParam) => {
+      const nextPageStartIndex = lastPageParam + jiraQueryMaxResults;
+      if (nextPageStartIndex >= lastPage.total) return;
+      return nextPageStartIndex;
+    },
   });
 };
 
