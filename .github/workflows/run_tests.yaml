@@ -71,6 +71,8 @@ jobs:
           path: /tmp
       - name: Load image
         run: docker load --input /tmp/keijo.tar
+      - name: Run database migrations
+        run: docker compose -f compose.ci.yaml run --entrypoint npx server typeorm migration:run -d dist/database/migration-config.js
       - name: Start backend
         run: docker compose -f compose.ci.yaml up -d server
       - name: Wait for backend
