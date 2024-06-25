@@ -55,6 +55,10 @@ const getIssues = async (
   ).data;
 };
 
+/*
+  Get paginated issue data (e.g, summary) by providing a list of issuekeys.
+  Queries JiraQueryMaxResults amount of issues per page.
+**/
 export const useGetIssues = ({
   issueKeys,
   enabled,
@@ -88,6 +92,13 @@ export const useGetIssues = ({
   });
 };
 
+/*
+  Get paginated issue data by providing list of issueKeys and a searchFilter string.
+  The query tries to get issuedata of:
+  1. all issues from issueKeys list whose issueKey contains the searchFilter
+  2. all issues from Jira whose summary contains searchFilter and whose issueKey is in the provided issueKeys list.
+  Queries JiraQueryMaxResults amount of issues per page.
+**/
 export const useSearchIssues = ({
   issueKeys,
   searchFilter,

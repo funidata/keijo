@@ -66,12 +66,18 @@ const JiraIssueComboBox = <T extends FieldValues>({
   const getOptionText = (option: string) =>
     keyToSummary[option] ? `${option}: ${keyToSummary[option]}` : option;
 
+  const nvOptions = options.map((option) => ({
+    label: option,
+    text: getOptionText(option),
+    type: "option",
+  }));
+
   return (
     <DimensionComboBox
       {...params}
       name={name}
       autoCompleteProps={{
-        options: options.map((text) => ({ label: text, type: "option" })),
+        options: nvOptions,
         renderOption: (props, option, state) => {
           const maxIndex =
             ((issueFilter ? searchedIssueData : dataPages)?.pageParams.length || 1) *
@@ -87,7 +93,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
           if (state.index > maxIndex) return null;
           return (
             <ListItem {...props} ref={shouldLoadMore ? sentryRef : undefined}>
-              {getOptionText(option.label)}
+              {option.text}
               &nbsp;
               {!keyToSummary[option.label] && (searchLoading || debounceLoading) && (
                 <Typography color="GrayText">...</Typography>
@@ -97,10 +103,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
         },
         filterOptions: (options, state) => {
           const filtered = options.filter((option) =>
-            getOptionText(option.label)
-              .toLowerCase()
-              .trim()
-              .includes(state.inputValue.toLowerCase().trim()),
+            option.text.toLowerCase().trim().includes(state.inputValue.toLowerCase().trim()),
           );
           if (searchLoading || debounceLoading || pagesLoading)
             filtered.push({ label: "Loading...", type: "loader" });
