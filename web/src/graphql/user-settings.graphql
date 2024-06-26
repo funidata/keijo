@@ -1,0 +1,13 @@
+query GetMySettings {
+  getMySettings {
+    employeeNumber
+    productPreset
+    activityPreset
+  }
+}
+
+mutation UpdateSettings($settings: UpdateSettingsDto!) {
+  updateSettings(settings: $settings) {
+    employeeNumber
+  }
+}

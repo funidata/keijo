@@ -2,6 +2,7 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import { DatePicker, StaticDatePicker } from "@mui/x-date-pickers-pro";
 import { ControllerRenderProps } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import useDayjs from "../../common/useDayjs";
 import { EntryFormSchema } from "./useEntryForm";
 
 type ResponsiveDatePickerProps = {
@@ -10,6 +11,7 @@ type ResponsiveDatePickerProps = {
 
 const ResponsiveDatePicker = ({ field }: ResponsiveDatePickerProps) => {
   const { t } = useTranslation();
+  const dayjs = useDayjs();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -23,6 +25,7 @@ const ResponsiveDatePicker = ({ field }: ResponsiveDatePickerProps) => {
   return (
     <StaticDatePicker
       {...rest}
+      value={rest.value || dayjs()}
       orientation="landscape"
       slots={{ actionBar: () => null }}
       localeText={{

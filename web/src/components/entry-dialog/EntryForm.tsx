@@ -7,28 +7,28 @@ import {
   Alert,
   Box,
   Button,
+  FormControlLabel,
+  FormGroup,
   Grid,
+  Switch,
   TextField,
   useMediaQuery,
   useTheme,
-  Switch,
-  FormGroup,
-  FormControlLabel,
 } from "@mui/material";
 import { Dayjs } from "dayjs";
+import { useEffect } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
 import useDayjs from "../../common/useDayjs";
 import { AcceptanceStatus, Entry } from "../../graphql/generated/graphql";
+import usePreferSetRemainingHours from "../user-preferences/usePreferSetRemainingHours";
 import BigDeleteEntryButton from "./BigDeleteEntryButton";
 import DimensionComboBox from "./DimensionComboBox";
 import DurationSlider from "./DurationSlider";
 import ResponsiveDatePicker from "./ResponsiveDatePicker";
 import WorkdayHours from "./WorkdayHours";
 import useEntryForm, { EntryFormSchema } from "./useEntryForm";
-import usePreferSetRemainingHours from "../user-preferences/usePreferSetRemainingHours";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 export type EntryFormProps = {
   form: UseFormReturn<EntryFormSchema>;
@@ -116,6 +116,7 @@ const EntryForm = () => {
                 render={({ field }) => (
                   <TextField
                     {...field}
+                    value={field.value || ""}
                     label={t("entryDialog.description")}
                     error={!!form.formState.errors.description}
                     helperText={form.formState.errors.description?.message}

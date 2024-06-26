@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { Dayjs } from "dayjs";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -7,11 +7,11 @@ import {
   AddWorkdayEntryDocument,
   Entry,
   FindWorkdaysDocument,
+  GetMySettingsDocument,
   ReplaceWorkdayEntryDocument,
 } from "../../graphql/generated/graphql";
 import { useNotification } from "../global-notification/useNotification";
 import useFormSetRemainingHours from "./useFormSetRemainingHours";
-import useDefaultEntryValues from "../user-preferences/useDefaultEntryValues";
 
 export type EntryFormSchema = {
   date: Dayjs;
@@ -62,19 +62,24 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
     },
   );
 
-  const { defaultEntryValues } = useDefaultEntryValues();
+  const [getMySettings] = useLazyQuery(GetMySettingsDocument);
+  const getDefaultValues = async (): Promise<EntryFormSchema> => {
+    const { data: settingsData } = await getMySettings();
 
-  const defaultValues: EntryFormSchema = {
-    date: date ? dayjs(date) : dayjs(),
-    duration: editEntry?.duration.toString() || "",
-    description: editEntry?.description || "",
-    product: editEntry?.product || "",
-    activity: editEntry?.activity || "",
-    issue: editEntry?.issue || null,
-    client: editEntry?.client || "",
-    ...((!editEntry && defaultEntryValues) || {}),
+    return {
+      date: date ? dayjs(date) : dayjs(),
+      duration: editEntry?.duration.toString() || "",
+      description: editEntry?.description || "",
+      product: editEntry?.product || settingsData?.getMySettings.productPreset || "",
+      activity: editEntry?.activity || settingsData?.getMySettings.activityPreset || "",
+      issue: editEntry?.issue || null,
+      client: editEntry?.client || "",
+    };
   };
-  const form = useForm<EntryFormSchema>({ defaultValues });
+
+  const form = useForm<EntryFormSchema>({
+    defaultValues: getDefaultValues,
+  });
 
   const { loading: hoursLoading } = useFormSetRemainingHours({
     form,
