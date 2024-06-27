@@ -95,12 +95,12 @@ export const useGetIssues = ({
   });
 };
 
-/*
-  Get paginated issue data by providing list of issueKeys and a searchFilter string.
-  The query tries to get issuedata of all issues from Jira whose summary contains searchFilter and 
-  whose issueKey is in the provided issueKeys list.
-  Queries JiraQueryMaxResults amount of issues per page.
-**/
+/**
+ *  Get paginated issue data by providing list of issueKeys and a searchFilter string.
+ *  The query tries to get issuedata of all issues from Jira whose summary contains searchFilter and
+ *  whose issueKey is in the provided issueKeys list.
+ *  Queries JiraQueryMaxResults amount of issues per page.
+ */
 export const useSearchIssues = ({
   issueKeys,
   searchFilter,

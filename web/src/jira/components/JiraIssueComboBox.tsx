@@ -79,7 +79,6 @@ const JiraIssueComboBox = <T extends FieldValues>({
       hasNextPage || searchHasNext || pagesSeen * jiraQueryMaxResults < filteredOptions.length,
     disabled: !!pageError || !!searchError,
     onLoadMore: async () => {
-      console.log("loadmore");
       if (pagesSeen * jiraQueryMaxResults < filteredOptions.length)
         setPagesSeen((prev) => prev + 1);
       if (hasNextPage) await fetchNextPage();
