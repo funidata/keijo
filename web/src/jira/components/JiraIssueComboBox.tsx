@@ -22,68 +22,91 @@ const JiraIssueComboBox = <T extends FieldValues>({
   ...params
 }: JiraIssueComboBoxProps<T>) => {
   const { data, loading } = useQuery(FindDimensionOptionsDocument);
-  const options = data?.findDimensionOptions[name] || [];
 
-  const [issueFilter, setIssueFilter] = useDebounceValue("", 500);
+  const [optionFilter, setOptionFilter] = useState("");
+  const [searchFilter, setSearchFilter] = useDebounceValue("", 500);
+
   const [debounceLoading, setDebounceLoading] = useState(false);
-
   const [keyToSummary, setKeyToSummary] = useState<Record<string, string>>({});
-  const {
-    data: dataPages,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isLoading: pagesLoading,
-  } = useGetIssues({ issueKeys: options, enabled: !loading });
-
-  const {
-    data: searchedIssueData,
-    isLoading: searchLoading,
-    fetchNextPage: searchFetchNext,
-    hasNextPage: searchHasNext,
-  } = useSearchIssues({
-    issueKeys: options,
-    searchFilter: issueFilter,
-  });
-
-  const [sentryRef, { rootRef }] = useInfiniteScroll({
-    loading: pagesLoading || searchLoading,
-    hasNextPage: issueFilter ? searchHasNext : hasNextPage,
-    disabled: !!error,
-    onLoadMore: issueFilter ? searchFetchNext : fetchNextPage,
-    delayInMs: 0,
-  });
-
-  useEffect(() => {
-    const queriedKeys = [...(dataPages?.pages || []), ...(searchedIssueData?.pages || [])];
-    setKeyToSummary((prev) => ({ ...prev, ...issueKeyToSummary(queriedKeys) }));
-  }, [dataPages?.pages, searchedIssueData?.pages]);
-
-  useEffect(() => {
-    if (issueFilter) setDebounceLoading(false);
-  }, [issueFilter]);
 
   const getOptionText = (option: string) =>
     keyToSummary[option] ? `${option}: ${keyToSummary[option]}` : option;
 
-  const nvOptions = options.map((option) => ({
-    label: option,
-    text: getOptionText(option),
-    type: "option",
-  }));
+  const getOptions = (issueKeys: Array<string>) =>
+    issueKeys.map((option) => ({
+      label: option,
+      text: getOptionText(option),
+      type: "option",
+    }));
 
+  const nvKeys = data?.findDimensionOptions[name] || [];
+  const filteredKeys = searchFilter
+    ? nvKeys.filter((option) =>
+        option.toLowerCase().trim().includes(searchFilter.toLowerCase().trim()),
+      )
+    : nvKeys;
+
+  const {
+    data: pagedIssueData,
+    fetchNextPage,
+    error: pageError,
+    hasNextPage,
+    isFetching: pageFetching,
+  } = useGetIssues({ issueKeys: filteredKeys, enabled: !loading });
+
+  const {
+    data: searchedIssueData,
+    fetchNextPage: searchFetchNext,
+    error: searchError,
+    hasNextPage: searchHasNext,
+    isFetching: searchFetching,
+  } = useSearchIssues({
+    issueKeys: nvKeys,
+    searchFilter: searchFilter,
+  });
+
+  const [pagesSeen, setPagesSeen] = useState(1);
+  const filteredOptions = getOptions(
+    nvKeys.filter((option) =>
+      getOptionText(option).toLowerCase().trim().includes(optionFilter.toLowerCase().trim()),
+    ),
+  );
+
+  const [sentryRef, { rootRef }] = useInfiniteScroll({
+    loading: searchFetching || pageFetching,
+    hasNextPage:
+      hasNextPage || searchHasNext || pagesSeen * jiraQueryMaxResults < filteredOptions.length,
+    disabled: !!pageError || !!searchError,
+    onLoadMore: async () => {
+      if (pagesSeen * jiraQueryMaxResults < filteredOptions.length)
+        setPagesSeen((prev) => prev + 1);
+      if (hasNextPage) await fetchNextPage();
+      if (!!searchFilter && searchHasNext) await searchFetchNext();
+    },
+  });
+
+  useEffect(() => {
+    const queriedKeys = [...(pagedIssueData?.pages || []), ...(searchedIssueData?.pages || [])];
+    setKeyToSummary((prev) => ({ ...prev, ...issueKeyToSummary(queriedKeys) }));
+    const pagesLoaded = pagedIssueData?.pages.length || 1;
+    setPagesSeen(pagesLoaded);
+  }, [pagedIssueData?.pages, searchedIssueData?.pages]);
+
+  useEffect(() => {
+    if (searchFilter) setDebounceLoading(false);
+  }, [searchFilter]);
+
+  console.log(pagesSeen);
   return (
     <DimensionComboBox
       {...params}
       name={name}
       autoCompleteProps={{
-        options: nvOptions,
+        options: getOptions(nvKeys),
         renderOption: (props, option, state) => {
-          const maxIndex =
-            ((issueFilter ? searchedIssueData : dataPages)?.pageParams.length || 1) *
-              jiraQueryMaxResults -
-            1;
-          const shouldLoadMore = (state.index + 1) % jiraQueryMaxResults === 0 && state.index > 0;
+          const error = pageError || searchError;
+          const maxIndex = error ? filteredOptions.length : pagesSeen * jiraQueryMaxResults - 1;
+          const shouldLoadMore = !pageFetching && !searchFetching && state.index === maxIndex;
           if (option.type === "loader")
             return (
               <ListItem {...props}>
@@ -95,29 +118,29 @@ const JiraIssueComboBox = <T extends FieldValues>({
             <ListItem {...props} ref={shouldLoadMore ? sentryRef : undefined}>
               {option.text}
               &nbsp;
-              {!keyToSummary[option.label] && (searchLoading || debounceLoading) && (
-                <Typography color="GrayText">...</Typography>
-              )}
+              {!keyToSummary[option.label] &&
+                (searchFetching || pageFetching || debounceLoading) && (
+                  <Typography color="GrayText">...</Typography>
+                )}
             </ListItem>
           );
         },
-        filterOptions: (options, state) => {
-          const filtered = options.filter((option) =>
-            option.text.toLowerCase().trim().includes(state.inputValue.toLowerCase().trim()),
-          );
-          if (searchLoading || debounceLoading || pagesLoading)
-            filtered.push({ label: "Loading...", type: "loader" });
-          return filtered;
+        filterOptions: () => {
+          const addLoadingOption = searchFetching || debounceLoading || pageFetching;
+          return addLoadingOption
+            ? [...filteredOptions, { label: "Loading...", type: "loader", text: "" }]
+            : filteredOptions;
         },
         ListboxProps: {
           ref: rootRef,
         },
         onInputChange: (_, value, reason) => {
-          if (reason === "input") {
+          if (["input", "clear"].includes(reason)) {
             setDebounceLoading(true);
-            setIssueFilter(value);
+            setOptionFilter(value);
+            setSearchFilter(value);
           }
-          if (!value || value === issueFilter) setDebounceLoading(false);
+          if (!value || value === searchFilter) setDebounceLoading(false);
         },
       }}
     />

@@ -9,6 +9,7 @@ import { jiraQueryMaxResults } from "./jiraConfig";
 
 export type JiraIssueResult = {
   issues: Array<{ key: string; fields: { summary: string } }>;
+  total: number;
 };
 export type JiraIssueResults = Array<JiraIssueResult>;
 
@@ -41,7 +42,7 @@ const getIssues = async (
   numOfIssues: number = jiraQueryMaxResults,
 ) => {
   return (
-    await axiosJira.post(
+    await axiosJira.post<JiraIssueResult>(
       "/search",
       {
         fields: ["summary"],
@@ -68,10 +69,11 @@ export const useGetIssues = ({
 }> => {
   const { data: tokenData } = useGetAccessToken();
   return useInfiniteQuery({
-    queryKey: ["issues"],
+    queryKey: ["issues", ...issueKeys],
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
+    staleTime: Infinity,
     queryFn: async ({ pageParam }) => {
       return await getIssues(
         `key in (${issueKeys
@@ -88,15 +90,15 @@ export const useGetIssues = ({
       if (nextPageStartIndex >= issueKeys.length - 1) return;
       return nextPageStartIndex;
     },
-    enabled: enabled && !!tokenData?.access_token,
+    enabled: enabled && !!tokenData?.access_token && issueKeys.length > 0,
+    retry: 1,
   });
 };
 
 /*
   Get paginated issue data by providing list of issueKeys and a searchFilter string.
-  The query tries to get issuedata of:
-  1. all issues from issueKeys list whose issueKey contains the searchFilter
-  2. all issues from Jira whose summary contains searchFilter and whose issueKey is in the provided issueKeys list.
+  The query tries to get issuedata of all issues from Jira whose summary contains searchFilter and 
+  whose issueKey is in the provided issueKeys list.
   Queries JiraQueryMaxResults amount of issues per page.
 **/
 export const useSearchIssues = ({
@@ -107,19 +109,15 @@ export const useSearchIssues = ({
   pageParams: Array<number>;
 }> => {
   const { data: tokenData } = useGetAccessToken();
-  const filteredKeys = issueKeys.filter((option) =>
-    option.toLowerCase().trim().includes(searchFilter.toLowerCase().trim()),
-  );
+
   return useInfiniteQuery({
     queryKey: ["issueSearch", searchFilter],
     staleTime: Infinity,
     queryFn: async ({ pageParam }) => {
       return await getIssues(
-        `${filteredKeys.length ? `key in (${filteredKeys.map((key) => `'${key}'`).join(", ")}) OR ` : ""}key in (${issueKeys
+        `key in (${issueKeys
           .map((key) => `'${key}'`)
-          .join(
-            ", ",
-          )}) ${searchFilter ? `AND summary ~ '${searchFilter.trim()}*'` : ""} ORDER BY key ASC`,
+          .join(", ")}) ${searchFilter ? `AND summary ~ '${searchFilter.trim()}*'` : ""}`,
         tokenData?.access_token || "",
         pageParam,
       );
@@ -131,6 +129,7 @@ export const useSearchIssues = ({
       if (nextPageStartIndex >= lastPage.total) return;
       return nextPageStartIndex;
     },
+    retry: 1,
   });
 };
 
