@@ -29,9 +29,6 @@ axiosKeijo.interceptors.response.use(
   },
 );
 
-/*
-  Try to 
-**/
 axiosJira.interceptors.response.use(
   (res) => res,
   async (err) => {
