@@ -1,4 +1,4 @@
-import { ListItem, Typography } from "@mui/material";
+import { ListItem, ListItemText, Typography } from "@mui/material";
 import { ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
 import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
 import { useQuery } from "@apollo/client";
@@ -72,12 +72,14 @@ const JiraIssueComboBox = <T extends FieldValues>({
     ),
   );
 
+  // If something from oneloadmore does not bring more results to the list, infinite scroll will go crazy.
   const [sentryRef, { rootRef }] = useInfiniteScroll({
     loading: searchFetching || pageFetching,
     hasNextPage:
       hasNextPage || searchHasNext || pagesSeen * jiraQueryMaxResults < filteredOptions.length,
     disabled: !!pageError || !!searchError,
     onLoadMore: async () => {
+      console.log("loadmore");
       if (pagesSeen * jiraQueryMaxResults < filteredOptions.length)
         setPagesSeen((prev) => prev + 1);
       if (hasNextPage) await fetchNextPage();
@@ -88,7 +90,11 @@ const JiraIssueComboBox = <T extends FieldValues>({
   useEffect(() => {
     const queriedKeys = [...(pagedIssueData?.pages || []), ...(searchedIssueData?.pages || [])];
     setKeyToSummary((prev) => ({ ...prev, ...issueKeyToSummary(queriedKeys) }));
-    const pagesLoaded = pagedIssueData?.pages.length || 1;
+    const pagesLoaded = Math.max(
+      searchedIssueData?.pages.length || 1,
+      pagedIssueData?.pages.length || 1,
+    );
+
     setPagesSeen(pagesLoaded);
   }, [pagedIssueData?.pages, searchedIssueData?.pages]);
 
@@ -96,7 +102,6 @@ const JiraIssueComboBox = <T extends FieldValues>({
     if (searchFilter) setDebounceLoading(false);
   }, [searchFilter]);
 
-  console.log(pagesSeen);
   return (
     <DimensionComboBox
       {...params}
@@ -115,8 +120,12 @@ const JiraIssueComboBox = <T extends FieldValues>({
             );
           if (state.index > maxIndex) return null;
           return (
-            <ListItem {...props} ref={shouldLoadMore ? sentryRef : undefined}>
-              {option.text}
+            <ListItem
+              {...props}
+              style={{ overflowWrap: "break-word" }}
+              ref={shouldLoadMore ? sentryRef : undefined}
+            >
+              <ListItemText>{option.text}</ListItemText>
               &nbsp;
               {!keyToSummary[option.label] &&
                 (searchFetching || pageFetching || debounceLoading) && (
