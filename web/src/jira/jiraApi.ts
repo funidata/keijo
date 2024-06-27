@@ -117,7 +117,9 @@ export const useSearchIssues = ({
       return await getIssues(
         `key in (${issueKeys
           .map((key) => `'${key}'`)
-          .join(", ")}) ${searchFilter ? `AND summary ~ '${searchFilter.trim()}*'` : ""}`,
+          .join(
+            ", ",
+          )}) ${searchFilter ? `AND summary ~ '${searchFilter.trim()}*'` : ""} ORDER BY key ASC`,
         tokenData?.access_token || "",
         pageParam,
       );
