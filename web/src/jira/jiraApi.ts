@@ -119,7 +119,7 @@ export const useSearchIssues = ({
           .map((key) => `'${key}'`)
           .join(
             ", ",
-          )}) ${searchFilter ? `AND summary ~ '${searchFilter.trim()}*'` : ""} ORDER BY key ASC`,
+          )}) ${searchFilter ? `AND summary ~ '${searchFilter.trim()}*'` : ""} ORDER BY key DESC`,
         tokenData?.access_token || "",
         pageParam,
       );

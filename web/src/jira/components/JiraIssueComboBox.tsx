@@ -40,11 +40,13 @@ const JiraIssueComboBox = <T extends FieldValues>({
     }));
 
   const nvKeys = data?.findDimensionOptions[name] || [];
-  const filteredKeys = searchFilter
-    ? nvKeys.filter((option) =>
-        option.toLowerCase().trim().includes(searchFilter.toLowerCase().trim()),
-      )
-    : nvKeys;
+  const filteredKeys = [
+    ...(searchFilter
+      ? nvKeys.filter((option) =>
+          option.toLowerCase().trim().includes(searchFilter.toLowerCase().trim()),
+        )
+      : nvKeys),
+  ].sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
 
   const {
     data: pagedIssueData,
@@ -66,11 +68,13 @@ const JiraIssueComboBox = <T extends FieldValues>({
   });
 
   const [pagesSeen, setPagesSeen] = useState(1);
-  const filteredOptions = getOptions(
-    nvKeys.filter((option) =>
-      getOptionText(option).toLowerCase().trim().includes(optionFilter.toLowerCase().trim()),
+  const filteredOptions = [
+    ...getOptions(
+      nvKeys.filter((option) =>
+        getOptionText(option).toLowerCase().trim().includes(optionFilter.toLowerCase().trim()),
+      ),
     ),
-  );
+  ].sort((a, b) => b.label.localeCompare(a.label, undefined, { numeric: true }));
 
   // If something from oneloadmore does not bring more results to the list, infinite scroll will go crazy.
   const [sentryRef, { rootRef }] = useInfiniteScroll({
@@ -84,6 +88,8 @@ const JiraIssueComboBox = <T extends FieldValues>({
       if (hasNextPage) await fetchNextPage();
       if (!!searchFilter && searchHasNext) await searchFetchNext();
     },
+    delayInMs: 0,
+    rootMargin: "0px 0px 1500px 0px",
   });
 
   useEffect(() => {
