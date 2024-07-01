@@ -82,6 +82,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
       chunkArray(searchIssues, jiraQueryMaxResults),
     );
     return combinedPages.flat();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchedIssueData, pagedIssueData]);
 
   const [sentryRef, { rootRef }] = useInfiniteScroll({
