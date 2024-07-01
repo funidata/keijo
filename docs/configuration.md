@@ -25,5 +25,11 @@ Key|Default|Description
 `LOG_LEVEL`<sup>1</sup>|log|Filter log output by suppressing log messages of higher level than the given value. Log levels in ascending order are `error`, `warn`, `log` and `debug`.
 `ENABLE_JSON_LOGS`<sup>1</sup>|`false`|Output stringified JSON instead of human-readable logs by setting this to `true`.
 `ENABLE_AUDIT_LOGS`<sup>1</sup>|`false`|When set to `true`, logs of level `audit` are printed, containing users' personal information. These logs should be stored safely or not enabled at all in production environments. Audit log output is always JSON and does not respect the `LOG_LEVEL` setting.
+`DATABASE_USERNAME`||Postgres username.
+`DATABASE_PASSWORD`||Postgres password.
+`DATABASE_NAME`||Postgres database name.
+`DATABASE_HOST`||Postgres hostname.
+`DATABASE_PORT`||Postgres port.
+`DATABASE_SSL_MODE`|`false`|When set to `true`, TypeORM is configured to use SSL mode `no-verify` when connecting to Postgres. Otherwise, SSL is disabled. See [`node-postgres` docs](https://github.com/brianc/node-postgres/tree/master/packages/pg-connection-string#tcp-connections) for more.
 
 <sup>1</sup>) See [Logging docs](./logging.md) for more information.
