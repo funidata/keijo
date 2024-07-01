@@ -5,10 +5,12 @@ import {
   QueryKey,
   InfiniteData,
   UndefinedInitialDataInfiniteOptions,
+  UseQueryOptions,
 } from "@tanstack/react-query";
 import { axiosJira, axiosKeijo } from "./axiosInstance";
 import { jiraQueryMaxResults } from "./jiraConfig";
 
+export type IssueData = Array<{ key: string; fields: { summary: string } }>;
 export type JiraIssueResult = {
   issues: Array<{ key: string; fields: { summary: string } }>;
   total: number;
@@ -56,6 +58,11 @@ const getIssues = async (
       { headers: { Authorization: `Bearer ${accessToken}` } },
     )
   ).data;
+};
+
+export const useIsJiraAuthenticated = () => {
+  const { data, error, isLoading } = useGetAccessToken();
+  return { isJiraAuth: !isLoading && data && !error, data, error };
 };
 
 /**
@@ -111,16 +118,12 @@ export const useGetIssues = ({
   });
   return {
     ...query,
-    issueData: (query.data?.pages || []).flatMap((page) =>
-      page.issues.map((issue) => ({ key: issue.key, summary: issue.fields.summary })),
-    ),
+    issueData: (query.data?.pages || []).flatMap((page) => page.issues),
     keysFetched: issueKeys.slice(
       0,
       (query.data?.pageParams.slice(-1)[0] || 0) + jiraQueryMaxResults,
     ),
-    lastPageData: query.data?.pages
-      .slice(-1)[0]
-      .issues.map((issue) => ({ key: issue.key, summary: issue.fields.summary })),
+    lastPageData: query.data?.pages.slice(-1)[0].issues,
   };
 };
 
@@ -179,16 +182,28 @@ export const useSearchIssues = ({
 
   return {
     ...query,
-    lastPageData: query.data?.pages
-      .slice(-1)[0]
-      .issues.map((issue) => ({ key: issue.key, summary: issue.fields.summary })),
-    issueData: (query.data?.pages || []).flatMap((page) =>
-      page.issues.map((issue) => ({ key: issue.key, summary: issue.fields.summary })),
-    ),
+    lastPageData: query.data?.pages.slice(-1)[0].issues,
+    issueData: (query.data?.pages || []).flatMap((page) => page.issues),
   };
 };
 
-export const useIsJiraAuthenticated = () => {
-  const { data, error, isLoading } = useGetAccessToken();
-  return { isJiraAuth: !isLoading && data && !error, data, error };
+/**
+ * Get users recent issues
+ */
+export const useRecentIssues = (
+  queryProps?: Partial<UseQueryOptions<JiraIssueResult>>,
+): UseQueryResult<JiraIssueResult> => {
+  const { data: tokenData } = useGetAccessToken();
+
+  return useQuery({
+    queryKey: ["recentIssues"],
+    queryFn: async () => {
+      return await getIssues(
+        `issuekey in issueHistory() order by lastViewed DESC`,
+        tokenData?.access_token || "",
+      );
+    },
+    retry: 1,
+    ...queryProps,
+  });
 };

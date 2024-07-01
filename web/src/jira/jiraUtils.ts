@@ -1,4 +1,4 @@
-import { JiraIssueResults } from "./jiraApi";
+import { IssueData, JiraIssueResults } from "./jiraApi";
 
 export const issueKeyToSummary = (issueData: JiraIssueResults): Record<string, string> =>
   (issueData || [])
@@ -22,3 +22,10 @@ export const chunkArray = <T>(array: T[], size: number) => {
   }
   return result;
 };
+
+export const getOptions = (issues: IssueData, type?: string) =>
+  issues.map((issue) => ({
+    label: issue.key,
+    text: `${issue.key}: ${issue.fields.summary}`,
+    type,
+  }));

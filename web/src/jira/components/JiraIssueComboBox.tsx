@@ -5,8 +5,8 @@ import { useQuery } from "@apollo/client";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 import DimensionComboBox from "../../components/entry-dialog/DimensionComboBox";
 import { useDebounceValue } from "usehooks-ts";
-import { useGetIssues, useSearchIssues } from "../jiraApi";
-import { chunkArray, mergePages } from "../jiraUtils";
+import { useGetIssues, useRecentIssues, useSearchIssues } from "../jiraApi";
+import { chunkArray, getOptions, mergePages } from "../jiraUtils";
 import { jiraQueryMaxResults } from "../jiraConfig";
 import { useEffect, useMemo, useState } from "react";
 
@@ -60,30 +60,33 @@ const JiraIssueComboBox = <T extends FieldValues>({
     searchFilter: searchFilter,
   });
 
+  const { data: recentIssueData } = useRecentIssues();
+
   const filteredOptions = useMemo(() => {
     const fetchedIssues = keysFetched.map((key) => {
       const issue = issueData.find((issue) => issue.key === key);
-      if (issue) return { label: issue.key, text: `${issue.key}: ${issue.summary}` };
+      if (issue) return { label: issue.key, text: `${issue.key}: ${issue.fields.summary}` };
       return { label: key, text: key };
     });
 
-    const searchIssues = searchData
-      .map((issue) => ({
-        label: issue.key,
-        text: `${issue.key}: ${issue.summary}`,
-      }))
-      .filter(
-        (opt) =>
-          !fetchedIssues.find((opt_) => opt_.label === opt.label) && nvKeys.includes(opt.label),
-      );
+    const searchIssues = getOptions(searchData).filter(
+      (opt) =>
+        !fetchedIssues.find((opt_) => opt_.label === opt.label) && nvKeys.includes(opt.label),
+    );
+
+    const recentIssues = getOptions(
+      (recentIssueData?.issues || []).filter((issue) => nvKeys.includes(issue.key)).slice(0, 5),
+      "recent",
+    );
 
     const combinedPages = mergePages(
       chunkArray(fetchedIssues, jiraQueryMaxResults),
       chunkArray(searchIssues, jiraQueryMaxResults),
     );
-    return combinedPages.flat();
+
+    return searchFilter ? combinedPages.flat() : [...recentIssues, ...combinedPages.flat()];
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchedIssueData, pagedIssueData]);
+  }, [searchedIssueData, pagedIssueData, recentIssueData]);
 
   const [sentryRef, { rootRef }] = useInfiniteScroll({
     loading: searchFetching || pageFetching,
@@ -143,6 +146,12 @@ const JiraIssueComboBox = <T extends FieldValues>({
                   ? [...options, { label: "Loading...", type: "loader", text: "" }]
                   : options;
               },
+        groupBy: searchFilter
+          ? undefined
+          : (option) => {
+              if (option.type === "recent") return "Recent";
+              else return "All";
+            },
         ListboxProps: {
           ref: rootRef,
         },
