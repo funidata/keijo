@@ -9,7 +9,7 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): TypeOrmModuleOptions {
     const { config } = this.configService;
     const { database } = config;
-    const { host, name, password, port, username } = database;
+    const { host, name, password, port, username, ssl } = database;
 
     return {
       type: "postgres",
@@ -20,6 +20,12 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
       database: name,
       autoLoadEntities: true,
       synchronize: config.inDev,
+      /**
+       * If DATABASE_SSL_MODE env var is true, use sslmode=no-verify. Other SSL modes are
+       * not supported.
+       * See https://github.com/brianc/node-postgres/tree/master/packages/pg-connection-string#tcp-connections
+       */
+      ssl: ssl ? { rejectUnauthorized: false } : false,
     };
   }
 }
