@@ -18,6 +18,7 @@ const {
   DATABASE_NAME,
   DATABASE_HOST,
   DATABASE_PORT,
+  DATABASE_SSL_MODE,
 } = process.env;
 
 const config = {
@@ -46,6 +47,7 @@ const config = {
     name: DATABASE_NAME,
     host: DATABASE_HOST,
     port: Number(DATABASE_PORT),
+    ssl: DATABASE_SSL_MODE === "true",
   },
 };
 

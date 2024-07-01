@@ -7,6 +7,7 @@ export default new DataSource({
   username: process.env.DATABASE_USERNAME || "postgres",
   password: process.env.DATABASE_PASSWORD || "postgres",
   database: process.env.DATABASE_NAME || "keijo_dev",
+  ssl: process.env.DATABASE_SSL_MODE === "true",
   /**
    * Glob pattern is used to make this work both locally and in CI as it appears that
    * using no wildcards resolves to different paths between the two. This is arguably

@@ -25,6 +25,7 @@ export const configSchema = object({
     name: string(),
     host: string(),
     port: number(),
+    ssl: boolean(),
   }),
 });
 
