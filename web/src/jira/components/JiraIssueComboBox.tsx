@@ -6,9 +6,9 @@ import useInfiniteScroll from "react-infinite-scroll-hook";
 import DimensionComboBox from "../../components/entry-dialog/DimensionComboBox";
 import { useDebounceValue } from "usehooks-ts";
 import { useGetIssues, useSearchIssues } from "../jiraApi";
-import { issueKeyToSummary } from "../jiraUtils";
+import { chunkArray, mergePages } from "../jiraUtils";
 import { jiraQueryMaxResults } from "../jiraConfig";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type JiraIssueComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -23,21 +23,8 @@ const JiraIssueComboBox = <T extends FieldValues>({
 }: JiraIssueComboBoxProps<T>) => {
   const { data, loading } = useQuery(FindDimensionOptionsDocument);
 
-  const [optionFilter, setOptionFilter] = useState("");
-  const [searchFilter, setSearchFilter] = useDebounceValue("", 500);
-
-  const [debounceLoading, setDebounceLoading] = useState(false);
-  const [keyToSummary, setKeyToSummary] = useState<Record<string, string>>({});
-
-  const getOptionText = (option: string) =>
-    keyToSummary[option] ? `${option}: ${keyToSummary[option]}` : option;
-
-  const getOptions = (issueKeys: Array<string>) =>
-    issueKeys.map((option) => ({
-      label: option,
-      text: getOptionText(option),
-      type: "option",
-    }));
+  const [searchFilter, setSearchFilter] = useDebounceValue("", 300);
+  const [debouncePending, setDebouncePending] = useState(false);
 
   const nvKeys = data?.findDimensionOptions[name] || [];
   const filteredKeys = [
@@ -54,7 +41,12 @@ const JiraIssueComboBox = <T extends FieldValues>({
     error: pageError,
     hasNextPage,
     isFetching: pageFetching,
-  } = useGetIssues({ issueKeys: filteredKeys, enabled: !loading });
+    issueData,
+    keysFetched,
+  } = useGetIssues({
+    issueKeys: filteredKeys,
+    enabled: !loading,
+  });
 
   const {
     data: searchedIssueData,
@@ -62,49 +54,50 @@ const JiraIssueComboBox = <T extends FieldValues>({
     error: searchError,
     hasNextPage: searchHasNext,
     isFetching: searchFetching,
+    issueData: searchData,
   } = useSearchIssues({
     issueKeys: nvKeys,
     searchFilter: searchFilter,
   });
 
-  const [pagesSeen, setPagesSeen] = useState(1);
-  const filteredOptions = [
-    ...getOptions(
-      nvKeys.filter((option) =>
-        getOptionText(option).toLowerCase().trim().includes(optionFilter.toLowerCase().trim()),
-      ),
-    ),
-  ].sort((a, b) => b.label.localeCompare(a.label, undefined, { numeric: true }));
+  const filteredOptions = useMemo(() => {
+    const fetchedIssues = keysFetched.map((key) => {
+      const issue = issueData.find((issue) => issue.key === key);
+      if (issue) return { label: issue.key, text: `${issue.key}: ${issue.summary}` };
+      return { label: key, text: key };
+    });
 
-  // If something from oneloadmore does not bring more results to the list, infinite scroll will go crazy.
+    const searchIssues = searchData
+      .map((issue) => ({
+        label: issue.key,
+        text: `${issue.key}: ${issue.summary}`,
+      }))
+      .filter(
+        (opt) =>
+          !fetchedIssues.find((opt_) => opt_.label === opt.label) && nvKeys.includes(opt.label),
+      );
+
+    const combinedPages = mergePages(
+      chunkArray(fetchedIssues, jiraQueryMaxResults),
+      chunkArray(searchIssues, jiraQueryMaxResults),
+    );
+    return combinedPages.flat();
+  }, [searchedIssueData, pagedIssueData]);
+
   const [sentryRef, { rootRef }] = useInfiniteScroll({
     loading: searchFetching || pageFetching,
-    hasNextPage:
-      hasNextPage || searchHasNext || pagesSeen * jiraQueryMaxResults < filteredOptions.length,
+    hasNextPage: hasNextPage || searchHasNext,
     disabled: !!pageError || !!searchError,
     onLoadMore: async () => {
-      if (pagesSeen * jiraQueryMaxResults < filteredOptions.length)
-        setPagesSeen((prev) => prev + 1);
       if (hasNextPage) await fetchNextPage();
       if (!!searchFilter && searchHasNext) await searchFetchNext();
     },
     delayInMs: 0,
-    rootMargin: "0px 0px 1500px 0px",
+    rootMargin: `0px 0px ${10 * filteredOptions.length}px 0px`,
   });
 
   useEffect(() => {
-    const queriedKeys = [...(pagedIssueData?.pages || []), ...(searchedIssueData?.pages || [])];
-    setKeyToSummary((prev) => ({ ...prev, ...issueKeyToSummary(queriedKeys) }));
-    const pagesLoaded = Math.max(
-      searchedIssueData?.pages.length || 1,
-      pagedIssueData?.pages.length || 1,
-    );
-
-    setPagesSeen(pagesLoaded);
-  }, [pagedIssueData?.pages, searchedIssueData?.pages]);
-
-  useEffect(() => {
-    if (searchFilter) setDebounceLoading(false);
+    setDebouncePending(false);
   }, [searchFilter]);
 
   return (
@@ -112,10 +105,12 @@ const JiraIssueComboBox = <T extends FieldValues>({
       {...params}
       name={name}
       autoCompleteProps={{
-        options: getOptions(nvKeys),
+        options:
+          pageError || searchError
+            ? nvKeys.map((key) => ({ label: key, text: key }))
+            : filteredOptions,
         renderOption: (props, option, state) => {
-          const error = pageError || searchError;
-          const maxIndex = error ? filteredOptions.length : pagesSeen * jiraQueryMaxResults - 1;
+          const maxIndex = filteredOptions.length - 1;
           const shouldLoadMore = !pageFetching && !searchFetching && state.index === maxIndex;
           if (option.type === "loader")
             return (
@@ -123,7 +118,6 @@ const JiraIssueComboBox = <T extends FieldValues>({
                 <Typography color="GrayText">{option.label}</Typography>
               </ListItem>
             );
-          if (state.index > maxIndex) return null;
           return (
             <ListItem
               {...props}
@@ -132,29 +126,30 @@ const JiraIssueComboBox = <T extends FieldValues>({
             >
               <ListItemText>{option.text}</ListItemText>
               &nbsp;
-              {!keyToSummary[option.label] &&
-                (searchFetching || pageFetching || debounceLoading) && (
+              {option.label === option.text &&
+                (searchFetching || pageFetching || debouncePending) && (
                   <Typography color="GrayText">...</Typography>
                 )}
             </ListItem>
           );
         },
-        filterOptions: () => {
-          const addLoadingOption = searchFetching || debounceLoading || pageFetching;
-          return addLoadingOption
-            ? [...filteredOptions, { label: "Loading...", type: "loader", text: "" }]
-            : filteredOptions;
-        },
+        filterOptions:
+          pageError || searchError
+            ? undefined
+            : (options) => {
+                const addLoadingOption = searchFetching || debouncePending || pageFetching;
+                return addLoadingOption
+                  ? [...options, { label: "Loading...", type: "loader", text: "" }]
+                  : options;
+              },
         ListboxProps: {
           ref: rootRef,
         },
         onInputChange: (_, value, reason) => {
           if (["input", "clear"].includes(reason)) {
-            setDebounceLoading(true);
-            setOptionFilter(value);
+            setDebouncePending(true);
             setSearchFilter(value);
           }
-          if (!value || value === searchFilter) setDebounceLoading(false);
         },
       }}
     />
