@@ -2,7 +2,9 @@ import {
   UseQueryResult,
   useQuery,
   useInfiniteQuery,
-  UseInfiniteQueryResult,
+  QueryKey,
+  InfiniteData,
+  UndefinedInitialDataInfiniteOptions,
 } from "@tanstack/react-query";
 import { axiosJira, axiosKeijo } from "./axiosInstance";
 import { jiraQueryMaxResults } from "./jiraConfig";
@@ -56,19 +58,32 @@ const getIssues = async (
   ).data;
 };
 
-/*
-  Get paginated issue data (e.g, summary) by providing a list of issuekeys.
-  Queries JiraQueryMaxResults amount of issues per page.
-**/
+/**
+ *  Get paginated issue data (e.g, summary) by providing a list of issuekeys.
+ *  Queries JiraQueryMaxResults amount of issues per page.
+ */
 export const useGetIssues = ({
   issueKeys,
   enabled,
-}: UseGetIssuesProps): UseInfiniteQueryResult<{
-  pages: JiraIssueResults;
-  pageParams: Array<number>;
-}> => {
+  ...queryProps
+}: UseGetIssuesProps &
+  Partial<
+    UndefinedInitialDataInfiniteOptions<
+      JiraIssueResult,
+      Error,
+      InfiniteData<JiraIssueResult, number>,
+      QueryKey,
+      number
+    >
+  >) => {
   const { data: tokenData } = useGetAccessToken();
-  return useInfiniteQuery({
+  const query = useInfiniteQuery<
+    JiraIssueResult,
+    Error,
+    InfiniteData<JiraIssueResult, number>,
+    QueryKey,
+    number
+  >({
     queryKey: ["issues", ...issueKeys],
     refetchOnMount: false,
     refetchOnReconnect: false,
@@ -92,7 +107,21 @@ export const useGetIssues = ({
     },
     enabled: enabled && !!tokenData?.access_token && issueKeys.length > 0,
     retry: 1,
+    ...queryProps,
   });
+  return {
+    ...query,
+    issueData: (query.data?.pages || []).flatMap((page) =>
+      page.issues.map((issue) => ({ key: issue.key, summary: issue.fields.summary })),
+    ),
+    keysFetched: issueKeys.slice(
+      0,
+      (query.data?.pageParams.slice(-1)[0] || 0) + jiraQueryMaxResults,
+    ),
+    lastPageData: query.data?.pages
+      .slice(-1)[0]
+      .issues.map((issue) => ({ key: issue.key, summary: issue.fields.summary })),
+  };
 };
 
 /**
@@ -104,13 +133,26 @@ export const useGetIssues = ({
 export const useSearchIssues = ({
   issueKeys,
   searchFilter,
-}: UseSearchIssuesProps): UseInfiniteQueryResult<{
-  pages: JiraIssueResults;
-  pageParams: Array<number>;
-}> => {
+  ...queryProps
+}: UseSearchIssuesProps &
+  Partial<
+    UndefinedInitialDataInfiniteOptions<
+      JiraIssueResult,
+      Error,
+      InfiniteData<JiraIssueResult, number>,
+      QueryKey,
+      number
+    >
+  >) => {
   const { data: tokenData } = useGetAccessToken();
 
-  return useInfiniteQuery({
+  const query = useInfiniteQuery<
+    JiraIssueResult,
+    Error,
+    InfiniteData<JiraIssueResult, number>,
+    QueryKey,
+    number
+  >({
     queryKey: ["issueSearch", searchFilter],
     staleTime: Infinity,
     queryFn: async ({ pageParam }) => {
@@ -132,7 +174,18 @@ export const useSearchIssues = ({
       return nextPageStartIndex;
     },
     retry: 1,
+    ...queryProps,
   });
+
+  return {
+    ...query,
+    lastPageData: query.data?.pages
+      .slice(-1)[0]
+      .issues.map((issue) => ({ key: issue.key, summary: issue.fields.summary })),
+    issueData: (query.data?.pages || []).flatMap((page) =>
+      page.issues.map((issue) => ({ key: issue.key, summary: issue.fields.summary })),
+    ),
+  };
 };
 
 export const useIsJiraAuthenticated = () => {
