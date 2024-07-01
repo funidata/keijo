@@ -7,7 +7,12 @@ export default new DataSource({
   username: process.env.DATABASE_USERNAME || "postgres",
   password: process.env.DATABASE_PASSWORD || "postgres",
   database: process.env.DATABASE_NAME || "keijo_dev",
-  ssl: process.env.DATABASE_SSL_MODE === "true",
+  /**
+   * If DATABASE_SSL_MODE env var is true, use sslmode=no-verify. Other SSL modes are
+   * not supported.
+   * See https://github.com/brianc/node-postgres/tree/master/packages/pg-connection-string#tcp-connections
+   */
+  ssl: process.env.DATABASE_SSL_MODE === "true" ? { rejectUnauthorized: false } : false,
   /**
    * Glob pattern is used to make this work both locally and in CI as it appears that
    * using no wildcards resolves to different paths between the two. This is arguably
