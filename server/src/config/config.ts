@@ -28,6 +28,7 @@ const {
   SCOPES,
   SESSION_NAME,
   SESSION_SECRET,
+  TRUST_PROXY_IPS,
 } = process.env;
 
 const config = {
@@ -71,6 +72,7 @@ const config = {
     name: SESSION_NAME || "sessionId",
     secret: SESSION_SECRET,
   },
+  trustProxyIps: TRUST_PROXY_IPS || false,
 };
 
 export default config;
