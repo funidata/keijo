@@ -31,5 +31,15 @@ Key|Default|Description
 `DATABASE_HOST`||Postgres hostname.
 `DATABASE_PORT`||Postgres port.
 `DATABASE_SSL_MODE`|`false`|When set to `true`, TypeORM is configured to use SSL mode `no-verify` when connecting to Postgres. Otherwise, SSL is disabled. See [`node-postgres` docs](https://github.com/brianc/node-postgres/tree/master/packages/pg-connection-string#tcp-connections) for more.
+`ATLASSIAN_CLIENT_ID`|| Client ID of your Atlassian OAuth 2.0 App. See [Jira OAuth2.0 apps](https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/).
+`ATLASSIAN_CLIENT_SECRET`|| Client Secret of your Atlassian OAuth 2.0 App.
+`ATLASSIAN_AUTHORIZATION_URL`|https://auth.atlassian.com/authorize| Atlassian URL where user is directed to grant keijo access to use resources.
+`ATLASSIAN_TOKEN_URL`|https://auth.atlassian.com/oauth/token| Atlassian URL where keijo exchanges authorization code for access and refresh tokens.
+`CALLBACK_URL`|/jira/callback| Keijo URL where user is redirected from Jira after access is granted.
+`CALLBACK_REDIRECT_URL`|/| Keijo URL where user is redirected from callback after callback is handled.
+`SCOPES`|read:jira-work offline_access| Scopes for Jira data that keijo requests access for. See [Jira OAuth Scopes](https://developer.atlassian.com/cloud/jira/platform/scopes-for-oauth-2-3LO-and-forge-apps/).
+`SESSION_NAME`|sessionId| Name for session that is created for user when authorizing Jira.
+`SESSION_SECRET`|| Session secret.
+`CORS_ORIGIN`|| Development Cors origin URL.
 
 <sup>1</sup>) See [Logging docs](./logging.md) for more information.
