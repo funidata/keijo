@@ -121,3 +121,21 @@ Keijo is released as a single Docker image that contains the whole software. (Th
 1. Make sure you are in `main` branch and the working tree is clean.
 2. Run `npm version <patch|minor|major>`. **Always follow the [semantic versioning guidelines](https://semver.org/).** This script uses `npm version` to apply the desired version bump, sync the sub-projects with it, and finally push the created tags to GitHub.
 3. Allow the [CI/CD pipeline](https://github.com/funidata/keijo/actions) to finish. The new version is automatically published once the workflow completes.
+
+## Jira Integration
+
+Keijo integrates to Jira using OAuth2.0 to get, for example, issue related data.
+The backend functions as a [token-mediating backend](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps#name-token-mediating-backend), storing users Jira tokens in user sessions, and handing access token to the frontend to make
+requests to [Jira Cloud REST API](https://developer.atlassian.com/cloud/jira/platform/rest/v2).
+
+### Atlassian App
+
+An Atlassian OAuth2.0 app needs to be created to get necessary Atlassian credentials and values.
+Atlassian app can be created in the [developer console](https://developer.atlassian.com/console/myapps/).
+The app needs to be configured to have:
+
+- scope `read:jira-work` (permissions tab).
+- callback URL e.g., `https://<Keijo_Site>/callback/jira` (Authorization tab).
+
+Once these are added to the app, get the client ID and client sercret from app settings.
+For more detailed steps and information see [Jira OAuth2.0 apps](https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/).
