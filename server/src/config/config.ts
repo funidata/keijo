@@ -64,8 +64,7 @@ const config = {
     clientSecret: ATLASSIAN_CLIENT_SECRET,
     authorizationUrl: ATLASSIAN_AUTHORIZATION_URL || "https://auth.atlassian.com/authorize",
     callbackUrl: CALLBACK_URL || "/jira/callback",
-    callbackRedirectUrl:
-      CALLBACK_REDIRECT_URL || NODE_ENV === "development" ? "http://localhost:3000/" : "/",
+    callbackRedirectUrl: CALLBACK_REDIRECT_URL || "/",
     scopes: SCOPES || "read:jira-work offline_access",
   },
   session: {
