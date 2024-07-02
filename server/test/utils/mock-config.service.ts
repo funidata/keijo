@@ -28,6 +28,19 @@ export const defaultMockConfig: Config = {
     port: 0,
     ssl: false,
   },
+  jira: {
+    tokenUrl: "test",
+    clientId: "test",
+    clientSecret: "test",
+    authorizationUrl: "test",
+    callbackUrl: "test",
+    callbackRedirectUrl: "test",
+    scopes: "test",
+  },
+  session: {
+    name: "test",
+    secret: "test",
+  },
 };
 
 const mockConfigProvider = (override: Partial<Config> = {}) => ({
