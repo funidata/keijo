@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { JiraController } from "./jira.controller";
 import { JiraStrategy } from "./jira.strategy";
-import { AxiosModule } from "src/axios/axios.module";
+import { AxiosModule } from "../axios/axios.module";
 import { JiraService } from "./jira.service";
 import { PassportModule } from "@nestjs/passport";
 

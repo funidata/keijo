@@ -1,7 +1,7 @@
 import session from "express-session";
 import pgSession from "connect-pg-simple";
 import pg from "pg";
-import { ConfigService } from "src/config/config.service";
+import { ConfigService } from "../config/config.service";
 
 export function createSession(configService: ConfigService) {
   const { username, password, host, port, name } = configService.config.database;
@@ -16,7 +16,7 @@ export function createSession(configService: ConfigService) {
   return session({
     store: new (pgSession(session))({
       pool: pgPool,
-      createTableIfMissing: true,
+      createTableIfMissing: configService.config.inDev,
     }),
     name: configService.config.session.name,
     secret: configService.config.session.secret,
@@ -24,7 +24,7 @@ export function createSession(configService: ConfigService) {
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
+      secure: !configService.config.inDev,
       maxAge: 90 * 24 * 60 * 60 * 1000, // 90 days
     },
   });

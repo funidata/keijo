@@ -1,10 +1,10 @@
 import { Controller, Get, Res, UseGuards } from "@nestjs/common";
 import { Response } from "express";
-import { BypassHeadersGuard } from "src/decorators/bypass-headers-guard.decorator";
+import { BypassHeadersGuard } from "../decorators/bypass-headers-guard.decorator";
 import { JiraAuthGuard } from "./jira.guard";
 import { JiraService } from "./jira.service";
 import { SessionTokenGuard } from "./token.guard";
-import { ConfigService } from "src/config/config.service";
+import { ConfigService } from "../config/config.service";
 import { JiraTokens } from "./jira.types";
 import { SessionUser, ReqUser } from "./user.decorator";
 

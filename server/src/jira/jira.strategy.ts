@@ -1,7 +1,7 @@
 import { Strategy, StrategyOptions } from "passport-oauth2";
 import { PassportStrategy } from "@nestjs/passport";
 import { Injectable } from "@nestjs/common";
-import { ConfigService } from "src/config/config.service";
+import { ConfigService } from "../config/config.service";
 import { JiraTokens } from "./jira.types";
 
 @Injectable()
