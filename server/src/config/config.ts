@@ -19,7 +19,7 @@ const {
   DATABASE_HOST,
   DATABASE_PORT,
   DATABASE_SSL_MODE,
-  JIRA_TOKEN_URL,
+  ATLASSIAN_TOKEN_URL,
   ATLASSIAN_CLIENT_ID,
   ATLASSIAN_CLIENT_SECRET,
   ATLASSIAN_AUTHORIZATION_URL,
@@ -59,7 +59,7 @@ const config = {
     ssl: DATABASE_SSL_MODE === "true",
   },
   jira: {
-    tokenUrl: JIRA_TOKEN_URL || "https://auth.atlassian.com/oauth/token",
+    tokenUrl: ATLASSIAN_TOKEN_URL || "https://auth.atlassian.com/oauth/token",
     clientId: ATLASSIAN_CLIENT_ID,
     clientSecret: ATLASSIAN_CLIENT_SECRET,
     authorizationUrl: ATLASSIAN_AUTHORIZATION_URL || "https://auth.atlassian.com/authorize",
