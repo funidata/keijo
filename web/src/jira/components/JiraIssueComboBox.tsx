@@ -9,6 +9,7 @@ import { useGetIssues, useRecentIssues, useSearchIssues } from "../jiraApi";
 import { chunkArray, getOptions, mergePages } from "../jiraUtils";
 import { jiraQueryMaxResults } from "../jiraConfig";
 import { useEffect, useMemo, useState } from "react";
+import { t } from "i18next";
 
 type JiraIssueComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -62,6 +63,8 @@ const JiraIssueComboBox = <T extends FieldValues>({
 
   const { data: recentIssueData } = useRecentIssues();
 
+  const error = pageError || searchError;
+
   const filteredOptions = useMemo(() => {
     const fetchedIssues = keysFetched.map((key) => {
       const issue = issueData.find((issue) => issue.key === key);
@@ -109,10 +112,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
       {...params}
       name={name}
       autoCompleteProps={{
-        options:
-          pageError || searchError
-            ? nvKeys.map((key) => ({ label: key, text: key }))
-            : filteredOptions,
+        options: error ? nvKeys.map((key) => ({ label: key, text: key })) : filteredOptions,
         renderOption: (props, option, state) => {
           const maxIndex = filteredOptions.length - 1;
           const shouldLoadMore = !pageFetching && !searchFetching && state.index === maxIndex;
@@ -137,20 +137,19 @@ const JiraIssueComboBox = <T extends FieldValues>({
             </ListItem>
           );
         },
-        filterOptions:
-          pageError || searchError
-            ? undefined
-            : (options) => {
-                const addLoadingOption = searchFetching || debouncePending || pageFetching;
-                return addLoadingOption
-                  ? [...options, { label: "Loading...", type: "loader", text: "" }]
-                  : options;
-              },
+        filterOptions: error
+          ? undefined
+          : (options) => {
+              const addLoadingOption = searchFetching || debouncePending || pageFetching;
+              return addLoadingOption
+                ? [...options, { label: "Loading...", type: "loader", text: "" }]
+                : options;
+            },
         groupBy: searchFilter
           ? undefined
           : (option) => {
-              if (option.type === "recent") return "Recent";
-              else return "All";
+              if (option.type === "recent") return t("jira.issueGroups.recent");
+              else return t("jira.issueGroups.all");
             },
         ListboxProps: {
           ref: rootRef,

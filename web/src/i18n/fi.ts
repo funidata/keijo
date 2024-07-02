@@ -103,6 +103,12 @@ const fi = {
   titles: {
     workdayBrowser: "Työaikakirjaukset",
   },
+  jira: {
+    issueGroups: {
+      recent: "Viimeaikaiset",
+      all: "Kaikki",
+    },
+  },
 };
 
 export default fi;
