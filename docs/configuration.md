@@ -41,5 +41,6 @@ Key|Default|Description
 `SESSION_NAME`|sessionId| Name for session that is created for user when authorizing Jira.
 `SESSION_SECRET`|| Session secret.
 `CORS_ORIGIN`|| Development Cors origin URL.
+`TRUST_PROXY_IPS`|false| Trusted proxy ips to allow secure cookies to be sent over proxies.
 
 <sup>1</sup>) See [Logging docs](./logging.md) for more information.

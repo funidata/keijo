@@ -40,6 +40,7 @@ export const configSchema = object({
     name: string(),
     secret: string(),
   }),
+  trustProxyIps: string().or(boolean()),
 });
 
 export type Config = zod.infer<typeof configSchema>;
