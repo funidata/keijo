@@ -11,7 +11,7 @@ const options =
   process.env.NODE_ENV === "development"
     ? {
         cors: {
-          origin: `http://localhost:${process.env.DEV_FRONTEND_PORT || 3000}`,
+          origin: process.env.CORS_ORIGIN,
           credentials: true,
         },
       }
