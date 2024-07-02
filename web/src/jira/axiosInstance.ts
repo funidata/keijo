@@ -34,9 +34,10 @@ axiosJira.interceptors.response.use(
   async (err) => {
     if (err.response.status === 403 || err.response.status === 401) {
       const token = (await axiosKeijo.get("/refresh")).data;
+      axiosJira.defaults.headers.common.Authorization = "Bearer " + token.access_token;
       if (token && err?.config && !err.config._retry) {
         err.config._retry = true;
-        err.config.headers["Authorization"] = "Bearer " + token.access_token;
+        err.config.headers.Authorization = "Bearer " + token.access_token;
         return axiosJira(err.config);
       }
     }
@@ -48,5 +49,14 @@ axiosJira.interceptors.response.use(
     return Promise.reject(err);
   },
 );
+
+axiosJira.interceptors.request.use(async (config) => {
+  if (!axiosJira.defaults.headers.common.Authorization) {
+    const token = (await axiosKeijo.get("/access-token")).data;
+    axiosJira.defaults.headers.common.Authorization = "Bearer " + token.access_token;
+    config.headers.Authorization = "Bearer " + token.access_token;
+  }
+  return config;
+});
 
 export { axiosKeijo, axiosJira };
