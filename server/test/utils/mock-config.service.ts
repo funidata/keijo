@@ -41,6 +41,7 @@ export const defaultMockConfig: Config = {
     name: "test",
     secret: "test",
   },
+  trustProxyIps: false,
 };
 
 const mockConfigProvider = (override: Partial<Config> = {}) => ({
