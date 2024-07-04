@@ -26,7 +26,9 @@ type UseSearchIssuesProps = {
 };
 
 const getAccessToken = async () => {
-  return (await axiosKeijo.get("/access-token")).data;
+  const token = (await axiosKeijo.get("/access-token")).data;
+  axiosJira.defaults.headers.common.Authorization = "Bearer " + token.access_token;
+  return token;
 };
 
 const useGetAccessToken = (): UseQueryResult<{ access_token: string }> => {
@@ -39,22 +41,17 @@ const useGetAccessToken = (): UseQueryResult<{ access_token: string }> => {
 
 const getIssues = async (
   jql: string,
-  accessToken: string,
   startAt: number = 0,
   numOfIssues: number = jiraQueryMaxResults,
 ) => {
   return (
-    await axiosJira.post<JiraIssueResult>(
-      "/search",
-      {
-        fields: ["summary"],
-        maxResults: numOfIssues,
-        startAt: startAt,
-        validateQuery: "warn",
-        jql: jql,
-      },
-      { headers: { Authorization: `Bearer ${accessToken}` } },
-    )
+    await axiosJira.post<JiraIssueResult>("/search", {
+      fields: ["summary"],
+      maxResults: numOfIssues,
+      startAt: startAt,
+      validateQuery: "warn",
+      jql: jql,
+    })
   ).data;
 };
 
@@ -76,7 +73,6 @@ export const useGetIssues = ({
       number
     >
   >) => {
-  const { data: tokenData } = useGetAccessToken();
   const query = useInfiniteQuery<
     JiraIssueResult,
     Error,
@@ -95,7 +91,6 @@ export const useGetIssues = ({
           .slice(pageParam, pageParam + jiraQueryMaxResults)
           .map((key) => `'${key}'`)
           .join(", ")})`,
-        tokenData?.access_token || "",
         0,
       );
     },
@@ -105,7 +100,7 @@ export const useGetIssues = ({
       if (nextPageStartIndex >= issueKeys.length - 1) return;
       return nextPageStartIndex;
     },
-    enabled: enabled && !!tokenData?.access_token && issueKeys.length > 0,
+    enabled: enabled && issueKeys.length > 0,
     retry: 1,
     ...queryProps,
   });
@@ -138,8 +133,6 @@ export const useSearchIssues = ({
       number
     >
   >) => {
-  const { data: tokenData } = useGetAccessToken();
-
   const query = useInfiniteQuery<
     JiraIssueResult,
     Error,
@@ -156,7 +149,6 @@ export const useSearchIssues = ({
           .join(
             ", ",
           )}) ${searchFilter ? `AND summary ~ '${searchFilter.trim()}*'` : ""} ORDER BY key DESC`,
-        tokenData?.access_token || "",
         pageParam,
       );
     },
