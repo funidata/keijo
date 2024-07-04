@@ -44,6 +44,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
     error: pageError,
     hasNextPage,
     isFetching: pageFetching,
+    keysFetched,
   } = useGetIssues({
     issueKeys: filteredKeys,
     enabled: !loading,
@@ -61,11 +62,6 @@ const JiraIssueComboBox = <T extends FieldValues>({
   });
 
   const filteredOptions = useMemo(() => {
-    const keysFetched = filteredKeys.slice(
-      0,
-      (pagedIssueData?.pageParams.slice(-1)[0] || 0) + jiraQueryMaxResults,
-    );
-
     const fetchedIssues = keysFetched.map((key) => {
       const issue = pagedIssueData?.pages
         .flatMap((page) => page.issues)
@@ -75,7 +71,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
     });
 
     return fetchedIssues;
-  }, [filteredKeys, pagedIssueData?.pageParams, pagedIssueData?.pages]);
+  }, [keysFetched, pagedIssueData?.pages]);
 
   const searchOptions = useMemo(() => {
     const searchIssues = (searchedIssueData?.pages || [])
