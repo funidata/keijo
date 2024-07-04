@@ -111,16 +111,10 @@ export const useGetIssues = ({
   });
   return {
     ...query,
-    issueData: (query.data?.pages || []).flatMap((page) =>
-      page.issues.map((issue) => ({ key: issue.key, summary: issue.fields.summary })),
-    ),
     keysFetched: issueKeys.slice(
       0,
       (query.data?.pageParams.slice(-1)[0] || 0) + jiraQueryMaxResults,
     ),
-    lastPageData: query.data?.pages
-      .slice(-1)[0]
-      .issues.map((issue) => ({ key: issue.key, summary: issue.fields.summary })),
   };
 };
 
@@ -179,12 +173,6 @@ export const useSearchIssues = ({
 
   return {
     ...query,
-    lastPageData: query.data?.pages
-      .slice(-1)[0]
-      .issues.map((issue) => ({ key: issue.key, summary: issue.fields.summary })),
-    issueData: (query.data?.pages || []).flatMap((page) =>
-      page.issues.map((issue) => ({ key: issue.key, summary: issue.fields.summary })),
-    ),
   };
 };
 

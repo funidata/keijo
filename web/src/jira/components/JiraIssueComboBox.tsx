@@ -26,7 +26,10 @@ const JiraIssueComboBox = <T extends FieldValues>({
   const [searchFilter, setSearchFilter] = useDebounceValue("", 300);
   const [debouncePending, setDebouncePending] = useState(false);
 
-  const nvKeys = data?.findDimensionOptions[name] || [];
+  const nvKeys = useMemo(
+    () => data?.findDimensionOptions[name] || [],
+    [data?.findDimensionOptions, name],
+  );
   const filteredKeys = [
     ...(searchFilter
       ? nvKeys.filter((option) =>
@@ -41,8 +44,6 @@ const JiraIssueComboBox = <T extends FieldValues>({
     error: pageError,
     hasNextPage,
     isFetching: pageFetching,
-    issueData,
-    keysFetched,
   } = useGetIssues({
     issueKeys: filteredKeys,
     enabled: !loading,
@@ -54,36 +55,49 @@ const JiraIssueComboBox = <T extends FieldValues>({
     error: searchError,
     hasNextPage: searchHasNext,
     isFetching: searchFetching,
-    issueData: searchData,
   } = useSearchIssues({
     issueKeys: nvKeys,
     searchFilter: searchFilter,
   });
 
   const filteredOptions = useMemo(() => {
+    const keysFetched = filteredKeys.slice(
+      0,
+      (pagedIssueData?.pageParams.slice(-1)[0] || 0) + jiraQueryMaxResults,
+    );
+
     const fetchedIssues = keysFetched.map((key) => {
-      const issue = issueData.find((issue) => issue.key === key);
-      if (issue) return { label: issue.key, text: `${issue.key}: ${issue.summary}` };
+      const issue = pagedIssueData?.pages
+        .flatMap((page) => page.issues)
+        .find((issue) => issue.key === key);
+      if (issue) return { label: issue.key, text: `${issue.key}: ${issue.fields.summary}` };
       return { label: key, text: key };
     });
 
-    const searchIssues = searchData
+    return fetchedIssues;
+  }, [filteredKeys, pagedIssueData?.pageParams, pagedIssueData?.pages]);
+
+  const searchOptions = useMemo(() => {
+    const searchIssues = (searchedIssueData?.pages || [])
+      .flatMap((page) => page.issues)
       .map((issue) => ({
         label: issue.key,
-        text: `${issue.key}: ${issue.summary}`,
+        text: `${issue.key}: ${issue.fields.summary}`,
       }))
       .filter(
         (opt) =>
-          !fetchedIssues.find((opt_) => opt_.label === opt.label) && nvKeys.includes(opt.label),
+          !filteredOptions.find((opt_) => opt_.label === opt.label) && nvKeys.includes(opt.label),
       );
+    return searchIssues;
+  }, [filteredOptions, nvKeys, searchedIssueData?.pages]);
 
-    const combinedPages = mergePages(
-      chunkArray(fetchedIssues, jiraQueryMaxResults),
-      chunkArray(searchIssues, jiraQueryMaxResults),
-    );
-    return combinedPages.flat();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchedIssueData, pagedIssueData]);
+  const pagedOptions = mergePages(
+    chunkArray(filteredOptions, jiraQueryMaxResults),
+    chunkArray(searchOptions, jiraQueryMaxResults),
+  ).flat();
+
+  const options =
+    pageError || searchError ? nvKeys.map((key) => ({ label: key, text: key })) : pagedOptions;
 
   const [sentryRef, { rootRef }] = useInfiniteScroll({
     loading: searchFetching || pageFetching,
@@ -94,7 +108,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
       if (!!searchFilter && searchHasNext) await searchFetchNext();
     },
     delayInMs: 0,
-    rootMargin: `0px 0px ${10 * filteredOptions.length}px 0px`,
+    rootMargin: `0px 0px ${10 * pagedOptions.length}px 0px`,
   });
 
   useEffect(() => {
@@ -106,17 +120,14 @@ const JiraIssueComboBox = <T extends FieldValues>({
       {...params}
       name={name}
       autoCompleteProps={{
-        options:
-          pageError || searchError
-            ? nvKeys.map((key) => ({ label: key, text: key }))
-            : filteredOptions,
+        options: options,
         renderOption: (props, option, state) => {
-          const maxIndex = filteredOptions.length - 1;
+          const maxIndex = options.length - 1;
           const shouldLoadMore = !pageFetching && !searchFetching && state.index === maxIndex;
           if (option.type === "loader")
             return (
               <ListItem {...props}>
-                <Typography color="GrayText">{option.label}</Typography>
+                <Typography color="GrayText">{option.text}</Typography>
               </ListItem>
             );
           return (
@@ -140,7 +151,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
             : (options) => {
                 const addLoadingOption = searchFetching || debouncePending || pageFetching;
                 return addLoadingOption
-                  ? [...options, { label: "Loading...", type: "loader", text: "" }]
+                  ? [...options, { label: "Loading", type: "loader", text: "Loading..." }]
                   : options;
               },
         ListboxProps: {
