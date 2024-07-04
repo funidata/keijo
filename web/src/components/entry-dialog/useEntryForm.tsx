@@ -83,7 +83,7 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
 
   const { loading: hoursLoading } = useFormSetRemainingHours({
     form,
-    isEnabled: editEntry === undefined,
+    isEnabled: editEntry === undefined && !form.formState.isLoading,
   });
 
   const addWorkday: SubmitHandler<EntryFormSchema> = async (formValues) => {
