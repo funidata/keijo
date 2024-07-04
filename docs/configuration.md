@@ -37,8 +37,6 @@ Key|Default|Description
 `ATLASSIAN_TOKEN_URL`|https://auth.atlassian.com/oauth/token| Atlassian URL where keijo exchanges authorization code for access and refresh tokens.
 `CALLBACK_URL`|/jira/callback| Keijo URL where user is redirected from Jira after access is granted.
 `CALLBACK_REDIRECT_URL`|/| Keijo URL where user is redirected from callback after callback is handled.
-`SCOPES`|read:jira-work offline_access| Scopes for Jira data that keijo requests access for. See [Jira OAuth Scopes](https://developer.atlassian.com/cloud/jira/platform/scopes-for-oauth-2-3LO-and-forge-apps/).
-`SESSION_NAME`|sessionId| Name for session that is created for user when authorizing Jira.
 `SESSION_SECRET`|| Session secret.
 `CORS_ORIGIN`|| Development Cors origin URL.
 `TRUST_PROXY_IPS`|false| Trusted proxy ips to allow secure cookies to be sent over proxies.

@@ -25,8 +25,6 @@ const {
   ATLASSIAN_AUTHORIZATION_URL,
   CALLBACK_URL,
   CALLBACK_REDIRECT_URL,
-  SCOPES,
-  SESSION_NAME,
   SESSION_SECRET,
   TRUST_PROXY_IPS,
 } = process.env;
@@ -66,11 +64,11 @@ const config = {
     authorizationUrl: ATLASSIAN_AUTHORIZATION_URL || "https://auth.atlassian.com/authorize",
     callbackUrl: CALLBACK_URL || "/jira/callback",
     callbackRedirectUrl: CALLBACK_REDIRECT_URL || "/",
-    scopes: SCOPES || "read:jira-work offline_access",
+    scopes: "read:jira-work offline_access",
   },
   session: {
-    name: SESSION_NAME || "sessionId",
     secret: SESSION_SECRET,
+    name: "sessionId",
   },
   trustProxyIps: TRUST_PROXY_IPS || false,
 };
