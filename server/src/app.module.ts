@@ -12,6 +12,7 @@ import { LoggerModule } from "./logger/logger.module";
 import { NetvisorModule } from "./netvisor/netvisor.module";
 import { SessionModule } from "./session/session.module";
 import { UserSettingsModule } from "./user-settings/user-settings.module";
+import { JiraModule } from "./jira/jira.module";
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UserSettingsModule } from "./user-settings/user-settings.module";
     SessionModule,
     DatabaseModule,
     UserSettingsModule,
+    JiraModule,
   ],
   providers: [...appGuards],
 })

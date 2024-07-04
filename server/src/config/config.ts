@@ -19,6 +19,14 @@ const {
   DATABASE_HOST,
   DATABASE_PORT,
   DATABASE_SSL_MODE,
+  ATLASSIAN_TOKEN_URL,
+  ATLASSIAN_CLIENT_ID,
+  ATLASSIAN_CLIENT_SECRET,
+  ATLASSIAN_AUTHORIZATION_URL,
+  CALLBACK_URL,
+  CALLBACK_REDIRECT_URL,
+  SESSION_SECRET,
+  TRUST_PROXY_IPS,
 } = process.env;
 
 const config = {
@@ -49,6 +57,20 @@ const config = {
     port: Number(DATABASE_PORT),
     ssl: DATABASE_SSL_MODE === "true",
   },
+  jira: {
+    tokenUrl: ATLASSIAN_TOKEN_URL || "https://auth.atlassian.com/oauth/token",
+    clientId: ATLASSIAN_CLIENT_ID,
+    clientSecret: ATLASSIAN_CLIENT_SECRET,
+    authorizationUrl: ATLASSIAN_AUTHORIZATION_URL || "https://auth.atlassian.com/authorize",
+    callbackUrl: CALLBACK_URL || "/jira/callback",
+    callbackRedirectUrl: CALLBACK_REDIRECT_URL || "/",
+    scopes: "read:jira-work offline_access",
+  },
+  session: {
+    secret: SESSION_SECRET,
+    name: "sessionId",
+  },
+  trustProxyIps: TRUST_PROXY_IPS || false,
 };
 
 export default config;

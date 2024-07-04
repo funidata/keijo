@@ -114,20 +114,8 @@ test.describe("Entry defaults mobile", () => {
   });
 
   test("Should use set default values", async ({ page, t }) => {
-    await page.goto(emptyWeekUrl + "/create");
-    await expect(page.getByRole("combobox", { name: t("entryDialog.product") })).toHaveValue("");
-    await page.goto(emptyWeekUrl);
-    await page.getByRole("banner").getByLabel(t("controls.openMenu")).click();
-    await page.getByRole("button", { name: t("controls.defaultsView") }).click();
-    await page.getByRole("combobox", { name: t("entryDialog.product") }).fill(entries[0].product);
-    await page.getByRole("combobox", { name: t("entryDialog.activity") }).fill(entries[0].activity);
-    await page.goto(emptyWeekUrl + "/create");
-    await expect(page.getByRole("combobox", { name: t("entryDialog.product") })).toHaveValue(
-      entries[0].product,
-    );
-    await expect(page.getByRole("combobox", { name: t("entryDialog.activity") })).toHaveValue(
-      entries[0].activity,
-    );
+    await setDefaultValuesMobile(page, t, entries[0].product, entries[0].activity);
+    await setDefaultValuesMobile(page, t, productNames[1], activityNames[1]);
   });
 });
 
@@ -139,4 +127,24 @@ const fillEntryFormMobile = async (page: Page, t: TFunction, entry: TestEntry) =
   await page.getByRole("textbox", { name: "date" }).click();
   await page.getByRole("gridcell", { name: entry.date.split(".")[0] }).click();
   await page.getByRole("button", { name: "OK" }).click();
+};
+
+const setDefaultValuesMobile = async (
+  page: Page,
+  t: TFunction,
+  product: string,
+  activity: string,
+) => {
+  await page.goto(emptyWeekUrl);
+  await page.getByRole("banner").getByLabel(t("controls.openMenu")).click();
+  await page.getByRole("button", { name: t("controls.defaultsView") }).click();
+  await page.getByRole("combobox", { name: t("entryDialog.product") }).click();
+  await page.getByRole("option", { name: product }).click();
+  await page.getByRole("combobox", { name: t("entryDialog.activity") }).click();
+  await page.getByRole("option", { name: activity }).click();
+  await page.goto(emptyWeekUrl + "/create");
+  await expect(page.getByRole("combobox", { name: t("entryDialog.product") })).toHaveValue(product);
+  await expect(page.getByRole("combobox", { name: t("entryDialog.activity") })).toHaveValue(
+    activity,
+  );
 };

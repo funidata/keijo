@@ -18,6 +18,9 @@ services:
       DATABASE_HOST: db
       DATABASE_PORT: 5432
       DATABASE_NAME: keijo_test
+      ATLASSIAN_CLIENT_ID: mock_id
+      ATLASSIAN_CLIENT_SECRET: mock_secret
+      SESSION_SECRET: mock_secret
     ports:
       - 4000:3001
 
