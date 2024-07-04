@@ -135,7 +135,7 @@ Atlassian app can be created in the [developer console](https://developer.atlass
 The app needs to be configured to have:
 
 - scope `read:jira-work` (permissions tab).
-- callback URL e.g., `https://<Keijo_Site>/callback/jira` (Authorization tab).
+- callback URL e.g., `https://<keijo-site>/jira/callback` or for local development e.g., `http://localhost:3001/jira/callback` (Authorization tab).
 
 Once these are added to the app, get the client ID and client sercret from app settings.
 For more detailed steps and information see [Jira OAuth2.0 apps](https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/).
