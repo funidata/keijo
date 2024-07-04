@@ -28,6 +28,9 @@ services:
       service: server-base
     container_name: keijo-server
     environment:
+      CORS_ORIGIN: http://localhost:3000
+      CALLBACK_URL: http://localhost:3001/jira/callback
+      CALLBACK_REDIRECT_URL: http://localhost:3000
       DATABASE_NAME: keijo_dev
     ports:
       - 3001:3001
