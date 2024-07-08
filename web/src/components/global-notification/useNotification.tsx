@@ -14,7 +14,7 @@ type NotificationActions = {
   resetNotification: () => void;
 };
 
-const defaultState = { type: undefined, message: null, autoHide: false, action: undefined };
+const defaultState = { type: undefined, message: null, autoHide: false, action: null };
 
 export const useNotificationState = create<NotificationState & NotificationActions>()((set) => ({
   ...defaultState,

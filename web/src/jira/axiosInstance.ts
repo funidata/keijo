@@ -16,7 +16,7 @@ const axiosKeijo = axios.create({
 axiosKeijo.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response.status === 401) {
+    if (err.response.status === 403 || err.response.status === 401) {
       useNotificationState.getState().setNotification({
         message: "Jira is not authenticated. Keijo uses Jira for e.g., receiving issue summaries.",
         type: "warning",

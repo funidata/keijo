@@ -26,7 +26,7 @@ const GlobalNotification = () => {
       autoHideDuration={autoHideDuration}
     >
       <Alert severity={type} variant="filled" onClose={close} sx={{ color: "white" }}>
-        {message} {action || null}
+        {message} {action}
       </Alert>
     </Snackbar>
   );
