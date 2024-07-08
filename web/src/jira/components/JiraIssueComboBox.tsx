@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/client";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 import DimensionComboBox from "../../components/entry-dialog/DimensionComboBox";
 import { useDebounceValue } from "usehooks-ts";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useJiraIssueOptions } from "./useJiraIssueOptions";
 
 type JiraIssueComboBoxProps<T extends FieldValues> = {
@@ -21,11 +21,9 @@ const JiraIssueComboBox = <T extends FieldValues>({
 }: JiraIssueComboBoxProps<T>) => {
   const { data, loading } = useQuery(FindDimensionOptionsDocument);
 
-  const nvKeys = useMemo(
-    () => data?.findDimensionOptions[name] || [],
-    [data?.findDimensionOptions, name],
-  );
-  const [searchFilter, setSearchFilter] = useDebounceValue("", 300);
+  const nvKeys = data?.findDimensionOptions[name] || [];
+
+  const [searchFilter, setSearchFilter] = useDebounceValue("", 400);
   const [debouncePending, setDebouncePending] = useState(false);
 
   const { options, loadMore, hasNextPage, isFetching, error } = useJiraIssueOptions({
@@ -40,7 +38,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
     disabled: error,
     onLoadMore: loadMore,
     delayInMs: 0,
-    rootMargin: `0px 0px ${10 * options.length}px 0px`,
+    rootMargin: `0px 0px 1500px 0px`,
   });
 
   useEffect(() => {
@@ -54,8 +52,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
       autoCompleteProps={{
         options: options,
         renderOption: (props, option, state) => {
-          const maxIndex = options.length - 1;
-          const shouldLoadMore = !isFetching && state.index === maxIndex;
+          const shouldLoadMore = !isFetching && state.index === options.length - 1;
           if (option.type === "loader")
             return (
               <ListItem {...props}>
@@ -76,14 +73,14 @@ const JiraIssueComboBox = <T extends FieldValues>({
             </ListItem>
           );
         },
-        filterOptions: error
-          ? undefined
-          : (options) => {
+        filterOptions: !error
+          ? (options) => {
               const addLoadingOption = isFetching || debouncePending;
               return addLoadingOption
                 ? [...options, { label: "Loading", type: "loader", text: "Loading..." }]
                 : options;
-            },
+            }
+          : undefined,
         ListboxProps: {
           ref: rootRef,
         },

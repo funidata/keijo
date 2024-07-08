@@ -8,6 +8,8 @@ import {
 } from "@tanstack/react-query";
 import { axiosJira, axiosKeijo } from "./axiosInstance";
 import { jiraQueryMaxResults } from "./jiraConfig";
+import { findKeysIncludingWord, findWordInKeys, removeWord } from "./jiraUtils";
+import { jqlAND, jqlOR, jqlOrderBy, keyIsInKeys, summaryContains } from "./jql";
 
 export type JiraIssueResult = {
   issues: Array<{ key: string; fields: { summary: string } }>;
@@ -90,10 +92,7 @@ export const useGetIssues = ({ issueKeys, enabled, ...queryProps }: UseGetIssues
     staleTime: Infinity,
     queryFn: async ({ pageParam }) => {
       return await getIssues(
-        `key in (${issueKeys
-          .slice(pageParam, pageParam + jiraQueryMaxResults)
-          .map((key) => `'${key}'`)
-          .join(", ")})`,
+        keyIsInKeys(issueKeys.slice(pageParam, pageParam + jiraQueryMaxResults)),
         0,
       );
     },
@@ -119,7 +118,11 @@ export const useGetIssues = ({ issueKeys, enabled, ...queryProps }: UseGetIssues
 /**
  *  Get paginated issue data by providing list of issueKeys and a searchFilter string.
  *  The query tries to get issuedata of all issues from Jira whose summary contains searchFilter and
- *  whose issueKey is in the provided issueKeys list.
+ *  whose issueKey is in the provided issueKeys list. Also, if searchFilter contains a word matching
+ *  some issueKey(s) by atleast with the project key, then query if the summaries of those issueKey(s) contain
+ *  the edited searchFilter with the matching word removed. This is useful if we want to search an issue
+ *  with some key+summary searchFilter since Jira allows "fuzzy" string search
+ *  only for text fields, not issue keys, so we need to match the searchFilter with the issue key by ourselves.
  *  Queries JiraQueryMaxResults amount of issues per page.
  */
 export const useSearchIssues = ({
@@ -127,18 +130,24 @@ export const useSearchIssues = ({
   searchFilter,
   ...queryProps
 }: UseSearchIssuesProps) => {
+  const wordInKeys =
+    searchFilter.trim().split(" ").length > 1 && findWordInKeys(searchFilter, issueKeys);
+
+  const keysIncludingWord = wordInKeys ? findKeysIncludingWord(wordInKeys, issueKeys) : [];
+  const searchWithoutWord = wordInKeys ? removeWord(searchFilter, wordInKeys) : "";
+
+  const jql = wordInKeys
+    ? jqlOR(
+        jqlAND(keyIsInKeys(issueKeys), summaryContains(searchFilter)),
+        jqlAND(keyIsInKeys(keysIncludingWord), summaryContains(searchWithoutWord)),
+      )
+    : jqlAND(keyIsInKeys(issueKeys), summaryContains(searchFilter));
+
   const query = useInfiniteQuery({
     queryKey: ["issueSearch", searchFilter],
     staleTime: Infinity,
     queryFn: async ({ pageParam }) => {
-      return await getIssues(
-        `key in (${issueKeys
-          .map((key) => `'${key}'`)
-          .join(
-            ", ",
-          )}) ${searchFilter ? `AND summary ~ '${searchFilter.trim()}*'` : ""} ORDER BY key DESC`,
-        pageParam,
-      );
+      return await getIssues(jqlOrderBy(jql, "key"), pageParam);
     },
     enabled: !!searchFilter,
     initialPageParam: 0,
