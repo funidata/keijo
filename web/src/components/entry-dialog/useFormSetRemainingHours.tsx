@@ -1,12 +1,12 @@
 import { useQuery } from "@apollo/client";
 import { Dayjs } from "dayjs";
+import { useEffect } from "react";
 import { UseFormReturn } from "react-hook-form";
 import dayjs from "../../common/dayjs";
-import { useEffect } from "react";
 import { roundToFullMinutes, totalDurationOfEntries } from "../../common/duration";
+import { Entry, FindWorkdaysDocument } from "../../graphql/generated/graphql";
 import usePreferSetRemainingHours from "../user-preferences/usePreferSetRemainingHours";
 import { EntryFormSchema } from "./useEntryForm";
-import { Entry, FindWorkdaysDocument } from "../../graphql/generated/graphql";
 
 export type useEntryProps = {
   editEntry?: Entry;
@@ -28,7 +28,10 @@ const useFormSetRemainingHours = ({ form, isEnabled }: useFormRemainingHoursProp
   });
 
   useEffect(() => {
-    if (!isEnabled || getFieldState("duration").isDirty) return;
+    if (!isEnabled || getFieldState("duration").isDirty) {
+      return;
+    }
+
     if (!wdLoading && userPrefersSetRemainingHours) {
       const totalDuration = totalDurationOfEntries(
         data?.findWorkdays.length === 1 ? data.findWorkdays[0].entries : [],
