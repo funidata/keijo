@@ -12,7 +12,7 @@ const httpLink = new HttpLink({
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
+  if (graphQLErrors) {
     graphQLErrors.forEach(({ message, path }) =>
       useNotificationState.getState().setNotification({
         message: `Error in GraphQL request "${path}". Message: ${message}`,
@@ -20,6 +20,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
         autoHide: false,
       }),
     );
+  }
 
   if (networkError) {
     useNotificationState.getState().setNotification({
