@@ -7,3 +7,5 @@ extends:
   - prettier
 plugins:
   - "@typescript-eslint"
+rules:
+  curly: error
