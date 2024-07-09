@@ -84,11 +84,9 @@ const JiraIssueComboBox = <T extends FieldValues>({
         ListboxProps: {
           ref: rootRef,
         },
-        onInputChange: (_, value, reason) => {
-          if (["input", "clear"].includes(reason)) {
-            setDebouncePending(true);
-            setSearchFilter(value);
-          }
+        onInputChange: (_, value) => {
+          setDebouncePending(true);
+          setSearchFilter(value);
         },
       }}
     />

@@ -37,8 +37,9 @@ const DimensionComboBox = <T extends FieldValues>({
               onChange={(_, value) => onChange(value?.label || value)}
               options={options}
               autoHighlight
-              freeSolo={true}
-              forcePopupIcon={true}
+              freeSolo
+              forcePopupIcon
+              clearOnBlur
               renderInput={(params) => (
                 <TextField
                   {...params}
