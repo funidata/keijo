@@ -56,12 +56,13 @@ const JiraIssueComboBox = <T extends FieldValues>({
         options: options,
         renderOption: (props, option, state) => {
           const shouldLoadMore = !isFetching && state.index === options.length - 1;
-          if (option.type === "loader")
+          if (option.type === "loader") {
             return (
               <ListItem {...props}>
                 <Typography color="GrayText">{option.text}</Typography>
               </ListItem>
             );
+          }
           return (
             <ListItem
               {...props}
@@ -86,7 +87,9 @@ const JiraIssueComboBox = <T extends FieldValues>({
           ref: rootRef,
         },
         onInputChange: (_, value, reason) => {
-          if (reason === "reset" && value) return;
+          if (reason === "reset" && value) {
+            return;
+          }
           setDebouncePending(true);
           setSearchFilter(value);
         },

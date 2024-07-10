@@ -52,7 +52,9 @@ export const useJiraIssueOptions = ({
       const issue = pagedIssueData?.pages
         .flatMap((page) => page.issues)
         .find((issue) => issue.key === key);
-      if (issue) return { label: issue.key, text: `${issue.key}: ${issue.fields.summary}` };
+      if (issue) {
+        return { label: issue.key, text: `${issue.key}: ${issue.fields.summary}` };
+      }
       return { label: key, text: key };
     });
 
@@ -83,8 +85,12 @@ export const useJiraIssueOptions = ({
     pageError || searchError ? issueKeys.map((key) => ({ label: key, text: key })) : pagedOptions;
 
   const loadMore = useCallback(async () => {
-    if (hasNextPage) await fetchNextPage();
-    if (!!searchFilter && searchHasNext) await searchFetchNext();
+    if (hasNextPage) {
+      await fetchNextPage();
+    }
+    if (!!searchFilter && searchHasNext) {
+      await searchFetchNext();
+    }
   }, [fetchNextPage, hasNextPage, searchFetchNext, searchFilter, searchHasNext]);
 
   return {

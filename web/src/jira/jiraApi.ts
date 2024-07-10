@@ -99,7 +99,9 @@ export const useGetIssues = ({ issueKeys, enabled, ...queryProps }: UseGetIssues
     initialPageParam: 0,
     getNextPageParam: (_lastPage, _allPages, lastPageParam) => {
       const nextPageStartIndex = lastPageParam + jiraQueryMaxResults;
-      if (nextPageStartIndex >= issueKeys.length - 1) return;
+      if (nextPageStartIndex >= issueKeys.length - 1) {
+        return;
+      }
       return nextPageStartIndex;
     },
     enabled: enabled && issueKeys.length > 0,
@@ -153,7 +155,9 @@ export const useSearchIssues = ({
     initialPageParam: 0,
     getNextPageParam: (lastPage, _allPages, lastPageParam) => {
       const nextPageStartIndex = lastPageParam + jiraQueryMaxResults;
-      if (nextPageStartIndex >= lastPage.total) return;
+      if (nextPageStartIndex >= lastPage.total) {
+        return;
+      }
       return nextPageStartIndex;
     },
     retry: 1,
