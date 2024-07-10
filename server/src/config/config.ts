@@ -23,6 +23,7 @@ const {
   ATLASSIAN_CLIENT_ID,
   ATLASSIAN_CLIENT_SECRET,
   ATLASSIAN_AUTHORIZATION_URL,
+  ATLASSIAN_CLOUD_ID,
   CALLBACK_URL,
   CALLBACK_REDIRECT_URL,
   SESSION_SECRET,
@@ -65,6 +66,7 @@ const config = {
     callbackUrl: CALLBACK_URL || "/jira/callback",
     callbackRedirectUrl: CALLBACK_REDIRECT_URL || "/",
     scopes: "read:jira-work offline_access",
+    cloudId: ATLASSIAN_CLOUD_ID,
   },
   session: {
     secret: SESSION_SECRET,

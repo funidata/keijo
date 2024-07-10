@@ -1,12 +1,10 @@
 import axios from "axios";
 import { useNotificationState } from "../components/global-notification/useNotification";
-import { jiraApiUrl, keijoJiraApiUrl } from "./jiraConfig";
+import { jiraApiPath, jiraApiBaseUrl, keijoJiraApiUrl, jiraApiVersion } from "./jiraConfig";
 
 import { JiraAuthLink } from "./components/JiraAuthLink";
 
-const axiosJira = axios.create({
-  baseURL: jiraApiUrl,
-});
+const axiosJira = axios.create({});
 
 const axiosKeijo = axios.create({
   baseURL: keijoJiraApiUrl,
@@ -51,8 +49,11 @@ axiosJira.interceptors.response.use(
 );
 
 axiosJira.interceptors.request.use(async (config) => {
-  if (!axiosJira.defaults.headers.common.Authorization) {
+  if (!axiosJira.defaults.baseURL || !axiosJira.defaults.headers.common.Authorization) {
     const token = (await axiosKeijo.get("/access-token")).data;
+    const jiraUrl = `${jiraApiBaseUrl}${token.cloud_id}${jiraApiPath}${jiraApiVersion}`;
+    axiosJira.defaults.baseURL = jiraUrl;
+    config.baseURL = jiraUrl;
     axiosJira.defaults.headers.common.Authorization = "Bearer " + token.access_token;
     config.headers.Authorization = "Bearer " + token.access_token;
   }

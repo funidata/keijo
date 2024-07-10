@@ -41,6 +41,7 @@ export class JiraController {
   @UseGuards(SessionTokenGuard)
   @Get("access-token")
   async getAccessToken(@SessionUser() jiraTokens: JiraTokens) {
-    return { access_token: jiraTokens.accessToken };
+    const cloudId = this.configService.config.jira.cloudId;
+    return { access_token: jiraTokens.accessToken, cloud_id: cloudId };
   }
 }
