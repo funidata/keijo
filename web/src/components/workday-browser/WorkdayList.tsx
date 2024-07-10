@@ -9,9 +9,6 @@ import TotalHours from "./TotalHours";
 import { useWorkdayBrowserParams } from "./useWorkdayBrowserParams";
 import { useState } from "react";
 import { isWeekend } from "../../common/workdayUtils";
-import WeekendIcon from "@mui/icons-material/Weekend";
-import WeekendOutlinedIcon from "@mui/icons-material/WeekendOutlined";
-import { IconButton } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { t } from "i18next";
 
@@ -77,8 +74,8 @@ const WorkdayList = () => {
           return wdArr.map((wd) => <WorkdayAccordion workday={wd} key={wd.date.toString()} />);
         })}
       </Paper>
-      <Box textAlign="center" mt={2}>
-        <Button onClick={handleChange} size="small" color="secondary" sx={{ borderRadius: 28 }}>
+      <Box textAlign="right" mt={1}>
+        <Button onClick={handleChange} size="small" color="primary" sx={{ borderRadius: 16 }}>
           {!checked ? t("controls.showWeekend") : t("controls.hideWeekend")}
         </Button>
       </Box>
