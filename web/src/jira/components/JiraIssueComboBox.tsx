@@ -45,6 +45,9 @@ const JiraIssueComboBox = <T extends FieldValues>({
     setDebouncePending(false);
   }, [searchFilter]);
 
+  if (error) {
+    return <DimensionComboBox form={params.form} name="issue" title={params.title} />;
+  }
   return (
     <DimensionComboBox
       {...params}
@@ -73,19 +76,17 @@ const JiraIssueComboBox = <T extends FieldValues>({
             </ListItem>
           );
         },
-        filterOptions: !error
-          ? (options) => {
-              const addLoadingOption = isFetching || debouncePending;
-              return addLoadingOption
-                ? [...options, { label: "Loading", type: "loader", text: "Loading..." }]
-                : options;
-            }
-          : undefined,
+        filterOptions: (options) => {
+          const addLoadingOption = isFetching || debouncePending;
+          return addLoadingOption
+            ? [...options, { label: "Loading", type: "loader", text: "Loading..." }]
+            : options;
+        },
         ListboxProps: {
           ref: rootRef,
         },
         onInputChange: (_, value, reason) => {
-          if (error || (reason === "reset" && value)) return;
+          if (reason === "reset" && value) return;
           setDebouncePending(true);
           setSearchFilter(value);
         },
