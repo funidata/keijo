@@ -8,6 +8,7 @@ import { useDebounceValue } from "usehooks-ts";
 import { useEffect, useState } from "react";
 import { useJiraIssueOptions } from "./useJiraIssueOptions";
 import { useNotificationState } from "../../components/global-notification/useNotification";
+import { queryClient } from "../queryClient";
 
 type JiraIssueComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -47,8 +48,10 @@ const JiraIssueComboBox = <T extends FieldValues>({
   }, [searchFilter]);
 
   if (error) {
+    queryClient.invalidateQueries({ queryKey: ["accessToken"] });
     useNotificationState.getState().setNotification({
-      message: "Could not fetch issues from Jira. Falling back to default options.",
+      message:
+        "Could not fetch issues from Jira. You might need to reconnect to Jira from settings. Falling back to default options.",
       type: "warning",
       autoHide: false,
     });

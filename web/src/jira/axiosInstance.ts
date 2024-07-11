@@ -12,15 +12,15 @@ const axiosKeijo = axios.create({
 axiosJira.interceptors.response.use(
   (res) => res,
   async (err) => {
-    if (err.response.status === 403 || err.response.status === 401) {
-      const token = (await axiosKeijo.get("/refresh")).data;
-      axiosJira.defaults.headers.common.Authorization = "Bearer " + token.access_token;
-    }
     useNotificationState.getState().setNotification({
       message: "Failed to fetch issue data from Jira: " + err.response.status,
       type: "error",
       autoHide: true,
     });
+    if (err.response.status === 403 || err.response.status === 401) {
+      const token = (await axiosKeijo.get("/refresh")).data;
+      axiosJira.defaults.headers.common.Authorization = "Bearer " + token.access_token;
+    }
     return Promise.reject(err);
   },
 );
