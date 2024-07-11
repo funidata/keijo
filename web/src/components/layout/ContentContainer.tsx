@@ -1,5 +1,6 @@
 import { Box, Container, Typography } from "@mui/material";
 import { ChildrenProps } from "../../common/types";
+import Footer from "./Footer";
 
 const ContentContainer = ({ children }: ChildrenProps) => (
   <>
@@ -14,7 +15,7 @@ const ContentContainer = ({ children }: ChildrenProps) => (
           fontWeight: 100,
         }}
       >
-        Made with ❤️ by 🦊
+        <Footer />
       </Typography>
     </Box>
   </>
