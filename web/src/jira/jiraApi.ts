@@ -105,7 +105,7 @@ export const useGetIssues = ({ issueKeys, enabled, ...queryProps }: UseGetIssues
       return nextPageStartIndex;
     },
     enabled: enabled && issueKeys.length > 0,
-    retry: 1,
+    retry: 2,
     ...queryProps,
   });
   return {
@@ -160,7 +160,7 @@ export const useSearchIssues = ({
       }
       return nextPageStartIndex;
     },
-    retry: 1,
+    retry: 2,
     ...queryProps,
   });
 

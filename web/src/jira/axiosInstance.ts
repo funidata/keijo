@@ -33,11 +33,6 @@ axiosJira.interceptors.response.use(
     if (err.response.status === 403 || err.response.status === 401) {
       const token = (await axiosKeijo.get("/refresh")).data;
       axiosJira.defaults.headers.common.Authorization = "Bearer " + token.access_token;
-      if (token && err?.config && !err.config._retry) {
-        err.config._retry = true;
-        err.config.headers.Authorization = "Bearer " + token.access_token;
-        return axiosJira(err.config);
-      }
     }
     useNotificationState.getState().setNotification({
       message: "Failed to fetch issue data from Jira: " + err.response.status,
