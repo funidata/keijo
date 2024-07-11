@@ -75,8 +75,14 @@ const WorkdayList = () => {
         })}
       </Paper>
       <Box textAlign="right" mt={1}>
-        <Button onClick={handleChange} size="small" color="primary" sx={{ borderRadius: 16 }}>
-          {!checked ? t("controls.showWeekend") : t("controls.hideWeekend")}
+        <Button
+          onClick={handleChange}
+          size="small"
+          color="primary"
+          sx={{ borderRadius: 16 }}
+          aria-label={checked ? t("controls.hideWeekend") : t("controls.showWeekend")}
+        >
+          {checked ? t("controls.hideWeekend") : t("controls.showWeekend")}
         </Button>
       </Box>
     </>
