@@ -35,6 +35,7 @@ export const configSchema = object({
     callbackUrl: string(),
     scopes: string(),
     callbackRedirectUrl: string(),
+    cloudId: string(),
   }),
   session: object({
     name: string(),

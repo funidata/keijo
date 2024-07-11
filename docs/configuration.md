@@ -35,6 +35,7 @@ Key|Default|Description
 `ATLASSIAN_CLIENT_SECRET`|| Client Secret of your Atlassian OAuth 2.0 App.
 `ATLASSIAN_AUTHORIZATION_URL`|https://auth.atlassian.com/authorize| Atlassian URL where user is directed to grant keijo access to use resources.
 `ATLASSIAN_TOKEN_URL`|https://auth.atlassian.com/oauth/token| Atlassian URL where keijo exchanges authorization code for access and refresh tokens.
+`ATLASSIAN_CLOUD_ID`|| Cloud ID of Atlassian tenant where Keijo requests data from.
 `CALLBACK_URL`|/jira/callback| Keijo URL where user is redirected from Jira after access is granted.
 `CALLBACK_REDIRECT_URL`|/| Keijo URL where user is redirected from callback after callback is handled.
 `SESSION_SECRET`|| Session secret.

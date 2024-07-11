@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Autocomplete, FormControl, Grid, TextField } from "@mui/material";
+import { Autocomplete, AutocompleteProps, FormControl, Grid, TextField } from "@mui/material";
 import { Control, Controller, ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
 import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
 
@@ -8,6 +8,10 @@ type DimensionComboBoxProps<T extends FieldValues> = {
   name: "product" | "activity" | "issue" | "client";
   title: string;
   rules?: ControllerProps["rules"];
+  autoCompleteProps?: Partial<
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    AutocompleteProps<any, boolean | undefined, boolean | undefined, boolean | undefined>
+  >;
 };
 
 const DimensionComboBox = <T extends FieldValues>({
@@ -15,9 +19,9 @@ const DimensionComboBox = <T extends FieldValues>({
   name,
   title,
   rules,
+  autoCompleteProps,
 }: DimensionComboBoxProps<T>) => {
   const { data } = useQuery(FindDimensionOptionsDocument);
-
   const options = data?.findDimensionOptions[name] || [];
 
   return (
@@ -27,25 +31,27 @@ const DimensionComboBox = <T extends FieldValues>({
           control={form.control as unknown as Control<FieldValues>}
           name={name}
           rules={rules}
-          render={({ field: { value, onChange } }) => {
-            return (
-              <Autocomplete
-                value={value || null}
-                onChange={(_, value) => onChange(value)}
-                options={options}
-                autoHighlight
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={title}
-                    onChange={onChange}
-                    error={!!form.formState.errors[name]}
-                    helperText={form.formState.errors[name]?.message as string}
-                  />
-                )}
-              />
-            );
-          }}
+          render={({ field: { value, onChange } }) => (
+            <Autocomplete
+              value={value || null}
+              onChange={(_, value) => onChange(value?.label || value)}
+              options={options}
+              autoHighlight
+              freeSolo
+              forcePopupIcon
+              clearOnBlur
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label={title}
+                  onChange={onChange}
+                  error={!!form.formState.errors[name]}
+                  helperText={form.formState.errors[name]?.message as string}
+                />
+              )}
+              {...autoCompleteProps}
+            />
+          )}
         />
       </FormControl>
     </Grid>

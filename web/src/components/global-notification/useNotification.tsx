@@ -1,10 +1,12 @@
 import { AlertColor } from "@mui/material";
+import { ReactNode } from "react";
 import { create } from "zustand";
 
 type NotificationState = {
   type: AlertColor | undefined;
   message: string | null;
   autoHide: boolean;
+  action?: ReactNode;
 };
 
 type NotificationActions = {
@@ -12,7 +14,7 @@ type NotificationActions = {
   resetNotification: () => void;
 };
 
-const defaultState = { type: undefined, message: null, autoHide: false };
+const defaultState = { type: undefined, message: null, autoHide: false, action: null };
 
 export const useNotificationState = create<NotificationState & NotificationActions>()((set) => ({
   ...defaultState,

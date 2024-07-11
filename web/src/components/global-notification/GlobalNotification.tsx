@@ -8,7 +8,7 @@ import { useNotificationState } from "./useNotification";
 
 const GlobalNotification = () => {
   const [open, setOpen] = useState(false);
-  const { autoHide, message, type, resetNotification } = useNotificationState();
+  const { autoHide, message, type, resetNotification, action } = useNotificationState();
   const autoHideDuration = autoHide ? 5000 : null;
   const close = () => setOpen(false);
 
@@ -26,7 +26,7 @@ const GlobalNotification = () => {
       autoHideDuration={autoHideDuration}
     >
       <Alert severity={type} variant="filled" onClose={close} sx={{ color: "white" }}>
-        {message}
+        {message} {action}
       </Alert>
     </Snackbar>
   );

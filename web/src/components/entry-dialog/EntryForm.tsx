@@ -29,6 +29,8 @@ import DurationSlider from "./DurationSlider";
 import ResponsiveDatePicker from "./ResponsiveDatePicker";
 import WorkdayHours from "./WorkdayHours";
 import useEntryForm, { EntryFormSchema } from "./useEntryForm";
+import { useIsJiraAuthenticated } from "../../jira/jiraApi";
+import JiraIssueComboBox from "../../jira/components/JiraIssueComboBox";
 
 export type EntryFormProps = {
   form: UseFormReturn<EntryFormSchema>;
@@ -71,6 +73,7 @@ const EntryForm = () => {
   const { userPrefersSetRemainingHours, toggleRemainingHours } = usePreferSetRemainingHours();
   const { control, watch } = form;
   const dateWatch = dayjs(watch("date")).locale(dayjs.locale());
+  const { isJiraAuth } = useIsJiraAuthenticated();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -89,7 +92,11 @@ const EntryForm = () => {
               title={t("entryDialog.activity")}
               rules={{ required: t("entryDialog.validation.activityRequired") }}
             />
-            <DimensionComboBox form={form} name="issue" title={t("entryDialog.issue")} />
+            {isJiraAuth ? (
+              <JiraIssueComboBox form={form} name="issue" title={t("entryDialog.issue")} />
+            ) : (
+              <DimensionComboBox form={form} name="issue" title={t("entryDialog.issue")} />
+            )}
             <DimensionComboBox form={form} name="client" title={t("entryDialog.client")} />
             <Grid item xs={12}>
               <Controller

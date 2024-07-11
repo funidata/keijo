@@ -36,6 +36,7 @@ export const defaultMockConfig: Config = {
     callbackUrl: "test",
     callbackRedirectUrl: "test",
     scopes: "test",
+    cloudId: "test",
   },
   session: {
     name: "test",
