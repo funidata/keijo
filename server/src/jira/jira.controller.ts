@@ -1,5 +1,5 @@
 import { Controller, Get, Req, Res, UseGuards } from "@nestjs/common";
-import { Response, Request, response } from "express";
+import { Response, Request } from "express";
 import { BypassHeadersGuard } from "../decorators/bypass-headers-guard.decorator";
 import { JiraAuthGuard } from "./jira.guard";
 import { JiraService } from "./jira.service";

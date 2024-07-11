@@ -7,7 +7,6 @@ import MenuItem from "@mui/material/MenuItem";
 import { useTranslation } from "react-i18next";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
 import { keijoJiraApiUrl } from "../../jira/jiraConfig";
-import { axiosKeijo } from "../../jira/axiosInstance";
 import { useIsJiraAuthenticated } from "../../jira/jiraApi";
 
 type SettingsMenuProps = {
