@@ -2,30 +2,12 @@ import axios from "axios";
 import { useNotificationState } from "../components/global-notification/useNotification";
 import { jiraApiPath, jiraApiBaseUrl, keijoJiraApiUrl, jiraApiVersion } from "./jiraConfig";
 
-import { JiraAuthLink } from "./components/JiraAuthLink";
-
 const axiosJira = axios.create({});
 
 const axiosKeijo = axios.create({
   baseURL: keijoJiraApiUrl,
   withCredentials: true,
 });
-
-axiosKeijo.interceptors.response.use(
-  (res) => res,
-  (err) => {
-    if (err.response.status === 403 || err.response.status === 401) {
-      useNotificationState.getState().setNotification({
-        message: "Jira is not authenticated. Keijo uses Jira for e.g., receiving issue summaries.",
-        type: "warning",
-        autoHide: true,
-        action: JiraAuthLink,
-      });
-    }
-
-    return Promise.reject(err);
-  },
-);
 
 axiosJira.interceptors.response.use(
   (res) => res,

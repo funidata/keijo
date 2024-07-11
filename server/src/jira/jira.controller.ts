@@ -1,5 +1,5 @@
-import { Controller, Get, Res, UseGuards } from "@nestjs/common";
-import { Response } from "express";
+import { Controller, Get, Req, Res, UseGuards } from "@nestjs/common";
+import { Response, Request, response } from "express";
 import { BypassHeadersGuard } from "../decorators/bypass-headers-guard.decorator";
 import { JiraAuthGuard } from "./jira.guard";
 import { JiraService } from "./jira.service";
@@ -43,5 +43,13 @@ export class JiraController {
   async getAccessToken(@SessionUser() jiraTokens: JiraTokens) {
     const cloudId = this.configService.config.jira.cloudId;
     return { access_token: jiraTokens.accessToken, cloud_id: cloudId };
+  }
+
+  @BypassHeadersGuard()
+  @Get("remove-session")
+  async removeSession(@Req() request: Request, @Res() response: Response) {
+    request.session.destroy(() => {
+      response.redirect(this.configService.config.jira.callbackRedirectUrl);
+    });
   }
 }

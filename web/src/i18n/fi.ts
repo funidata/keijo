@@ -20,6 +20,8 @@ const fi = {
     selectLanguage: "Valitse kieli",
     settingsMenu: "Asetukset",
     defaultsView: "Oletusarvot",
+    jiraConnect: "Yhdistä Jiraan",
+    jiraDisconnect: "Katkaise Jira yhteys",
   },
   dimensionNames: {
     product: "Tuote",
