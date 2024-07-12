@@ -78,6 +78,8 @@ const checkWeekdays = async (page: Page, week: number, t: TFunction, dayjs: Dayj
   await expect(page.getByRole("button", { name: date.add(2, "day").format("dd l") })).toBeVisible();
   await expect(page.getByRole("button", { name: date.add(3, "day").format("dd l") })).toBeVisible();
   await expect(page.getByRole("button", { name: date.add(4, "day").format("dd l") })).toBeVisible();
+
+  await page.getByRole("button", { name: t("controls.showWeekend") }).click();
   const saturday = page.getByRole("button", { name: date.add(5, "day").format("dd l") });
   await expect(saturday).toBeVisible();
   await expect(saturday.getByText(t("entryTable.weekend"))).toBeVisible();

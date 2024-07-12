@@ -22,6 +22,8 @@ const en = {
     defaultsView: "Default Values",
     jiraConnect: "Connect to Jira",
     jiraDisconnect: "Disconnect from Jira",
+    showWeekend: "Show Weekend",
+    hideWeekend: "Hide Weekend",
   },
   dimensionNames: {
     product: "Product",

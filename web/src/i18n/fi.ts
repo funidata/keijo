@@ -22,6 +22,8 @@ const fi = {
     defaultsView: "Oletusarvot",
     jiraConnect: "Yhdistä Jiraan",
     jiraDisconnect: "Katkaise Jira-yhteys",
+    showWeekend: "Näytä Viikonloppu",
+    hideWeekend: "Piilota Viikonloppu",
   },
   dimensionNames: {
     product: "Tuote",
