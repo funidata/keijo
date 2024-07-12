@@ -52,7 +52,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
     useNotificationState.getState().setNotification({
       message:
         "Could not fetch issues from Jira. You might need to reconnect to Jira from settings. Falling back to default options.",
-      type: "warning",
+      type: "error",
       autoHide: false,
     });
     return <DimensionComboBox form={params.form} name="issue" title={params.title} />;
