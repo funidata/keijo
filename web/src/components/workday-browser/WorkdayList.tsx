@@ -74,11 +74,12 @@ const WorkdayList = () => {
           return wdArr.map((wd) => <WorkdayAccordion workday={wd} key={wd.date.toString()} />);
         })}
       </Paper>
-      <Box textAlign="left" mt={1} ml="11px">
+      <Box textAlign="left" mt="1em">
         <Button
           onClick={handleChange}
           size="small"
           color="primary"
+          variant="outlined"
           sx={{ borderRadius: 3 }}
           aria-label={checked ? t("controls.hideWeekend") : t("controls.showWeekend")}
         >
