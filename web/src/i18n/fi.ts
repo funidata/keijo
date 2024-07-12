@@ -21,7 +21,7 @@ const fi = {
     settingsMenu: "Asetukset",
     defaultsView: "Oletusarvot",
     jiraConnect: "Yhdistä Jiraan",
-    jiraDisconnect: "Katkaise Jira yhteys",
+    jiraDisconnect: "Katkaise Jira-yhteys",
   },
   dimensionNames: {
     product: "Tuote",
