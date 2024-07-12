@@ -1,8 +1,5 @@
 import axios from "axios";
-import { useNotificationState } from "../components/global-notification/useNotification";
 import { jiraApiPath, jiraApiBaseUrl, keijoJiraApiUrl, jiraApiVersion } from "./jiraConfig";
-
-import { JiraAuthLink } from "./components/JiraAuthLink";
 
 const axiosJira = axios.create({});
 
@@ -11,22 +8,6 @@ const axiosKeijo = axios.create({
   withCredentials: true,
 });
 
-axiosKeijo.interceptors.response.use(
-  (res) => res,
-  (err) => {
-    if (err.response.status === 403 || err.response.status === 401) {
-      useNotificationState.getState().setNotification({
-        message: "Jira is not authenticated. Keijo uses Jira for e.g., receiving issue summaries.",
-        type: "warning",
-        autoHide: true,
-        action: JiraAuthLink,
-      });
-    }
-
-    return Promise.reject(err);
-  },
-);
-
 axiosJira.interceptors.response.use(
   (res) => res,
   async (err) => {
@@ -34,11 +15,6 @@ axiosJira.interceptors.response.use(
       const token = (await axiosKeijo.get("/refresh")).data;
       axiosJira.defaults.headers.common.Authorization = "Bearer " + token.access_token;
     }
-    useNotificationState.getState().setNotification({
-      message: "Failed to fetch issue data from Jira: " + err.response.status,
-      type: "error",
-      autoHide: true,
-    });
     return Promise.reject(err);
   },
 );

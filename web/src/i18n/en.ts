@@ -20,6 +20,8 @@ const en = {
     selectLanguage: "Select language",
     settingsMenu: "Settings",
     defaultsView: "Default Values",
+    jiraConnect: "Connect to Jira",
+    jiraDisconnect: "Disconnect from Jira",
   },
   dimensionNames: {
     product: "Product",
