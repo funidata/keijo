@@ -5,6 +5,7 @@ import {
   UseInfiniteQueryOptions,
   InfiniteData,
   QueryKey,
+  UseQueryOptions,
 } from "@tanstack/react-query";
 import { axiosJira, axiosKeijo } from "./axiosInstance";
 import { jiraQueryMaxResults } from "./jiraConfig";
@@ -16,10 +17,7 @@ export type JiraIssueResult = {
   total: number;
 };
 
-type UseGetIssuesProps = {
-  issueKeys: Array<string>;
-  enabled?: boolean;
-} & Partial<
+type InfiniteIssueOptions = Partial<
   UseInfiniteQueryOptions<
     JiraIssueResult,
     Error,
@@ -30,19 +28,15 @@ type UseGetIssuesProps = {
   >
 >;
 
+type UseGetIssuesProps = {
+  issueKeys: Array<string>;
+  enabled?: boolean;
+} & InfiniteIssueOptions;
+
 type UseSearchIssuesProps = {
   issueKeys: Array<string>;
   searchFilter: string;
-} & Partial<
-  UseInfiniteQueryOptions<
-    JiraIssueResult,
-    Error,
-    InfiniteData<JiraIssueResult, number>,
-    JiraIssueResult,
-    QueryKey,
-    number
-  >
->;
+} & InfiniteIssueOptions;
 
 const getAccessToken = async () => {
   const token = (await axiosKeijo.get("/access-token")).data;
@@ -168,3 +162,18 @@ export const useSearchIssues = ({
     ...query,
   };
 };
+
+/**
+ * Get users recent issues
+ */
+export const useRecentIssues = (
+  queryProps?: Partial<UseQueryOptions<JiraIssueResult>>,
+): UseQueryResult<JiraIssueResult> =>
+  useQuery({
+    queryKey: ["recentIssues"],
+    queryFn: async () => {
+      return await getIssues(`issuekey in issueHistory() order by lastViewed DESC`);
+    },
+    retry: 2,
+    ...queryProps,
+  });
