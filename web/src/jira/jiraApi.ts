@@ -10,7 +10,7 @@ import {
 import { axiosJira, axiosKeijo } from "./axiosInstance";
 import { jiraQueryMaxResults } from "./jiraConfig";
 import { findKeysIncludingWord, findWordInKeys, removeWord } from "./jiraUtils";
-import { jqlAND, jqlOR, jqlOrderBy, keyIsInKeys, summaryContains } from "./jql";
+import { jqlAND, jqlOR, jqlOrderBy, jqlRecentIssues, keyIsInKeys, summaryContains } from "./jql";
 
 export type JiraIssueResult = {
   issues: Array<{ key: string; fields: { summary: string } }>;
@@ -172,7 +172,7 @@ export const useRecentIssues = (
   useQuery({
     queryKey: ["recentIssues"],
     queryFn: async () => {
-      return await getIssues(`issuekey in issueHistory() order by lastViewed DESC`);
+      return await getIssues(jqlOrderBy(jqlRecentIssues(), "lastViewed", "DESC"));
     },
     retry: 2,
     ...queryProps,
