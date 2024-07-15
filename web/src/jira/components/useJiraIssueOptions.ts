@@ -94,7 +94,9 @@ export const useJiraIssueOptions = ({
   const options =
     pageError || searchError
       ? issueKeys.map((key) => ({ label: key, text: key }))
-      : [...recentIssueOptions, ...pagedOptions];
+      : searchFilter
+        ? pagedOptions
+        : [...recentIssueOptions, ...pagedOptions];
 
   const loadMore = useCallback(async () => {
     if (hasNextPage) {
