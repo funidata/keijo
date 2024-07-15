@@ -37,7 +37,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
   const [sentryRef, { rootRef }] = useInfiniteScroll({
     loading: isFetching,
     hasNextPage: hasNextPage,
-    disabled: error,
+    disabled: !!error,
     onLoadMore: loadMore,
     delayInMs: 0,
     rootMargin: `0px 0px 1500px 0px`,

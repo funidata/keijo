@@ -18,21 +18,8 @@ export type JiraIssueResult = {
 
 type UseGetIssuesProps = {
   issueKeys: Array<string>;
+  searchFilter?: string;
   enabled?: boolean;
-} & Partial<
-  UseInfiniteQueryOptions<
-    JiraIssueResult,
-    Error,
-    InfiniteData<JiraIssueResult, number>,
-    JiraIssueResult,
-    QueryKey,
-    number
-  >
->;
-
-type UseSearchIssuesProps = {
-  issueKeys: Array<string>;
-  searchFilter: string;
 } & Partial<
   UseInfiniteQueryOptions<
     JiraIssueResult,
@@ -83,75 +70,49 @@ export const useIsJiraAuthenticated = () => {
  *  Get paginated issue data (e.g, summary) by providing a list of issuekeys.
  *  Queries JiraQueryMaxResults amount of issues per page.
  */
-export const useGetIssues = ({ issueKeys, enabled, ...queryProps }: UseGetIssuesProps) => {
-  const query = useInfiniteQuery({
-    queryKey: ["issues", ...issueKeys],
+export const useGetIssues = ({
+  issueKeys,
+  searchFilter,
+  enabled,
+  ...queryProps
+}: UseGetIssuesProps) => {
+  const keysToFetch = [
+    ...(searchFilter
+      ? issueKeys.filter((option) =>
+          option.toLowerCase().trim().includes(searchFilter.toLowerCase().trim()),
+        )
+      : issueKeys),
+  ];
+
+  const wordInKeys =
+    searchFilter &&
+    searchFilter.trim().split(" ").length > 1 &&
+    findWordInKeys(searchFilter, issueKeys);
+
+  const keysIncludingWord = wordInKeys ? findKeysIncludingWord(wordInKeys, issueKeys) : [];
+  const searchWithoutWord = wordInKeys ? removeWord(searchFilter, wordInKeys) : "";
+
+  const searchJql = wordInKeys
+    ? jqlOR(
+        jqlAND(keyIsInKeys(issueKeys), summaryContains(searchFilter)),
+        jqlAND(keyIsInKeys(keysIncludingWord), summaryContains(searchWithoutWord)),
+      )
+    : searchFilter && jqlAND(keyIsInKeys(issueKeys), summaryContains(searchFilter));
+
+  const jql =
+    searchJql && keysToFetch.length
+      ? jqlOR(keyIsInKeys(keysToFetch), searchJql)
+      : searchJql || keyIsInKeys(keysToFetch);
+
+  return useInfiniteQuery({
+    queryKey: ["issues", ...issueKeys, searchFilter],
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     staleTime: Infinity,
     queryFn: async ({ pageParam }) => {
-      return await getIssues(
-        keyIsInKeys(issueKeys.slice(pageParam, pageParam + jiraQueryMaxResults)),
-        0,
-      );
+      return await getIssues(jqlOrderBy(jql, "lastviewed", "DESC"), pageParam);
     },
-    initialPageParam: 0,
-    getNextPageParam: (_lastPage, _allPages, lastPageParam) => {
-      const nextPageStartIndex = lastPageParam + jiraQueryMaxResults;
-      if (nextPageStartIndex >= issueKeys.length - 1) {
-        return;
-      }
-      return nextPageStartIndex;
-    },
-    enabled: enabled && issueKeys.length > 0,
-    retry: 2,
-    ...queryProps,
-  });
-  return {
-    ...query,
-    keysFetched: issueKeys.slice(
-      0,
-      (query.data?.pageParams.slice(-1)[0] || 0) + jiraQueryMaxResults,
-    ),
-  };
-};
-
-/**
- *  Get paginated issue data by providing list of issueKeys and a searchFilter string.
- *  The query tries to get issuedata of all issues from Jira whose summary contains searchFilter and
- *  whose issueKey is in the provided issueKeys list. Also, if searchFilter contains a word matching
- *  some issueKey(s) by atleast with the project key, then query if the summaries of those issueKey(s) contain
- *  the edited searchFilter with the matching word removed. This is useful if we want to search an issue
- *  with some key+summary searchFilter since Jira allows "fuzzy" string search
- *  only for text fields, not issue keys, so we need to match the searchFilter with the issue key by ourselves.
- *  Queries JiraQueryMaxResults amount of issues per page.
- */
-export const useSearchIssues = ({
-  issueKeys,
-  searchFilter,
-  ...queryProps
-}: UseSearchIssuesProps) => {
-  const wordInKeys =
-    searchFilter.trim().split(" ").length > 1 && findWordInKeys(searchFilter, issueKeys);
-
-  const keysIncludingWord = wordInKeys ? findKeysIncludingWord(wordInKeys, issueKeys) : [];
-  const searchWithoutWord = wordInKeys ? removeWord(searchFilter, wordInKeys) : "";
-
-  const jql = wordInKeys
-    ? jqlOR(
-        jqlAND(keyIsInKeys(issueKeys), summaryContains(searchFilter)),
-        jqlAND(keyIsInKeys(keysIncludingWord), summaryContains(searchWithoutWord)),
-      )
-    : jqlAND(keyIsInKeys(issueKeys), summaryContains(searchFilter));
-
-  const query = useInfiniteQuery({
-    queryKey: ["issueSearch", searchFilter],
-    staleTime: Infinity,
-    queryFn: async ({ pageParam }) => {
-      return await getIssues(jqlOrderBy(jql, "key"), pageParam);
-    },
-    enabled: !!searchFilter,
     initialPageParam: 0,
     getNextPageParam: (lastPage, _allPages, lastPageParam) => {
       const nextPageStartIndex = lastPageParam + jiraQueryMaxResults;
@@ -160,11 +121,8 @@ export const useSearchIssues = ({
       }
       return nextPageStartIndex;
     },
+    enabled: enabled && issueKeys.length > 0,
     retry: 2,
     ...queryProps,
   });
-
-  return {
-    ...query,
-  };
 };

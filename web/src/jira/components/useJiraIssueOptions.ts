@@ -1,8 +1,6 @@
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 
-import { useGetIssues, useSearchIssues } from "../jiraApi";
-import { chunkArray, mergePages } from "../jiraUtils";
-import { jiraQueryMaxResults } from "../jiraConfig";
+import { useGetIssues } from "../jiraApi";
 
 type UseJiraIssueOptionsProps = {
   issueKeys: string[];
@@ -15,89 +13,60 @@ export const useJiraIssueOptions = ({
   searchFilter,
   enabled,
 }: UseJiraIssueOptionsProps) => {
-  const keysToFetch = [
-    ...(searchFilter
-      ? issueKeys.filter((option) =>
-          option.toLowerCase().trim().includes(searchFilter.toLowerCase().trim()),
-        )
-      : issueKeys),
-  ].sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
-
   const {
     data: pagedIssueData,
     fetchNextPage,
     error: pageError,
     hasNextPage,
     isFetching: pageFetching,
-    keysFetched,
   } = useGetIssues({
-    issueKeys: keysToFetch,
+    issueKeys: issueKeys,
+    searchFilter,
     enabled: enabled,
   });
 
-  const {
-    data: searchedIssueData,
-    fetchNextPage: searchFetchNext,
-    error: searchError,
-    hasNextPage: searchHasNext,
-    isFetching: searchFetching,
-  } = useSearchIssues({
-    issueKeys: issueKeys,
-    searchFilter: searchFilter,
-    enabled: enabled && !!searchFilter,
-  });
-
   const filteredOptions = useMemo(() => {
-    const fetchedIssues = keysFetched.map((key) => {
-      const issue = pagedIssueData?.pages
-        .flatMap((page) => page.issues)
-        .find((issue) => issue.key === key);
-      if (issue) {
-        return { label: issue.key, text: `${issue.key}: ${issue.fields.summary}` };
-      }
-      return { label: key, text: key };
-    });
-
-    return fetchedIssues;
-  }, [keysFetched, pagedIssueData?.pages]);
-
-  const searchOptions = useMemo(() => {
-    const searchIssues = (searchedIssueData?.pages || [])
+    const fetchedOptions = pagedIssueData?.pages
       .flatMap((page) => page.issues)
       .map((issue) => ({
         label: issue.key,
         text: `${issue.key}: ${issue.fields.summary}`,
       }))
-      .filter(
-        (opt) =>
-          !filteredOptions.find((opt_) => opt_.label === opt.label) &&
-          issueKeys.includes(opt.label),
-      );
-    return searchIssues;
-  }, [filteredOptions, issueKeys, searchedIssueData?.pages]);
+      .filter((option) => issueKeys.includes(option.label));
 
-  const pagedOptions = mergePages(
-    chunkArray(filteredOptions, jiraQueryMaxResults),
-    chunkArray(searchOptions, jiraQueryMaxResults),
-  ).flat();
-
-  const options =
-    pageError || searchError ? issueKeys.map((key) => ({ label: key, text: key })) : pagedOptions;
-
-  const loadMore = useCallback(async () => {
-    if (hasNextPage) {
-      await fetchNextPage();
+    if (!hasNextPage && fetchedOptions && fetchedOptions.length < issueKeys.length) {
+      return [
+        ...issueKeys
+          .filter((key) => searchFilter && key.toLowerCase() === searchFilter.trim().toLowerCase())
+          .map((key) => ({
+            label: key,
+            text: key,
+          })),
+        ...fetchedOptions,
+        ...issueKeys
+          .filter(
+            (key) =>
+              !fetchedOptions.some((opt) => opt.label.toLowerCase() === key.toLowerCase()) &&
+              (!searchFilter ||
+                (key.toLowerCase().includes(searchFilter.trim().toLowerCase()) &&
+                  key.toLowerCase() !== searchFilter.trim().toLowerCase())),
+          )
+          .map((key) => ({
+            label: key,
+            text: key,
+          })),
+      ];
     }
-    if (!!searchFilter && searchHasNext) {
-      await searchFetchNext();
-    }
-  }, [fetchNextPage, hasNextPage, searchFetchNext, searchFilter, searchHasNext]);
+    return fetchedOptions || [];
+  }, [hasNextPage, issueKeys, pagedIssueData?.pages, searchFilter]);
+
+  const options = pageError ? issueKeys.map((key) => ({ label: key, text: key })) : filteredOptions;
 
   return {
     options,
-    loadMore,
-    hasNextPage: searchHasNext || hasNextPage,
-    isFetching: searchFetching || pageFetching,
-    error: !!(searchError || pageError),
+    loadMore: fetchNextPage,
+    hasNextPage: hasNextPage,
+    isFetching: pageFetching,
+    error: pageError,
   };
 };
