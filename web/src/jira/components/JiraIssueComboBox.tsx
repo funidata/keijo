@@ -8,7 +8,7 @@ import { useDebounceValue } from "usehooks-ts";
 import { useEffect, useState } from "react";
 import { useJiraIssueOptions } from "./useJiraIssueOptions";
 import { useNotificationState } from "../../components/global-notification/useNotification";
-import { queryClient } from "../queryClient";
+import { useQueryClient } from "@tanstack/react-query";
 
 type JiraIssueComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -22,6 +22,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
   ...params
 }: JiraIssueComboBoxProps<T>) => {
   const { data, loading } = useQuery(FindDimensionOptionsDocument);
+  const queryClient = useQueryClient();
 
   const nvKeys = data?.findDimensionOptions[name] || [];
 
