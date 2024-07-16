@@ -3,6 +3,7 @@ query GetMySettings {
     employeeNumber
     productPreset
     activityPreset
+    jiraNotificationIgnore
   }
 }
 
