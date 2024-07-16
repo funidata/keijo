@@ -107,6 +107,10 @@ const fi = {
   titles: {
     workdayBrowser: "Työaikakirjaukset",
   },
+  jira: {
+    connectNotification:
+      "Jira-integraation on lisätty Keijoon. Yhdistä Jiraan saadaksesi mm. tikettien otsikot Jirasta.",
+  },
 };
 
 export default fi;

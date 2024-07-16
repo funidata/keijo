@@ -107,6 +107,10 @@ const en = {
   titles: {
     workdayBrowser: "Entries",
   },
+  jira: {
+    connectNotification:
+      "Jira Integration has been added to Keijo. Connect to Jira to get e.g., issue summaries.",
+  },
 };
 
 export default en;
