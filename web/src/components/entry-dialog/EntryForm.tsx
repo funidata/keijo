@@ -31,6 +31,7 @@ import WorkdayHours from "./WorkdayHours";
 import useEntryForm, { EntryFormSchema } from "./useEntryForm";
 import { useIsJiraAuthenticated } from "../../jira/jiraApi";
 import JiraIssueComboBox from "../../jira/components/JiraIssueComboBox";
+import { JiraIntegrationAlert } from "../../jira/components/JiraIntegrationAlert";
 
 export type EntryFormProps = {
   form: UseFormReturn<EntryFormSchema>;
@@ -132,6 +133,11 @@ const EntryForm = () => {
                 )}
               />
             </Grid>
+            {!isJiraAuth && (
+              <Grid item>
+                <JiraIntegrationAlert />
+              </Grid>
+            )}
           </Grid>
         </Grid>
         <Grid item xs={12} md={6}>

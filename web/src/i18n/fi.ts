@@ -113,6 +113,8 @@ const fi = {
       all: "Kaikki",
       recent: "Viimeaikaiset",
     },
+    connectNotification:
+      "Jira-integraation on lisätty Keijoon. Yhdistä Jiraan saadaksesi mm. tikettien otsikot Jirasta.",
   },
 };
 

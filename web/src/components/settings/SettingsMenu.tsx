@@ -6,8 +6,8 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useTranslation } from "react-i18next";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
-import { keijoJiraApiUrl } from "../../jira/jiraConfig";
 import { useIsJiraAuthenticated } from "../../jira/jiraApi";
+import { connectToJira, disconnectJira } from "../../jira/jiraUtils";
 
 type SettingsMenuProps = {
   anchor: HTMLElement | null;
@@ -27,12 +27,12 @@ const SettingsMenu = ({ anchor, onClose }: SettingsMenuProps) => {
 
   const handleConnectToJira = () => {
     onClose();
-    window.location.href = keijoJiraApiUrl;
+    connectToJira();
   };
 
   const handleDisconnectJira = () => {
     onClose();
-    window.location.href = keijoJiraApiUrl + "/remove-session";
+    disconnectJira();
   };
 
   return (
