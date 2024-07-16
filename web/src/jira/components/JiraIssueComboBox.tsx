@@ -96,7 +96,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
           ref: rootRef,
         },
         onInputChange: (_, value, reason) => {
-          if (reason === "reset" && value) {
+          if ((reason === "reset" && value) || value === searchFilter) {
             return;
           }
           setDebouncePending(true);
