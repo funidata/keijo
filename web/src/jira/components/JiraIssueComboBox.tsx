@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
-import { ListItem, ListItemText, Typography } from "@mui/material";
-import { ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
 import { useQuery } from "@apollo/client";
+import { ListItem, ListItemText, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
-import { useDebounceValue } from "usehooks-ts";
-import useInfiniteScroll from "react-infinite-scroll-hook";
-import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
-import DimensionComboBox from "../../components/entry-dialog/DimensionComboBox";
-import { useJiraIssueOptions } from "./useJiraIssueOptions";
-import { useNotificationState } from "../../components/global-notification/useNotification";
+import { useEffect, useState } from "react";
+import { ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import useInfiniteScroll from "react-infinite-scroll-hook";
+import { useDebounceValue } from "usehooks-ts";
+import DimensionComboBox from "../../components/entry-dialog/DimensionComboBox";
+import { useNotificationState } from "../../components/global-notification/useNotification";
+import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
+import { useJiraIssueOptions } from "./useJiraIssueOptions";
 
 type JiraIssueComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -25,6 +25,8 @@ const JiraIssueComboBox = <T extends FieldValues>({
   const { data, loading } = useQuery(FindDimensionOptionsDocument);
   const queryClient = useQueryClient();
   const { t } = useTranslation();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const nvKeys = data?.findDimensionOptions[name] || [];
 
@@ -113,6 +115,18 @@ const JiraIssueComboBox = <T extends FieldValues>({
           setDebouncePending(true);
           setSearchFilter(value);
         },
+        componentsProps: !mobile
+          ? {
+              popper: {
+                style: {
+                  width: "45vw",
+                  maxWidth: "580px",
+                },
+
+                placement: "bottom-start",
+              },
+            }
+          : undefined,
       }}
     />
   );
