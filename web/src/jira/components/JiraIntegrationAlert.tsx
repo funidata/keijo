@@ -13,10 +13,10 @@ export const JiraIntegrationAlert = ({ onConnect, onHide }: JiraIntegrationAlert
       action={
         <>
           <Button onClick={onConnect} sx={{ mr: 2 }} variant="outlined" size="small">
-            Connect
+            {t("controls.jiraConnect")}
           </Button>
           <Button onClick={onHide} variant="outlined" color="inherit" size="small">
-            Hide
+            {t("controls.hide")}
           </Button>
         </>
       }
