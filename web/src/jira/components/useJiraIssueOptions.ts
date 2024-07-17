@@ -35,26 +35,33 @@ export const useJiraIssueOptions = ({
       .filter((option) => issueKeys.includes(option.label));
 
     if (!hasNextPage && fetchedOptions && fetchedOptions.length < issueKeys.length) {
+      const exactMatches = issueKeys
+        .filter((key) => searchFilter && key.toLowerCase() === searchFilter.trim().toLowerCase())
+        .map((key) => ({
+          label: key,
+          text: key,
+        }));
+
+      const notFound = issueKeys
+        .filter(
+          (key) =>
+            !fetchedOptions.some((opt) => opt.label.toLowerCase() === key.toLowerCase()) &&
+            (!searchFilter ||
+              (key.toLowerCase().includes(searchFilter.trim().toLowerCase()) &&
+                key.toLowerCase() !== searchFilter.trim().toLowerCase())),
+        )
+        .map((key) => ({
+          label: key,
+          text: key,
+        }));
+
       return [
-        ...issueKeys
-          .filter((key) => searchFilter && key.toLowerCase() === searchFilter.trim().toLowerCase())
-          .map((key) => ({
-            label: key,
-            text: key,
-          })),
+        // Exact matches of issuekey = searchFilter first
+        ...exactMatches,
+        // Options fetched from Jira
         ...fetchedOptions,
-        ...issueKeys
-          .filter(
-            (key) =>
-              !fetchedOptions.some((opt) => opt.label.toLowerCase() === key.toLowerCase()) &&
-              (!searchFilter ||
-                (key.toLowerCase().includes(searchFilter.trim().toLowerCase()) &&
-                  key.toLowerCase() !== searchFilter.trim().toLowerCase())),
-          )
-          .map((key) => ({
-            label: key,
-            text: key,
-          })),
+        // Rest of the options from nv, not exact match and not found from Jira
+        ...notFound,
       ];
     }
     return fetchedOptions || [];
