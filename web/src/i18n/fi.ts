@@ -24,6 +24,7 @@ const fi = {
     jiraDisconnect: "Katkaise Jira-yhteys",
     showWeekend: "Näytä Viikonloppu",
     hideWeekend: "Piilota Viikonloppu",
+    hide: "Piilota",
   },
   dimensionNames: {
     product: "Tuote",
@@ -109,7 +110,7 @@ const fi = {
   },
   jira: {
     connectNotification:
-      "Jira-integraation on lisätty Keijoon. Yhdistä Jiraan saadaksesi mm. tikettien otsikot Jirasta.",
+      "Jira-integraatio on lisätty Keijoon. Yhdistä Jiraan saadaksesi mm. tikettien otsikot Jirasta.",
   },
 };
 
