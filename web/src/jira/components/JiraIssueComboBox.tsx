@@ -1,4 +1,4 @@
-import { ListItem, ListItemText, Typography } from "@mui/material";
+import { ListItem, ListItemText, Typography, useTheme, useMediaQuery } from "@mui/material";
 import { ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
 import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
 import { useQuery } from "@apollo/client";
@@ -22,6 +22,8 @@ const JiraIssueComboBox = <T extends FieldValues>({
   ...params
 }: JiraIssueComboBoxProps<T>) => {
   const { data, loading } = useQuery(FindDimensionOptionsDocument);
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const nvKeys = data?.findDimensionOptions[name] || [];
 
@@ -102,6 +104,18 @@ const JiraIssueComboBox = <T extends FieldValues>({
           setDebouncePending(true);
           setSearchFilter(value);
         },
+        componentsProps: !mobile
+          ? {
+              popper: {
+                style: {
+                  width: "45vw",
+                  maxWidth: "580px",
+                },
+
+                placement: "bottom-start",
+              },
+            }
+          : undefined,
       }}
     />
   );
