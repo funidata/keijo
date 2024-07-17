@@ -1,15 +1,15 @@
+import { useEffect, useState } from "react";
 import { ListItem, ListItemText, Typography } from "@mui/material";
 import { ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
-import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
 import { useQuery } from "@apollo/client";
-import useInfiniteScroll from "react-infinite-scroll-hook";
-import DimensionComboBox from "../../components/entry-dialog/DimensionComboBox";
+import { useQueryClient } from "@tanstack/react-query";
 import { useDebounceValue } from "usehooks-ts";
-import { useEffect, useState } from "react";
+import useInfiniteScroll from "react-infinite-scroll-hook";
+import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
+import DimensionComboBox from "../../components/entry-dialog/DimensionComboBox";
 import { useJiraIssueOptions } from "./useJiraIssueOptions";
 import { useNotificationState } from "../../components/global-notification/useNotification";
-import { queryClient } from "../queryClient";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 type JiraIssueComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -23,6 +23,8 @@ const JiraIssueComboBox = <T extends FieldValues>({
   ...params
 }: JiraIssueComboBoxProps<T>) => {
   const { data, loading } = useQuery(FindDimensionOptionsDocument);
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const nvKeys = data?.findDimensionOptions[name] || [];
 
