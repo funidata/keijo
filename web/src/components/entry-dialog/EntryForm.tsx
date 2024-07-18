@@ -38,7 +38,6 @@ import { useIsJiraAuthenticated } from "../../jira/jiraApi";
 import JiraIssueComboBox from "../../jira/components/JiraIssueComboBox";
 import { JiraIntegrationAlert } from "../../jira/components/JiraIntegrationAlert";
 import { useMutation, useQuery } from "@apollo/client";
-import { connectToJira } from "../../jira/jiraUtils";
 
 export type EntryFormProps = {
   form: UseFormReturn<EntryFormSchema>;
@@ -148,7 +147,6 @@ const EntryForm = () => {
             {data && !data.getMySettings.jiraNotificationIgnore && !isJiraAuth && !isLoading ? (
               <Grid item>
                 <JiraIntegrationAlert
-                  onConnect={connectToJira}
                   onHide={() =>
                     updateSettings({ variables: { settings: { jiraNotificationIgnore: true } } })
                   }
