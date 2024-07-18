@@ -7,7 +7,9 @@ import MenuItem from "@mui/material/MenuItem";
 import { useTranslation } from "react-i18next";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
 import { useIsJiraAuthenticated } from "../../jira/jiraApi";
-import { connectToJira, disconnectJira } from "../../jira/jiraUtils";
+import { disconnectJira } from "../../jira/jiraUtils";
+import { JiraInfoDialog } from "../../jira/components/JiraInfoDialog";
+import { useState } from "react";
 
 type SettingsMenuProps = {
   anchor: HTMLElement | null;
@@ -19,6 +21,7 @@ const SettingsMenu = ({ anchor, onClose }: SettingsMenuProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isJiraAuth } = useIsJiraAuthenticated();
+  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
 
   const handleSetDefaultValues = () => {
     onClose();
@@ -26,8 +29,7 @@ const SettingsMenu = ({ anchor, onClose }: SettingsMenuProps) => {
   };
 
   const handleConnectToJira = () => {
-    onClose();
-    connectToJira();
+    setInfoDialogOpen(true);
   };
 
   const handleDisconnectJira = () => {
@@ -63,6 +65,7 @@ const SettingsMenu = ({ anchor, onClose }: SettingsMenuProps) => {
           {t("controls.jiraConnect")}
         </MenuItem>
       )}
+      <JiraInfoDialog open={infoDialogOpen} handleClose={() => setInfoDialogOpen(false)} />
     </Menu>
   );
 };
