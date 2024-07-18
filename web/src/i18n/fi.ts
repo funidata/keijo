@@ -115,7 +115,7 @@ const fi = {
       recent: "Viimeaikaiset",
     },
     connectNotification:
-      "Jira-integraatio on lisätty Keijoon. Yhdistä Jiraan saadaksesi mm. tikettien otsikot Jirasta.",
+      "Jira-integraatio on lisätty Keijoon. Yhdistämällä Jiraan saat käyttöösi muun muassa tikettien otsikot ja sen myötä uudistuneen tikettien hakutoiminnon.",
   },
 };
 

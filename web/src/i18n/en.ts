@@ -115,7 +115,7 @@ const en = {
       recent: "Recent",
     },
     connectNotification:
-      "Jira Integration has been added to Keijo. Connect Jira to get features such as issue summaries.",
+      "Jira Integration has been added to Keijo. Connect Jira to get new features such as issue summaries and new issue search.",
   },
 };
 
