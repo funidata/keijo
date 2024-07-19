@@ -23,7 +23,7 @@ export const chunkArray = <T>(array: T[], size: number) => {
  * by containing atleast the issueKey part preceding the dash (project key).
  */
 export const findWordInKeys = (searchFilter: string, issueKeys: string[]) => {
-  const words = searchFilter.toLowerCase().match(/\S+/gi);
+  const words = searchFilter.match(/\S+/gi);
   if (!words || words.length < 2) {
     return;
   }
@@ -33,8 +33,8 @@ export const findWordInKeys = (searchFilter: string, issueKeys: string[]) => {
       issueKeys.some(
         (key) =>
           word.trim() &&
-          word.split("-")[0] === key.toLowerCase().split("-")[0] &&
-          key.toLowerCase().includes(word),
+          word.toLowerCase().split("-")[0] === key.toLowerCase().split("-")[0] &&
+          key.toLowerCase().includes(word.toLowerCase()),
       ),
   );
 };
@@ -44,11 +44,10 @@ export const findKeysIncludingWord = (word: string, issueKeys: string[]) =>
 
 export const stringWithoutWord = (searchFilter: string, word: string) =>
   searchFilter
-    .toLowerCase()
     .trim()
-    .split(" ")
-    .filter((text) => text.trim() !== word)
-    .join(" ");
+    .match(/\S+/gi)
+    ?.filter((text) => text.trim().toLowerCase() !== word.toLowerCase())
+    .join(" ") || searchFilter;
 
 export const connectToJira = () => {
   window.location.href = keijoJiraApiUrl;
