@@ -10,10 +10,12 @@ import { EntryRowProps } from "./EntryRow";
 import AcceptedChip from "./status-chips/AcceptedChip";
 import OpenChip from "./status-chips/OpenChip";
 import PaidChip from "./status-chips/PaidChip";
+import { EntryType } from "../../../common/entryType.enum";
 
 const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
   const { darkMode } = useDarkMode();
-  const { product, activity, issue, client, description } = entry;
+  const { product, activity, issue, client, description, ratioNumber } = entry;
+  const editable = ratioNumber === EntryType.NormalWork;
   const accepted = entry.acceptanceStatus === AcceptanceStatus.Accepted;
   const paid = entry.acceptanceStatus === AcceptanceStatus.Paid;
   const open = entry.acceptanceStatus === AcceptanceStatus.Open;
@@ -57,9 +59,11 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
             </Box>
           ) : (
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Box>
-                <EditEntryButton date={date} entry={entry} />
-              </Box>
+              {editable && (
+                <Box>
+                  <EditEntryButton date={date} entry={entry} />
+                </Box>
+              )}
             </Box>
           )}
           {open && (
