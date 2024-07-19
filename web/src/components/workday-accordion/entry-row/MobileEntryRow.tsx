@@ -14,7 +14,7 @@ import { EntryType } from "../../../common/entryType.enum";
 
 const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
   const { darkMode } = useDarkMode();
-  const { product, activity, issue, client, description, ratioNumber } = entry;
+  const { product, activity, issue, client, description, ratioNumber, typeName } = entry;
   const editable = ratioNumber === EntryType.NormalWork;
   const accepted = entry.acceptanceStatus === AcceptanceStatus.Accepted;
   const paid = entry.acceptanceStatus === AcceptanceStatus.Paid;
@@ -88,6 +88,11 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
         {activity && <DimensionChip dimension="activity" label={activity} />}
         {issue && <DimensionChip dimension="issue" label={issue} />}
         {client && <DimensionChip dimension="client" label={client} />}
+        {(paid || open || accepted) && !product && !activity && !issue && !client && typeName && (
+          <Typography variant="subtitle1" sx={{ width: "100%", mt: 1, ml: 1 }}>
+            {typeName}
+          </Typography>
+        )}
         {description && (
           <Typography variant="subtitle2" sx={{ width: "100%", mt: 1, ml: 1 }}>
             {description}
