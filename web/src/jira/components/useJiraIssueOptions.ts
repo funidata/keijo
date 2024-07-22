@@ -10,6 +10,12 @@ type UseJiraIssueOptionsProps = {
   enabled: boolean;
 };
 
+type JiraIssueOption = {
+  label: string;
+  text: string;
+  type?: string;
+};
+
 export const useJiraIssueOptions = ({
   issueKeys,
   searchFilter,
@@ -81,7 +87,7 @@ export const useJiraIssueOptions = ({
     chunkArray(searchOptions, jiraQueryMaxResults),
   ).flat();
 
-  const options =
+  const options: JiraIssueOption[] =
     pageError || searchError ? issueKeys.map((key) => ({ label: key, text: key })) : pagedOptions;
 
   const loadMore = useCallback(async () => {
