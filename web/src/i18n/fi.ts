@@ -65,6 +65,7 @@ const fi = {
     },
     totalHoursToday: "Päivän työaika ennen tätä kirjausta",
     setRemainingHours: "Aseta jäljellä olevat tunnit automaattisesti",
+    filterProjects: "Suodata Projektit",
   },
   entryTable: {
     accepted: "Hyväksytty",
