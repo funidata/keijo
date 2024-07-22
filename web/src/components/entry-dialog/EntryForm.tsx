@@ -31,6 +31,7 @@ import WorkdayHours from "./WorkdayHours";
 import useEntryForm, { EntryFormSchema } from "./useEntryForm";
 import { useIsJiraAuthenticated } from "../../jira/jiraApi";
 import JiraIssueComboBox from "../../jira/components/JiraIssueComboBox";
+import ProjectFilter from "./ProjectFilter";
 
 export type EntryFormProps = {
   form: UseFormReturn<EntryFormSchema>;
@@ -98,7 +99,8 @@ const EntryForm = () => {
               <DimensionComboBox form={form} name="issue" title={t("entryDialog.issue")} />
             )}
             <DimensionComboBox form={form} name="client" title={t("entryDialog.client")} />
-            <Grid item xs={12}>
+            <ProjectFilter />
+            <Grid item xs={12} md={6}>
               <Controller
                 name="description"
                 control={control}
