@@ -1,13 +1,18 @@
 import { useCallback, useMemo } from "react";
-
 import { useGetIssues, useRecentIssues, useSearchIssues } from "../jiraApi";
-import { chunkArray, mergePages } from "../jiraUtils";
 import { jiraQueryMaxResults } from "../jiraConfig";
+import { chunkArray, mergePages } from "../jiraUtils";
 
 type UseJiraIssueOptionsProps = {
   issueKeys: string[];
   searchFilter: string;
   enabled: boolean;
+};
+
+type JiraIssueOption = {
+  label: string;
+  text: string;
+  type?: string;
 };
 
 export const useJiraIssueOptions = ({
@@ -91,7 +96,7 @@ export const useJiraIssueOptions = ({
     chunkArray(searchOptions, jiraQueryMaxResults),
   ).flat();
 
-  const options =
+  const options: JiraIssueOption[] =
     pageError || searchError
       ? issueKeys.map((key) => ({ label: key, text: key }))
       : searchFilter

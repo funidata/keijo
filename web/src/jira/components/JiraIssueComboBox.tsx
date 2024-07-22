@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import useInfiniteScroll from "react-infinite-scroll-hook";
 import { useDebounceValue } from "usehooks-ts";
 import DimensionComboBox from "../../components/entry-dialog/DimensionComboBox";
+import FormComboBox from "../../components/entry-dialog/FormComboBox";
 import { useNotificationState } from "../../components/global-notification/useNotification";
 import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
 import { useJiraIssueOptions } from "./useJiraIssueOptions";
@@ -18,17 +19,14 @@ type JiraIssueComboBoxProps<T extends FieldValues> = {
   rules?: ControllerProps["rules"];
 };
 
-const JiraIssueComboBox = <T extends FieldValues>({
-  name,
-  ...params
-}: JiraIssueComboBoxProps<T>) => {
+const JiraIssueComboBox = <T extends FieldValues>({ ...props }: JiraIssueComboBoxProps<T>) => {
   const { data, loading } = useQuery(FindDimensionOptionsDocument);
   const queryClient = useQueryClient();
   const { t } = useTranslation();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const nvKeys = data?.findDimensionOptions[name] || [];
+  const nvKeys = data?.findDimensionOptions[props.name] || [];
 
   const [searchFilter, setSearchFilter] = useDebounceValue("", 400);
   const [debouncePending, setDebouncePending] = useState(false);
@@ -60,12 +58,11 @@ const JiraIssueComboBox = <T extends FieldValues>({
       type: "error",
       autoHide: false,
     });
-    return <DimensionComboBox form={params.form} name="issue" title={params.title} />;
+    return <DimensionComboBox form={props.form} name="issue" title={props.title} />;
   }
   return (
-    <DimensionComboBox
-      {...params}
-      name={name}
+    <FormComboBox
+      {...props}
       autoCompleteProps={{
         options: options,
         renderOption: (props, option, state) => {
