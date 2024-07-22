@@ -15,4 +15,8 @@ export class UserSettings {
   @Column({ nullable: true })
   @Field({ nullable: true })
   activityPreset: string;
+
+  @Column("simple-array", { nullable: true })
+  @Field(() => [String], { nullable: true })
+  projectsPreset: string[];
 }
