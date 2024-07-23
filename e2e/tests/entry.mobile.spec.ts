@@ -111,6 +111,8 @@ test.describe("Entry defaults mobile", () => {
     await expect(page.getByRole("textbox", { name: "Duration" })).toHaveValue("00:00");
     await page.getByRole("checkbox", { name: t("entryDialog.setRemainingHours") }).click();
     await expect(page.getByRole("textbox", { name: "Duration" })).toHaveValue("07:30");
+    await page.getByRole("checkbox", { name: t("entryDialog.setRemainingHours") }).click();
+    await expect(page.getByRole("textbox", { name: "Duration" })).toHaveValue("00:00");
   });
 
   test("Should use set default values", async ({ page, t }) => {
