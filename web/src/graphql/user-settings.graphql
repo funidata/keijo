@@ -3,6 +3,8 @@ query GetMySettings {
     employeeNumber
     productPreset
     activityPreset
+    showWeekend
+    setRemainingHours
   }
 }
 
