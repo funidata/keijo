@@ -9,15 +9,17 @@ test.describe("Browse week", () => {
 
   test("Should browse weeks forward", async ({ page, t }) => {
     const jump = 3;
-    for (let i = 0; i < jump; i++)
+    for (let i = 0; i < jump; i++) {
       await page.getByRole("button", { name: t("controls.aria.nextWeek") }).click();
+    }
     await expect(page).toHaveURL(`/entries/week/${startingWeek + jump}`);
   });
 
   test("Should browse weeks backward", async ({ page, t }) => {
     const jump = 3;
-    for (let i = 0; i < jump; i++)
+    for (let i = 0; i < jump; i++) {
       await page.getByRole("button", { name: t("controls.aria.prevWeek") }).click();
+    }
     await expect(page).toHaveURL(`/entries/week/${startingWeek - jump}`);
   });
 
@@ -29,8 +31,10 @@ test.describe("Browse week", () => {
     await expect(page).toHaveURL(`/entries/week/${currentWeek}`);
   });
 
-  test("Should go to specific week", async ({ page }) => {
+  test("Should go to specific week", async ({ page, dayjs }) => {
     const jump = 4;
+    const startingWeek = dayjs().week();
+    await page.goto(`/entries/week/${startingWeek}`);
     await page.getByRole("combobox", { name: String(startingWeek) }).click();
     await page.getByRole("option", { name: String(startingWeek + jump) }).click();
     await expect(page).toHaveURL(`/entries/week/${startingWeek + jump}`);
