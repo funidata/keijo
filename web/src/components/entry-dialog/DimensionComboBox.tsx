@@ -3,6 +3,7 @@ import { Autocomplete, AutocompleteProps, FormControl, Grid, TextField } from "@
 import { Control, Controller, ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
 import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
 import useOptionsFilter from "./useOptionsFilter";
+import { createFilterOptions } from "@mui/material/Autocomplete";
 
 type DimensionComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -15,6 +16,10 @@ type DimensionComboBoxProps<T extends FieldValues> = {
   >;
 };
 
+const inputFilter = createFilterOptions({
+  stringify: (option: string) => option,
+});
+
 const DimensionComboBox = <T extends FieldValues>({
   form,
   name,
@@ -25,7 +30,7 @@ const DimensionComboBox = <T extends FieldValues>({
   const { data } = useQuery(FindDimensionOptionsDocument);
   const options = data?.findDimensionOptions[name] || [];
 
-  const filterOptions = useOptionsFilter<string>((option) => option);
+  const extFilter = useOptionsFilter<string>((option) => option);
 
   return (
     <Grid item xs={12} md={6}>
@@ -52,7 +57,7 @@ const DimensionComboBox = <T extends FieldValues>({
                   helperText={form.formState.errors[name]?.message as string}
                 />
               )}
-              filterOptions={filterOptions}
+              filterOptions={(options, state) => inputFilter(extFilter(options), state)}
               {...autoCompleteProps}
             />
           )}
