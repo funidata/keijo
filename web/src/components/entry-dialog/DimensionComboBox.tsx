@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 import { Autocomplete, AutocompleteProps, FormControl, Grid, TextField } from "@mui/material";
 import { Control, Controller, ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
 import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
+import { useTranslation } from "react-i18next";
 
 type DimensionComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -24,20 +25,25 @@ const DimensionComboBox = <T extends FieldValues>({
   const { data } = useQuery(FindDimensionOptionsDocument);
   const options = data?.findDimensionOptions[name] || [];
 
+  const { t } = useTranslation();
+  const validateIssue = (value: string | null) => {
+    return !value || options.includes(value) || t("entryDialog.validation.issueInOptions");
+  };
+
   return (
     <Grid item xs={12} md={6}>
       <FormControl fullWidth>
         <Controller
           control={form.control as unknown as Control<FieldValues>}
           name={name}
-          rules={rules}
+          rules={{ validate: name === "issue" ? validateIssue : undefined, ...rules }}
           render={({ field: { value, onChange } }) => (
             <Autocomplete
               value={value || null}
               onChange={(_, value) => onChange(value?.label || value)}
               options={options}
               autoHighlight
-              freeSolo
+              freeSolo={name === "issue"}
               forcePopupIcon
               clearOnBlur
               renderInput={(params) => (

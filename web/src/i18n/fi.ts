@@ -62,6 +62,7 @@ const fi = {
       activityRequired: "Toiminto on pakollinen tieto.",
       descriptionRequired: "Kommentti on pakollinen tieto.",
       ticketOrDescriptionRequired: "Lisää kommentti, mikäli työlle ei löydy tikettiä.",
+      issueInOptions: "Tiketin pitää olla jokin vaihtoehdoista",
     },
     totalHoursToday: "Päivän työaika ennen tätä kirjausta",
     setRemainingHours: "Aseta jäljellä olevat tunnit automaattisesti",
