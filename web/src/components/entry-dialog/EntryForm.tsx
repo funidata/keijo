@@ -93,14 +93,19 @@ const EntryForm = () => {
               title={t("entryDialog.activity")}
               rules={{ required: t("entryDialog.validation.activityRequired") }}
             />
+            <ProjectFilter />
+            <DimensionComboBox form={form} name="client" title={t("entryDialog.client")} />
             {isJiraAuth ? (
               <JiraIssueComboBox form={form} name="issue" title={t("entryDialog.issue")} />
             ) : (
-              <DimensionComboBox form={form} name="issue" title={t("entryDialog.issue")} />
+              <DimensionComboBox
+                form={form}
+                name="issue"
+                title={t("entryDialog.issue")}
+                gridProps={{ md: 12 }}
+              />
             )}
-            <DimensionComboBox form={form} name="client" title={t("entryDialog.client")} />
-            <ProjectFilter />
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={12}>
               <Controller
                 name="description"
                 control={control}
