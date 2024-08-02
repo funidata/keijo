@@ -6,13 +6,20 @@ import {
   GetMySettingsDocument,
   UpdateSettingsDocument,
 } from "../../graphql/generated/graphql";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 const ProjectFilter = () => {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
   const { data: settingsData } = useQuery(GetMySettingsDocument);
   const [updateSettings] = useMutation(UpdateSettingsDocument, {
     refetchQueries: [GetMySettingsDocument],
   });
+
+  useEffect(() => {
+    queryClient.clear();
+  }, [queryClient, settingsData?.getMySettings.projectsPreset]);
 
   const { data } = useQuery(FindDimensionOptionsDocument);
   const issueKeys = data?.findDimensionOptions.issue || [];
