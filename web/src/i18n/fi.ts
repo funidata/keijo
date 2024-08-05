@@ -24,6 +24,8 @@ const fi = {
     jiraDisconnect: "Katkaise Jira-yhteys",
     showWeekend: "Näytä Viikonloppu",
     hideWeekend: "Piilota Viikonloppu",
+    showFilters: "Suodattimet",
+    hideFilters: "Piilota Suodattimet",
   },
   dimensionNames: {
     product: "Tuote",

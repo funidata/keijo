@@ -59,14 +59,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
       type: "error",
       autoHide: false,
     });
-    return (
-      <DimensionComboBox
-        form={params.form}
-        name="issue"
-        title={params.title}
-        gridProps={{ md: 12 }}
-      />
-    );
+    return <DimensionComboBox form={params.form} name="issue" title={params.title} />;
   }
   return (
     <DimensionComboBox
@@ -114,7 +107,6 @@ const JiraIssueComboBox = <T extends FieldValues>({
           setSearchFilter(value);
         },
       }}
-      gridProps={{ md: 12 }}
     />
   );
 };

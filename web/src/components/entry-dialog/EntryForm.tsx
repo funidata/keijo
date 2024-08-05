@@ -7,6 +7,7 @@ import {
   Alert,
   Box,
   Button,
+  Collapse,
   FormControlLabel,
   FormGroup,
   Grid,
@@ -16,7 +17,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { Dayjs } from "dayjs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -32,6 +33,7 @@ import useEntryForm, { EntryFormSchema } from "./useEntryForm";
 import { useIsJiraAuthenticated } from "../../jira/jiraApi";
 import JiraIssueComboBox from "../../jira/components/JiraIssueComboBox";
 import ProjectFilter from "./ProjectFilter";
+import useFormFilters from "./useFormFilters";
 
 export type EntryFormProps = {
   form: UseFormReturn<EntryFormSchema>;
@@ -75,6 +77,8 @@ const EntryForm = () => {
   const { control, watch } = form;
   const dateWatch = dayjs(watch("date")).locale(dayjs.locale());
   const { isJiraAuth } = useIsJiraAuthenticated();
+  const { numOfFilters, hasFilters } = useFormFilters();
+  const [showFilters, setShowFilters] = useState(false);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -93,18 +97,12 @@ const EntryForm = () => {
               title={t("entryDialog.activity")}
               rules={{ required: t("entryDialog.validation.activityRequired") }}
             />
-            <ProjectFilter />
-            <DimensionComboBox form={form} name="client" title={t("entryDialog.client")} />
             {isJiraAuth ? (
               <JiraIssueComboBox form={form} name="issue" title={t("entryDialog.issue")} />
             ) : (
-              <DimensionComboBox
-                form={form}
-                name="issue"
-                title={t("entryDialog.issue")}
-                gridProps={{ md: 12 }}
-              />
+              <DimensionComboBox form={form} name="issue" title={t("entryDialog.issue")} />
             )}
+            <DimensionComboBox form={form} name="client" title={t("entryDialog.client")} />
             <Grid item xs={12} md={12}>
               <Controller
                 name="description"
@@ -138,6 +136,21 @@ const EntryForm = () => {
                   />
                 )}
               />
+            </Grid>
+            <Grid item xs={12} md={12}>
+              <Button
+                onClick={() => setShowFilters((prev) => !prev)}
+                size="small"
+                variant="text"
+                aria-label={showFilters ? t("controls.hideFilters") : t("controls.showFilters")}
+              >
+                {`${showFilters ? t("controls.hideFilters") : t("controls.showFilters")} ${hasFilters ? `+${numOfFilters}` : ""}`}
+              </Button>
+            </Grid>
+            <Grid item xs={12} md={12}>
+              <Collapse in={showFilters}>
+                <ProjectFilter />
+              </Collapse>
             </Grid>
           </Grid>
         </Grid>
