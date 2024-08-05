@@ -24,6 +24,8 @@ const en = {
     jiraDisconnect: "Disconnect from Jira",
     showWeekend: "Show Weekend",
     hideWeekend: "Hide Weekend",
+    showFilters: "Filters",
+    hideFilters: "Hide Filters",
   },
   dimensionNames: {
     product: "Product",

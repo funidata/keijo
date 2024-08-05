@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { Autocomplete, Chip, FormControl, Grid, TextField } from "@mui/material";
+import { Autocomplete, Chip, FormControl, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import {
   FindDimensionOptionsDocument,
@@ -27,34 +27,30 @@ const ProjectFilter = () => {
   const projects = [...new Set(issueKeys.map((key) => key.split("-")[0]))];
 
   return (
-    <Grid item xs={12} md={6}>
-      <FormControl fullWidth>
-        <Autocomplete
-          value={settingsData?.getMySettings.projectsPreset || []}
-          options={projects}
-          onChange={(_, value) =>
-            updateSettings({ variables: { settings: { projectsPreset: value } } })
-          }
-          renderTags={(value, getTagProps) => {
-            const numTags = value.length;
-            const limitTags = 1;
-            return (
-              <>
-                {value.slice(0, limitTags).map((option, index) => (
-                  <Chip {...getTagProps({ index })} key={index} label={option} />
-                ))}
+    <FormControl fullWidth>
+      <Autocomplete
+        value={settingsData?.getMySettings.projectsPreset || []}
+        options={projects}
+        onChange={(_, value) =>
+          updateSettings({ variables: { settings: { projectsPreset: value } } })
+        }
+        renderTags={(value, getTagProps) => {
+          const numTags = value.length;
+          const limitTags = 1;
+          return (
+            <>
+              {value.slice(0, limitTags).map((option, index) => (
+                <Chip {...getTagProps({ index })} key={index} label={option} />
+              ))}
 
-                {numTags > limitTags && ` +${numTags - limitTags}`}
-              </>
-            );
-          }}
-          multiple
-          renderInput={(params) => (
-            <TextField {...params} label={t("entryDialog.filterProjects")} />
-          )}
-        />
-      </FormControl>
-    </Grid>
+              {numTags > limitTags && ` +${numTags - limitTags}`}
+            </>
+          );
+        }}
+        multiple
+        renderInput={(params) => <TextField {...params} label={t("entryDialog.filterProjects")} />}
+      />
+    </FormControl>
   );
 };
 
