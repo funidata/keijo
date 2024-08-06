@@ -58,6 +58,7 @@ const JiraIssueComboBox = <T extends FieldValues>({ ...props }: JiraIssueComboBo
   return (
     <FormComboBox
       {...props}
+      getFormValue={(option) => option.label}
       autoCompleteProps={{
         options: options,
         renderOption: (props, option, state) => {
