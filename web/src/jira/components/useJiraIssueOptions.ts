@@ -79,7 +79,7 @@ export const useJiraIssueOptions = ({
   const { data: recentIssueData } = useRecentIssues();
   const recentIssueOptions = (recentIssueData?.issues || [])
     .filter((issue) => issueKeys.includes(issue.key))
-    .slice(0, 5)
+    .slice(0, 10)
     .map((issue) => ({
       label: issue.key,
       text: `${issue.key}: ${issue.fields.summary}`,
