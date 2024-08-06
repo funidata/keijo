@@ -9,7 +9,7 @@ type UseJiraIssueOptionsProps = {
   enabled: boolean;
 };
 
-type JiraIssueOption = {
+export type JiraIssueOption = {
   label: string;
   text: string;
   type?: string;
