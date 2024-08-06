@@ -7,9 +7,10 @@ type FormComboBoxProps<T extends FieldValues, E> = {
   title: string;
   rules?: ControllerProps["rules"];
   autoCompleteProps: Omit<
-    AutocompleteProps<E, boolean | undefined, boolean | undefined, boolean | undefined>,
+    AutocompleteProps<E, false, boolean | undefined, true>,
     "renderInput" | "value"
   >;
+  getFormValue?: (value: E) => string;
 };
 
 const FormComboBox = <T extends FieldValues, E>({
@@ -18,6 +19,7 @@ const FormComboBox = <T extends FieldValues, E>({
   title,
   rules,
   autoCompleteProps,
+  getFormValue,
 }: FormComboBoxProps<T, E>) => {
   return (
     <Grid item xs={12} md={6}>
@@ -31,9 +33,15 @@ const FormComboBox = <T extends FieldValues, E>({
               autoHighlight
               freeSolo
               forcePopupIcon
-              clearOnBlur
               {...autoCompleteProps}
               value={value || null}
+              onChange={(_, v) => {
+                if (typeof v === "string" || v === null || !getFormValue) {
+                  onChange(v);
+                  return;
+                }
+                onChange(getFormValue(v));
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -43,12 +51,6 @@ const FormComboBox = <T extends FieldValues, E>({
                   helperText={error?.message as string}
                 />
               )}
-              onInputChange={(event, value, reason) => {
-                if (autoCompleteProps?.onInputChange) {
-                  autoCompleteProps.onInputChange(event, value, reason);
-                }
-                onChange(value);
-              }}
             />
           )}
         />
