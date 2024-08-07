@@ -46,6 +46,7 @@ const fi = {
     duration: "Kesto",
     reset: "Palauta",
     submit: "Tallenna",
+    addMore: "Lisää seuraava",
     product: "Tuote",
     activity: "Toiminto",
     issue: "Tiketti",
