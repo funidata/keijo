@@ -11,10 +11,12 @@ import { EntryRowProps } from "./EntryRow";
 import AcceptedChip from "./status-chips/AcceptedChip";
 import OpenChip from "./status-chips/OpenChip";
 import PaidChip from "./status-chips/PaidChip";
+import { EntryType } from "../../../common/entryType.enum";
 
 const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
   const { darkMode } = useDarkMode();
-  const { product, activity, issue, client, description } = entry;
+  const { product, activity, issue, client, description, ratioNumber, typeName } = entry;
+  const editable = ratioNumber === EntryType.NormalWork;
   const accepted = entry.acceptanceStatus === AcceptanceStatus.Accepted;
   const paid = entry.acceptanceStatus === AcceptanceStatus.Paid;
   const open = entry.acceptanceStatus === AcceptanceStatus.Open;
@@ -65,6 +67,14 @@ const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
         {activity && <DimensionChip dimension="activity" label={activity} />}
         {issue && <DimensionChip dimension="issue" label={issue} />}
         {client && <DimensionChip dimension="client" label={client} />}
+        {(paid || open || accepted) && !product && !activity && !issue && !client && typeName && (
+          <Typography
+            variant="subtitle1"
+            sx={{ overflow: { xs: "visible", md: "hidden" }, textOverflow: "ellipsis" }}
+          >
+            {typeName}
+          </Typography>
+        )}
         {description && (
           <Typography
             variant="subtitle2"
@@ -85,9 +95,11 @@ const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
           </Box>
         ) : (
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Box>
-              <EditEntryButton date={date} entry={entry} />
-            </Box>
+            {editable && (
+              <Box>
+                <EditEntryButton date={date} entry={entry} />
+              </Box>
+            )}
             <Box sx={{ display: { xs: "none", md: "block" }, ml: -0.5 }}>
               <DeleteEntryButton date={date} entryKey={entry.key} />
             </Box>

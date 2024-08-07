@@ -85,6 +85,7 @@ const en = {
     weekend: "Weekend",
     vacation: "Vacation",
     flexLeave: "Flex Leave",
+    holidayPayLeave: "Holiday Pay Leave",
     sickLeave: "Sick Leave",
     unknownEntry: "Unknown entry type",
     unknownEntryNote: "Use Netvisor for this type of entry.",

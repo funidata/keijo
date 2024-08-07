@@ -85,6 +85,7 @@ const fi = {
     weekend: "Viikonloppu",
     vacation: "Vuosiloma",
     flexLeave: "Saldovapaa",
+    holidayPayLeave: "Lomarahavapaa",
     sickLeave: "Sairauspoissaolo",
     unknownEntry: "Tuntematon kirjauslaji",
     unknownEntryNote: "Käytä Netvisoria tämän kirjauslajin tarkastelemiseen ja muokkamiseen.",
