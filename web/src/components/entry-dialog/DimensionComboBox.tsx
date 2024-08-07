@@ -1,7 +1,16 @@
 import { useQuery } from "@apollo/client";
-import { Autocomplete, AutocompleteProps, FormControl, Grid, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  AutocompleteProps,
+  FormControl,
+  Grid,
+  GridOwnProps,
+  TextField,
+} from "@mui/material";
 import { Control, Controller, ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
 import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
+import useOptionsFilter from "./useOptionsFilter";
+import { createFilterOptions } from "@mui/material/Autocomplete";
 
 type DimensionComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -12,7 +21,12 @@ type DimensionComboBoxProps<T extends FieldValues> = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     AutocompleteProps<any, boolean | undefined, boolean | undefined, boolean | undefined>
   >;
+  gridProps?: GridOwnProps;
 };
+
+const inputFilter = createFilterOptions({
+  stringify: (option: string) => option,
+});
 
 const DimensionComboBox = <T extends FieldValues>({
   form,
@@ -20,12 +34,15 @@ const DimensionComboBox = <T extends FieldValues>({
   title,
   rules,
   autoCompleteProps,
+  gridProps,
 }: DimensionComboBoxProps<T>) => {
   const { data } = useQuery(FindDimensionOptionsDocument);
   const options = data?.findDimensionOptions[name] || [];
 
+  const extFilter = useOptionsFilter<string>((option) => option);
+
   return (
-    <Grid item xs={12} md={6}>
+    <Grid item xs={12} md={6} {...gridProps}>
       <FormControl fullWidth>
         <Controller
           control={form.control as unknown as Control<FieldValues>}
@@ -49,6 +66,9 @@ const DimensionComboBox = <T extends FieldValues>({
                   helperText={form.formState.errors[name]?.message as string}
                 />
               )}
+              filterOptions={(options, state) =>
+                inputFilter(name === "issue" ? extFilter(options) : options, state)
+              }
               {...autoCompleteProps}
             />
           )}

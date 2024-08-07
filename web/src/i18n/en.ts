@@ -24,6 +24,8 @@ const en = {
     jiraDisconnect: "Disconnect from Jira",
     showWeekend: "Show Weekend",
     hideWeekend: "Hide Weekend",
+    showFilters: "Filters",
+    hideFilters: "Hide Filters",
   },
   dimensionNames: {
     product: "Product",
@@ -65,6 +67,7 @@ const en = {
     },
     totalHoursToday: "Time on selected day before this entry",
     setRemainingHours: "Set remaining hours automatically",
+    filterProjects: "Filter Projects",
   },
   entryTable: {
     accepted: "Accepted",

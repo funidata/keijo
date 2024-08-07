@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useJiraIssueOptions } from "./useJiraIssueOptions";
 import { useNotificationState } from "../../components/global-notification/useNotification";
 import { queryClient } from "../queryClient";
+import useOptionsFilter from "../../components/entry-dialog/useOptionsFilter";
 
 type JiraIssueComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -28,8 +29,11 @@ const JiraIssueComboBox = <T extends FieldValues>({
   const [searchFilter, setSearchFilter] = useDebounceValue("", 400);
   const [debouncePending, setDebouncePending] = useState(false);
 
+  const filterOptions = useOptionsFilter<string>((option) => option);
+  const filteredKeys = filterOptions(nvKeys);
+
   const { options, loadMore, hasNextPage, isFetching, error } = useJiraIssueOptions({
-    issueKeys: nvKeys,
+    issueKeys: filteredKeys,
     searchFilter,
     enabled: !loading,
   });
