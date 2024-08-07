@@ -120,7 +120,7 @@ const en = {
       title: "Keijo-Jira",
       // Site could also be set dynamically from server or simply by <your-company>.atlassian.net
       content:
-        "You will be redirected to authorize Keijo to use Jira. Login on Atlassian site and choose to authorize site funidata.atlassian.net from the dropdown.",
+        "You will be redirected to authorize Keijo to use Jira. Login on Atlassian site and choose to authorize appropriate site e.g., funidata.atlassian.net from the dropdown.",
     },
   },
 };
