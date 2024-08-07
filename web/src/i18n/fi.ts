@@ -120,7 +120,7 @@ const fi = {
       title: "Keijo-Jira",
       // Site could also be set dynamically from server or simply by <your-company>.atlassian.net
       content:
-        "Sinut ohjataan valtuuttamaan Jira-integraatio käyttäjälläsi. Kirjaudu Atlassianin sivulla ja valitse valikosta Keijolle oikeudet sivulle funidata.atlassian.net.",
+        "Sinut ohjataan valtuuttamaan Jira-integraatio käyttäjälläsi. Kirjaudu Atlassianin sivulla ja valitse valikosta Keijolle oikeudet käytettävälle sivulle esim. funidata.atlassian.net.",
     },
   },
 };
