@@ -4,6 +4,8 @@ import Brightness7Icon from "@mui/icons-material/Brightness7";
 import CheckIcon from "@mui/icons-material/Check";
 import MenuIcon from "@mui/icons-material/Menu";
 import TuneIcon from "@mui/icons-material/Tune";
+import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
 import {
   Box,
   Divider,
@@ -21,6 +23,8 @@ import { useTranslation } from "react-i18next";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
 import useDarkMode from "../../theme/useDarkMode";
 import LabelledIconButton from "../LabelledIconButton";
+import { keijoJiraApiUrl } from "../../jira/jiraConfig";
+import { useIsJiraAuthenticated } from "../../jira/jiraApi";
 
 const AppMenuButton = () => {
   const navigate = useNavigate();
@@ -32,6 +36,8 @@ const AppMenuButton = () => {
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const { isJiraAuth } = useIsJiraAuthenticated();
+
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
   };
@@ -39,6 +45,16 @@ const AppMenuButton = () => {
   const selectLanguage = (languageCode: string) => {
     changeLanguage(languageCode);
     document.documentElement.lang = languageCode;
+  };
+
+  const handleConnectToJira = () => {
+    toggleMenu();
+    window.location.href = keijoJiraApiUrl;
+  };
+
+  const handleDisconnectJira = () => {
+    toggleMenu();
+    window.location.href = keijoJiraApiUrl + "/remove-session";
   };
 
   const visibilityFor = (lang: string) => (language === lang ? "visible" : "hidden");
@@ -80,6 +96,17 @@ const AppMenuButton = () => {
               </ListItemIcon>
               <ListItemText primaryTypographyProps={{ variant: "h5" }}>
                 {t("controls.defaultsView")}
+              </ListItemText>
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem>
+            <ListItemButton onClick={isJiraAuth ? handleDisconnectJira : handleConnectToJira}>
+              <ListItemIcon>
+                {isJiraAuth ? <LogoutIcon {...iconProps} /> : <LoginIcon {...iconProps} />}
+              </ListItemIcon>
+              <ListItemText primaryTypographyProps={{ variant: "h5" }}>
+                {isJiraAuth ? t("controls.jiraDisconnect") : t("controls.jiraConnect")}
               </ListItemText>
             </ListItemButton>
           </ListItem>
