@@ -1,4 +1,4 @@
-import { Box, ListItem, Typography } from "@mui/material";
+import { Box, ListItemButton, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import dayjs from "dayjs";
 import { roundToFullMinutes } from "../../../common/duration";
@@ -10,6 +10,8 @@ import { EntryRowProps } from "./EntryRow";
 import AcceptedChip from "./status-chips/AcceptedChip";
 import OpenChip from "./status-chips/OpenChip";
 import PaidChip from "./status-chips/PaidChip";
+import CopyEntryButton from "./CopyEntryButton";
+import { useEntryContext } from "../../workday-browser/entry-context/useEntryContext";
 
 const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
   const { darkMode } = useDarkMode();
@@ -18,9 +20,10 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
   const paid = entry.acceptanceStatus === AcceptanceStatus.Paid;
   const open = entry.acceptanceStatus === AcceptanceStatus.Open;
   const roundedDuration = roundToFullMinutes(dayjs.duration(entry.duration, "hour"));
+  const { selectedEntry } = useEntryContext();
 
   return (
-    <ListItem
+    <ListItemButton
       sx={{
         bgcolor: darkMode ? grey[800] : "primary.light",
         borderRadius: 4,
@@ -32,7 +35,11 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "stretch",
+        ":hover": {
+          backgroundColor: darkMode ? grey[800] : "primary.light",
+        },
       }}
+      selected={selectedEntry?.key === entry.key}
     >
       <Box sx={{ display: "flex", justifyContent: "space-between", minHeight: 40 }}>
         <Box
@@ -58,6 +65,7 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
           ) : (
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Box>
+                <CopyEntryButton entry={entry} />
                 <EditEntryButton date={date} entry={entry} />
               </Box>
             </Box>
@@ -90,7 +98,7 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
           </Typography>
         )}
       </Box>
-    </ListItem>
+    </ListItemButton>
   );
 };
 
