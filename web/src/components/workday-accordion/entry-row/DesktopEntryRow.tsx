@@ -22,97 +22,93 @@ const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
   const paid = entry.acceptanceStatus === AcceptanceStatus.Paid;
   const open = entry.acceptanceStatus === AcceptanceStatus.Open;
   const roundedDuration = roundToFullMinutes(dayjs.duration(entry.duration, "hour"));
-  const { selectedEntry, setSelectedEntry } = useEntryContext();
+  const { selectedEntry } = useEntryContext();
 
   return (
-    <ClickAwayListener
-      onClickAway={() => selectedEntry?.key === entry.key && setSelectedEntry(null)}
+    <ListItemButton
+      sx={{
+        bgcolor: darkMode ? grey[800] : "primary.light",
+        borderRadius: 4,
+        pl: 1,
+        pt: 0,
+        pb: 0,
+        pr: accepted || paid || open ? 0 : 1,
+        overflow: "hidden",
+        display: "flex",
+        alignItems: "stretch",
+        justifyContent: "space-between",
+      }}
+      selected={selectedEntry?.key === entry.key}
+      disableTouchRipple
     >
-      <ListItemButton
+      <Box
         sx={{
-          bgcolor: darkMode ? grey[800] : "primary.light",
-          borderRadius: 4,
-          pl: 1,
-          pt: 0,
-          pb: 0,
-          pr: accepted || paid || open ? 0 : 1,
-          overflow: "hidden",
           display: "flex",
-          alignItems: "stretch",
-          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 2,
+          overflowX: { xs: "auto", md: "hidden" },
+          overflowY: "hidden",
+          whiteSpace: "nowrap",
+          mr: 1,
+          pt: 1,
+          pb: 1,
+          minHeight: 48,
         }}
-        selected={selectedEntry?.key === entry.key}
-        disableTouchRipple
       >
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
-            gap: 2,
-            overflowX: { xs: "auto", md: "hidden" },
-            overflowY: "hidden",
-            whiteSpace: "nowrap",
+            justifyContent: "end",
+            minWidth: 60,
+            textAlign: "right",
             mr: 1,
-            pt: 1,
-            pb: 1,
-            minHeight: 48,
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "end",
-              minWidth: 60,
-              textAlign: "right",
-              mr: 1,
-            }}
+          <Typography variant="h6">{roundedDuration.format("H:mm")}</Typography>
+        </Box>
+        {product && <DimensionChip dimension="product" label={product} />}
+        {activity && <DimensionChip dimension="activity" label={activity} />}
+        {issue && <DimensionChip dimension="issue" label={issue} />}
+        {client && <DimensionChip dimension="client" label={client} />}
+        {description && (
+          <Typography
+            variant="subtitle2"
+            sx={{ overflow: { xs: "visible", md: "hidden" }, textOverflow: "ellipsis" }}
           >
-            <Typography variant="h6">{roundedDuration.format("H:mm")}</Typography>
+            {description}
+          </Typography>
+        )}
+      </Box>
+      <Box sx={{ display: "flex" }}>
+        {accepted ? (
+          <Box>
+            <AcceptedChip />
           </Box>
-          {product && <DimensionChip dimension="product" label={product} />}
-          {activity && <DimensionChip dimension="activity" label={activity} />}
-          {issue && <DimensionChip dimension="issue" label={issue} />}
-          {client && <DimensionChip dimension="client" label={client} />}
-          {description && (
-            <Typography
-              variant="subtitle2"
-              sx={{ overflow: { xs: "visible", md: "hidden" }, textOverflow: "ellipsis" }}
-            >
-              {description}
-            </Typography>
-          )}
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          {accepted ? (
+        ) : paid ? (
+          <Box>
+            <PaidChip />
+          </Box>
+        ) : (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
             <Box>
-              <AcceptedChip />
+              <CopyEntryButton entry={entry} />
             </Box>
-          ) : paid ? (
             <Box>
-              <PaidChip />
+              <EditEntryButton date={date} entry={entry} />
             </Box>
-          ) : (
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Box>
-                <CopyEntryButton entry={entry} />
-              </Box>
-              <Box>
-                <EditEntryButton date={date} entry={entry} />
-              </Box>
-              <Box sx={{ display: { xs: "none", md: "block" }, ml: -0.5 }}>
-                <DeleteEntryButton date={date} entryKey={entry.key} />
-              </Box>
+            <Box sx={{ display: { xs: "none", md: "block" }, ml: -0.5 }}>
+              <DeleteEntryButton date={date} entryKey={entry.key} />
             </Box>
-          )}
-          {open && (
-            <Box>
-              <OpenChip />
-            </Box>
-          )}
-        </Box>
-      </ListItemButton>
-    </ClickAwayListener>
+          </Box>
+        )}
+        {open && (
+          <Box>
+            <OpenChip />
+          </Box>
+        )}
+      </Box>
+    </ListItemButton>
   );
 };
 
