@@ -1,6 +1,5 @@
 import { Box, ListItemButton, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { ClickAwayListener } from "@mui/base/ClickAwayListener";
 import dayjs from "dayjs";
 import { roundToFullMinutes } from "../../../common/duration";
 import { AcceptanceStatus } from "../../../graphql/generated/graphql";
@@ -38,6 +37,7 @@ const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
         alignItems: "stretch",
         justifyContent: "space-between",
       }}
+      role="listitem"
       selected={selectedEntry?.key === entry.key}
       disableTouchRipple
     >

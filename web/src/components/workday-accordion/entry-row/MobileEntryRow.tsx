@@ -39,6 +39,7 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
           backgroundColor: darkMode ? grey[800] : "primary.light",
         },
       }}
+      role="listitem"
       selected={selectedEntry?.key === entry.key}
       disableTouchRipple
     >

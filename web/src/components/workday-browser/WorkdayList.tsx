@@ -11,7 +11,6 @@ import { useState } from "react";
 import { isWeekend } from "../../common/workdayUtils";
 import { Dayjs } from "dayjs";
 import { t } from "i18next";
-import { EntryContextProvider } from "./entry-context/EntryContextProvider";
 
 const WorkdayList = () => {
   const dayjs = useDayjs();
