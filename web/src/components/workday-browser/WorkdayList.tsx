@@ -11,6 +11,7 @@ import { useState } from "react";
 import { isWeekend } from "../../common/workdayUtils";
 import { Dayjs } from "dayjs";
 import { t } from "i18next";
+import { EntryContextProvider } from "./entry-context/EntryContextProvider";
 
 const WorkdayList = () => {
   const dayjs = useDayjs();
@@ -61,18 +62,20 @@ const WorkdayList = () => {
       <TotalHours workdays={workdays} />
 
       <Paper>
-        {dividedWorkdays.map((wdArr) => {
-          if (isWeekend(wdArr[0].date)) {
-            return (
-              <Collapse in={checked}>
-                {wdArr.map((wd) => (
-                  <WorkdayAccordion workday={wd} key={wd.date.toString()} />
-                ))}
-              </Collapse>
-            );
-          }
-          return wdArr.map((wd) => <WorkdayAccordion workday={wd} key={wd.date.toString()} />);
-        })}
+        <EntryContextProvider>
+          {dividedWorkdays.map((wdArr) => {
+            if (isWeekend(wdArr[0].date)) {
+              return (
+                <Collapse in={checked}>
+                  {wdArr.map((wd) => (
+                    <WorkdayAccordion workday={wd} key={wd.date.toString()} />
+                  ))}
+                </Collapse>
+              );
+            }
+            return wdArr.map((wd) => <WorkdayAccordion workday={wd} key={wd.date.toString()} />);
+          })}
+        </EntryContextProvider>
       </Paper>
       <Box textAlign="left" mt="1em">
         <Button
