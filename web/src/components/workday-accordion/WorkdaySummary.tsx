@@ -1,5 +1,7 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { AccordionSummary, Box, Chip, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { useMutation } from "@apollo/client";
+import { useTranslation } from "react-i18next";
 import { roundToFullMinutes, totalDurationOfEntries } from "../../common/duration";
 import useDayjs from "../../common/useDayjs";
 import {
@@ -10,7 +12,12 @@ import {
   isVacation,
   isWeekend,
 } from "../../common/workdayUtils";
-import { Workday } from "../../graphql/generated/graphql";
+import {
+  AddWorkdayEntryDocument,
+  Entry,
+  FindWorkdaysDocument,
+  Workday,
+} from "../../graphql/generated/graphql";
 import EntryDialogButton from "../entry-dialog/EntryDialogButton";
 import FlexLeaveChip from "./info-chips/FlexLeaveChip";
 import HolidayChip from "./info-chips/HolidayChip";
@@ -18,6 +25,9 @@ import NoEntriesChip from "./info-chips/NoEntriesChip";
 import SickLeaveChip from "./info-chips/SickLeaveChip";
 import VacationChip from "./info-chips/VacationChip";
 import WeekendChip from "./info-chips/WeekendChip";
+import { useEntryContext } from "../workday-browser/entry-context/useEntryContext";
+import { useNotification } from "../global-notification/useNotification";
+import PasteEntryButton from "./PasteEntryButton";
 
 type WorkdayAccordionProps = {
   workday: Workday;
@@ -39,6 +49,32 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
   const totalHoursFormatted = roundToFullMinutes(totalDuration).format("H:mm");
 
   const empty = workday.entries.length === 0;
+  const { t } = useTranslation();
+
+  const { selectedEntry, setSelectedEntry } = useEntryContext();
+  const { showSuccessNotification } = useNotification();
+  const [addWorkdayEntryMutation] = useMutation(AddWorkdayEntryDocument, {
+    refetchQueries: [FindWorkdaysDocument],
+    onCompleted: async () => {
+      showSuccessNotification(t("notifications.addEntry.success"));
+    },
+  });
+  const handlePasteEntry = async (entry: Entry) => {
+    await addWorkdayEntryMutation({
+      variables: {
+        entry: {
+          date: date.format("YYYY-MM-DD"),
+          duration: entry.duration,
+          description: entry.description,
+          product: entry.product,
+          activity: entry.activity,
+          issue: entry.issue,
+          client: entry.client,
+        },
+      },
+    });
+    setSelectedEntry(null);
+  };
 
   const InfoChip = () => {
     if (vacation) {
@@ -88,6 +124,14 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
         </Box>
         {!mobile && <InfoChip />}
         <Box sx={{ display: "flex", alignItems: "center" }}>
+          {selectedEntry ? (
+            <PasteEntryButton
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePasteEntry(selectedEntry);
+              }}
+            />
+          ) : null}
           {!disabled && (
             <>
               <EntryDialogButton date={date} size="medium" />
