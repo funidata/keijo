@@ -24,6 +24,8 @@ const fi = {
     jiraDisconnect: "Katkaise Jira-yhteys",
     showWeekend: "Näytä Viikonloppu",
     hideWeekend: "Piilota Viikonloppu",
+    copyEntry: "Kopioi työaikakirjaus",
+    pasteEntry: "Liitä työaikakirjaus",
   },
   dimensionNames: {
     product: "Tuote",
