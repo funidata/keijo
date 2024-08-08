@@ -40,6 +40,7 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
         },
       }}
       selected={selectedEntry?.key === entry.key}
+      disableTouchRipple
     >
       <Box sx={{ display: "flex", justifyContent: "space-between", minHeight: 40 }}>
         <Box

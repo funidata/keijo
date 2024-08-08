@@ -42,6 +42,7 @@ const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
           justifyContent: "space-between",
         }}
         selected={selectedEntry?.key === entry.key}
+        disableTouchRipple
       >
         <Box
           sx={{
