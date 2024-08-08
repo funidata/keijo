@@ -62,20 +62,18 @@ const WorkdayList = () => {
       <TotalHours workdays={workdays} />
 
       <Paper>
-        <EntryContextProvider>
-          {dividedWorkdays.map((wdArr) => {
-            if (isWeekend(wdArr[0].date)) {
-              return (
-                <Collapse in={checked}>
-                  {wdArr.map((wd) => (
-                    <WorkdayAccordion workday={wd} key={wd.date.toString()} />
-                  ))}
-                </Collapse>
-              );
-            }
-            return wdArr.map((wd) => <WorkdayAccordion workday={wd} key={wd.date.toString()} />);
-          })}
-        </EntryContextProvider>
+        {dividedWorkdays.map((wdArr) => {
+          if (isWeekend(wdArr[0].date)) {
+            return (
+              <Collapse in={checked}>
+                {wdArr.map((wd) => (
+                  <WorkdayAccordion workday={wd} key={wd.date.toString()} />
+                ))}
+              </Collapse>
+            );
+          }
+          return wdArr.map((wd) => <WorkdayAccordion workday={wd} key={wd.date.toString()} />);
+        })}
       </Paper>
       <Box textAlign="left" mt="1em">
         <Button
