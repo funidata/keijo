@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useJiraIssueOptions } from "./useJiraIssueOptions";
 import { useNotificationState } from "../../components/global-notification/useNotification";
 import { queryClient } from "../queryClient";
+import { t } from "i18next";
 
 type JiraIssueComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -92,6 +93,14 @@ const JiraIssueComboBox = <T extends FieldValues>({
             ? [...options, { label: "Loading", type: "loader", text: "Loading..." }]
             : options;
         },
+        groupBy: searchFilter
+          ? undefined
+          : (option) => {
+              if (option.type === "recent") {
+                return t("jira.issueGroups.recent");
+              }
+              return t("jira.issueGroups.all");
+            },
         ListboxProps: {
           ref: rootRef,
         },

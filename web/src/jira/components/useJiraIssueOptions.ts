@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
 
-import { useGetIssues, useSearchIssues } from "../jiraApi";
+import { useGetIssues, useRecentIssues, useSearchIssues } from "../jiraApi";
 import { chunkArray, mergePages } from "../jiraUtils";
 import { jiraQueryMaxResults } from "../jiraConfig";
 
@@ -76,13 +76,27 @@ export const useJiraIssueOptions = ({
     return searchIssues;
   }, [filteredOptions, issueKeys, searchedIssueData?.pages]);
 
+  const { data: recentIssueData } = useRecentIssues();
+  const recentIssueOptions = (recentIssueData?.issues || [])
+    .filter((issue) => issueKeys.includes(issue.key))
+    .slice(0, 10)
+    .map((issue) => ({
+      label: issue.key,
+      text: `${issue.key}: ${issue.fields.summary}`,
+      type: "recent",
+    }));
+
   const pagedOptions = mergePages(
     chunkArray(filteredOptions, jiraQueryMaxResults),
     chunkArray(searchOptions, jiraQueryMaxResults),
   ).flat();
 
   const options =
-    pageError || searchError ? issueKeys.map((key) => ({ label: key, text: key })) : pagedOptions;
+    pageError || searchError
+      ? issueKeys.map((key) => ({ label: key, text: key }))
+      : searchFilter
+        ? pagedOptions
+        : [...recentIssueOptions, ...pagedOptions];
 
   const loadMore = useCallback(async () => {
     if (hasNextPage) {

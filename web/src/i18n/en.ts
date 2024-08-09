@@ -107,6 +107,12 @@ const en = {
   titles: {
     workdayBrowser: "Entries",
   },
+  jira: {
+    issueGroups: {
+      all: "All",
+      recent: "Recent",
+    },
+  },
 };
 
 export default en;
