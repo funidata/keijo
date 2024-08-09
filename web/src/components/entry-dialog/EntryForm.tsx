@@ -44,14 +44,20 @@ export type EntryFormProps = {
 type LocationState = {
   date?: string;
   editEntry?: Entry;
+  template?: Entry;
 };
 
 const EntryForm = () => {
   const { state } = useLocation();
   const dayjs = useDayjs();
   // state is possibly null
-  const { date: originalDate, editEntry }: LocationState = state || {};
-  const { form, onSubmit, loading } = useEntryForm({ editEntry, date: dayjs(originalDate) });
+  const { date: originalDate, editEntry, template }: LocationState = state || {};
+
+  const { form, onSubmit, loading } = useEntryForm({
+    editEntry,
+    date: dayjs(originalDate),
+    template: template,
+  });
   const navigate = useNavigate();
 
   const {
@@ -197,7 +203,7 @@ const EntryForm = () => {
               )}
             </Grid>
             <Grid item xs={12}>
-              {!editEntry && (
+              {!editEntry && !template && (
                 <FormGroup>
                   <FormControlLabel
                     control={
@@ -217,7 +223,7 @@ const EntryForm = () => {
           <>
             <Grid item xs={4} sx={{ mt: 2 }}>
               <Box sx={{ display: "flex", justifyContent: "start", gap: 2 }}>
-                {!editEntry && (
+                {!editEntry && !template && (
                   <FormGroup>
                     <FormControlLabel
                       control={

@@ -26,6 +26,7 @@ export type EntryFormSchema = {
 export type useEntryProps = {
   editEntry?: Entry;
   date?: Dayjs;
+  template?: Entry;
 };
 
 /**
@@ -34,7 +35,7 @@ export type useEntryProps = {
  * Note that calling this hook will create a new RHF form instance, i.e., you must pass down
  * the actual instance from parent components rather than call this hook again in child components.
  */
-const useEntryForm = ({ editEntry, date }: useEntryProps) => {
+const useEntryForm = ({ editEntry, date, template }: useEntryProps) => {
   const { t } = useTranslation();
   const { showSuccessNotification } = useNotification();
   const dayjs = useDayjs();
@@ -68,12 +69,17 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
 
     return {
       date: date ? dayjs(date) : dayjs(),
-      duration: editEntry?.duration.toString() || "",
-      description: editEntry?.description || "",
-      product: editEntry?.product || settingsData?.getMySettings.productPreset || "",
-      activity: editEntry?.activity || settingsData?.getMySettings.activityPreset || "",
-      issue: editEntry?.issue || null,
-      client: editEntry?.client || "",
+      duration: editEntry?.duration.toString() || template?.duration.toString() || "",
+      description: editEntry?.description || template?.description || "",
+      product:
+        editEntry?.product || template?.product || settingsData?.getMySettings.productPreset || "",
+      activity:
+        editEntry?.activity ||
+        template?.activity ||
+        settingsData?.getMySettings.activityPreset ||
+        "",
+      issue: editEntry?.issue || template?.issue || null,
+      client: editEntry?.client || template?.client || "",
     };
   };
 
@@ -83,7 +89,7 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
 
   const { loading: hoursLoading } = useFormSetRemainingHours({
     form,
-    isEnabled: editEntry === undefined && !form.formState.isLoading,
+    isEnabled: editEntry === undefined && template === undefined && !form.formState.isLoading,
   });
 
   const addWorkday: SubmitHandler<EntryFormSchema> = async (formValues) => {
