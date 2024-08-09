@@ -1,11 +1,14 @@
 import { Outlet } from "react-router-dom";
 import ListControls from "./ListControls";
 import WorkdayList from "./WorkdayList";
+import { EntryContextProvider } from "./entry-context/EntryContextProvider";
 
 const WorkdayBrowser = () => (
   <>
-    <ListControls />
-    <WorkdayList />
+    <EntryContextProvider>
+      <ListControls />
+      <WorkdayList />
+    </EntryContextProvider>
     <Outlet />
   </>
 );
