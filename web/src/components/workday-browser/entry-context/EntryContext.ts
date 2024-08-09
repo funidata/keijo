@@ -8,6 +8,8 @@ type EntryContextValue = {
   clearEntries: () => void;
   hasEntry: (entry: Entry) => boolean;
   hasEntries: boolean;
+  toggleEditing: () => void;
+  isEditing: boolean;
 };
 
 export const EntryContext = createContext<EntryContextValue | undefined>(undefined);

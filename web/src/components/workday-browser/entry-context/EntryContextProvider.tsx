@@ -8,6 +8,10 @@ type EntryContextProviderProps = {
 
 export const EntryContextProvider = ({ children }: EntryContextProviderProps) => {
   const [selectedEntries, setSelected] = useState<Entry[]>([]);
+  const [isEditing, setEditing] = useState(false);
+
+  const toggleEditing = () => setEditing((prev) => !prev);
+
   const addSelectedEntry = (entry: Entry) => setSelected((prev) => [...prev, entry]);
   const removeSelectedEntry = (entry: Entry) =>
     setSelected((prev) => prev.filter((prevEntry) => prevEntry.key !== entry.key));
@@ -24,6 +28,8 @@ export const EntryContextProvider = ({ children }: EntryContextProviderProps) =>
         clearEntries,
         hasEntry,
         hasEntries: selectedEntries.length > 0,
+        isEditing,
+        toggleEditing,
       }}
     >
       {children}

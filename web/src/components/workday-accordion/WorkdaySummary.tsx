@@ -28,6 +28,7 @@ import WeekendChip from "./info-chips/WeekendChip";
 import { useEntryContext } from "../workday-browser/entry-context/useEntryContext";
 import { useNotification } from "../global-notification/useNotification";
 import PasteEntryButton from "./PasteEntryButton";
+import PasteEditEntryButton from "./PasteEditEntryButton";
 
 type WorkdayAccordionProps = {
   workday: Workday;
@@ -127,12 +128,15 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
         {!mobile && <InfoChip />}
         <Box sx={{ display: "flex", alignItems: "center" }}>
           {hasEntries ? (
-            <PasteEntryButton
-              onClick={(e) => {
-                e.stopPropagation();
-                handlePasteEntries(selectedEntries);
-              }}
-            />
+            <>
+              <PasteEditEntryButton date={date} />
+              <PasteEntryButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePasteEntries(selectedEntries);
+                }}
+              />
+            </>
           ) : null}
           {!disabled && (
             <>
