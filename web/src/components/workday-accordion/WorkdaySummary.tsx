@@ -51,7 +51,7 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
   const empty = workday.entries.length === 0;
   const { t } = useTranslation();
 
-  const { selectedEntry, setSelectedEntry } = useEntryContext();
+  const { selectedEntries, hasEntries, clearEntries } = useEntryContext();
   const { showSuccessNotification } = useNotification();
   const [addWorkdayEntryMutation] = useMutation(AddWorkdayEntryDocument, {
     refetchQueries: [FindWorkdaysDocument],
@@ -59,21 +59,23 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
       showSuccessNotification(t("notifications.addEntry.success"));
     },
   });
-  const handlePasteEntry = async (entry: Entry) => {
-    await addWorkdayEntryMutation({
-      variables: {
-        entry: {
-          date: date.format("YYYY-MM-DD"),
-          duration: entry.duration,
-          description: entry.description,
-          product: entry.product,
-          activity: entry.activity,
-          issue: entry.issue,
-          client: entry.client,
+  const handlePasteEntries = (entries: Entry[]) => {
+    entries.forEach((entry) => {
+      addWorkdayEntryMutation({
+        variables: {
+          entry: {
+            date: date.format("YYYY-MM-DD"),
+            duration: entry.duration,
+            description: entry.description,
+            product: entry.product,
+            activity: entry.activity,
+            issue: entry.issue,
+            client: entry.client,
+          },
         },
-      },
+      });
     });
-    setSelectedEntry(null);
+    clearEntries();
   };
 
   const InfoChip = () => {
@@ -124,11 +126,11 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
         </Box>
         {!mobile && <InfoChip />}
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          {selectedEntry ? (
+          {hasEntries ? (
             <PasteEntryButton
               onClick={(e) => {
                 e.stopPropagation();
-                handlePasteEntry(selectedEntry);
+                handlePasteEntries(selectedEntries);
               }}
             />
           ) : null}

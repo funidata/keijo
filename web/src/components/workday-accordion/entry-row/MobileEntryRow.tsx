@@ -20,7 +20,7 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
   const paid = entry.acceptanceStatus === AcceptanceStatus.Paid;
   const open = entry.acceptanceStatus === AcceptanceStatus.Open;
   const roundedDuration = roundToFullMinutes(dayjs.duration(entry.duration, "hour"));
-  const { selectedEntry } = useEntryContext();
+  const { hasEntry } = useEntryContext();
 
   return (
     <ListItem
@@ -36,7 +36,7 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
         flexDirection: "column",
         alignItems: "stretch",
         backgroundColor: (theme) =>
-          selectedEntry?.key === entry.key
+          hasEntry(entry)
             ? darkMode
               ? theme.palette.grey[700]
               : theme.palette.primary.main

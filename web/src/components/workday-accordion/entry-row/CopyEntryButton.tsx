@@ -10,7 +10,7 @@ type CopyEntryButtonProps = {
 
 const CopyEntryButton = ({ entry }: CopyEntryButtonProps) => {
   const { t } = useTranslation();
-  const { selectedEntry, setSelectedEntry } = useEntryContext();
+  const { hasEntry, addSelectedEntry, removeSelectedEntry } = useEntryContext();
 
   return (
     <>
@@ -21,7 +21,7 @@ const CopyEntryButton = ({ entry }: CopyEntryButtonProps) => {
           size="medium"
           onClick={(e) => {
             e.stopPropagation();
-            selectedEntry?.key !== entry.key ? setSelectedEntry(entry) : setSelectedEntry(null);
+            !hasEntry(entry) ? addSelectedEntry(entry) : removeSelectedEntry(entry);
           }}
           sx={(theme) => ({
             color:
@@ -31,7 +31,7 @@ const CopyEntryButton = ({ entry }: CopyEntryButtonProps) => {
             border: "none",
             borderRadius: "50%",
           })}
-          selected={selectedEntry?.key === entry.key}
+          selected={hasEntry(entry)}
         >
           <ContentCopyIcon fontSize="small" />
         </ToggleButton>

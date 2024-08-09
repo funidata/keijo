@@ -21,7 +21,7 @@ const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
   const paid = entry.acceptanceStatus === AcceptanceStatus.Paid;
   const open = entry.acceptanceStatus === AcceptanceStatus.Open;
   const roundedDuration = roundToFullMinutes(dayjs.duration(entry.duration, "hour"));
-  const { selectedEntry } = useEntryContext();
+  const { hasEntry } = useEntryContext();
 
   return (
     <ListItem
@@ -37,7 +37,7 @@ const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
         alignItems: "stretch",
         justifyContent: "space-between",
         backgroundColor: (theme) =>
-          selectedEntry?.key === entry.key
+          hasEntry(entry)
             ? darkMode
               ? theme.palette.grey[700]
               : theme.palette.primary.main
