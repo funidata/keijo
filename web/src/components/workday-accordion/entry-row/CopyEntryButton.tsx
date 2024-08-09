@@ -1,7 +1,7 @@
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { ToggleButton, Tooltip } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { Entry } from "../../../graphql/generated/graphql";
-import LabelledIconButton from "../../LabelledIconButton";
 import { useEntryContext } from "../../workday-browser/entry-context/useEntryContext";
 
 type CopyEntryButtonProps = {
@@ -14,22 +14,28 @@ const CopyEntryButton = ({ entry }: CopyEntryButtonProps) => {
 
   return (
     <>
-      <LabelledIconButton
-        label={t("controls.copyEntry")}
-        size="medium"
-        onClick={(e) => {
-          e.stopPropagation();
-          selectedEntry?.key !== entry.key ? setSelectedEntry(entry) : setSelectedEntry(null);
-        }}
-        sx={(theme) => ({
-          color:
-            theme.palette.mode === "dark"
-              ? theme.palette.primary.main
-              : theme.palette.secondary.dark,
-        })}
-      >
-        <ContentCopyIcon fontSize="inherit" />
-      </LabelledIconButton>
+      <Tooltip title={t("controls.copyEntry")} arrow placement="bottom">
+        <ToggleButton
+          value={t("controls.copyEntry")}
+          aria-label={t("controls.copyEntry")}
+          size="medium"
+          onClick={(e) => {
+            e.stopPropagation();
+            selectedEntry?.key !== entry.key ? setSelectedEntry(entry) : setSelectedEntry(null);
+          }}
+          sx={(theme) => ({
+            color:
+              theme.palette.mode === "dark"
+                ? theme.palette.primary.main
+                : theme.palette.secondary.dark,
+            border: "none",
+            borderRadius: "50%",
+          })}
+          selected={selectedEntry?.key === entry.key}
+        >
+          <ContentCopyIcon fontSize="small" />
+        </ToggleButton>
+      </Tooltip>
     </>
   );
 };
