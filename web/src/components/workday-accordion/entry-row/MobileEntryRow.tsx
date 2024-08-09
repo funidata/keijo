@@ -1,4 +1,4 @@
-import { Box, ListItemButton, Typography } from "@mui/material";
+import { Box, ListItem, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import dayjs from "dayjs";
 import { roundToFullMinutes } from "../../../common/duration";
@@ -23,7 +23,7 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
   const { selectedEntry } = useEntryContext();
 
   return (
-    <ListItemButton
+    <ListItem
       sx={{
         bgcolor: darkMode ? grey[800] : "primary.light",
         borderRadius: 4,
@@ -35,13 +35,13 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "stretch",
-        ":hover": {
-          backgroundColor: darkMode ? grey[800] : "primary.light",
-        },
+        backgroundColor: (theme) =>
+          selectedEntry?.key === entry.key
+            ? darkMode
+              ? theme.palette.grey[700]
+              : theme.palette.primary.main
+            : undefined,
       }}
-      role="listitem"
-      selected={selectedEntry?.key === entry.key}
-      disableTouchRipple
     >
       <Box sx={{ display: "flex", justifyContent: "space-between", minHeight: 40 }}>
         <Box
@@ -100,7 +100,7 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
           </Typography>
         )}
       </Box>
-    </ListItemButton>
+    </ListItem>
   );
 };
 

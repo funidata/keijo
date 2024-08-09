@@ -1,4 +1,4 @@
-import { Box, ListItemButton, Typography } from "@mui/material";
+import { Box, ListItem, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import dayjs from "dayjs";
 import { roundToFullMinutes } from "../../../common/duration";
@@ -24,7 +24,7 @@ const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
   const { selectedEntry } = useEntryContext();
 
   return (
-    <ListItemButton
+    <ListItem
       sx={{
         bgcolor: darkMode ? grey[800] : "primary.light",
         borderRadius: 4,
@@ -36,10 +36,13 @@ const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
         display: "flex",
         alignItems: "stretch",
         justifyContent: "space-between",
+        backgroundColor: (theme) =>
+          selectedEntry?.key === entry.key
+            ? darkMode
+              ? theme.palette.grey[700]
+              : theme.palette.primary.main
+            : undefined,
       }}
-      role="listitem"
-      selected={selectedEntry?.key === entry.key}
-      disableTouchRipple
     >
       <Box
         sx={{
@@ -108,7 +111,7 @@ const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
           </Box>
         )}
       </Box>
-    </ListItemButton>
+    </ListItem>
   );
 };
 
