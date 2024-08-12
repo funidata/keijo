@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import { Entry } from "../../../graphql/generated/graphql";
+import { Dayjs } from "dayjs";
 
 type EntryContextValue = {
   selectedEntries: Entry[];
@@ -8,8 +9,8 @@ type EntryContextValue = {
   clearEntries: () => void;
   hasEntry: (entry: Entry) => boolean;
   hasEntries: boolean;
-  toggleEditing: () => void;
-  isEditing: boolean;
+  editDate: Dayjs | null;
+  setEditDate: (date: Dayjs | null) => void;
 };
 
 export const EntryContext = createContext<EntryContextValue | undefined>(undefined);
