@@ -86,6 +86,7 @@ const checkWeekdays = async (page: Page, week: number, t: TFunction, dayjs: Dayj
   const sunday = page.getByRole("button", { name: date.add(6, "day").format("dd l") });
   await expect(sunday).toBeVisible();
   await expect(sunday.getByText(t("entryTable.weekend"))).toBeVisible();
+  await page.getByRole("button", { name: t("controls.hideWeekend") }).click();
 };
 
 const checkAppBar = async (page: Page, t: TFunction) => {
