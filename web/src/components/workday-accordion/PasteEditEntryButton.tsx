@@ -18,7 +18,7 @@ const PasteEditEntryButton = ({ date, ...props }: PasteEntryButtonProps) => {
     <Box onClick={(e) => e.stopPropagation()}>
       <LabelledIconButton
         size="medium"
-        label={t("controls.pasteEntry")}
+        label={t("controls.pasteAndEditEntry")}
         onClick={() => {
           setEditDate(date);
           const entry = selectedEntries[0];

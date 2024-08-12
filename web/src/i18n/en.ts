@@ -26,6 +26,7 @@ const en = {
     hideWeekend: "Hide Weekend",
     copyEntry: "Copy Entry",
     pasteEntry: "Paste Entry",
+    pasteAndEditEntry: "Paste and Edit Entry",
   },
   dimensionNames: {
     product: "Product",

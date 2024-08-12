@@ -26,6 +26,7 @@ const fi = {
     hideWeekend: "Piilota Viikonloppu",
     copyEntry: "Kopioi työaikakirjaus",
     pasteEntry: "Liitä työaikakirjaus",
+    pasteAndEditEntry: "Liitä ja muokkaa kirjausta",
   },
   dimensionNames: {
     product: "Tuote",
