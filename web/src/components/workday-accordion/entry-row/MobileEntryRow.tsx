@@ -10,6 +10,8 @@ import { EntryRowProps } from "./EntryRow";
 import AcceptedChip from "./status-chips/AcceptedChip";
 import OpenChip from "./status-chips/OpenChip";
 import PaidChip from "./status-chips/PaidChip";
+import CopyEntryButton from "./CopyEntryButton";
+import { useEntryContext } from "../../workday-browser/entry-context/useEntryContext";
 
 const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
   const { darkMode } = useDarkMode();
@@ -18,6 +20,7 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
   const paid = entry.acceptanceStatus === AcceptanceStatus.Paid;
   const open = entry.acceptanceStatus === AcceptanceStatus.Open;
   const roundedDuration = roundToFullMinutes(dayjs.duration(entry.duration, "hour"));
+  const { hasEntry } = useEntryContext();
 
   return (
     <ListItem
@@ -32,6 +35,12 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "stretch",
+        backgroundColor: (theme) =>
+          hasEntry(entry)
+            ? darkMode
+              ? theme.palette.grey[700]
+              : theme.palette.primary.main
+            : undefined,
       }}
     >
       <Box sx={{ display: "flex", justifyContent: "space-between", minHeight: 40 }}>
@@ -58,6 +67,7 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
           ) : (
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Box>
+                <CopyEntryButton entry={entry} />
                 <EditEntryButton date={date} entry={entry} />
               </Box>
             </Box>
