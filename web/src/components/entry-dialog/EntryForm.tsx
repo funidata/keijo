@@ -45,18 +45,19 @@ type LocationState = {
   date?: string;
   editEntry?: Entry;
   template?: Entry;
+  templateEntries?: Entry[];
 };
 
 const EntryForm = () => {
   const { state } = useLocation();
   const dayjs = useDayjs();
   // state is possibly null
-  const { date: originalDate, editEntry, template }: LocationState = state || {};
+  const { date: originalDate, editEntry, templateEntries }: LocationState = state || {};
 
   const { form, onSubmit, loading } = useEntryForm({
     editEntry,
     date: dayjs(originalDate),
-    template: template,
+    template: templateEntries && templateEntries[0],
   });
   const navigate = useNavigate();
 
@@ -68,10 +69,25 @@ const EntryForm = () => {
 
   useEffect(() => {
     if (isSubmitSuccessful) {
-      reset();
-      navigate("..");
+      const remainingEntries = templateEntries && templateEntries.slice(1);
+      if (remainingEntries && remainingEntries.length > 0) {
+        const nextEntry = remainingEntries[0];
+        reset({
+          date: dayjs(originalDate),
+          duration: nextEntry.duration.toString(),
+          description: nextEntry.description || "",
+          product: nextEntry.product || "",
+          activity: nextEntry.activity || "",
+          issue: nextEntry.issue || null,
+          client: nextEntry.client || "",
+        });
+        navigate(".", { state: { date: originalDate, templateEntries: remainingEntries } });
+      } else {
+        reset();
+        navigate("..");
+      }
     }
-  }, [isSubmitSuccessful, navigate, reset]);
+  }, [dayjs, isSubmitSuccessful, navigate, originalDate, reset, templateEntries]);
 
   const { t } = useTranslation();
   const theme = useTheme();
@@ -203,7 +219,7 @@ const EntryForm = () => {
               )}
             </Grid>
             <Grid item xs={12}>
-              {!editEntry && !template && (
+              {!editEntry && !templateEntries && (
                 <FormGroup>
                   <FormControlLabel
                     control={
@@ -223,7 +239,7 @@ const EntryForm = () => {
           <>
             <Grid item xs={4} sx={{ mt: 2 }}>
               <Box sx={{ display: "flex", justifyContent: "start", gap: 2 }}>
-                {!editEntry && !template && (
+                {!editEntry && !templateEntries && (
                   <FormGroup>
                     <FormControlLabel
                       control={

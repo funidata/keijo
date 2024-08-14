@@ -12,7 +12,7 @@ const PasteEditEntryButton = ({ date, ...props }: PasteEntryButtonProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const { selectedEntries, setEditDate, hasEntries, removeSelectedEntry } = useEntryContext();
+  const { selectedEntries, clearEntries } = useEntryContext();
 
   return (
     <Box onClick={(e) => e.stopPropagation()}>
@@ -20,13 +20,10 @@ const PasteEditEntryButton = ({ date, ...props }: PasteEntryButtonProps) => {
         size="medium"
         label={t("controls.pasteAndEditEntry")}
         onClick={() => {
-          setEditDate(date);
-          const entry = selectedEntries[0];
-          if (hasEntries) {
-            removeSelectedEntry(entry);
-          }
+          const templateEntries = selectedEntries;
+          clearEntries();
           navigate(`${location.pathname}/create`, {
-            state: { date: date.format("YYYY-MM-DD"), template: entry },
+            state: { date: date.format("YYYY-MM-DD"), templateEntries },
           });
         }}
         {...props}
