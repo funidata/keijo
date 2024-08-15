@@ -27,6 +27,7 @@ const en = {
     copyEntry: "Copy Entry",
     pasteEntry: "Paste Entry",
     pasteAndEditEntry: "Paste and Edit Entry",
+    addTemplate: "Add New Entry Template",
   },
   dimensionNames: {
     product: "Product",

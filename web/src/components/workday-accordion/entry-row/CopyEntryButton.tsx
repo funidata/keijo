@@ -1,11 +1,11 @@
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { ToggleButton, Tooltip } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { Entry } from "../../../graphql/generated/graphql";
+import { EntryTemplateType } from "../../../graphql/generated/graphql";
 import { useEntryContext } from "../../workday-browser/entry-context/useEntryContext";
 
 type CopyEntryButtonProps = {
-  entry: Entry;
+  entry: EntryTemplateType;
 };
 
 const CopyEntryButton = ({ entry }: CopyEntryButtonProps) => {

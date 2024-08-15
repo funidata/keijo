@@ -27,6 +27,7 @@ const fi = {
     copyEntry: "Kopioi työaikakirjaus",
     pasteEntry: "Liitä työaikakirjaus",
     pasteAndEditEntry: "Liitä ja muokkaa kirjausta",
+    addTemplate: "Lisää kirjauspohja",
   },
   dimensionNames: {
     product: "Tuote",

@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useState } from "react";
 import { EntryContext } from "./EntryContext";
-import { Entry } from "../../../graphql/generated/graphql";
+import { EntryTemplateType } from "../../../graphql/generated/graphql";
 import { Dayjs } from "dayjs";
 
 type EntryContextProviderProps = {
@@ -8,16 +8,16 @@ type EntryContextProviderProps = {
 };
 
 export const EntryContextProvider = ({ children }: EntryContextProviderProps) => {
-  const [selectedEntries, setSelected] = useState<Entry[]>([]);
+  const [selectedEntries, setSelected] = useState<EntryTemplateType[]>([]);
   const [editDate, setDate] = useState<Dayjs | null>(null);
 
-  const addSelectedEntry = (entry: Entry) => setSelected((prev) => [...prev, entry]);
+  const addSelectedEntry = (entry: EntryTemplateType) => setSelected((prev) => [...prev, entry]);
   const removeSelectedEntry = useCallback(
-    (entry: Entry) =>
+    (entry: EntryTemplateType) =>
       setSelected((prev) => prev.filter((prevEntry) => prevEntry.key !== entry.key)),
     [],
   );
-  const hasEntry = (entry: Entry) =>
+  const hasEntry = (entry: EntryTemplateType) =>
     !!selectedEntries.find((prevEntry) => prevEntry.key === entry.key);
   const clearEntries = () => setSelected([]);
 

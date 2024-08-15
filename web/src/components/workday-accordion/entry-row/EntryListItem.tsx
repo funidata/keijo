@@ -1,12 +1,12 @@
 import { Box, ListItem, ListItemProps, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { roundToFullMinutes } from "../../../common/duration";
-import { Entry } from "../../../graphql/generated/graphql";
+import { EntryTemplateInput } from "../../../graphql/generated/graphql";
 import DimensionChip from "./DimensionChip";
 import { ReactNode } from "react";
 
 type EntryListItemProps = {
-  entry: Entry;
+  entry: EntryTemplateInput;
   action: ReactNode;
 } & ListItemProps;
 
