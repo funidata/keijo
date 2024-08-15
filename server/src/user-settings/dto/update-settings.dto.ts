@@ -7,4 +7,7 @@ export class UpdateSettingsDto {
 
   @Field({ nullable: true })
   activityPreset?: string;
+
+  @Field(() => [String], { nullable: true })
+  projectsPreset?: string[];
 }

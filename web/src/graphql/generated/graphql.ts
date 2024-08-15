@@ -116,6 +116,7 @@ export type SessionStatus = {
 export type UpdateSettingsDto = {
   activityPreset?: InputMaybe<Scalars['String']['input']>;
   productPreset?: InputMaybe<Scalars['String']['input']>;
+  projectsPreset?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 export type UserSettings = {
@@ -123,6 +124,7 @@ export type UserSettings = {
   activityPreset?: Maybe<Scalars['String']['output']>;
   employeeNumber: Scalars['Float']['output'];
   productPreset?: Maybe<Scalars['String']['output']>;
+  projectsPreset?: Maybe<Array<Scalars['String']['output']>>;
 };
 
 export type Workday = {
@@ -174,7 +176,7 @@ export type ReplaceWorkdayEntryMutation = { __typename?: 'Mutation', replaceWork
 export type GetMySettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMySettingsQuery = { __typename?: 'Query', getMySettings: { __typename?: 'UserSettings', employeeNumber: number, productPreset?: string | null, activityPreset?: string | null } };
+export type GetMySettingsQuery = { __typename?: 'Query', getMySettings: { __typename?: 'UserSettings', employeeNumber: number, productPreset?: string | null, activityPreset?: string | null, projectsPreset?: Array<string> | null } };
 
 export type UpdateSettingsMutationVariables = Exact<{
   settings: UpdateSettingsDto;
@@ -190,5 +192,5 @@ export const FindWorkdaysDocument = {"kind":"Document","definitions":[{"kind":"O
 export const GetSessionStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetSessionStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getSessionStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employeeNumber"}}]}}]}}]} as unknown as DocumentNode<GetSessionStatusQuery, GetSessionStatusQueryVariables>;
 export const RemoveWorkdayEntryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RemoveWorkdayEntry"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"entry"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RemoveWorkdayEntryInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeWorkdayEntry"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"entry"},"value":{"kind":"Variable","name":{"kind":"Name","value":"entry"}}}]}]}}]} as unknown as DocumentNode<RemoveWorkdayEntryMutation, RemoveWorkdayEntryMutationVariables>;
 export const ReplaceWorkdayEntryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ReplaceWorkdayEntry"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"originalEntry"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RemoveWorkdayEntryInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"replacementEntry"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AddWorkdayEntryInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"replaceWorkdayEntry"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"originalEntry"},"value":{"kind":"Variable","name":{"kind":"Name","value":"originalEntry"}}},{"kind":"Argument","name":{"kind":"Name","value":"replacementEntry"},"value":{"kind":"Variable","name":{"kind":"Name","value":"replacementEntry"}}}]}]}}]} as unknown as DocumentNode<ReplaceWorkdayEntryMutation, ReplaceWorkdayEntryMutationVariables>;
-export const GetMySettingsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetMySettings"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getMySettings"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employeeNumber"}},{"kind":"Field","name":{"kind":"Name","value":"productPreset"}},{"kind":"Field","name":{"kind":"Name","value":"activityPreset"}}]}}]}}]} as unknown as DocumentNode<GetMySettingsQuery, GetMySettingsQueryVariables>;
+export const GetMySettingsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetMySettings"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getMySettings"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employeeNumber"}},{"kind":"Field","name":{"kind":"Name","value":"productPreset"}},{"kind":"Field","name":{"kind":"Name","value":"activityPreset"}},{"kind":"Field","name":{"kind":"Name","value":"projectsPreset"}}]}}]}}]} as unknown as DocumentNode<GetMySettingsQuery, GetMySettingsQueryVariables>;
 export const UpdateSettingsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateSettings"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"settings"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateSettingsDto"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateSettings"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"settings"},"value":{"kind":"Variable","name":{"kind":"Name","value":"settings"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employeeNumber"}}]}}]}}]} as unknown as DocumentNode<UpdateSettingsMutation, UpdateSettingsMutationVariables>;
