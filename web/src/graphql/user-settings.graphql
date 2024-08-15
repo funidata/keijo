@@ -3,11 +3,32 @@ query GetMySettings {
     employeeNumber
     productPreset
     activityPreset
+    entryTemplates {
+      key
+      duration
+      description
+      product
+      activity
+      issue
+      client
+    }
   }
 }
 
 mutation UpdateSettings($settings: UpdateSettingsDto!) {
   updateSettings(settings: $settings) {
+    employeeNumber
+  }
+}
+
+mutation AddEntryTemplate($template: EntryTemplateInput!) {
+  addEntryTemplate(template: $template) {
+    employeeNumber
+  }
+}
+
+mutation RemoveEntryTemplate($templateKey: Float!) {
+  removeEntryTemplate(templateKey: $templateKey) {
     employeeNumber
   }
 }

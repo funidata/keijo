@@ -56,6 +56,26 @@ export type Entry = {
   typeName: Scalars['String']['output'];
 };
 
+export type EntryTemplateInput = {
+  activity?: InputMaybe<Scalars['String']['input']>;
+  client?: InputMaybe<Scalars['String']['input']>;
+  description: Scalars['String']['input'];
+  duration: Scalars['Float']['input'];
+  issue?: InputMaybe<Scalars['String']['input']>;
+  product?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type EntryTemplateType = {
+  __typename?: 'EntryTemplateType';
+  activity?: Maybe<Scalars['String']['output']>;
+  client?: Maybe<Scalars['String']['output']>;
+  description: Scalars['String']['output'];
+  duration: Scalars['Float']['output'];
+  issue?: Maybe<Scalars['String']['output']>;
+  key: Scalars['Float']['output'];
+  product?: Maybe<Scalars['String']['output']>;
+};
+
 export type FindWorkdaysInput = {
   end: Scalars['DateTime']['input'];
   start: Scalars['DateTime']['input'];
@@ -63,15 +83,27 @@ export type FindWorkdaysInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addEntryTemplate: UserSettings;
   addWorkdayEntry: Scalars['String']['output'];
+  removeEntryTemplate: UserSettings;
   removeWorkdayEntry: Scalars['String']['output'];
   replaceWorkdayEntry: Scalars['String']['output'];
   updateSettings: UserSettings;
 };
 
 
+export type MutationAddEntryTemplateArgs = {
+  template: EntryTemplateInput;
+};
+
+
 export type MutationAddWorkdayEntryArgs = {
   entry: AddWorkdayEntryInput;
+};
+
+
+export type MutationRemoveEntryTemplateArgs = {
+  templateKey: Scalars['Float']['input'];
 };
 
 
@@ -122,6 +154,7 @@ export type UserSettings = {
   __typename?: 'UserSettings';
   activityPreset?: Maybe<Scalars['String']['output']>;
   employeeNumber: Scalars['Float']['output'];
+  entryTemplates?: Maybe<Array<EntryTemplateType>>;
   productPreset?: Maybe<Scalars['String']['output']>;
 };
 
@@ -174,7 +207,7 @@ export type ReplaceWorkdayEntryMutation = { __typename?: 'Mutation', replaceWork
 export type GetMySettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMySettingsQuery = { __typename?: 'Query', getMySettings: { __typename?: 'UserSettings', employeeNumber: number, productPreset?: string | null, activityPreset?: string | null } };
+export type GetMySettingsQuery = { __typename?: 'Query', getMySettings: { __typename?: 'UserSettings', employeeNumber: number, productPreset?: string | null, activityPreset?: string | null, entryTemplates?: Array<{ __typename?: 'EntryTemplateType', key: number, duration: number, description: string, product?: string | null, activity?: string | null, issue?: string | null, client?: string | null }> | null } };
 
 export type UpdateSettingsMutationVariables = Exact<{
   settings: UpdateSettingsDto;
@@ -183,6 +216,20 @@ export type UpdateSettingsMutationVariables = Exact<{
 
 export type UpdateSettingsMutation = { __typename?: 'Mutation', updateSettings: { __typename?: 'UserSettings', employeeNumber: number } };
 
+export type AddEntryTemplateMutationVariables = Exact<{
+  template: EntryTemplateInput;
+}>;
+
+
+export type AddEntryTemplateMutation = { __typename?: 'Mutation', addEntryTemplate: { __typename?: 'UserSettings', employeeNumber: number } };
+
+export type RemoveEntryTemplateMutationVariables = Exact<{
+  templateKey: Scalars['Float']['input'];
+}>;
+
+
+export type RemoveEntryTemplateMutation = { __typename?: 'Mutation', removeEntryTemplate: { __typename?: 'UserSettings', employeeNumber: number } };
+
 
 export const AddWorkdayEntryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddWorkdayEntry"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"entry"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AddWorkdayEntryInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addWorkdayEntry"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"entry"},"value":{"kind":"Variable","name":{"kind":"Name","value":"entry"}}}]}]}}]} as unknown as DocumentNode<AddWorkdayEntryMutation, AddWorkdayEntryMutationVariables>;
 export const FindDimensionOptionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FindDimensionOptions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"findDimensionOptions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"product"}},{"kind":"Field","name":{"kind":"Name","value":"activity"}},{"kind":"Field","name":{"kind":"Name","value":"issue"}},{"kind":"Field","name":{"kind":"Name","value":"client"}}]}}]}}]} as unknown as DocumentNode<FindDimensionOptionsQuery, FindDimensionOptionsQueryVariables>;
@@ -190,5 +237,7 @@ export const FindWorkdaysDocument = {"kind":"Document","definitions":[{"kind":"O
 export const GetSessionStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetSessionStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getSessionStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employeeNumber"}}]}}]}}]} as unknown as DocumentNode<GetSessionStatusQuery, GetSessionStatusQueryVariables>;
 export const RemoveWorkdayEntryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RemoveWorkdayEntry"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"entry"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RemoveWorkdayEntryInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeWorkdayEntry"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"entry"},"value":{"kind":"Variable","name":{"kind":"Name","value":"entry"}}}]}]}}]} as unknown as DocumentNode<RemoveWorkdayEntryMutation, RemoveWorkdayEntryMutationVariables>;
 export const ReplaceWorkdayEntryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ReplaceWorkdayEntry"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"originalEntry"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RemoveWorkdayEntryInput"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"replacementEntry"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AddWorkdayEntryInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"replaceWorkdayEntry"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"originalEntry"},"value":{"kind":"Variable","name":{"kind":"Name","value":"originalEntry"}}},{"kind":"Argument","name":{"kind":"Name","value":"replacementEntry"},"value":{"kind":"Variable","name":{"kind":"Name","value":"replacementEntry"}}}]}]}}]} as unknown as DocumentNode<ReplaceWorkdayEntryMutation, ReplaceWorkdayEntryMutationVariables>;
-export const GetMySettingsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetMySettings"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getMySettings"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employeeNumber"}},{"kind":"Field","name":{"kind":"Name","value":"productPreset"}},{"kind":"Field","name":{"kind":"Name","value":"activityPreset"}}]}}]}}]} as unknown as DocumentNode<GetMySettingsQuery, GetMySettingsQueryVariables>;
+export const GetMySettingsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetMySettings"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getMySettings"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employeeNumber"}},{"kind":"Field","name":{"kind":"Name","value":"productPreset"}},{"kind":"Field","name":{"kind":"Name","value":"activityPreset"}},{"kind":"Field","name":{"kind":"Name","value":"entryTemplates"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"product"}},{"kind":"Field","name":{"kind":"Name","value":"activity"}},{"kind":"Field","name":{"kind":"Name","value":"issue"}},{"kind":"Field","name":{"kind":"Name","value":"client"}}]}}]}}]}}]} as unknown as DocumentNode<GetMySettingsQuery, GetMySettingsQueryVariables>;
 export const UpdateSettingsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateSettings"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"settings"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateSettingsDto"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateSettings"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"settings"},"value":{"kind":"Variable","name":{"kind":"Name","value":"settings"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employeeNumber"}}]}}]}}]} as unknown as DocumentNode<UpdateSettingsMutation, UpdateSettingsMutationVariables>;
+export const AddEntryTemplateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddEntryTemplate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"template"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EntryTemplateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addEntryTemplate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"template"},"value":{"kind":"Variable","name":{"kind":"Name","value":"template"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employeeNumber"}}]}}]}}]} as unknown as DocumentNode<AddEntryTemplateMutation, AddEntryTemplateMutationVariables>;
+export const RemoveEntryTemplateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RemoveEntryTemplate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"templateKey"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeEntryTemplate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"templateKey"},"value":{"kind":"Variable","name":{"kind":"Name","value":"templateKey"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employeeNumber"}}]}}]}}]} as unknown as DocumentNode<RemoveEntryTemplateMutation, RemoveEntryTemplateMutationVariables>;
