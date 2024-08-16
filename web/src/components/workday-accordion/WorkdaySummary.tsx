@@ -14,7 +14,7 @@ import {
 } from "../../common/workdayUtils";
 import {
   AddWorkdayEntryDocument,
-  Entry,
+  EntryTemplateType,
   FindWorkdaysDocument,
   Workday,
 } from "../../graphql/generated/graphql";
@@ -60,7 +60,7 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
       showSuccessNotification(t("notifications.addEntry.success"));
     },
   });
-  const handlePasteEntries = (entries: Entry[]) => {
+  const handlePasteEntries = (entries: EntryTemplateType[]) => {
     entries.forEach((entry) => {
       addWorkdayEntryMutation({
         variables: {

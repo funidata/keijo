@@ -1,7 +1,7 @@
 import { ReactNode, useCallback, useState } from "react";
 import { EntryContext } from "./EntryContext";
-import { EntryTemplateType } from "../../../graphql/generated/graphql";
 import { Dayjs } from "dayjs";
+import { EntryTemplateType } from "../../../graphql/generated/graphql";
 
 type EntryContextProviderProps = {
   children: ReactNode;

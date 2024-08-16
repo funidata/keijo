@@ -1,8 +1,7 @@
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, Grid, TextField, useMediaQuery, useTheme } from "@mui/material";
-import { Dayjs } from "dayjs";
 import { useEffect } from "react";
-import { Controller, SubmitHandler, UseFormReturn, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import useDayjs from "../../common/useDayjs";
@@ -20,15 +19,6 @@ import JiraIssueComboBox from "../../jira/components/JiraIssueComboBox";
 import { EntryFormSchema } from "../entry-form/useEntryForm";
 import { useMutation } from "@apollo/client";
 import { useNotification } from "../global-notification/useNotification";
-
-export type EntryFormProps = {
-  form: UseFormReturn<EntryFormSchema>;
-  onSubmit: () => void;
-  reset: () => void;
-  editEntry?: Entry;
-  originalDate?: Dayjs;
-  loading?: boolean;
-};
 
 type LocationState = {
   date?: string;
@@ -149,7 +139,11 @@ const TemplateForm = () => {
           </Grid>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Controller name="duration" control={control} render={DurationSlider} />
+          <Controller
+            name="duration"
+            control={control}
+            render={({ field }) => <DurationSlider field={field} />}
+          />
         </Grid>
 
         {mobile ? (

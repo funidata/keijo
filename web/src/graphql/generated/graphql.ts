@@ -72,7 +72,7 @@ export type EntryTemplateType = {
   description: Scalars['String']['output'];
   duration: Scalars['Float']['output'];
   issue?: Maybe<Scalars['String']['output']>;
-  key: Scalars['Float']['output'];
+  key: Scalars['String']['output'];
   product?: Maybe<Scalars['String']['output']>;
 };
 
@@ -103,7 +103,7 @@ export type MutationAddWorkdayEntryArgs = {
 
 
 export type MutationRemoveEntryTemplateArgs = {
-  templateKey: Scalars['Float']['input'];
+  templateKey: RemoveEntryTemplateInput;
 };
 
 
@@ -133,6 +133,10 @@ export type Query = {
 
 export type QueryFindWorkdaysArgs = {
   query: FindWorkdaysInput;
+};
+
+export type RemoveEntryTemplateInput = {
+  key: Scalars['String']['input'];
 };
 
 export type RemoveWorkdayEntryInput = {
@@ -207,7 +211,7 @@ export type ReplaceWorkdayEntryMutation = { __typename?: 'Mutation', replaceWork
 export type GetMySettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMySettingsQuery = { __typename?: 'Query', getMySettings: { __typename?: 'UserSettings', employeeNumber: number, productPreset?: string | null, activityPreset?: string | null, entryTemplates?: Array<{ __typename?: 'EntryTemplateType', key: number, duration: number, description: string, product?: string | null, activity?: string | null, issue?: string | null, client?: string | null }> | null } };
+export type GetMySettingsQuery = { __typename?: 'Query', getMySettings: { __typename?: 'UserSettings', employeeNumber: number, productPreset?: string | null, activityPreset?: string | null, entryTemplates?: Array<{ __typename?: 'EntryTemplateType', key: string, duration: number, description: string, product?: string | null, activity?: string | null, issue?: string | null, client?: string | null }> | null } };
 
 export type UpdateSettingsMutationVariables = Exact<{
   settings: UpdateSettingsDto;
@@ -224,7 +228,7 @@ export type AddEntryTemplateMutationVariables = Exact<{
 export type AddEntryTemplateMutation = { __typename?: 'Mutation', addEntryTemplate: { __typename?: 'UserSettings', employeeNumber: number } };
 
 export type RemoveEntryTemplateMutationVariables = Exact<{
-  templateKey: Scalars['Float']['input'];
+  templateKey: RemoveEntryTemplateInput;
 }>;
 
 
@@ -240,4 +244,4 @@ export const ReplaceWorkdayEntryDocument = {"kind":"Document","definitions":[{"k
 export const GetMySettingsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetMySettings"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getMySettings"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employeeNumber"}},{"kind":"Field","name":{"kind":"Name","value":"productPreset"}},{"kind":"Field","name":{"kind":"Name","value":"activityPreset"}},{"kind":"Field","name":{"kind":"Name","value":"entryTemplates"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"product"}},{"kind":"Field","name":{"kind":"Name","value":"activity"}},{"kind":"Field","name":{"kind":"Name","value":"issue"}},{"kind":"Field","name":{"kind":"Name","value":"client"}}]}}]}}]}}]} as unknown as DocumentNode<GetMySettingsQuery, GetMySettingsQueryVariables>;
 export const UpdateSettingsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateSettings"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"settings"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateSettingsDto"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateSettings"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"settings"},"value":{"kind":"Variable","name":{"kind":"Name","value":"settings"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employeeNumber"}}]}}]}}]} as unknown as DocumentNode<UpdateSettingsMutation, UpdateSettingsMutationVariables>;
 export const AddEntryTemplateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddEntryTemplate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"template"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EntryTemplateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addEntryTemplate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"template"},"value":{"kind":"Variable","name":{"kind":"Name","value":"template"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employeeNumber"}}]}}]}}]} as unknown as DocumentNode<AddEntryTemplateMutation, AddEntryTemplateMutationVariables>;
-export const RemoveEntryTemplateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RemoveEntryTemplate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"templateKey"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Float"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeEntryTemplate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"templateKey"},"value":{"kind":"Variable","name":{"kind":"Name","value":"templateKey"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employeeNumber"}}]}}]}}]} as unknown as DocumentNode<RemoveEntryTemplateMutation, RemoveEntryTemplateMutationVariables>;
+export const RemoveEntryTemplateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RemoveEntryTemplate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"templateKey"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RemoveEntryTemplateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removeEntryTemplate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"templateKey"},"value":{"kind":"Variable","name":{"kind":"Name","value":"templateKey"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"employeeNumber"}}]}}]}}]} as unknown as DocumentNode<RemoveEntryTemplateMutation, RemoveEntryTemplateMutationVariables>;

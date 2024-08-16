@@ -27,7 +27,7 @@ mutation AddEntryTemplate($template: EntryTemplateInput!) {
   }
 }
 
-mutation RemoveEntryTemplate($templateKey: Float!) {
+mutation RemoveEntryTemplate($templateKey: RemoveEntryTemplateInput!) {
   removeEntryTemplate(templateKey: $templateKey) {
     employeeNumber
   }

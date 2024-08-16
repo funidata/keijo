@@ -40,14 +40,14 @@ export class UserSettingsService {
       {
         entryTemplates: [
           ...(settings.entryTemplates || []),
-          { key: settings.entryTemplates?.length || 0, ...entry },
+          { key: (settings.entryTemplates?.length || 0).toString(), ...entry },
         ],
       },
     );
     return this.findOneByEmployeeNumber(employeeNumber);
   }
 
-  async removeEntryTemplate(employeeNumber: number, entryKey: number): Promise<UserSettings> {
+  async removeEntryTemplate(employeeNumber: number, entryKey: string): Promise<UserSettings> {
     const settings = await this.findOneByEmployeeNumber(employeeNumber);
     await this.userSettings.update(
       { employeeNumber },

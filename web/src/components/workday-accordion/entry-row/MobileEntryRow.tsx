@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { AcceptanceStatus } from "../../../graphql/generated/graphql";
+import { AcceptanceStatus, EntryTemplateType } from "../../../graphql/generated/graphql";
 import useDarkMode from "../../../theme/useDarkMode";
 import EditEntryButton from "./EditEntryButton";
 import { EntryRowProps } from "./EntryRow";
@@ -17,10 +17,17 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
   const paid = entry.acceptanceStatus === AcceptanceStatus.Paid;
   const open = entry.acceptanceStatus === AcceptanceStatus.Open;
   const { hasEntry } = useEntryContext();
+  const templateEntry: EntryTemplateType = {
+    issue: entry.issue,
+    activity: entry.activity,
+    description: entry.description,
+    duration: entry.duration,
+    key: entry.key,
+  };
 
   return (
     <MobileEntryListItem
-      entry={entry}
+      entry={templateEntry}
       action={
         <>
           {accepted ? (
@@ -34,7 +41,7 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
           ) : (
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Box>
-                <CopyEntryButton entry={entry} />
+                <CopyEntryButton entry={templateEntry} />
                 <EditEntryButton date={date} entry={entry} />
               </Box>
             </Box>
@@ -50,7 +57,7 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
         bgcolor: darkMode ? grey[800] : "primary.light",
         pr: accepted || paid || open ? 0 : 1,
         backgroundColor: (theme) =>
-          hasEntry(entry)
+          hasEntry(templateEntry)
             ? darkMode
               ? theme.palette.grey[700]
               : theme.palette.primary.main
