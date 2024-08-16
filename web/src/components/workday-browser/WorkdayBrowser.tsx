@@ -7,8 +7,8 @@ import TemplateAccordion from "../template-accordion/TemplateAccordion";
 const WorkdayBrowser = () => (
   <>
     <EntryContextProvider>
-      <ListControls />
       <TemplateAccordion />
+      <ListControls />
       <WorkdayList />
     </EntryContextProvider>
     <Outlet />
