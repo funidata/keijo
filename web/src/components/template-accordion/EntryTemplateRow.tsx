@@ -56,6 +56,7 @@ const EntryTemplateRow = ({ entry, listItemProps }: EntryTemplateRowProps) => {
             <>
               <Box>
                 <CopyEntryButton entry={entry} />
+                <DeleteTemplateButton templateKey={entry.key} />
               </Box>
             </>
           }
