@@ -1,4 +1,4 @@
-import { useMediaQuery, useTheme } from "@mui/material";
+import { ListItemProps, useMediaQuery, useTheme } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { EntryType } from "../../../common/entryType.enum";
 import { Entry } from "../../../graphql/generated/graphql";
@@ -9,6 +9,7 @@ import UnknownEntry from "./UnknownEntry";
 export type EntryRowProps = {
   entry: Entry;
   date: Dayjs;
+  listItemProps?: ListItemProps;
 };
 
 const EntryRow = (props: EntryRowProps) => {

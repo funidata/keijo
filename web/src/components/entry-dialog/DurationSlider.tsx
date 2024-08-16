@@ -1,16 +1,17 @@
 import { Box, Slider } from "@mui/material";
 import { TimeField } from "@mui/x-date-pickers-pro";
 import { Dayjs } from "dayjs";
-import { ControllerRenderProps } from "react-hook-form";
+import { ControllerRenderProps, FieldPath, FieldValues } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import useDayjs from "../../common/useDayjs";
-import { EntryFormSchema } from "./useEntryForm";
 
-type DurationSliderProps = {
-  field: ControllerRenderProps<EntryFormSchema, "duration">;
+type DurationSliderProps<T extends FieldValues, E extends FieldPath<T>> = {
+  field: ControllerRenderProps<T, E>;
 };
 
-const DurationSlider = ({ field }: DurationSliderProps) => {
+const DurationSlider = <T extends FieldValues, E extends FieldPath<T>>({
+  field,
+}: DurationSliderProps<T, E>) => {
   const { t } = useTranslation();
   const dayjs = useDayjs();
   const hoursDecimal = Number(field.value || 0);

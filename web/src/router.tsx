@@ -6,6 +6,7 @@ import HeaderGuard from "./components/error/HeaderGuard";
 import Layout from "./components/layout/Layout";
 import WorkdayBrowser from "./components/workday-browser/WorkdayBrowser";
 import WorkdayBrowserRedirect from "./components/workday-browser/WorkdayBrowserRedirect";
+import TemplateDialog from "./components/template-accordion/TemplateDialog";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,7 @@ const router = createBrowserRouter([
               { path: "create", element: <EntryDialog /> },
               { path: "edit", element: <EntryDialog variant="edit" /> },
               { path: "set-defaults", element: <DefaultsDialog /> },
+              { path: "create-template", element: <TemplateDialog /> },
             ],
           },
         ],

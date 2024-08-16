@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import BigDialog from "../BigDialog";
-import EntryForm from "./EntryForm";
+import EntryForm from "../entry-form/EntryForm";
 
 type EntryDialogProps = {
   variant: "create" | "edit";

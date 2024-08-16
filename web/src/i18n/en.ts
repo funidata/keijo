@@ -24,6 +24,10 @@ const en = {
     jiraDisconnect: "Disconnect from Jira",
     showWeekend: "Show Weekend",
     hideWeekend: "Hide Weekend",
+    copyEntry: "Copy Entry",
+    pasteEntry: "Paste Entry",
+    pasteAndEditEntry: "Paste and Edit Entry",
+    addTemplate: "Add New Entry Template",
   },
   dimensionNames: {
     product: "Product",
@@ -106,6 +110,8 @@ const en = {
   },
   titles: {
     workdayBrowser: "Entries",
+    templates: "My Entry Templates",
+    noTemplates: "No templates",
   },
   jira: {
     issueGroups: {

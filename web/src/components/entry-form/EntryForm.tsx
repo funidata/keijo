@@ -23,11 +23,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useDayjs from "../../common/useDayjs";
 import { AcceptanceStatus, Entry } from "../../graphql/generated/graphql";
 import usePreferSetRemainingHours from "../user-preferences/usePreferSetRemainingHours";
-import BigDeleteEntryButton from "./BigDeleteEntryButton";
-import DimensionComboBox from "./DimensionComboBox";
-import DurationSlider from "./DurationSlider";
-import ResponsiveDatePicker from "./ResponsiveDatePicker";
-import WorkdayHours from "./WorkdayHours";
+import BigDeleteEntryButton from "../entry-dialog/BigDeleteEntryButton";
+import DimensionComboBox from "../entry-dialog/DimensionComboBox";
+import DurationSlider from "../entry-dialog/DurationSlider";
+import ResponsiveDatePicker from "../entry-dialog/ResponsiveDatePicker";
+import WorkdayHours from "../entry-dialog/WorkdayHours";
 import useEntryForm, { EntryFormSchema } from "./useEntryForm";
 import { useIsJiraAuthenticated } from "../../jira/jiraApi";
 import JiraIssueComboBox from "../../jira/components/JiraIssueComboBox";
@@ -44,14 +44,21 @@ export type EntryFormProps = {
 type LocationState = {
   date?: string;
   editEntry?: Entry;
+  template?: Entry;
+  templateEntries?: Entry[];
 };
 
 const EntryForm = () => {
   const { state } = useLocation();
   const dayjs = useDayjs();
   // state is possibly null
-  const { date: originalDate, editEntry }: LocationState = state || {};
-  const { form, onSubmit, loading } = useEntryForm({ editEntry, date: dayjs(originalDate) });
+  const { date: originalDate, editEntry, templateEntries }: LocationState = state || {};
+
+  const { form, onSubmit, loading } = useEntryForm({
+    editEntry,
+    date: dayjs(originalDate),
+    template: templateEntries && templateEntries[0],
+  });
   const navigate = useNavigate();
 
   const {
@@ -62,10 +69,25 @@ const EntryForm = () => {
 
   useEffect(() => {
     if (isSubmitSuccessful) {
-      reset();
-      navigate("..");
+      const remainingEntries = templateEntries && templateEntries.slice(1);
+      if (remainingEntries && remainingEntries.length > 0) {
+        const nextEntry = remainingEntries[0];
+        reset({
+          date: dayjs(originalDate),
+          duration: nextEntry.duration.toString(),
+          description: nextEntry.description || "",
+          product: nextEntry.product || "",
+          activity: nextEntry.activity || "",
+          issue: nextEntry.issue || null,
+          client: nextEntry.client || "",
+        });
+        navigate(".", { state: { date: originalDate, templateEntries: remainingEntries } });
+      } else {
+        reset();
+        navigate("..");
+      }
     }
-  }, [isSubmitSuccessful, navigate, reset]);
+  }, [dayjs, isSubmitSuccessful, navigate, originalDate, reset, templateEntries]);
 
   const { t } = useTranslation();
   const theme = useTheme();
@@ -197,7 +219,7 @@ const EntryForm = () => {
               )}
             </Grid>
             <Grid item xs={12}>
-              {!editEntry && (
+              {!editEntry && !templateEntries && (
                 <FormGroup>
                   <FormControlLabel
                     control={
@@ -217,7 +239,7 @@ const EntryForm = () => {
           <>
             <Grid item xs={4} sx={{ mt: 2 }}>
               <Box sx={{ display: "flex", justifyContent: "start", gap: 2 }}>
-                {!editEntry && (
+                {!editEntry && !templateEntries && (
                   <FormGroup>
                     <FormControlLabel
                       control={

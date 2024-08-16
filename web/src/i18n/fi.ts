@@ -24,6 +24,10 @@ const fi = {
     jiraDisconnect: "Katkaise Jira-yhteys",
     showWeekend: "Näytä Viikonloppu",
     hideWeekend: "Piilota Viikonloppu",
+    copyEntry: "Kopioi työaikakirjaus",
+    pasteEntry: "Liitä työaikakirjaus",
+    pasteAndEditEntry: "Liitä ja muokkaa kirjausta",
+    addTemplate: "Lisää kirjauspohja",
   },
   dimensionNames: {
     product: "Tuote",
@@ -106,6 +110,8 @@ const fi = {
   },
   titles: {
     workdayBrowser: "Työaikakirjaukset",
+    templates: "Omat kirjauspohjat",
+    noTemplates: "Ei kirjauspohjia.",
   },
   jira: {
     issueGroups: {
