@@ -6,6 +6,7 @@ import { EntryTemplateType } from "../../graphql/generated/graphql";
 import { useEntryContext } from "../workday-browser/entry-context/useEntryContext";
 import useDarkMode from "../../theme/useDarkMode";
 import MobileEntryListItem from "../workday-accordion/entry-row/MobileEntryListItem";
+import DeleteTemplateButton from "./DeleteTemplateButton";
 
 type EntryTemplateRowProps = {
   entry: EntryTemplateType;
@@ -28,7 +29,9 @@ const EntryTemplateRow = ({ entry, listItemProps }: EntryTemplateRowProps) => {
                 <Box>
                   <CopyEntryButton entry={entry} />
                 </Box>
-                <Box></Box>
+                <Box>
+                  <DeleteTemplateButton templateKey={entry.key} />
+                </Box>
                 <Box sx={{ display: { xs: "none", md: "block" }, ml: -0.5 }}></Box>
               </Box>
             </>
@@ -37,7 +40,6 @@ const EntryTemplateRow = ({ entry, listItemProps }: EntryTemplateRowProps) => {
           {...listItemProps}
           sx={{
             bgcolor: darkMode ? grey[800] : "primary.light",
-
             backgroundColor: (theme) =>
               hasEntry(entry)
                 ? darkMode
