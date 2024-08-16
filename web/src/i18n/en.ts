@@ -110,6 +110,8 @@ const en = {
   },
   titles: {
     workdayBrowser: "Entries",
+    templates: "My Entry Templates",
+    noTemplates: "No templates",
   },
 };
 

@@ -20,6 +20,7 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
   const templateEntry: EntryTemplateType = {
     issue: entry.issue,
     activity: entry.activity,
+    product: entry.product,
     description: entry.description,
     duration: entry.duration,
     key: entry.key,

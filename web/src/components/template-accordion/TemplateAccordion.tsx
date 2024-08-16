@@ -1,11 +1,13 @@
-import { Box, List, Paper, Typography } from "@mui/material";
+import { Box, List, ListItem, Paper, Typography } from "@mui/material";
 import { GetMySettingsDocument } from "../../graphql/generated/graphql";
 import CreateTemplateButton from "./AddTemplateButton";
 import EntryTemplateRow from "./EntryTemplateRow";
 import { useQuery } from "@apollo/client";
+import { useTranslation } from "react-i18next";
 
 const TemplateAccordion = () => {
   const { data: settingsData } = useQuery(GetMySettingsDocument);
+  const { t } = useTranslation();
 
   return (
     <Paper sx={{ mb: 2 }}>
@@ -14,14 +16,10 @@ const TemplateAccordion = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "0.5em 1em 0em 1em",
+          padding: "1em 1em 0em 1em",
         }}
       >
-        <Box>
-          <Typography sx={{ textTransform: "capitalize", minWidth: 105 }}>
-            {"My Templates"}
-          </Typography>
-        </Box>
+        <Typography>{t("titles.templates")}</Typography>
 
         <CreateTemplateButton size="medium" />
       </Box>
@@ -33,9 +31,17 @@ const TemplateAccordion = () => {
             overflow: "auto",
           }}
         >
-          {settingsData?.getMySettings.entryTemplates?.map((template) => (
-            <EntryTemplateRow entry={template} listItemProps={{ sx: { mt: 1 } }} />
-          ))}
+          {settingsData?.getMySettings.entryTemplates?.length ? (
+            settingsData?.getMySettings.entryTemplates?.map((template) => (
+              <EntryTemplateRow entry={template} listItemProps={{ sx: { mt: 1 } }} />
+            ))
+          ) : (
+            <ListItem sx={{ display: "flex", justifyContent: "center" }}>
+              <Typography color={(theme) => theme.palette.text.disabled}>
+                {t("titles.noTemplates")}
+              </Typography>
+            </ListItem>
+          )}
         </List>
       </Box>
     </Paper>
