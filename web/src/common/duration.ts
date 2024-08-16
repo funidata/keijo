@@ -37,7 +37,7 @@ export const roundToFullMinutes = (duration: Duration): Duration => {
  */
 export const totalDurationOfEntries = (entries: Entry[]): Duration => {
   const totalHours = sumBy(
-    entries.filter((entry) => entry.durationInHours && entry.ratioNumber !== EntryType.travelTime),
+    entries.filter((entry) => entry.durationInHours && entry.ratioNumber !== EntryType.TravelTime),
     "duration",
   );
   return dayjs.duration(totalHours, "hour");

@@ -3,6 +3,6 @@ export enum EntryType {
   FlexLeave = 101,
   SickLeave = 109,
   Vacation = 116,
-  holidayPayLeave = 139,
-  travelTime = 141,
+  HolidayPayLeave = 139,
+  TravelTime = 141,
 }

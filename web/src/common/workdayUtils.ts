@@ -36,7 +36,7 @@ export const isHolidayPayLeave = (workday: Workday): boolean => {
     return false;
   }
   const entry = workday.entries[0];
-  return entry.ratioNumber === EntryType.holidayPayLeave;
+  return entry.ratioNumber === EntryType.HolidayPayLeave;
 };
 
 export const isSickLeave = (workday: Workday): boolean => {
