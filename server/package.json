@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@golevelup/ts-jest": "^0.4.0",
-    "@nestjs/cli": "^10.0.0",
+    "@nestjs/cli": "^10.4.5",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
     "@types/connect-pg-simple": "^7.0.3",
