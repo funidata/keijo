@@ -25,6 +25,7 @@ import useDarkMode from "../../theme/useDarkMode";
 import LabelledIconButton from "../LabelledIconButton";
 import { keijoJiraApiUrl } from "../../jira/jiraConfig";
 import { useIsJiraAuthenticated } from "../../jira/jiraApi";
+import { JiraInfoDialog } from "../../jira/components/JiraInfoDialog";
 
 const AppMenuButton = () => {
   const navigate = useNavigate();
@@ -38,6 +39,12 @@ const AppMenuButton = () => {
 
   const { isJiraAuth } = useIsJiraAuthenticated();
 
+  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
+
+  const handleConnectToJira = () => {
+    setInfoDialogOpen(true);
+  };
+
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
   };
@@ -45,11 +52,6 @@ const AppMenuButton = () => {
   const selectLanguage = (languageCode: string) => {
     changeLanguage(languageCode);
     document.documentElement.lang = languageCode;
-  };
-
-  const handleConnectToJira = () => {
-    toggleMenu();
-    window.location.href = keijoJiraApiUrl;
   };
 
   const handleDisconnectJira = () => {
@@ -139,6 +141,7 @@ const AppMenuButton = () => {
           </ListItem>
         </List>
       </Drawer>
+      <JiraInfoDialog open={infoDialogOpen} handleClose={() => setInfoDialogOpen(false)} />
     </Box>
   );
 };

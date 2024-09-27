@@ -49,6 +49,7 @@ test.describe("Connect Jira", () => {
   test("Connect to Jira", async ({ page, t }) => {
     await page.getByLabel(t("controls.settingsMenu")).click();
     await page.getByRole("menuitem", { name: t("controls.jiraConnect") }).click();
+    await page.getByRole("button", { name: t("controls.jiraConnect") }).click();
     await expect(page).toHaveURL(/.*id\.atlassian\.com\/login.*/);
   });
 

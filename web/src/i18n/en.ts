@@ -24,6 +24,7 @@ const en = {
     jiraDisconnect: "Disconnect from Jira",
     showWeekend: "Show Weekend",
     hideWeekend: "Hide Weekend",
+    hide: "Hide",
   },
   dimensionNames: {
     product: "Product",
@@ -112,6 +113,14 @@ const en = {
     issueGroups: {
       all: "All",
       recent: "Recent",
+    },
+    connectNotification:
+      "Jira Integration has been added to Keijo. Connect Jira to get new features such as issue summaries and new issue search.",
+    infoDialog: {
+      title: "Keijo-Jira",
+      // Site could also be set dynamically from server or simply by <your-company>.atlassian.net
+      content:
+        "You will be redirected to authorize Keijo to use Jira. Login on Atlassian site and choose to authorize appropriate site e.g., funidata.atlassian.net from the dropdown.",
     },
   },
 };

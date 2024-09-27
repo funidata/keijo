@@ -24,6 +24,7 @@ const fi = {
     jiraDisconnect: "Katkaise Jira-yhteys",
     showWeekend: "Näytä Viikonloppu",
     hideWeekend: "Piilota Viikonloppu",
+    hide: "Piilota",
   },
   dimensionNames: {
     product: "Tuote",
@@ -112,6 +113,14 @@ const fi = {
     issueGroups: {
       all: "Kaikki",
       recent: "Viimeaikaiset",
+    },
+    connectNotification:
+      "Jira-integraatio on lisätty Keijoon. Yhdistämällä Jiraan saat käyttöösi muun muassa tikettien otsikot ja sen myötä uudistuneen tikettien hakutoiminnon.",
+    infoDialog: {
+      title: "Keijo-Jira",
+      // Site could also be set dynamically from server or simply by <your-company>.atlassian.net
+      content:
+        "Sinut ohjataan valtuuttamaan Jira-integraatio käyttäjälläsi. Kirjaudu Atlassianin sivulla ja valitse valikosta Keijolle oikeudet käytettävälle sivulle esim. funidata.atlassian.net.",
     },
   },
 };
