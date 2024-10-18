@@ -21,8 +21,9 @@ export const JiraIntegrationAlert = ({ onHide }: JiraIntegrationAlertProps) => {
         <Box sx={{ mt: 2, display: "flex", justifyContent: "end" }}>
           <Button
             onClick={() => setInfoDialogOpen(true)}
-            variant="outlined"
+            variant="contained"
             size="medium"
+            color="info"
             fullWidth={mobile}
           >
             {t("controls.jiraConnect")}
