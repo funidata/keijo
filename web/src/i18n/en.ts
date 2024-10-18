@@ -114,8 +114,11 @@ const en = {
       all: "All",
       recent: "Recent",
     },
-    connectNotification:
-      "Jira Integration has been added to Keijo. Connect Jira to get new features such as issue summaries and new issue search.",
+    connectNotificationTitle: "New: Jira Integration",
+    connectNotification1:
+      "Keijo now supports reading issue data from Jira to make issue selection easier. You have to connect Keijo to Jira using your own Atlassian account to enable these features.",
+    connectNotification2:
+      "If you hide this notification, you can always connect later via the settings menu.",
     infoDialog: {
       title: "Keijo-Jira",
       // Site could also be set dynamically from server or simply by <your-company>.atlassian.net

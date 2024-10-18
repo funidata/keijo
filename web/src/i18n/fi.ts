@@ -114,8 +114,11 @@ const fi = {
       all: "Kaikki",
       recent: "Viimeaikaiset",
     },
-    connectNotification:
-      "Jira-integraatio on lisätty Keijoon. Yhdistämällä Jiraan saat käyttöösi muun muassa tikettien otsikot ja sen myötä uudistuneen tikettien hakutoiminnon.",
+    connectNotificationTitle: "Uutta: Jira-integraatio",
+    connectNotification1:
+      "Keijo voi lukea tikettien tietoja Jirasta kirjausten helpottamiseksi. Voit ottaa Jira-ominaisuudet käyttöön yhdistämällä Keijon Jiraan henkilökohtaisen Atlassian-tilisi kautta.",
+    connectNotification2:
+      "Voit myös sulkea tämän huomautuksen ja halutessasi yhdistää Jiraan myöhemmin asetusvalikon kautta.",
     infoDialog: {
       title: "Keijo-Jira",
       // Site could also be set dynamically from server or simply by <your-company>.atlassian.net
