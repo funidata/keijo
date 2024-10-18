@@ -70,7 +70,7 @@ const getIssues = async (
 
 export const useIsJiraAuthenticated = () => {
   const { data, error, isLoading } = useGetAccessToken();
-  return { isJiraAuth: !isLoading && data && !error, data, error };
+  return { isJiraAuth: !isLoading && !error && data, data, error, isLoading };
 };
 
 /**

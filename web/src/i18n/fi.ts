@@ -113,6 +113,17 @@ const fi = {
       all: "Kaikki",
       recent: "Viimeaikaiset",
     },
+    connectNotificationTitle: "Uutta: Jira-integraatio",
+    connectNotification1:
+      "Keijo voi lukea tikettien tietoja Jirasta kirjausten helpottamiseksi. Voit ottaa Jira-ominaisuudet käyttöön yhdistämällä Keijon Jiraan henkilökohtaisen Atlassian-tilisi kautta.",
+    connectNotification2:
+      "Voit myös sulkea tämän huomautuksen ja halutessasi yhdistää Jiraan myöhemmin asetusvalikon kautta.",
+    infoDialog: {
+      title: "Keijo-Jira",
+      // Site could also be set dynamically from server or simply by <your-company>.atlassian.net
+      content:
+        "Sinut ohjataan valtuuttamaan Jira-integraatio käyttäjälläsi. Kirjaudu Atlassianin sivulla ja valitse valikosta Keijolle oikeudet käytettävälle sivulle esim. funidata.atlassian.net.",
+    },
   },
 };
 

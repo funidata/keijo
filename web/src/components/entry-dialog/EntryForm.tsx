@@ -21,7 +21,12 @@ import { Controller, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import useDayjs from "../../common/useDayjs";
-import { AcceptanceStatus, Entry } from "../../graphql/generated/graphql";
+import {
+  AcceptanceStatus,
+  Entry,
+  GetMySettingsDocument,
+  UpdateSettingsDocument,
+} from "../../graphql/generated/graphql";
 import usePreferSetRemainingHours from "../user-preferences/usePreferSetRemainingHours";
 import BigDeleteEntryButton from "./BigDeleteEntryButton";
 import DimensionComboBox from "./DimensionComboBox";
@@ -31,6 +36,8 @@ import WorkdayHours from "./WorkdayHours";
 import useEntryForm, { EntryFormSchema } from "./useEntryForm";
 import { useIsJiraAuthenticated } from "../../jira/jiraApi";
 import JiraIssueComboBox from "../../jira/components/JiraIssueComboBox";
+import { JiraIntegrationAlert } from "../../jira/components/JiraIntegrationAlert";
+import { useMutation, useQuery } from "@apollo/client";
 
 export type EntryFormProps = {
   form: UseFormReturn<EntryFormSchema>;
@@ -73,7 +80,12 @@ const EntryForm = () => {
   const { userPrefersSetRemainingHours, toggleRemainingHours } = usePreferSetRemainingHours();
   const { control, watch } = form;
   const dateWatch = dayjs(watch("date")).locale(dayjs.locale());
-  const { isJiraAuth } = useIsJiraAuthenticated();
+  const { isJiraAuth, isLoading } = useIsJiraAuthenticated();
+
+  const { data } = useQuery(GetMySettingsDocument);
+  const [updateSettings] = useMutation(UpdateSettingsDocument, {
+    refetchQueries: [GetMySettingsDocument],
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -132,6 +144,15 @@ const EntryForm = () => {
                 )}
               />
             </Grid>
+            {data && !data.getMySettings.jiraNotificationIgnore && !isJiraAuth && !isLoading ? (
+              <Grid item>
+                <JiraIntegrationAlert
+                  onHide={() =>
+                    updateSettings({ variables: { settings: { jiraNotificationIgnore: true } } })
+                  }
+                />
+              </Grid>
+            ) : null}
           </Grid>
         </Grid>
         <Grid item xs={12} md={6}>

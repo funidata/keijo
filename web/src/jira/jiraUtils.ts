@@ -1,3 +1,5 @@
+import { keijoJiraApiUrl } from "./jiraConfig";
+
 export const mergePages = <T>(...arrays: T[][][]): T[][] => {
   const maxLength = Math.max(...arrays.map((arr) => arr.length));
   return Array.from({ length: maxLength }, (_, i) => {
@@ -50,3 +52,11 @@ export const removeWord = (searchFilter: string, word: string) =>
         .filter((text) => text.trim() !== word)
         .join(" ")
     : searchFilter;
+
+export const connectToJira = () => {
+  window.location.href = keijoJiraApiUrl;
+};
+
+export const disconnectJira = () => {
+  window.location.href = keijoJiraApiUrl + "/remove-session";
+};

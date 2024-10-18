@@ -113,6 +113,17 @@ const en = {
       all: "All",
       recent: "Recent",
     },
+    connectNotificationTitle: "New: Jira Integration",
+    connectNotification1:
+      "Keijo now supports reading issue data from Jira to make issue selection easier. You have to connect Keijo to Jira using your own Atlassian account to enable these features.",
+    connectNotification2:
+      "If you hide this notification, you can always connect later via the settings menu.",
+    infoDialog: {
+      title: "Keijo-Jira",
+      // Site could also be set dynamically from server or simply by <your-company>.atlassian.net
+      content:
+        "You will be redirected to authorize Keijo to use Jira. Login on Atlassian site and choose to authorize appropriate site e.g., funidata.atlassian.net from the dropdown.",
+    },
   },
 };
 
