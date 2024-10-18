@@ -24,7 +24,6 @@ const fi = {
     jiraDisconnect: "Katkaise Jira-yhteys",
     showWeekend: "Näytä Viikonloppu",
     hideWeekend: "Piilota Viikonloppu",
-    hide: "Piilota",
   },
   dimensionNames: {
     product: "Tuote",
