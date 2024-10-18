@@ -14,14 +14,16 @@ type JiraInfoDialogProps = {
 
 export const JiraInfoDialog = ({ open, handleClose }: JiraInfoDialogProps) => {
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onClose={handleClose}>
       <DialogTitle>{t("jira.infoDialog.title")}</DialogTitle>
       <DialogContent>
         <DialogContentText>{t("jira.infoDialog.content")}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>{t("controls.cancel")}</Button>
-        <Button onClick={connectToJira} autoFocus>
+        <Button onClick={handleClose} variant="outlined">
+          {t("controls.cancel")}
+        </Button>
+        <Button onClick={connectToJira} autoFocus variant="contained">
           {t("controls.jiraConnect")}
         </Button>
       </DialogActions>
