@@ -1,7 +1,7 @@
-import { Alert, Button } from "@mui/material";
+import { Alert, Box, Button, useMediaQuery, useTheme } from "@mui/material";
 import { t } from "i18next";
-import { JiraInfoDialog } from "./JiraInfoDialog";
 import { useState } from "react";
+import { JiraInfoDialog } from "./JiraInfoDialog";
 
 type JiraIntegrationAlertProps = {
   onHide: () => void;
@@ -9,27 +9,23 @@ type JiraIntegrationAlertProps = {
 
 export const JiraIntegrationAlert = ({ onHide }: JiraIntegrationAlertProps) => {
   const [infoDialogOpen, setInfoDialogOpen] = useState(false);
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("md"));
+
   return (
     <>
-      <Alert
-        severity="info"
-        action={
-          <>
-            <Button
-              onClick={() => setInfoDialogOpen(true)}
-              sx={{ mr: 2 }}
-              variant="outlined"
-              size="small"
-            >
-              {t("controls.jiraConnect")}
-            </Button>
-            <Button onClick={onHide} variant="outlined" color="inherit" size="small">
-              {t("controls.hide")}
-            </Button>
-          </>
-        }
-      >
+      <Alert severity="info" onClose={onHide}>
         {t("jira.connectNotification")}
+        <Box sx={{ mt: 2, display: "flex", justifyContent: "end" }}>
+          <Button
+            onClick={() => setInfoDialogOpen(true)}
+            variant="outlined"
+            size="medium"
+            fullWidth={mobile}
+          >
+            {t("controls.jiraConnect")}
+          </Button>
+        </Box>
       </Alert>
       <JiraInfoDialog
         open={infoDialogOpen}
