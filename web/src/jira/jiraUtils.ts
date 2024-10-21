@@ -22,36 +22,32 @@ export const chunkArray = <T>(array: T[], size: number) => {
  * Find a word in a string that matches to some Jira issue key(s)
  * by containing atleast the issueKey part preceding the dash (project key).
  */
-export const findWordInKeys = (searchFilter: string, issueKeys: string[]) =>
-  searchFilter
-    .toLowerCase()
-    .trim()
-    .split(" ")
-    .find(
-      (word) =>
-        word &&
-        issueKeys.some(
-          (key) =>
-            word.trim() &&
-            key.toLowerCase().trim().split("-")[0] === word.trim().split("-")[0] &&
-            key.toLowerCase().trim().includes(word.trim()),
-        ),
-    );
+export const findWordInKeys = (searchFilter: string, issueKeys: string[]) => {
+  const words = searchFilter.match(/\S+/gi);
+  if (!words || words.length < 2) {
+    return;
+  }
+  return words.find(
+    (word) =>
+      word &&
+      issueKeys.some(
+        (key) =>
+          word.trim() &&
+          word.toLowerCase().split("-")[0] === key.toLowerCase().split("-")[0] &&
+          key.toLowerCase().includes(word.toLowerCase()),
+      ),
+  );
+};
 
 export const findKeysIncludingWord = (word: string, issueKeys: string[]) =>
-  word
-    ? issueKeys.filter((key) => key.toLowerCase().trim().includes(word?.toLowerCase().trim()))
-    : [];
+  issueKeys.filter((key) => key.toLowerCase().includes(word.toLowerCase()));
 
-export const removeWord = (searchFilter: string, word: string) =>
-  word
-    ? searchFilter
-        .toLowerCase()
-        .trim()
-        .split(" ")
-        .filter((text) => text.trim() !== word)
-        .join(" ")
-    : searchFilter;
+export const stringWithoutWord = (searchFilter: string, word: string) =>
+  searchFilter
+    .trim()
+    .match(/\S+/gi)
+    ?.filter((text) => text.trim().toLowerCase() !== word.toLowerCase())
+    .join(" ") || searchFilter;
 
 export const connectToJira = () => {
   window.location.href = keijoJiraApiUrl;

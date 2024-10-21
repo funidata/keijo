@@ -1,15 +1,15 @@
 import {
-  UseQueryResult,
-  useQuery,
-  useInfiniteQuery,
-  UseInfiniteQueryOptions,
   InfiniteData,
   QueryKey,
+  useInfiniteQuery,
+  UseInfiniteQueryOptions,
+  useQuery,
   UseQueryOptions,
+  UseQueryResult,
 } from "@tanstack/react-query";
 import { axiosJira, axiosKeijo } from "./axiosInstance";
 import { jiraQueryMaxResults } from "./jiraConfig";
-import { findKeysIncludingWord, findWordInKeys, removeWord } from "./jiraUtils";
+import { findKeysIncludingWord, findWordInKeys, stringWithoutWord } from "./jiraUtils";
 import { jqlAND, jqlOR, jqlOrderBy, jqlRecentIssues, keyIsInKeys, summaryContains } from "./jql";
 
 export type JiraIssueResult = {
@@ -126,16 +126,15 @@ export const useSearchIssues = ({
   searchFilter,
   ...queryProps
 }: UseSearchIssuesProps) => {
-  const wordInKeys =
-    searchFilter.trim().split(" ").length > 1 && findWordInKeys(searchFilter, issueKeys);
-
-  const keysIncludingWord = wordInKeys ? findKeysIncludingWord(wordInKeys, issueKeys) : [];
-  const searchWithoutWord = wordInKeys ? removeWord(searchFilter, wordInKeys) : "";
+  const wordInKeys = findWordInKeys(searchFilter, issueKeys);
 
   const jql = wordInKeys
     ? jqlOR(
         jqlAND(keyIsInKeys(issueKeys), summaryContains(searchFilter)),
-        jqlAND(keyIsInKeys(keysIncludingWord), summaryContains(searchWithoutWord)),
+        jqlAND(
+          keyIsInKeys(findKeysIncludingWord(wordInKeys, issueKeys)),
+          summaryContains(stringWithoutWord(searchFilter, wordInKeys)),
+        ),
       )
     : jqlAND(keyIsInKeys(issueKeys), summaryContains(searchFilter));
 
