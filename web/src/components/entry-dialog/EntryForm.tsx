@@ -16,7 +16,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { Dayjs } from "dayjs";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -53,6 +53,12 @@ type LocationState = {
   editEntry?: Entry;
 };
 
+enum SubmitTypes {
+  addMore = "addMore",
+  submit = "submit",
+}
+type SubmitType = SubmitTypes | null;
+
 const EntryForm = () => {
   const { state } = useLocation();
   const dayjs = useDayjs();
@@ -60,6 +66,7 @@ const EntryForm = () => {
   const { date: originalDate, editEntry }: LocationState = state || {};
   const { form, onSubmit, loading } = useEntryForm({ editEntry, date: dayjs(originalDate) });
   const navigate = useNavigate();
+  const submitter = useRef<SubmitType>(null);
 
   const {
     handleSubmit,
@@ -70,7 +77,8 @@ const EntryForm = () => {
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset();
-      navigate("..");
+      submitter.current !== SubmitTypes.addMore && navigate("..");
+      submitter.current = null;
     }
   }, [isSubmitSuccessful, navigate, reset]);
 
@@ -86,6 +94,11 @@ const EntryForm = () => {
   const [updateSettings] = useMutation(UpdateSettingsDocument, {
     refetchQueries: [GetMySettingsDocument],
   });
+
+  const handleAddMore = () => {
+    handleSubmit(onSubmit)();
+    submitter.current = SubmitTypes.addMore;
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -201,6 +214,19 @@ const EntryForm = () => {
                 {t("entryDialog.submit")}
               </LoadingButton>
             </Grid>
+            {!editEntry && (
+              <Grid item xs={12}>
+                <LoadingButton
+                  loading={loading}
+                  onClick={() => handleAddMore()}
+                  variant="contained"
+                  size="large"
+                  fullWidth
+                >
+                  {t("entryDialog.addMore")}
+                </LoadingButton>
+              </Grid>
+            )}
             <Grid item xs={12}>
               <Button
                 type="reset"
@@ -259,6 +285,16 @@ const EntryForm = () => {
                 <Button type="reset" variant="outlined" size="large" onClick={() => reset()}>
                   {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
                 </Button>
+                {!editEntry && (
+                  <LoadingButton
+                    loading={loading}
+                    onClick={() => handleAddMore()}
+                    variant="contained"
+                    size="large"
+                  >
+                    {t("entryDialog.addMore")}
+                  </LoadingButton>
+                )}
                 <LoadingButton loading={loading} type="submit" variant="contained" size="large">
                   {t("entryDialog.submit")}
                 </LoadingButton>
