@@ -24,16 +24,17 @@ test.describe("Browse week mobile", () => {
   });
 
   test("Should go to current week", async ({ page, t, dayjs }) => {
-    const jump = 10;
     const currentWeek = dayjs().week();
-    await page.goto(`/entries/week/${currentWeek + jump}`);
+    // Test is noop if current week happens to be the same as initial week.
+    const initialWeek = currentWeek === 10 ? 11 : 10;
+    await page.goto(`/entries/week/${initialWeek}`);
     await page.getByRole("button", { name: t("controls.aria.currentWeek") }).click();
     await expect(page).toHaveURL(`/entries/week/${currentWeek}`);
   });
 
-  test("Should go to specific week", async ({ page, dayjs }) => {
+  test("Should go to specific week", async ({ page }) => {
     const jump = 4;
-    const startingWeek = dayjs().week();
+    const startingWeek = 10;
     await page.goto(`/entries/week/${startingWeek}`);
     await page.getByRole("combobox", { name: String(startingWeek) }).click();
     await page.getByRole("option", { name: String(startingWeek + jump) }).click();
