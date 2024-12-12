@@ -39,6 +39,7 @@ const en = {
     notFound: "Page was not found. Please check the address.",
     oldWeekParamFormat:
       "The address contains a week number parameter in the old format. Please go to the frontpage, after which you can continue using Keijo as usual.",
+    invalidWeekParam: "Given week parameter is not valid.",
   },
   entryDialog: {
     title: { create: "Add New Entry", edit: "Edit Entry" },

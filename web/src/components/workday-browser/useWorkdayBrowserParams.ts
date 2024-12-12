@@ -1,6 +1,7 @@
 import { Dayjs } from "dayjs";
 import { useNavigate, useParams } from "react-router-dom";
 import useDayjs from "../../common/useDayjs";
+import { InvalidWeekParamException } from "../error/InvalidWeekParamException";
 import { NotFoundException } from "../error/NotFoundException";
 import { OldWeekParamFormatException } from "../error/OldWeekParamFormatException";
 
@@ -26,6 +27,10 @@ export const useWorkdayBrowserParams = () => {
     const deprecatedLongFormat = /^\d{4}-\d{1,2}$/;
     if (deprecatedShortFormat.test(weekParam) || deprecatedLongFormat.test(weekParam)) {
       throw new OldWeekParamFormatException();
+    }
+
+    if (!dayjs(weekParam, dateFormat, true).isValid()) {
+      throw new InvalidWeekParamException();
     }
   };
 
