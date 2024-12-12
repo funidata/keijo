@@ -19,22 +19,16 @@ export const useWorkdayBrowserParams = () => {
   /**
    * Parse "from" and "to" dates from given week param.
    *
-   * Defaults to current week if param is undefined. Assumes current year, if passed only
-   * a single number. Also supports YYYY-WW notation (e.g. 2023-50), where WW is week number.
+   * Defaults to current week if param is undefined.
+   *
+   * For consistency, week param should be the Monday of the given week. However,
+   * this parser will work with other days of week as input, too.
    */
   const parseWeekParam = (weekParam: string | undefined) => {
-    let year = dayjs().year();
-    let week = dayjs().week();
-
-    if (weekParam) {
-      const parsedFromParam = weekParam.split("-");
-      year = parsedFromParam.length === 2 ? Number(parsedFromParam[0]) : dayjs().year();
-      week = parsedFromParam.length === 2 ? Number(parsedFromParam[1]) : Number(weekParam);
-    }
-
-    const from = dayjs().year(year).week(week).weekday(0);
+    // TODO: Add cool error handling to redirect people away from old paths.
+    const paramDay = dayjs(weekParam);
+    const from = paramDay.weekday(0);
     const to = from.weekday(6);
-
     return { from, to };
   };
 
@@ -66,8 +60,10 @@ export const useWorkdayBrowserParams = () => {
    * Navigate to week including given day.
    */
   const goToWeek = (day: Dayjs) => {
-    const weekParam = day.year() === dayjs().year() ? day.week() : `${day.year()}-${day.week()}`;
-    navigate(`/entries/week/${weekParam}`);
+    // Week start is defined as monday.
+    // Using week numbers caused confusion near the end/beginning of year so it was changed to just dates.
+    const weekStart = day.weekday(0);
+    navigate(`/entries/week/${weekStart.format(dateFormat)}`);
   };
 
   /**
