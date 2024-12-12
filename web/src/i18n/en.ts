@@ -37,6 +37,8 @@ const en = {
       "Your employee number was not found in HTTP headers. Keijo cannot be used without this information. Please report this problem to your superior.",
     unknownError: "Unknown error occured. Please get in touch with Team Fox.",
     notFound: "Page was not found. Please check the address.",
+    oldWeekParamFormat:
+      "The address contains a week number parameter in the old format. Please go to the frontpage, after which you can continue using Keijo as usual.",
   },
   entryDialog: {
     title: { create: "Add New Entry", edit: "Edit Entry" },

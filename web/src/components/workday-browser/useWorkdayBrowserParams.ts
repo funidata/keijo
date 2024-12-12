@@ -2,6 +2,7 @@ import { Dayjs } from "dayjs";
 import { useNavigate, useParams } from "react-router-dom";
 import useDayjs from "../../common/useDayjs";
 import { NotFoundException } from "../error/NotFoundException";
+import { OldWeekParamFormatException } from "../error/OldWeekParamFormatException";
 
 export type BrowsingMode = "week" | "range";
 const dateFormat = "YYYY-MM-DD";
@@ -16,6 +17,18 @@ export const useWorkdayBrowserParams = () => {
     throw new NotFoundException();
   }
 
+  const validateWeekParam = (weekParam: string | undefined) => {
+    if (!weekParam) {
+      return;
+    }
+
+    const deprecatedShortFormat = /^\d{1,2}$/;
+    const deprecatedLongFormat = /^\d{4}-\d{1,2}$/;
+    if (deprecatedShortFormat.test(weekParam) || deprecatedLongFormat.test(weekParam)) {
+      throw new OldWeekParamFormatException();
+    }
+  };
+
   /**
    * Parse "from" and "to" dates from given week param.
    *
@@ -25,7 +38,8 @@ export const useWorkdayBrowserParams = () => {
    * this parser will work with other days of week as input, too.
    */
   const parseWeekParam = (weekParam: string | undefined) => {
-    // TODO: Add cool error handling to redirect people away from old paths.
+    validateWeekParam(weekParam);
+
     const paramDay = dayjs(weekParam);
     const from = paramDay.weekday(0);
     const to = from.weekday(6);
