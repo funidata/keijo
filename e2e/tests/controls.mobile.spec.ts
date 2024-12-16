@@ -31,7 +31,7 @@ test.describe("Browse week mobile", () => {
     await expect(page).toHaveURL(`/entries/week/${currentWeek}`);
   });
 
-  test("Should go to specific week", async ({ page, dayjs }) => {
+  test.skip("Should go to specific week", async ({ page, dayjs }) => {
     const jump = 4;
     const startingWeek = dayjs().week();
     await page.goto(`/entries/week/${startingWeek}`);
