@@ -1,12 +1,12 @@
 import { Page, expect } from "@playwright/test";
-import { test } from "../playwright.config";
 import { TFunction } from "i18next";
 import {
-  getMockProductNames,
   getMockActivityNames,
-  getMockIssueNames,
   getMockClientNames,
+  getMockIssueNames,
+  getMockProductNames,
 } from "mock-data";
+import { test } from "../playwright.config";
 
 type TestEntry = {
   product: string;
@@ -22,8 +22,8 @@ const productNames = getMockProductNames();
 const activityNames = getMockActivityNames();
 const issueNames = getMockIssueNames();
 const clientNames = getMockClientNames();
-const mockEntryWeekUrl = "/entries/week/20";
-const emptyWeekUrl = "/entries/week/21";
+const mockEntryWeekUrl = "/entries/week/2024-05-13";
+const emptyWeekUrl = "/entries/week/2024-05-20";
 
 const entries: Array<TestEntry> = [
   {
