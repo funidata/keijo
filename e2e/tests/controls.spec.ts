@@ -3,7 +3,7 @@ import { test } from "../playwright.config";
 
 const dateFormat = "YYYY-MM-DD";
 
-test.describe("Browse week", () => {
+test.describe("Week browser", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/entries/week/2023-02-13");
   });
@@ -37,6 +37,18 @@ test.describe("Browse week", () => {
     await page.getByRole("combobox", { name: String(startingWeek) }).click();
     await page.getByRole("option", { name: String(startingWeek + jump) }).click();
     await expect(page).toHaveURL(`/entries/week/${startingWeek + jump}`);
+  });
+
+  test("Handles browsing over new year correctly (forwards)", async ({ page, t }) => {
+    await page.goto("/entries/week/2024-12-30");
+    await page.getByRole("button", { name: t("controls.aria.nextWeek") }).click();
+    await expect(page).toHaveURL("/entries/week/2025-01-06");
+  });
+
+  test("Handles browsing over new year correctly (backwards)", async ({ page, t }) => {
+    await page.goto("/entries/week/2025-01-06");
+    await page.getByRole("button", { name: t("controls.aria.prevWeek") }).click();
+    await expect(page).toHaveURL("/entries/week/2024-12-30");
   });
 });
 
