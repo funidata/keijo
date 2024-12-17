@@ -13,6 +13,8 @@
 3. Create `.env` file in repository root and populate it as detailed [here](./configuration.md).
 4. In repository root, run `npm ci` to install Node modules locally. Post-install script will take care of installing the sub-projects' dependencies, too. (While the Docker containers don't need these to run, in practice a lot of development tooling depends on Node modules being installed locally.)
 5. Run `npm start` to bring up the development server containers.
+   - Dev env: [localhost:3000](http://localhost:3000)
+   - Apollo Sandbox: [localhost:3001/graphql](http://localhost:3001/graphql)
 6. Make sure your IDE is set up to use `eslint` and `prettier` from local `package.json` definitions and there are no global overrides in effect.
 
 ## Command Reference
@@ -21,7 +23,9 @@ Run commands in repository root.
 
 #### Start Dev Env
 
-Starts to background and then attaches to logs. You can detach from log output with Ctrl+C and the dev env will keep running in the background.
+Starts the necessary processes to the background and then attaches to logs. You can detach from log output with Ctrl+C and the dev env will keep running in the background.
+
+Once up, the development envinronment is accessible at [localhost:3000](http://localhost:3000) and Apollo Sandbox at [localhost:3001/graphql](http://localhost:3001/graphql).
 
 ```bash
 npm start
