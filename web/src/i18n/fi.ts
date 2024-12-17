@@ -39,7 +39,7 @@ const fi = {
     notFound: "Pyydettyä sivua ei löytynyt. Tarkasta osoite.",
     oldWeekParamFormat:
       "Sivun osoitteessa on vanhan muotoinen viikkoparametri. Mene ensin etusivulle, jonka jälkeen voit jatkaa käyttöä normaalisti.",
-    invalidWeekParam: "Anettu viikkoparametri ei ole kelvollinen.",
+    invalidWeekParam: "Annettu viikkoparametri ei ole kelvollinen.",
   },
   entryDialog: {
     title: { create: "Lisää työaikakirjaus", edit: "Muokkaa kirjausta" },
