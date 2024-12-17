@@ -1,11 +1,11 @@
 import { Page, expect } from "@playwright/test";
-import { test } from "../playwright.config";
+import { Dayjs } from "dayjs";
 import { TFunction } from "i18next";
 import { getMockEntries } from "mock-data";
-import { Dayjs } from "dayjs";
+import { test } from "../playwright.config";
 
 const mockEntries = getMockEntries();
-const mockEntryWeekUrl = "/entries/week/20";
+const mockEntryWeekUrl = "/entries/week/2024-05-13";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
@@ -30,7 +30,7 @@ test.describe("Landing page", () => {
   test("Should have correct mock entries", async ({ page, dayjs }) => {
     for (const entry of mockEntries) {
       const date = dayjs(entry.date);
-      await page.goto(`/entries/week/${date.week()}`);
+      await page.goto("/entries/week/2024-05-13");
       const workdayEntryList = page
         .locator("div", {
           has: page.getByRole("button", { name: date.format("dd l") }),
@@ -53,7 +53,7 @@ test.describe("Landing page", () => {
   test("Should have correct amount of total hours", async ({ page, dayjs }) => {
     for (const entry of mockEntries) {
       const date = dayjs(entry.date);
-      await page.goto(`/entries/week/${date.week()}`);
+      await page.goto("/entries/week/2024-05-13");
       const totalTime = mockEntries
         .filter((ent) => dayjs(ent.date).week() === date.week())
         .reduce((a, entry) => a + Number(entry.hours), 0);
