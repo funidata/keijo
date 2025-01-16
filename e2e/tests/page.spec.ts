@@ -24,7 +24,7 @@ test.describe("Landing page", () => {
     await expect(page.getByText(t("entryTable.totalHoursInWeek"))).toBeVisible();
     await expect(page.getByText(t("entryTable.tabs.browseByWeek"))).toBeVisible();
     await expect(page.getByText(t("entryTable.tabs.browseByDates"))).toBeVisible();
-    await checkWeekdays(page, 20, t, dayjs());
+    await checkWeekdays(page, 20, t, dayjs("2024-05-13"));
   });
 
   test("Should have correct mock entries", async ({ page, dayjs }) => {

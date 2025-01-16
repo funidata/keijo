@@ -20,7 +20,7 @@ test.describe("Landing page mobile", () => {
 
   test("Should have page elements", async ({ page, t, dayjs }) => {
     await page.goto(mockEntryWeekUrl);
-    await checkWeekdays(page, 20, t, dayjs());
+    await checkWeekdays(page, 20, t, dayjs("2024-05-13"));
     await expect(page.getByText(t("entryTable.totalHoursInWeek"))).toBeVisible();
     await expect(page.getByText(t("entryTable.tabs.browseByWeek"))).toBeVisible();
     await expect(page.getByText(t("entryTable.tabs.browseByDates"))).toBeVisible();
