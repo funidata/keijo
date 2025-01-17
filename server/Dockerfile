@@ -1,6 +1,6 @@
 # Production image.
 # Has to be run with the parent folder as context for the builder to access frontend files.
-FROM node:20.12 AS build
+FROM node:22.13 AS build
 
 # Build backend.
 WORKDIR /usr/src/app
@@ -21,7 +21,7 @@ RUN --mount=type=secret,id=mui_x_license \
 
 
 # Final build stage to pick only actually needed files into the image.
-FROM node:20.12-alpine
+FROM node:22.13-alpine
 
 USER node
 
