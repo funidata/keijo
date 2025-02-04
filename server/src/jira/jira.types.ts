@@ -1,11 +1,13 @@
 export type JiraTokens = { refreshToken: string; accessToken: string };
-export interface JiraUser {
-  user?: JiraTokens;
-}
 
 declare module "express-session" {
-  interface SessionData extends JiraUser {}
+  interface SessionData {
+    user?: JiraTokens;
+  }
 }
+
 declare module "express" {
-  export interface Request extends JiraUser {}
+  export interface Request {
+    user?: JiraTokens;
+  }
 }
