@@ -6,18 +6,18 @@
     "start": "playwright test --ui",
     "test": "playwright test",
     "postinstall": "playwright install --with-deps",
-    "lint": "eslint tests",
-    "lint:fix": "eslint tests --fix"
+    "lint": "eslint . --max-warnings 0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.19.0",
     "@playwright/test": "^1.49.1",
     "@types/node": "^20.12.12",
-    "@typescript-eslint/eslint-plugin": "^7.10.0",
-    "@typescript-eslint/parser": "^7.10.0",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint": "^9.19.0",
+    "eslint-config-prettier": "^10.0.1",
+    "jiti": "^2.4.2",
     "playwright-i18next-fixture": "^1.0.0",
-    "translations": "file:../web/src/i18n"
+    "translations": "file:../web/src/i18n",
+    "typescript-eslint": "^8.23.0"
   },
   "dependencies": {
     "dayjs": "^1.11.11",
