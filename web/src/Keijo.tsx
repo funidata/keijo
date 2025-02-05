@@ -16,7 +16,6 @@ const Keijo = () => {
   useEffect(() => {
     // Set initial HTML lang value.
     document.documentElement.lang = language;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
