@@ -19,7 +19,6 @@ ARG VITE_MOCK_EMPLOYEE_NUMBER=123
 RUN --mount=type=secret,id=mui_x_license \
   VITE_MUI_X_LICENSE=$(cat /run/secrets/mui_x_license) npm run build
 
-
 # Final build stage to pick only actually needed files into the image.
 FROM node:22.13-alpine
 
@@ -29,6 +28,6 @@ WORKDIR /app
 COPY --from=build /usr/src/app/dist ./dist
 COPY --from=build /usr/src/app/node_modules ./node_modules
 COPY --from=build /usr/src/web/dist ./public
+COPY --from=build /usr/src/app/entrypoint.sh ./entrypoint.sh
 
-# Run database migrations before booting server.
-CMD npx typeorm migration:run -d dist/database/migration-config.js && node dist/main.js
+ENTRYPOINT ["/app/entrypoint.sh"]
