@@ -13,7 +13,7 @@
     "@playwright/test": "^1.49.1",
     "@types/node": "^20.17.30",
     "eslint": "^9.19.0",
-    "eslint-config-prettier": "^10.0.1",
+    "eslint-config-prettier": "^10.1.1",
     "jiti": "^2.4.2",
     "playwright-i18next-fixture": "^1.0.0",
     "translations": "file:../web/src/i18n",
