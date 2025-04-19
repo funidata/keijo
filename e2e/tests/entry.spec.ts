@@ -43,17 +43,13 @@ test.beforeEach(async ({ page }) => {
 
 test.describe("Add entry", () => {
   test("Should add entry from app bar", async ({ page, t }) => {
-    // Open entry dialog
     await page
       .getByRole("banner")
       .getByRole("button", { name: t("entryDialog.title.create") })
       .click();
     await expect(page).toHaveURL(/.*\/create$/);
-    // Fill entry fields
-    await fillEntryForm(page, t, entries[0]);
-    // Submit
-    await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
+    await submitEntry(page, t, entries[0]);
+    await expect(page).not.toHaveURL(/.*\/create$/);
   });
 
   test("Should add entry from entry row", async ({ page, t }) => {
@@ -63,9 +59,31 @@ test.describe("Add entry", () => {
       .first()
       .click();
     await expect(page).toHaveURL(/.*\/create$/);
-    await fillEntryForm(page, t, entries[0]);
-    await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
+    await submitEntry(page, t, entries[0]);
+    await expect(page).not.toHaveURL(/.*\/create$/);
+  });
+});
+
+test.describe("Add More entry", () => {
+  test("Should add more entry from app bar", async ({ page, t }) => {
+    await page
+      .getByRole("banner")
+      .getByRole("button", { name: t("entryDialog.title.create") })
+      .click();
+    await expect(page).toHaveURL(/.*\/create$/);
+    await addMoreEntry(page, t, entries[0]);
+    await expect(page).toHaveURL(/.*\/create$/);
+  });
+
+  test("Should add more entry from entry row", async ({ page, t }) => {
+    await page
+      .getByRole("button")
+      .getByRole("button", { name: t("entryDialog.title.create") })
+      .first()
+      .click();
+    await expect(page).toHaveURL(/.*\/create$/);
+    await addMoreEntry(page, t, entries[0]);
+    await expect(page).toHaveURL(/.*\/create$/);
   });
 });
 
@@ -147,4 +165,16 @@ const setDefaultValues = async (page: Page, t: TFunction, product: string, activ
   await expect(page.getByRole("combobox", { name: t("entryDialog.activity") })).toHaveValue(
     activity,
   );
+};
+
+const submitEntry = async (page: Page, t: TFunction, entry: TestEntry) => {
+  await fillEntryForm(page, t, entry);
+  await page.getByRole("button", { name: t("entryDialog.submit") }).click();
+  await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
+};
+
+const addMoreEntry = async (page: Page, t: TFunction, entry: TestEntry) => {
+  await fillEntryForm(page, t, entry);
+  await page.getByRole("button", { name: t("entryDialog.addMore") }).click();
+  await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
 };
