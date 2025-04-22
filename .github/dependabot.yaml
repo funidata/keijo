@@ -11,8 +11,10 @@ updates:
       - server
       - web
     schedule:
-      interval: weekly
-    ignore:
-      - dependency-name: "*"
+      interval: daily
+    groups:
+      grouped:
+        applies-to: version-updates
         update-types:
-          - version-update:semver-major
+          - patch
+          - minor
