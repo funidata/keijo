@@ -9,7 +9,7 @@ RUN npm ci
 COPY . .
 
 # Start via Nest in development mode.
-CMD npx nest start --watch --preserveWatchOutput
+CMD ["npx", "nest", "start", "--watch", "--preserveWatchOutput"]
 
 # This stage is for reducing image size in CI which makes artifact upload faster.
 FROM node:22.14-alpine
@@ -17,4 +17,4 @@ FROM node:22.14-alpine
 WORKDIR /usr/src/app
 COPY --from=dev /usr/src/app .
 
-CMD npx nest start
+CMD ["npx", "nest", "start"]
