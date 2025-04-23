@@ -5,6 +5,12 @@ updates:
     directory: /
     schedule:
       interval: daily
+  - package-ecosystem: docker
+    directories:
+      - server
+      - web
+    schedule:
+      interval: daily
   - package-ecosystem: npm
     directories:
       - e2e
