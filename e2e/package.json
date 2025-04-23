@@ -12,12 +12,12 @@
     "@eslint/js": "^9.25.1",
     "@playwright/test": "^1.52.0",
     "@types/node": "^20.17.30",
-    "eslint": "^9.24.0",
+    "eslint": "^9.25.1",
     "eslint-config-prettier": "^10.1.2",
     "jiti": "^2.4.2",
     "playwright-i18next-fixture": "^1.0.0",
     "translations": "file:../web/src/i18n",
-    "typescript-eslint": "^8.30.1"
+    "typescript-eslint": "^8.31.0"
   },
   "dependencies": {
     "dayjs": "^1.11.13",
