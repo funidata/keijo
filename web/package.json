@@ -16,7 +16,7 @@
     "@emotion/styled": "^11.14.0",
     "@fontsource/roboto": "^5.2.5",
     "@mui/icons-material": "^5.15.14",
-    "@mui/lab": "^5.0.0-alpha.166",
+    "@mui/lab": "^6.0.0-dev.240424162023-9968b4889d",
     "@mui/material": "^5.15.14",
     "@mui/x-date-pickers-pro": "^7.0.0",
     "@mui/x-license": "^7.0.0",
