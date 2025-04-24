@@ -44,7 +44,7 @@
     "lodash": "^4.17.21",
     "passport": "^0.7.0",
     "passport-oauth2": "^1.8.0",
-    "pg": "^8.15.2",
+    "pg": "^8.15.5",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
     "sha.js": "^2.4.11",
