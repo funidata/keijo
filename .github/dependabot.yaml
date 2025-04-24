@@ -19,7 +19,7 @@ updates:
     schedule:
       interval: daily
     groups:
-      grouped:
+      npm:
         applies-to: version-updates
         update-types:
           - patch
