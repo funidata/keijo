@@ -52,6 +52,24 @@ test.describe("Week browser", () => {
   });
 });
 
+test.describe("Date browser", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/entries/range/2025-04-21/2025-04-23");
+  });
+
+  test("Date browser is shown", async ({ page }) => {
+    // This test is here to make sure E2E fails if MUI X Pro license has expired.
+    await expect(page.getByRole("textbox", { name: "From" })).toBeVisible();
+    await expect(page.getByRole("textbox", { name: "From" })).toBeEnabled();
+  });
+
+  test("Correct date range is shown", async ({ page }) => {
+    await expect(page.getByRole("button", { name: "Mo 21/4/2025" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Tu 22/4/2025" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "We 23/4/2025" })).toBeVisible();
+  });
+});
+
 test.describe("Connect Jira", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(`/entries/week/`);
