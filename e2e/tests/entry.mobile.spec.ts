@@ -32,7 +32,7 @@ const entries: Array<TestEntry> = [
     issue: issueNames[0],
     client: clientNames[0],
     description: "no comment",
-    duration: "3.00",
+    duration: "3",
     date: "21.5.2024",
   },
 ];
@@ -108,9 +108,13 @@ test.describe("Entry defaults mobile", () => {
       .getByRole("button", { name: t("entryDialog.title.create") })
       .first()
       .click();
-    await expect(page.getByRole("textbox", { name: "Duration" })).toHaveValue("00:00");
+    await expect(page.getByRole("group", { name: t("entryDialog.duration") })).toContainText(
+      "00:00",
+    );
     await page.getByRole("checkbox", { name: t("entryDialog.setRemainingHours") }).click();
-    await expect(page.getByRole("textbox", { name: "Duration" })).toHaveValue("07:30");
+    await expect(page.getByRole("group", { name: t("entryDialog.duration") })).toContainText(
+      "07:30",
+    );
   });
 
   test("Should use set default values", async ({ page, t }) => {
@@ -124,7 +128,7 @@ const fillEntryFormMobile = async (page: Page, t: TFunction, entry: TestEntry) =
   await page.getByLabel(t("entryDialog.activity")).fill(entry.activity);
   await page.getByLabel(t("entryDialog.description")).fill(entry.description);
   await page.getByRole("spinbutton", { name: "Hours" }).pressSequentially(entry.duration);
-  await page.getByRole("textbox", { name: "date" }).click();
+  await page.getByRole("button", { name: "Choose date" }).click();
   await page.getByRole("gridcell", { name: entry.date.split(".")[0] }).click();
   await page.getByRole("button", { name: "OK" }).click();
 };
