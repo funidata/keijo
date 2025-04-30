@@ -22,7 +22,12 @@ const FormComboBox = <T extends FieldValues, E>({
   getFormValue,
 }: FormComboBoxProps<T, E>) => {
   return (
-    <Grid item xs={12} md={6}>
+    <Grid
+      size={{
+        xs: 12,
+        md: 6,
+      }}
+    >
       <FormControl fullWidth>
         <Controller
           control={form.control as unknown as Control<FieldValues>}
