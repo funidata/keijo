@@ -59,8 +59,8 @@ test.describe("Date browser", () => {
 
   test("Date browser is shown", async ({ page }) => {
     // This test is here to make sure E2E fails if MUI X Pro license has expired.
-    await expect(page.getByRole("textbox", { name: "From" })).toBeVisible();
-    await expect(page.getByRole("textbox", { name: "From" })).toBeEnabled();
+    await expect(page.getByRole("group", { name: "Date Range" })).toBeVisible();
+    await expect(page.getByRole("group", { name: "Date Range" })).toBeEnabled();
   });
 
   test("Correct date range is shown", async ({ page }) => {
