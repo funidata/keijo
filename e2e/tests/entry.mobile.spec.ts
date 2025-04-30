@@ -123,7 +123,7 @@ const fillEntryFormMobile = async (page: Page, t: TFunction, entry: TestEntry) =
   await page.getByLabel(t("entryDialog.product")).fill(entry.product);
   await page.getByLabel(t("entryDialog.activity")).fill(entry.activity);
   await page.getByLabel(t("entryDialog.description")).fill(entry.description);
-  await page.getByLabel(t("entryDialog.duration")).pressSequentially(entry.duration);
+  await page.getByRole("spinbutton", { name: "Hours" }).pressSequentially(entry.duration);
   await page.getByRole("textbox", { name: "date" }).click();
   await page.getByRole("gridcell", { name: entry.date.split(".")[0] }).click();
   await page.getByRole("button", { name: "OK" }).click();
