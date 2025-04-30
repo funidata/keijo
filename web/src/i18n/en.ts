@@ -12,9 +12,7 @@ const en = {
     addEntry: "Add New Entry",
     deleteEntry: "Delete entry",
     editEntry: "Edit entry",
-    endDate: "To",
     selectWeek: "Week",
-    startDate: "From",
     openMenu: "Open menu",
     useDarkMode: "Dark Mode",
     selectLanguage: "Select language",
@@ -24,6 +22,7 @@ const en = {
     jiraDisconnect: "Disconnect from Jira",
     showWeekend: "Show Weekend",
     hideWeekend: "Hide Weekend",
+    dateRange: "Date Range",
   },
   dimensionNames: {
     product: "Product",
