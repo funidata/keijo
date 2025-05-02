@@ -51,7 +51,10 @@ test.describe("Add entry mobile", () => {
     await fillEntryFormMobile(page, t, entries[0]);
     // Submit
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
+    await expect(
+      page.getByRole("heading", { name: t("entryDialog.title.edit") }),
+    ).not.toBeAttached();
+    await expect(page.getByRole("alert")).toContainText(t("notifications.addEntry.success"));
   });
 
   test("Should add entry from entry row", async ({ page, t }) => {
@@ -63,7 +66,10 @@ test.describe("Add entry mobile", () => {
     await expect(page).toHaveURL(/.*\/create$/);
     await fillEntryFormMobile(page, t, entries[0]);
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
+    await expect(
+      page.getByRole("heading", { name: t("entryDialog.title.edit") }),
+    ).not.toBeAttached();
+    await expect(page.getByRole("alert")).toContainText(t("notifications.addEntry.success"));
   });
 });
 
@@ -80,7 +86,10 @@ test.describe("Edit entry mobile", () => {
     await expect(page).toHaveURL(/.*\/edit$/);
     await fillEntryFormMobile(page, t, { ...entries[0] });
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.editEntry.success"))).toBeAttached();
+    await expect(
+      page.getByRole("heading", { name: t("entryDialog.title.edit") }),
+    ).not.toBeAttached();
+    await expect(page.getByRole("alert")).toContainText(t("notifications.editEntry.success"));
   });
 });
 
@@ -96,7 +105,10 @@ test.describe("Delete entry mobile", () => {
       .click();
     await page.getByRole("button", { name: t("entryDialog.delete") }).click();
     await page.getByRole("button", { name: t("controls.deleteEntry") }).click();
-    await expect(page.getByText(t("notifications.deleteEntry.success"))).toBeAttached();
+    await expect(
+      page.getByRole("heading", { name: t("controls.confirmDeleteForDialog") }),
+    ).not.toBeAttached();
+    await expect(page.getByText(t("notifications.deleteEntry.success"))).toBeInViewport();
   });
 });
 

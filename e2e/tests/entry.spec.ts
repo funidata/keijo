@@ -53,7 +53,10 @@ test.describe("Add entry", () => {
     await fillEntryForm(page, t, entries[0]);
     // Submit
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
+    await expect(
+      page.getByRole("heading", { name: t("entryDialog.title.edit") }),
+    ).not.toBeAttached();
+    await expect(page.getByRole("alert")).toContainText(t("notifications.addEntry.success"));
   });
 
   test("Should add entry from entry row", async ({ page, t }) => {
@@ -65,7 +68,10 @@ test.describe("Add entry", () => {
     await expect(page).toHaveURL(/.*\/create$/);
     await fillEntryForm(page, t, entries[0]);
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
+    await expect(
+      page.getByRole("heading", { name: t("entryDialog.title.edit") }),
+    ).not.toBeAttached();
+    await expect(page.getByRole("alert")).toContainText(t("notifications.addEntry.success"));
   });
 });
 
@@ -82,7 +88,10 @@ test.describe("Edit entry", () => {
     await expect(page).toHaveURL(/.*\/edit$/);
     await fillEntryForm(page, t, entries[0]);
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.editEntry.success"))).toBeAttached();
+    await expect(
+      page.getByRole("heading", { name: t("entryDialog.title.edit") }),
+    ).not.toBeAttached();
+    await expect(page.getByRole("alert")).toContainText(t("notifications.editEntry.success"));
   });
 });
 
@@ -97,7 +106,10 @@ test.describe("Delete entry", () => {
       .first()
       .click();
     await page.getByRole("menuitem", { name: t("controls.confirmDelete") }).click();
-    await expect(page.getByText(t("notifications.deleteEntry.success"))).toBeAttached();
+    await expect(
+      page.getByRole("heading", { name: t("entryDialog.title.edit") }),
+    ).not.toBeAttached();
+    await expect(page.getByRole("alert")).toContainText(t("notifications.deleteEntry.success"));
   });
 });
 
