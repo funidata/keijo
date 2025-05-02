@@ -32,7 +32,7 @@ const entries: Array<TestEntry> = [
     issue: issueNames[0],
     client: clientNames[0],
     description: "no comment",
-    duration: "3.00",
+    duration: "3",
     date: "21.5.2024",
   },
 ];
@@ -53,7 +53,10 @@ test.describe("Add entry", () => {
     await fillEntryForm(page, t, entries[0]);
     // Submit
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
+    await expect(
+      page.getByRole("heading", { name: t("entryDialog.title.edit") }),
+    ).not.toBeAttached();
+    await expect(page.getByRole("alert")).toContainText(t("notifications.addEntry.success"));
   });
 
   test("Should add entry from entry row", async ({ page, t }) => {
@@ -65,7 +68,10 @@ test.describe("Add entry", () => {
     await expect(page).toHaveURL(/.*\/create$/);
     await fillEntryForm(page, t, entries[0]);
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
+    await expect(
+      page.getByRole("heading", { name: t("entryDialog.title.edit") }),
+    ).not.toBeAttached();
+    await expect(page.getByRole("alert")).toContainText(t("notifications.addEntry.success"));
   });
 });
 
@@ -82,7 +88,10 @@ test.describe("Edit entry", () => {
     await expect(page).toHaveURL(/.*\/edit$/);
     await fillEntryForm(page, t, entries[0]);
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.editEntry.success"))).toBeAttached();
+    await expect(
+      page.getByRole("heading", { name: t("entryDialog.title.edit") }),
+    ).not.toBeAttached();
+    await expect(page.getByRole("alert")).toContainText(t("notifications.editEntry.success"));
   });
 });
 
@@ -97,7 +106,10 @@ test.describe("Delete entry", () => {
       .first()
       .click();
     await page.getByRole("menuitem", { name: t("controls.confirmDelete") }).click();
-    await expect(page.getByText(t("notifications.deleteEntry.success"))).toBeAttached();
+    await expect(
+      page.getByRole("heading", { name: t("entryDialog.title.edit") }),
+    ).not.toBeAttached();
+    await expect(page.getByRole("alert")).toContainText(t("notifications.deleteEntry.success"));
   });
 });
 
@@ -109,9 +121,13 @@ test.describe("Entry defaults", () => {
       .getByRole("button", { name: t("entryDialog.title.create") })
       .first()
       .click();
-    await expect(page.getByRole("textbox", { name: "Duration" })).toHaveValue("00:00");
+    await expect(page.getByRole("group", { name: t("entryDialog.duration") })).toContainText(
+      "00:00",
+    );
     await page.getByRole("checkbox", { name: t("entryDialog.setRemainingHours") }).click();
-    await expect(page.getByRole("textbox", { name: "Duration" })).toHaveValue("07:30");
+    await expect(page.getByRole("group", { name: t("entryDialog.duration") })).toContainText(
+      "07:30",
+    );
   });
 
   test("Should use set default values", async ({ page, t }) => {
@@ -124,7 +140,7 @@ const fillEntryForm = async (page: Page, t: TFunction, entry: TestEntry) => {
   await page.getByLabel(t("entryDialog.product")).fill(entry.product);
   await page.getByLabel(t("entryDialog.activity")).fill(entry.activity);
   await page.getByLabel(t("entryDialog.description")).fill(entry.description);
-  await page.getByLabel(t("entryDialog.duration")).pressSequentially(entry.duration);
+  await page.getByRole("spinbutton", { name: "Hours" }).pressSequentially(entry.duration);
   await page.getByRole("button", { name: /.*\d\d.*/ }).click();
   await page
     .getByRole("gridcell", { name: entry.date.split(".")[0] })

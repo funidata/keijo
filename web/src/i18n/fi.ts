@@ -12,9 +12,7 @@ const fi = {
     addEntry: "Lisää työaikakirjaus",
     deleteEntry: "Poista merkintä",
     editEntry: "Muokkaa merkintää",
-    endDate: "Loppu",
     selectWeek: "Viikko",
-    startDate: "Alku",
     openMenu: "Avaa valikko",
     useDarkMode: "Synkkyys",
     selectLanguage: "Valitse kieli",
@@ -24,6 +22,7 @@ const fi = {
     jiraDisconnect: "Katkaise Jira-yhteys",
     showWeekend: "Näytä Viikonloppu",
     hideWeekend: "Piilota Viikonloppu",
+    dateRange: "Aikaväli",
   },
   dimensionNames: {
     product: "Tuote",

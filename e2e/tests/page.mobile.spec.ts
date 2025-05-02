@@ -90,7 +90,9 @@ const checkWeekdays = async (page: Page, week: number, t: TFunction, testDate: D
 
 const checkAppBarMobile = async (page: Page, t: TFunction) => {
   await expect(page.getByRole("img", { name: "Keijo logo" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: t("titles.workdayBrowser") })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: t("titles.workdayBrowser"), exact: true }),
+  ).toBeVisible();
   await page.getByRole("banner").getByLabel(t("controls.openMenu")).click();
   await expect(page.getByRole("button", { name: t("entryDialog.title.create") })).toBeVisible();
   await expect(page.getByRole("button", { name: t("controls.defaultsView") })).toBeVisible();
