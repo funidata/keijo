@@ -46,6 +46,7 @@ services:
       NETVISOR_API_URL: http://nv-mock:4002
       DATABASE_NAME: keijo_test
       CORS_ORIGIN: http://localhost:4000
+      LOG_LEVEL: debug
     ports:
       - 4001:3001
 
