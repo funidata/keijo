@@ -11,7 +11,7 @@ test.describe("App bar", () => {
     await expect(page.getByRole("heading", { name: t("entryDialog.title.edit") })).toBeVisible();
   });
 
-  test("Changes between light and dark mode", async ({ appBar, page }) => {
+  test("Switches between light and dark mode", async ({ appBar, page }) => {
     const getDarkModeSetting = async () => {
       const storage = await page.context().storageState();
       const darkModeSetting = storage.origins[0].localStorage.find(
@@ -24,5 +24,20 @@ test.describe("App bar", () => {
     await expect(getDarkModeSetting()).resolves.toBe("true");
     await appBar.getDarkModeButton().click();
     await expect(getDarkModeSetting()).resolves.toBe("false");
+  });
+
+  test("Switches language", async ({ page }) => {
+    // UI texts hardcoded because `playwright-i18next-fixture` won't update on the fly.
+    await page.getByRole("banner").getByRole("button", { name: "Select language" }).click();
+    await page.getByRole("menuitem", { name: "Suomi" }).click();
+
+    await expect(
+      page.getByRole("heading", { name: "Työaikakirjaukset", exact: true }),
+    ).toBeVisible();
+
+    await page.getByRole("banner").getByRole("button", { name: "Valitse kieli" }).click();
+    await page.getByRole("menuitem", { name: "English" }).click();
+
+    await expect(page.getByRole("heading", { name: "Entries", exact: true })).toBeVisible();
   });
 });
