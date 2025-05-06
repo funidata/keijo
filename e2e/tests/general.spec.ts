@@ -10,4 +10,19 @@ test.describe("App bar", () => {
     await appBar.openEntryForm();
     await expect(page.getByRole("heading", { name: t("entryDialog.title.edit") })).toBeVisible();
   });
+
+  test("Changes between light and dark mode", async ({ appBar, page }) => {
+    const getDarkModeSetting = async () => {
+      const storage = await page.context().storageState();
+      const darkModeSetting = storage.origins[0].localStorage.find(
+        (item) => item.name === "use-dark-mode",
+      );
+      return darkModeSetting?.value;
+    };
+
+    await appBar.getDarkModeButton().click();
+    await expect(getDarkModeSetting()).resolves.toBe("true");
+    await appBar.getDarkModeButton().click();
+    await expect(getDarkModeSetting()).resolves.toBe("false");
+  });
 });
