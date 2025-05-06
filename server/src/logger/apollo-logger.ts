@@ -23,6 +23,8 @@ export class ApolloLogger implements ApolloServerPlugin {
   ): Promise<GraphQLRequestListener<BaseContext>> {
     const { operationName } = ctx.request;
 
+    this.logger.debug(ctx.request);
+
     this.logger.audit({
       message: "GraphQL request started.",
       operation: operationName,
