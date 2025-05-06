@@ -18,3 +18,12 @@ export const i18nFixture = test.extend(
     },
   }),
 );
+
+/**
+ * Dummy `t` function type.
+ *
+ * `playwright-i18next-fixture` does not export the `TFunction` type definition.
+ * This is not the full type, rather just a crude approximation of the only
+ * way we use it.
+ */
+export type TFunction = (key: string) => string;
