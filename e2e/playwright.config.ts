@@ -1,11 +1,5 @@
-import { test as base, defineConfig, devices } from "@playwright/test";
-import dayjs from "dayjs";
-import "dayjs/locale/en-gb";
-import "dayjs/locale/fi";
-import localizedFormat from "dayjs/plugin/localizedFormat";
-import weekday from "dayjs/plugin/weekday";
-import weekOfYear from "dayjs/plugin/weekOfYear";
-import { i18nFixture } from "./i18n-fixture";
+import { defineConfig, devices } from "@playwright/test";
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -54,33 +48,4 @@ export default defineConfig({
       grep: /mobile/,
     },
   ],
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
 });
-
-// FIXME: This stuff should be in its own file and folder.
-type DayjsFixture = {
-  dayjs: (
-    date?: dayjs.ConfigType,
-    format?: dayjs.OptionType,
-    locale?: string,
-    strict?: boolean,
-  ) => dayjs.Dayjs;
-};
-
-const test = base.extend(i18nFixture).extend<DayjsFixture>({
-  dayjs: async ({ locale }, use) => {
-    dayjs.extend(weekOfYear);
-    dayjs.extend(localizedFormat);
-    dayjs.extend(weekday);
-    dayjs.locale(locale);
-    await use(dayjs);
-  },
-});
-
-export { test };
