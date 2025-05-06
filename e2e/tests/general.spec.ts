@@ -40,4 +40,10 @@ test.describe("App bar", () => {
 
     await expect(page.getByRole("heading", { name: "Entries", exact: true })).toBeVisible();
   });
+
+  test("Opens three-dot menu", async ({ appBar, page, t }) => {
+    await appBar.openMenu();
+    await expect(page.getByRole("menuitem", { name: t("controls.defaultsView") })).toBeVisible();
+    await expect(page.getByRole("menuitem", { name: t("controls.jiraConnect") })).toBeVisible();
+  });
 });

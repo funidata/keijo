@@ -18,7 +18,17 @@ export class AppBar {
       .getByRole("button", { name: this.t("controls.useDarkMode") });
   }
 
+  getMenuButton() {
+    return this.page
+      .getByRole("banner")
+      .getByRole("button", { name: this.t("controls.settingsMenu") });
+  }
+
   async openEntryForm() {
     return this.getAddEntryButton().click();
+  }
+
+  async openMenu() {
+    return this.getMenuButton().click();
   }
 }
