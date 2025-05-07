@@ -8,24 +8,24 @@ test.describe("Week browser", () => {
     await page.goto("/entries/week/2023-02-13");
   });
 
-  test("Should browse weeks forward", async ({ page, t }) => {
+  test("Should browse weeks forward", async ({ page, browserControls }) => {
     const jump = 3;
     for (let i = 0; i < jump; i++) {
-      await page.getByRole("button", { name: t("controls.aria.nextWeek") }).click();
+      await browserControls.getNextWeekButton().click();
     }
     await expect(page).toHaveURL("/entries/week/2023-03-06");
   });
 
-  test("Should browse weeks backward", async ({ page, t }) => {
+  test("Should browse weeks backward", async ({ page, browserControls }) => {
     const jump = 3;
     for (let i = 0; i < jump; i++) {
-      await page.getByRole("button", { name: t("controls.aria.prevWeek") }).click();
+      await browserControls.getPreviousWeekButton().click();
     }
     await expect(page).toHaveURL("/entries/week/2023-01-23");
   });
 
-  test("Should go to current week", async ({ page, t, dayjs }) => {
-    await page.getByRole("button", { name: t("controls.aria.currentWeek") }).click();
+  test("Should go to current week", async ({ page, browserControls, dayjs }) => {
+    await browserControls.getCurrentWeekButton().click();
     await expect(page).toHaveURL(`/entries/week/${dayjs().weekday(0).format(dateFormat)}`);
   });
 
@@ -39,15 +39,18 @@ test.describe("Week browser", () => {
     await expect(page).toHaveURL(`/entries/week/${startingWeek + jump}`);
   });
 
-  test("Handles browsing over new year correctly (forwards)", async ({ page, t }) => {
+  test("Handles browsing over new year correctly (forwards)", async ({ page, browserControls }) => {
     await page.goto("/entries/week/2024-12-30");
-    await page.getByRole("button", { name: t("controls.aria.nextWeek") }).click();
+    await browserControls.getNextWeekButton().click();
     await expect(page).toHaveURL("/entries/week/2025-01-06");
   });
 
-  test("Handles browsing over new year correctly (backwards)", async ({ page, t }) => {
+  test("Handles browsing over new year correctly (backwards)", async ({
+    page,
+    browserControls,
+  }) => {
     await page.goto("/entries/week/2025-01-06");
-    await page.getByRole("button", { name: t("controls.aria.prevWeek") }).click();
+    await browserControls.getPreviousWeekButton().click();
     await expect(page).toHaveURL("/entries/week/2024-12-30");
   });
 });
