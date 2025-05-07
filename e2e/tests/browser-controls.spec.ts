@@ -8,7 +8,7 @@ test.describe("Week browser", () => {
     await page.goto("/entries/week/2023-02-13");
   });
 
-  test("Should browse weeks forward", async ({ page, browserControls }) => {
+  test("Browses forwards", async ({ page, browserControls }) => {
     const jump = 3;
     for (let i = 0; i < jump; i++) {
       await browserControls.getNextWeekButton().click();
@@ -16,7 +16,7 @@ test.describe("Week browser", () => {
     await expect(page).toHaveURL("/entries/week/2023-03-06");
   });
 
-  test("Should browse weeks backward", async ({ page, browserControls }) => {
+  test("Browses backwards", async ({ page, browserControls }) => {
     const jump = 3;
     for (let i = 0; i < jump; i++) {
       await browserControls.getPreviousWeekButton().click();
@@ -24,12 +24,12 @@ test.describe("Week browser", () => {
     await expect(page).toHaveURL("/entries/week/2023-01-23");
   });
 
-  test("Should go to current week", async ({ page, browserControls, dayjs }) => {
+  test("Goes to current week", async ({ page, browserControls, dayjs }) => {
     await browserControls.getCurrentWeekButton().click();
     await expect(page).toHaveURL(`/entries/week/${dayjs().weekday(0).format(dateFormat)}`);
   });
 
-  test.skip("Should go to specific week", async ({ page, dayjs }) => {
+  test.skip("Goes specific week", async ({ page, dayjs }) => {
     // FIXME: Fix and enable this test once week select drop-down is fixed.
     const jump = 4;
     const startingWeek = dayjs().week();
