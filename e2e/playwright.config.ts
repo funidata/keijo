@@ -25,27 +25,27 @@ export default defineConfig({
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
-      grepInvert: /mobile/,
+      grepInvert: /\.mobile\.spec\./,
     },
     {
       name: "firefox",
       use: { ...devices["Desktop Firefox"] },
-      grepInvert: /mobile/,
+      grepInvert: /\.mobile\.spec\./,
     },
     {
       name: "webkit",
       use: { ...devices["Desktop Safari"] },
-      grepInvert: /mobile/,
+      grepInvert: /\.mobile\.spec\./,
     },
     {
       name: "Mobile Chrome",
       use: { ...devices["Pixel 5"] },
-      grep: /mobile/,
+      grepInvert: /\.desktop\.spec\./,
     },
     {
       name: "Mobile Safari",
       use: { ...devices["iPhone 12"] },
-      grep: /mobile/,
+      grepInvert: /\.desktop\.spec\./,
     },
   ],
 });
