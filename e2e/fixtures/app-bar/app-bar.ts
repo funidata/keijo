@@ -28,6 +28,20 @@ export class AppBar {
       .getByRole("button", { name: this.t("controls.useDarkMode") });
   }
 
+  getJiraConnectButton() {
+    if (this.isMobile) {
+      return this.page.getByRole("button", { name: this.t("controls.jiraConnect") });
+    }
+    return this.page.getByRole("menuitem", { name: this.t("controls.jiraConnect") });
+  }
+
+  getJiraDisonnectButton() {
+    if (this.isMobile) {
+      return this.page.getByRole("button", { name: this.t("controls.jiraDisconnect") });
+    }
+    return this.page.getByRole("menuitem", { name: this.t("controls.jiraDisconnect") });
+  }
+
   getMenuButton() {
     return this.page
       .getByRole("banner")
@@ -56,5 +70,17 @@ export class AppBar {
     if (!this.isMobile) {
       return this.getMenuButton().click();
     }
+  }
+
+  async clickJiraConnectButton() {
+    this.openMobileMenuOptional();
+    this.openDesktopMenuOptional();
+    await this.getJiraConnectButton().click();
+  }
+
+  async clickJiraDisonnectButton() {
+    this.openMobileMenuOptional();
+    this.openDesktopMenuOptional();
+    await this.getJiraDisonnectButton().click();
   }
 }
