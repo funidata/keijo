@@ -1,11 +1,16 @@
 import { Logger, Module } from "@nestjs/common";
+import { DevToolsController } from "./dev-tools.controller";
+import { DevToolsService } from "./dev-tools.service";
 
 /**
  * Tools for facilitating development and testing.
  *
  * DO NOT USE IN PRODUCTION.
  */
-@Module({})
+@Module({
+  providers: [DevToolsService],
+  controllers: [DevToolsController],
+})
 export class DevToolsModule {
   private readonly logger = new Logger(DevToolsModule.name);
 
