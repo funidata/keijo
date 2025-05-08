@@ -6,7 +6,8 @@ import { test } from "@playwright/test";
 export const setupFixture = test.extend<{ forEachTest: void }>({
   forEachTest: [
     async ({ request }, use) => {
-      await request.get("http://localhost:4001/dev/reset");
+      const port = process.env.CI === "true" ? 4000 : 4001;
+      await request.get(`http://localhost:${port}/dev/reset`);
       await use();
     },
     { auto: true },

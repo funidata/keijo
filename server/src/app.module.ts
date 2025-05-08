@@ -15,7 +15,9 @@ import { NetvisorModule } from "./netvisor/netvisor.module";
 import { SessionModule } from "./session/session.module";
 import { UserSettingsModule } from "./user-settings/user-settings.module";
 
-const devEnvImports = process.env.NODE_ENV === "development" ? [DevToolsModule] : [];
+const inDev = process.env.NODE_ENV === "development";
+const inCi = process.env.CI === "true";
+const devEnvImports = inDev || inCi ? [DevToolsModule] : [];
 
 @Module({
   imports: [
