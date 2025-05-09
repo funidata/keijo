@@ -1,18 +1,17 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { InjectDataSource } from "@nestjs/typeorm";
-import { DataSource } from "typeorm";
+import { UserSettingsService } from "../user-settings/user-settings.service";
 
 @Injectable()
 export class DevToolsService {
   private readonly logger = new Logger(DevToolsService.name);
 
-  constructor(@InjectDataSource() private readonly connection: DataSource) {}
+  constructor(private userSettingsService: UserSettingsService) {}
 
   /**
-   * Truncate database.
+   * Reset data by employee ID.
    */
-  async reset() {
-    this.logger.log("Truncating database.");
-    await this.connection.query("TRUNCATE TABLE session, user_settings;");
+  async reset(employeeId: number) {
+    this.logger.warn(`Resetting data (employeeNumber=${employeeId}).`);
+    return this.userSettingsService.deleteByEmployeeNumber(employeeId);
   }
 }

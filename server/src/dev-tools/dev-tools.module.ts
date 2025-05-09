@@ -1,4 +1,5 @@
 import { Logger, Module } from "@nestjs/common";
+import { UserSettingsModule } from "../user-settings/user-settings.module";
 import { DevToolsController } from "./dev-tools.controller";
 import { DevToolsService } from "./dev-tools.service";
 
@@ -8,6 +9,7 @@ import { DevToolsService } from "./dev-tools.service";
  * DO NOT USE IN PRODUCTION.
  */
 @Module({
+  imports: [UserSettingsModule],
   providers: [DevToolsService],
   controllers: [DevToolsController],
 })
