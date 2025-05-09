@@ -1,17 +1,13 @@
 import { defineConfig, devices } from "@playwright/test";
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
+const ci = process.env.CI === "true";
+
 export default defineConfig({
   testDir: "./tests",
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: 2,
-  /* Opt out of parallel tests on CI. */
-  workers: 1,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
+  fullyParallel: true,
+  forbidOnly: ci,
+  retries: ci ? 2 : 0,
+  workers: undefined,
   reporter: "html",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
