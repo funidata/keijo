@@ -13,6 +13,8 @@ services:
       NETVISOR_PARTNER_ID: mock_partner_id
       NETVISOR_API_URL: http://nv-mock:4002
       NODE_ENV: production
+      CI: true
+      DEV_TOOLS: true
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: postgres
       DATABASE_HOST: db
