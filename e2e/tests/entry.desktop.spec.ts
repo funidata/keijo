@@ -6,7 +6,7 @@ import {
   getMockIssueNames,
   getMockProductNames,
 } from "mock-data";
-import { test } from "../playwright.config";
+import { test } from "../fixtures/fixtures";
 
 type TestEntry = {
   product: string;

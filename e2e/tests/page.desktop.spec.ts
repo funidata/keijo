@@ -2,7 +2,7 @@ import { Page, expect } from "@playwright/test";
 import { Dayjs } from "dayjs";
 import { TFunction } from "i18next";
 import { getMockEntries } from "mock-data";
-import { test } from "../playwright.config";
+import { test } from "../fixtures/fixtures";
 
 const mockEntries = getMockEntries();
 const testDate = "2024-05-13";
