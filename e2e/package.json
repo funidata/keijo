@@ -9,18 +9,18 @@
     "lint": "eslint . --max-warnings 0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.25.1",
+    "@eslint/js": "^9.26.0",
     "@playwright/test": "^1.52.0",
-    "@types/node": "^22.15.3",
-    "eslint": "^9.25.1",
-    "eslint-config-prettier": "^10.1.2",
+    "@types/node": "^22.15.17",
+    "eslint": "^9.26.0",
+    "eslint-config-prettier": "^10.1.5",
     "jiti": "^2.4.2",
     "playwright-i18next-fixture": "^1.0.0",
     "translations": "file:../web/src/i18n",
-    "typescript-eslint": "^8.31.1"
+    "typescript-eslint": "^8.32.0"
   },
   "dependencies": {
     "dayjs": "^1.11.13",
-    "fast-xml-parser": "^5.2.1"
+    "fast-xml-parser": "^5.2.2"
   }
 }
