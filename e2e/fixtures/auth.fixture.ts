@@ -5,8 +5,8 @@ export const authFixture = test.extend({
     const workerIndex = testInfo.workerIndex.toString();
 
     // Reset database for this worker.
-    // FIXME: API URL.
-    const response = await page.goto(`http://localhost:4001/dev/reset?id=${workerIndex}`);
+    const apiUrl = process.env.API_URL || "http://localhost:4001";
+    const response = await page.goto(`${apiUrl}/dev/reset?id=${workerIndex}`);
     expect(response?.ok()).toBe(true);
 
     // Use worker index as employee ID to separate test runners.
