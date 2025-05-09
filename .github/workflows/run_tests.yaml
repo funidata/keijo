@@ -55,6 +55,11 @@ jobs:
   e2e-tests:
     name: E2E tests
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2, 3, 4]
+        shardTotal: [4]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -85,23 +90,24 @@ jobs:
           CI: true
         working-directory: e2e
       - name: Run E2E tests
-        run: npm test
+        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{
+          matrix.shardTotal }}
         env:
           CI: true
           API_URL: http://localhost:4000
         working-directory: e2e
-      - name: Upload test report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report
-          path: e2e/playwright-report/
-      - name: Upload test results on failure
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: test-results
-          path: e2e/test-results/
+      # - name: Upload test report
+      #   uses: actions/upload-artifact@v4
+      #   if: always()
+      #   with:
+      #     name: playwright-report
+      #     path: e2e/playwright-report/
+      # - name: Upload test results on failure
+      #   uses: actions/upload-artifact@v4
+      #   if: failure()
+      #   with:
+      #     name: test-results
+      #     path: e2e/test-results/
       - name: Print debug output
         if: failure()
         run: |
