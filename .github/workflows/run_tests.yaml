@@ -7,6 +7,8 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,6 +24,8 @@ jobs:
   formatting:
     name: Format
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -37,6 +41,8 @@ jobs:
   unit-tests:
     name: Unit tests
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -55,6 +61,8 @@ jobs:
   e2e-tests:
     name: E2E tests
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -113,6 +121,8 @@ jobs:
   e2e-report:
     name: E2E test report
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     needs:
       - e2e-tests
     if: ${{ !cancelled() }}
