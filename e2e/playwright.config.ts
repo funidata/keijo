@@ -8,7 +8,7 @@ export default defineConfig({
   forbidOnly: ci,
   retries: ci ? 2 : 0,
   workers: undefined,
-  reporter: "html",
+  reporter: ci ? "blob" : "html",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL: "http://localhost:4000",
