@@ -41,4 +41,42 @@ test.describe("Entry form", () => {
 
     await expect(page.getByText("Description is required.")).toBeVisible();
   });
+
+  test("Set remaining hours disabled when toggled off", async ({ appBar, entryForm }) => {
+    await appBar.openEntryForm();
+
+    await expect(entryForm.getRemainingHoursToggle()).not.toBeChecked();
+    await expect(entryForm.getHoursField()).toHaveText("00");
+    await expect(entryForm.getMinutesField()).toHaveText("00");
+  });
+
+  test("Set remaining hours enabled when toggled on", async ({ appBar, entryForm }) => {
+    await appBar.openEntryForm();
+    await entryForm.getRemainingHoursToggle().check();
+
+    await expect(entryForm.getHoursField()).toHaveText("07");
+    await expect(entryForm.getMinutesField()).toHaveText("30");
+  });
+
+  test("Set remaining hours toggle state persists", async ({ appBar, entryForm, page }) => {
+    await appBar.openEntryForm();
+    await entryForm.getRemainingHoursToggle().check();
+    await page.reload();
+
+    await expect(entryForm.getRemainingHoursToggle()).toBeChecked();
+  });
+
+  // FIXME: Enable this after the related bug has been fixed.
+  test.skip("Remaining hours are calculated correctly", async ({
+    page,
+    entryBrowser,
+    entryForm,
+  }) => {
+    await page.goto("/entries/week/2024-05-13");
+    await entryBrowser.getFirstAddEntryButton().click();
+    await entryForm.getRemainingHoursToggle().check();
+
+    await expect(entryForm.getHoursField()).toHaveText("02");
+    await expect(entryForm.getMinutesField()).toHaveText("30");
+  });
 });

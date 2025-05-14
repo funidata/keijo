@@ -31,6 +31,20 @@ export class EntryForm {
     return this.page.getByRole("textbox", { name: this.t("entryDialog.description"), exact: true });
   }
 
+  getHoursField() {
+    return this.page.getByRole("spinbutton", { name: "Hours" });
+  }
+
+  getMinutesField() {
+    return this.page.getByRole("spinbutton", { name: "Minutes" });
+  }
+
+  getRemainingHoursToggle() {
+    return this.page.getByRole("checkbox", {
+      name: this.t("entryDialog.setRemainingHours"),
+    });
+  }
+
   async selectProduct(name: string) {
     await this.getProductField().click();
     await this.page.getByRole("option", { name, exact: true }).click();
