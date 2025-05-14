@@ -3,6 +3,7 @@ import { appBarFixture } from "./app-bar/app-bar.fixture";
 import { authFixture } from "./auth.fixture";
 import { browserControlsFixture } from "./browser-controls/browser-controls.fixture";
 import { dayjsFixture } from "./dayjs.fixture";
+import { entryBrowserFixture } from "./entry-browser/entry-browser.fixture";
 import { entryFormFixture } from "./entry-form/entry-form.fixture";
 import { i18nFixture } from "./i18n.fixture";
 
@@ -13,4 +14,5 @@ export const test = mergeTests(
   appBarFixture,
   browserControlsFixture,
   entryFormFixture,
+  entryBrowserFixture,
 );
