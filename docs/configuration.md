@@ -41,5 +41,7 @@ Key|Default|Description
 `SESSION_SECRET`|| Session secret.
 `CORS_ORIGIN`|| Development Cors origin URL.
 `TRUST_PROXY_IPS`|false| Trusted proxy ips to allow secure cookies to be sent over proxies.
+`DEV_TOOLS`|`false`|Set to `true` to enable dev tools for development and testing. This cannot be set to `true` if `NODE_ENV` is `production` unless `CI` is also set to `true`.
+`CI`|`false`|Indicates that server is running in an CI environment.
 
 <sup>1</sup>) See [Logging docs](./logging.md) for more information.
