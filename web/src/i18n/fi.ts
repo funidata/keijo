@@ -10,6 +10,7 @@ const fi = {
     confirmDelete: "Vahvista poisto",
     confirmDeleteForDialog: "Vahvista merkinnän poisto",
     addEntry: "Lisää työaikakirjaus",
+    addEntryWithDate: "Lisää työaikakirjaus {{date}}",
     deleteEntry: "Poista merkintä",
     editEntry: "Muokkaa merkintää",
     selectWeek: "Viikko",

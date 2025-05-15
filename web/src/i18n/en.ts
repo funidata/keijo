@@ -10,6 +10,7 @@ const en = {
     confirmDelete: "Confirm delete",
     confirmDeleteForDialog: "Really delete this entry?",
     addEntry: "Add New Entry",
+    addEntryWithDate: "Add New Entry on {{date}}",
     deleteEntry: "Delete entry",
     editEntry: "Edit entry",
     selectWeek: "Week",
