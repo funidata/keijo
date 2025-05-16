@@ -27,6 +27,7 @@ jobs:
         with:
           name: keijo-test
           path: /tmp/keijo-test.tar
+          retention-days: 1
       # This is the production image for E2E testing and release.
       - name: Build production image
         uses: docker/build-push-action@v6
@@ -41,3 +42,4 @@ jobs:
         with:
           name: keijo
           path: /tmp/keijo.tar
+          retention-days: 1
