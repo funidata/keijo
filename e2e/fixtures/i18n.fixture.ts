@@ -26,4 +26,7 @@ export const i18nFixture = test.extend(
  * This is not the full type, rather just a crude approximation of the only
  * way we use it.
  */
-export type TFunction = (key: string) => string;
+export type TFunction = (
+  key: string,
+  options?: Record<string, any> & { interpolation?: { escapeValue?: boolean } },
+) => string;

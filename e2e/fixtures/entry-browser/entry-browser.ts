@@ -7,7 +7,9 @@ export class EntryBrowser {
     private t: TFunction,
   ) {}
 
-  getFirstAddEntryButton() {
-    return this.page.getByLabel(this.t("controls.addEntry")).first();
+  getAddEntryButton(date: string) {
+    return this.page.getByLabel(
+      this.t("controls.addEntryWithDate", { date, interpolation: { escapeValue: false } }),
+    );
   }
 }

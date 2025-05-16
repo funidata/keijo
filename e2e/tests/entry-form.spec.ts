@@ -66,14 +66,10 @@ test.describe("Entry form", () => {
     await expect(entryForm.getRemainingHoursToggle()).toBeChecked();
   });
 
-  // FIXME: Enable this after the related bug has been fixed.
-  test.skip("Remaining hours are calculated correctly", async ({
-    page,
-    entryBrowser,
-    entryForm,
-  }) => {
+  test("Remaining hours are calculated correctly", async ({ page, entryBrowser, entryForm }) => {
     await page.goto("/entries/week/2024-05-13");
-    await entryBrowser.getFirstAddEntryButton().click();
+    await page.waitForTimeout(1000);
+    await entryBrowser.getAddEntryButton("13/05/").click();
     await entryForm.getRemainingHoursToggle().check();
 
     await expect(entryForm.getHoursField()).toHaveText("02");
