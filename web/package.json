@@ -30,7 +30,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.56.3",
-    "react-i18next": "^13.2.1",
+    "react-i18next": "^15.5.2",
     "react-infinite-scroll-hook": "^4.1.1",
     "react-router-dom": "^7.6.0",
     "typescript": "5.8.3",
