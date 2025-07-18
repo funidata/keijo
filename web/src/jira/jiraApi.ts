@@ -22,7 +22,6 @@ type InfiniteIssueOptions = Partial<
     JiraIssueResult,
     Error,
     InfiniteData<JiraIssueResult, number>,
-    JiraIssueResult,
     QueryKey,
     number
   >
