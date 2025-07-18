@@ -136,7 +136,8 @@ test.describe("Entry defaults mobile", () => {
 });
 
 const fillEntryFormMobile = async (page: Page, t: TFunction, entry: TestEntry) => {
-  await page.getByLabel(t("entryDialog.product")).fill(entry.product);
+  await page.getByLabel(t("entryDialog.product")).click();
+  await page.getByRole("option", { name: entry.product }).click();
   await page.getByLabel(t("entryDialog.activity")).fill(entry.activity);
   await page.getByLabel(t("entryDialog.description")).fill(entry.description);
   await page.getByRole("spinbutton", { name: "Hours" }).pressSequentially(entry.duration);
