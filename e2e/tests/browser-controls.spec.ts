@@ -9,18 +9,16 @@ test.describe("Week browser", () => {
   });
 
   test("Browses forwards", async ({ page, browserControls }) => {
-    const jump = 3;
-    for (let i = 0; i < jump; i++) {
-      await browserControls.getNextWeekButton().click();
-    }
+    await browserControls.getNextWeekButton().click();
+    await browserControls.getNextWeekButton().click();
+    await browserControls.getNextWeekButton().click();
     await expect(page).toHaveURL("/entries/week/2023-03-06");
   });
 
   test("Browses backwards", async ({ page, browserControls }) => {
-    const jump = 3;
-    for (let i = 0; i < jump; i++) {
-      await browserControls.getPreviousWeekButton().click();
-    }
+    await browserControls.getPreviousWeekButton().click();
+    await browserControls.getPreviousWeekButton().click();
+    await browserControls.getPreviousWeekButton().click();
     await expect(page).toHaveURL("/entries/week/2023-01-23");
   });
 
