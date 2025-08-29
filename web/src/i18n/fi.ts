@@ -90,6 +90,7 @@ const fi = {
     flexLeave: "Saldovapaa",
     holidayPayLeave: "Lomarahavapaa",
     sickLeave: "Sairauspoissaolo",
+    parentalLeave: "Vanhempainvapaa",
     unknownEntry: "Tuntematon kirjauslaji",
     unknownEntryNote: "Käytä Netvisoria tämän kirjauslajin tarkastelemiseen ja muokkamiseen.",
     totalHoursInWeek: "Työaika tällä viikolla",

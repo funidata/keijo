@@ -6,6 +6,7 @@ import {
   isFlexLeaveDay,
   isHoliday,
   isHolidayPayLeave,
+  isParentalLeave,
   isSickLeave,
   isSpecialSingleEntryDay,
   isVacation,
@@ -15,11 +16,12 @@ import { Workday } from "../../graphql/generated/graphql";
 import EntryDialogButton from "../entry-dialog/EntryDialogButton";
 import FlexLeaveChip from "./info-chips/FlexLeaveChip";
 import HolidayChip from "./info-chips/HolidayChip";
+import HolidayPayLeaveChip from "./info-chips/HolidayPayLeaveChip";
 import NoEntriesChip from "./info-chips/NoEntriesChip";
+import ParentalLeaveChip from "./info-chips/ParentalLeaveChip";
 import SickLeaveChip from "./info-chips/SickLeaveChip";
 import VacationChip from "./info-chips/VacationChip";
 import WeekendChip from "./info-chips/WeekendChip";
-import HolidayPayLeaveChip from "./info-chips/HolidayPayLeaveChip";
 
 type WorkdayAccordionProps = {
   workday: Workday;
@@ -36,6 +38,7 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
   const flexLeave = isFlexLeaveDay(workday);
   const holidayPayLeave = isHolidayPayLeave(workday);
   const sickLeave = isSickLeave(workday);
+  const parentalLeave = isParentalLeave(workday);
   const disabled = isSpecialSingleEntryDay(workday);
 
   const totalDuration = totalDurationOfEntries(workday.entries);
@@ -55,6 +58,9 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
     }
     if (sickLeave) {
       return <SickLeaveChip />;
+    }
+    if (parentalLeave) {
+      return <ParentalLeaveChip />;
     }
     if (weekend) {
       return <WeekendChip />;

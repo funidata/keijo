@@ -47,13 +47,22 @@ export const isSickLeave = (workday: Workday): boolean => {
   return entry.ratioNumber === EntryType.SickLeave;
 };
 
+export const isParentalLeave = (workday: Workday): boolean => {
+  if (workday.entries.length !== 1) {
+    return false;
+  }
+  const entry = workday.entries[0];
+  return entry.ratioNumber === EntryType.ParentalLeave;
+};
+
 export const isWeekend = (date: Dayjs): boolean => date.weekday() === 5 || date.weekday() === 6;
 
 export const isSpecialSingleEntryDay = (workday: Workday): boolean =>
   isVacation(workday) ||
   isFlexLeaveDay(workday) ||
   isSickLeave(workday) ||
-  isHolidayPayLeave(workday);
+  isHolidayPayLeave(workday) ||
+  isParentalLeave(workday);
 
 export const hasOnlyFlexLeaveEntry = (workday: Workday): boolean =>
   workday.entries.length === 1 && workday.entries[0].ratioNumber === EntryType.FlexLeave;
