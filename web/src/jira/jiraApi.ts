@@ -12,9 +12,20 @@ import { jiraQueryMaxResults } from "./jiraConfig";
 import { findKeysIncludingWord, findWordInKeys, stringWithoutWord } from "./jiraUtils";
 import { jqlAND, jqlOR, jqlOrderBy, keyIsInKeys, summaryContains } from "./jql";
 
+export type JiraIssue = {
+  id: string;
+  key: string;
+  self: string;
+  expand: string;
+  fields: {
+    summary: string;
+  };
+};
+
 export type JiraIssueResult = {
-  issues: Array<{ key: string; fields: { summary: string } }>;
-  total: number;
+  issues: JiraIssue[];
+  nextPageToken: string;
+  isLast: boolean;
 };
 
 type InfiniteIssueOptions = Partial<
@@ -144,7 +155,8 @@ export const useSearchIssues = ({
     initialPageParam: 0,
     getNextPageParam: (lastPage, _allPages, lastPageParam) => {
       const nextPageStartIndex = lastPageParam + jiraQueryMaxResults;
-      if (nextPageStartIndex >= lastPage.total) {
+      // FIXME: Number doesn't mean anything. Just to make typing pass while working on this.
+      if (nextPageStartIndex >= 10000) {
         return;
       }
       return nextPageStartIndex;
@@ -163,8 +175,8 @@ export const useSearchIssues = ({
  */
 export const useRecentIssues = (
   queryProps?: Partial<UseQueryOptions<JiraIssueResult>>,
-): UseQueryResult<JiraIssueResult> =>
-  useQuery({
+): JiraIssue[] => {
+  const res = useQuery({
     queryKey: ["recentIssues"],
     queryFn: async () => {
       const jql =
@@ -174,3 +186,6 @@ export const useRecentIssues = (
     retry: 2,
     ...queryProps,
   });
+
+  return res.data?.issues || [];
+};
