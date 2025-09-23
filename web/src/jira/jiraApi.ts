@@ -10,7 +10,7 @@ import {
 import { axiosJira, axiosKeijo } from "./axiosInstance";
 import { jiraQueryMaxResults } from "./jiraConfig";
 import { findKeysIncludingWord, findWordInKeys, stringWithoutWord } from "./jiraUtils";
-import { jqlAND, jqlOR, jqlOrderBy, jqlRecentIssues, keyIsInKeys, summaryContains } from "./jql";
+import { jqlAND, jqlOR, jqlOrderBy, keyIsInKeys, summaryContains } from "./jql";
 
 export type JiraIssueResult = {
   issues: Array<{ key: string; fields: { summary: string } }>;
@@ -51,20 +51,18 @@ const useGetAccessToken = (): UseQueryResult<{ access_token: string }> => {
   });
 };
 
-const getIssues = async (
-  jql: string,
-  startAt: number = 0,
-  numOfIssues: number = jiraQueryMaxResults,
-) => {
+const getIssues = async (jql: string, maxResults: number = jiraQueryMaxResults) => {
   return (
-    await axiosJira.post<JiraIssueResult>("/search", {
-      fields: ["summary"],
-      maxResults: numOfIssues,
-      startAt: startAt,
-      validateQuery: "warn",
-      jql: jql,
-    })
-  ).data;
+    // FIXME: Error handling and better output typing instead of ".data"?
+    (
+      await axiosJira.post<JiraIssueResult>("/search/jql", {
+        fields: ["summary"],
+        maxResults,
+        jql: jql,
+        nextPageToken: undefined,
+      })
+    ).data
+  );
 };
 
 export const useIsJiraAuthenticated = () => {
@@ -86,7 +84,6 @@ export const useGetIssues = ({ issueKeys, enabled, ...queryProps }: UseGetIssues
     queryFn: async ({ pageParam }) => {
       return await getIssues(
         keyIsInKeys(issueKeys.slice(pageParam, pageParam + jiraQueryMaxResults)),
-        0,
       );
     },
     initialPageParam: 0,
@@ -141,7 +138,7 @@ export const useSearchIssues = ({
     queryKey: ["issueSearch", searchFilter],
     staleTime: Infinity,
     queryFn: async ({ pageParam }) => {
-      return await getIssues(jqlOrderBy(jql, "key"), pageParam);
+      return await getIssues(jqlOrderBy(jql, "key"));
     },
     enabled: !!searchFilter,
     initialPageParam: 0,
@@ -170,7 +167,9 @@ export const useRecentIssues = (
   useQuery({
     queryKey: ["recentIssues"],
     queryFn: async () => {
-      return await getIssues(jqlOrderBy(jqlRecentIssues(), "lastViewed", "DESC"));
+      const jql =
+        "issuekey in issueHistory() OR assignee = currentUser() OR reporter = currentUser() ORDER BY lastViewed DESC";
+      return getIssues(jql, 10);
     },
     retry: 2,
     ...queryProps,
