@@ -215,7 +215,7 @@ export const useAllIssues = (): JiraIssue[] => {
         fields: ["summary"],
         // Jira API max value for this endpoint is 5000.
         maxResults: 5000,
-        jql: keyIsInKeys(nvIssueKeys),
+        jql: `${keyIsInKeys(nvIssueKeys)} ORDER BY lastViewed DESC`,
         nextPageToken: pageParam,
       };
 
