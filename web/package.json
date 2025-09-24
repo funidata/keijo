@@ -31,7 +31,6 @@
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.63.0",
     "react-i18next": "^15.7.3",
-    "react-infinite-scroll-hook": "^4.1.1",
     "react-router-dom": "^7.9.1",
     "typescript": "5.9.2",
     "use-sync-external-store": "^1.5.0",
