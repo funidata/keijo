@@ -15,12 +15,20 @@ const JiraIssueComboBox = <T extends FieldValues>({ ...props }: JiraIssueComboBo
   const { t } = useTranslation();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
-  const { recent } = useIssues();
-  const options = recent.map((issue) => ({
-    label: issue.key,
-    text: `${issue.key}: ${issue.fields.summary}`,
-    type: "recent",
-  }));
+  const { recent, rest } = useIssues();
+  const options = recent
+    .map((issue) => ({
+      label: issue.key,
+      text: `${issue.key}: ${issue.fields.summary}`,
+      type: "recent",
+    }))
+    .concat(
+      ...rest.map((issue) => ({
+        label: issue.key,
+        text: `${issue.key}: ${issue.fields.summary}`,
+        type: "all",
+      })),
+    );
 
   return (
     <FormComboBox

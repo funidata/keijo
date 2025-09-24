@@ -1,3 +1,4 @@
+import { useQuery as useApolloQuery } from "@apollo/client";
 import {
   InfiniteData,
   QueryKey,
@@ -7,6 +8,8 @@ import {
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
+import { useEffect, useMemo } from "react";
+import { FindDimensionOptionsDocument } from "../graphql/generated/graphql";
 import { axiosJira, axiosKeijo } from "./axiosInstance";
 import { jiraQueryMaxResults } from "./jiraConfig";
 import { findKeysIncludingWord, findWordInKeys, stringWithoutWord } from "./jiraUtils";
@@ -174,6 +177,7 @@ export const useSearchIssues = ({
  * Get users recent issues
  */
 export const useRecentIssues = (
+  // FIXME: Remove props?
   queryProps?: Partial<UseQueryOptions<JiraIssueResult>>,
 ): JiraIssue[] => {
   const res = useQuery({
@@ -188,4 +192,56 @@ export const useRecentIssues = (
   });
 
   return res.data?.issues || [];
+};
+
+export const useAllIssues = (): JiraIssue[] => {
+  const { data: dimensionData } = useApolloQuery(FindDimensionOptionsDocument);
+  const nvIssueKeys = dimensionData?.findDimensionOptions.issue || [];
+
+  const query = useInfiniteQuery<JiraIssueResult, Error>({
+    queryKey: ["jira-issues"],
+    enabled: nvIssueKeys.length > 0,
+    // Cache issues for 15 minutes as we are fetching way too much stuff.
+    staleTime: 15 * 60 * 1000,
+    initialPageParam: undefined,
+    getNextPageParam: (lastPage) => {
+      if (lastPage.isLast || !lastPage.nextPageToken) {
+        return undefined;
+      }
+      return lastPage.nextPageToken;
+    },
+    queryFn: async ({ pageParam }) => {
+      const payload = {
+        fields: ["summary"],
+        // Jira API max value for this endpoint is 5000.
+        maxResults: 5000,
+        jql: keyIsInKeys(nvIssueKeys),
+        nextPageToken: pageParam,
+      };
+
+      const { data } = await axiosJira.post<JiraIssueResult>("/search/jql", payload);
+
+      return data;
+    },
+  });
+
+  // Drive fetching paginated results with an effect.
+  useEffect(() => {
+    if (query.hasNextPage && !query.isFetchingNextPage) {
+      query.fetchNextPage();
+    }
+  }, [
+    query.hasNextPage,
+    query.isFetchingNextPage,
+    query.isLoading,
+    query.isError,
+    query.fetchNextPage,
+  ]);
+
+  // Memoize hook output for smooth dropdown operation while loading.
+  const allIssues = useMemo(() => {
+    return query.data?.pages.flatMap((p) => p.issues) ?? [];
+  }, [query.data?.pages]);
+
+  return allIssues;
 };
