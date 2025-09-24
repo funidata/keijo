@@ -8,6 +8,7 @@ import { JiraIssue, JiraIssueResult } from "./jira-types";
 export const useRecentJiraIssues = (): JiraIssue[] => {
   const res = useQuery({
     queryKey: ["recentIssues"],
+    staleTime: 5 * 60 * 1000,
     queryFn: async () => {
       const payload = {
         fields: ["summary"],
