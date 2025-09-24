@@ -2,7 +2,7 @@ import { ListItem, ListItemText, useMediaQuery, useTheme } from "@mui/material";
 import { ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import FormComboBox from "../../components/entry-dialog/FormComboBox";
-import { JiraIssue } from "../jiraApi";
+import { JiraIssue } from "../jira-api";
 import { useAllJiraIssues } from "../useAllJiraIssues";
 import { useRecentJiraIssues } from "../useRecentJiraIssues";
 

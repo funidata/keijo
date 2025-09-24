@@ -3,7 +3,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
 import { FindDimensionOptionsDocument } from "../graphql/generated/graphql";
 import { axiosJira } from "./axiosInstance";
-import { JiraIssue, JiraIssueResult } from "./jiraApi";
+import { JiraIssue, JiraIssueResult } from "./jira-types";
 import { keyIsInKeys } from "./jql";
 
 /**

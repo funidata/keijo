@@ -1,15 +1,15 @@
-import TuneIcon from "@mui/icons-material/Tune";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
+import TuneIcon from "@mui/icons-material/Tune";
 import { ListItemIcon } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
-import { useIsJiraAuthenticated } from "../../jira/jiraApi";
-import { disconnectJira } from "../../jira/jiraUtils";
 import { JiraInfoDialog } from "../../jira/components/JiraInfoDialog";
-import { useState } from "react";
+import { useIsJiraAuthenticated } from "../../jira/jira-api";
+import { disconnectJira } from "../../jira/jiraUtils";
 
 type SettingsMenuProps = {
   anchor: HTMLElement | null;

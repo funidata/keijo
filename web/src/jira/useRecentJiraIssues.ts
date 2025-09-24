@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { axiosJira } from "./axiosInstance";
-import { JiraIssue, JiraIssueResult } from "./jiraApi";
+import { JiraIssue, JiraIssueResult } from "./jira-types";
 
 /**
  * User's recent issues.

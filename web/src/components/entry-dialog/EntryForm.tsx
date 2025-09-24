@@ -30,7 +30,7 @@ import {
 } from "../../graphql/generated/graphql";
 import { JiraIntegrationAlert } from "../../jira/components/JiraIntegrationAlert";
 import JiraIssueComboBox from "../../jira/components/JiraIssueComboBox";
-import { useIsJiraAuthenticated } from "../../jira/jiraApi";
+import { useIsJiraAuthenticated } from "../../jira/jira-api";
 import usePreferSetRemainingHours from "../user-preferences/usePreferSetRemainingHours";
 import BigDeleteEntryButton from "./BigDeleteEntryButton";
 import DimensionComboBox from "./DimensionComboBox";
