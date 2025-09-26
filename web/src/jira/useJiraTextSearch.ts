@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useDimensionOptions } from "../common/useDimensionOptions";
 import { axiosJira } from "./axiosInstance";
 import { JiraIssue, JiraIssueResult } from "./jira-types";
 import { escapeUserInputForJql } from "./jira-utils";
@@ -7,6 +8,9 @@ import { escapeUserInputForJql } from "./jira-utils";
  * Search for issues by text. Targets issue summary (title) only.
  */
 export const useJiraTextSearch = (searchTerm: string): JiraIssue[] => {
+  const dimensionOptions = useDimensionOptions();
+  const nvIssueKeys = dimensionOptions.issue;
+
   const res = useQuery({
     queryKey: ["jira-text-search", searchTerm],
     // Don't fire on empty search terms.
@@ -26,5 +30,6 @@ export const useJiraTextSearch = (searchTerm: string): JiraIssue[] => {
     },
   });
 
-  return res.data?.issues || [];
+  // Filter in only allowed issues and cap length.
+  return res.data?.issues.filter((issue) => nvIssueKeys.includes(issue.key)).slice(0, 100) || [];
 };

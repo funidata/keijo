@@ -34,7 +34,6 @@ const JiraIssueComboBox = <T extends FieldValues>(props: JiraIssueComboBoxProps<
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const recent = useRecentJiraIssues();
-  // FIXME: These are not filtered by NV issues.
   const textSearch = useJiraTextSearch(searchTerm);
   const keySearch = useJiraIssueKeySearch(searchTerm);
 
@@ -70,6 +69,7 @@ const JiraIssueComboBox = <T extends FieldValues>(props: JiraIssueComboBoxProps<
         onInputChange: (_, value) => {
           setSearchTerm(value);
         },
+        filterOptions: () => options,
       }}
     />
   );
