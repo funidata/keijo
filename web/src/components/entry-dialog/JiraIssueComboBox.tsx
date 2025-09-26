@@ -2,7 +2,6 @@ import { ListItem, ListItemText, useMediaQuery, useTheme } from "@mui/material";
 import { ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { JiraIssue } from "../../jira/jira-types";
-import { useAllJiraIssues } from "../../jira/useAllJiraIssues";
 import { useRecentJiraIssues } from "../../jira/useRecentJiraIssues";
 import FormComboBox from "./FormComboBox";
 
@@ -22,15 +21,15 @@ type JiraIssueComboBoxProps<T extends FieldValues> = {
 const JiraIssueComboBox = <T extends FieldValues>(props: JiraIssueComboBoxProps<T>) => {
   const { t } = useTranslation();
   const recentGroupLabel = t("jira.issueGroups.recent");
+  // FIXME: Change this group to "search results" or smth.
   const allGroupLabel = t("jira.issueGroups.all");
 
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const recent = useRecentJiraIssues();
-  const rest = useAllJiraIssues();
 
-  const options = recent.map(issueToOption("recent")).concat(rest.map(issueToOption("all")));
+  const options = recent.map(issueToOption("recent"));
 
   return (
     <FormComboBox

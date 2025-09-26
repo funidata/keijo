@@ -5,7 +5,6 @@ import { RouterProvider } from "react-router-dom";
 import GlobalNotification from "./components/global-notification/GlobalNotification";
 import LocalizationProvider from "./i18n/LocalizationProvider";
 import "./i18n/i18n-config";
-import { useAllJiraIssues } from "./jira/useAllJiraIssues";
 import { useRecentJiraIssues } from "./jira/useRecentJiraIssues";
 import router from "./router";
 import KeijoTheme from "./theme/KeijoTheme";
@@ -22,7 +21,6 @@ const Keijo = () => {
 
   // Preload issues from Jira.
   useRecentJiraIssues();
-  useAllJiraIssues();
 
   return (
     <KeijoTheme>
