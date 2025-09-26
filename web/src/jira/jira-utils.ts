@@ -56,3 +56,22 @@ export const connectToJira = () => {
 export const disconnectJira = () => {
   window.location.href = keijoJiraApiUrl + "/remove-session";
 };
+
+/**
+ * Escape string for safe use in JQL queries.
+ *
+ * The result is intended to be used only as a string in JQL. The escaping done here may not be
+ * sufficient for use as another part of a query.
+ *
+ * The result is wrapped in double quotes.
+ */
+export const escapeUserInputForJql = (raw: string): string => {
+  const escaped = raw
+    // Backslash is the escape character, so escape it first.
+    .replace("\\", "\\\\")
+    // Escape double quotes.
+    .replace('"', '\\"');
+
+  // Wrap the result in double quotes so we don't have to worry about singles, etc.
+  return `"${escaped}"`;
+};
