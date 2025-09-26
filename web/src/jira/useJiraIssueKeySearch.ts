@@ -23,6 +23,11 @@ export const useJiraIssueKeySearch = (searchTerm: string): JiraIssue[] => {
   const nvIssueKeys = dimensionOptions.issue;
 
   const nvMatches = useMemo(() => {
+    // An empty string later in `String.startsWith` will match everything.
+    if (!searchTerm) {
+      return [];
+    }
+
     const matches = nvIssueKeys.filter((key) => key.startsWith(searchTerm.toUpperCase()));
 
     const sorted = sortBy(matches, [

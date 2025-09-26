@@ -1,14 +1,17 @@
 import { ListItem, ListItemText, useMediaQuery, useTheme } from "@mui/material";
 import { ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { useDebounceValue } from "usehooks-ts";
 import { JiraIssue } from "../../jira/jira-types";
+import { useJiraIssueKeySearch } from "../../jira/useJiraIssueKeySearch";
+import { useJiraTextSearch } from "../../jira/useJiraTextSearch";
 import { useRecentJiraIssues } from "../../jira/useRecentJiraIssues";
 import FormComboBox from "./FormComboBox";
 
-const issueToOption = (issueType: "all" | "recent") => (issue: JiraIssue) => ({
+const issueToOption = (groupLabel: string) => (issue: JiraIssue) => ({
   label: issue.key,
   text: `${issue.key}: ${issue.fields.summary}`,
-  type: issueType,
+  groupLabel,
 });
 
 type JiraIssueComboBoxProps<T extends FieldValues> = {
@@ -21,15 +24,25 @@ type JiraIssueComboBoxProps<T extends FieldValues> = {
 const JiraIssueComboBox = <T extends FieldValues>(props: JiraIssueComboBoxProps<T>) => {
   const { t } = useTranslation();
   const recentGroupLabel = t("jira.issueGroups.recent");
-  // FIXME: Change this group to "search results" or smth.
-  const allGroupLabel = t("jira.issueGroups.all");
+  const keySearchResultGroupLabel = t("jira.issueGroups.keySearchResults");
+  const textSearchResultGroupLabel = t("jira.issueGroups.textSearchResults");
+
+  // Debounce search term to avoid firing queries on every key press.
+  const [searchTerm, setSearchTerm] = useDebounceValue("", 300);
 
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const recent = useRecentJiraIssues();
+  // FIXME: These are not filtered by NV issues.
+  const textSearch = useJiraTextSearch(searchTerm);
+  const keySearch = useJiraIssueKeySearch(searchTerm);
 
-  const options = recent.map(issueToOption("recent"));
+  const keySearchOptions = keySearch.map(issueToOption(keySearchResultGroupLabel));
+  const textSearchOptions = textSearch.map(issueToOption(textSearchResultGroupLabel));
+  const recentOptions = recent.map(issueToOption(recentGroupLabel));
+
+  const options = keySearchOptions.concat(textSearchOptions, recentOptions);
 
   return (
     <FormComboBox
@@ -42,7 +55,7 @@ const JiraIssueComboBox = <T extends FieldValues>(props: JiraIssueComboBoxProps<
             <ListItemText>{option.text}</ListItemText>
           </ListItem>
         ),
-        groupBy: (option) => (option.type === "recent" ? recentGroupLabel : allGroupLabel),
+        groupBy: (option) => option.groupLabel,
         componentsProps: !mobile
           ? {
               popper: {
@@ -54,6 +67,9 @@ const JiraIssueComboBox = <T extends FieldValues>(props: JiraIssueComboBoxProps<
               },
             }
           : undefined,
+        onInputChange: (_, value) => {
+          setSearchTerm(value);
+        },
       }}
     />
   );

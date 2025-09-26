@@ -113,8 +113,9 @@ const fi = {
   },
   jira: {
     issueGroups: {
-      all: "Kaikki",
       recent: "Viimeaikaiset",
+      keySearchResults: "Hakutulokset (tiketin tunnus)",
+      textSearchResults: "Hakutulokset (otsikko)",
     },
     connectNotificationTitle: "Uutta: Jira-integraatio",
     connectNotification1:
