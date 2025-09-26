@@ -116,6 +116,9 @@ const fi = {
       recent: "Viimeaikaiset",
       keySearchResults: "Hakutulokset (tiketin tunnus)",
       textSearchResults: "Hakutulokset (otsikko)",
+      searchResults: "Hakutulokset",
+      noSearchResults: "Ei hakutuloksia",
+      typeToSearch: "Kirjoita hakeaksesi Jirasta tiketin tunnuksella tai otsikolla",
     },
     connectNotificationTitle: "Uutta: Jira-integraatio",
     connectNotification1:
