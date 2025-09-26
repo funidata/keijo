@@ -7,6 +7,19 @@ import { JiraIssueResult } from "./jira-types";
 import { keyIsInKeys } from "./jql";
 
 /**
+ * Filter factory for searching issue keys by string.
+ *
+ * Matches from the beginning of issue keys. Optionally, if the search term is a string containing
+ * only an integer, the number part of issue key is used for matching.
+ */
+const issueKeySearchFilter = (searchTerm: string) => {
+  if (/^\d+$/.test(searchTerm)) {
+    return (key: string) => key.split("-")[1].startsWith(searchTerm);
+  }
+  return (key: string) => key.startsWith(searchTerm.toUpperCase());
+};
+
+/**
  * Search Jira issues by key.
  *
  * Jira API does not support text search on issue keys by partial strings, rather it requires
@@ -14,9 +27,7 @@ import { keyIsInKeys } from "./jql";
  * the issue keys fetched from Netvisor. Matching keys are then used to query Jira API for issues.
  *
  * This approach approximates a conventional text search. As an added bonus, we only ever fetch
- * data for issues that are in Netvisor. However, the current implementation searches only from
- * beginning of a string thus not supporting searching with just the number part of an issue key,
- * for example.
+ * data for issues that are in Netvisor.
  */
 export const useJiraIssueKeySearch = (searchTerm: string) => {
   const dimensionOptions = useDimensionOptions();
@@ -28,7 +39,7 @@ export const useJiraIssueKeySearch = (searchTerm: string) => {
       return [];
     }
 
-    const matches = nvIssueKeys.filter((key) => key.startsWith(searchTerm.toUpperCase()));
+    const matches = nvIssueKeys.filter(issueKeySearchFilter(searchTerm));
 
     const sorted = sortBy(matches, [
       (value) => {
