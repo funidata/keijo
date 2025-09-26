@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
 import { JiraInfoDialog } from "../../jira/components/JiraInfoDialog";
 import { useIsJiraAuthenticated } from "../../jira/jira-api";
-import { disconnectJira } from "../../jira/jiraUtils";
+import { disconnectJira } from "../../jira/jira-utils";
 
 type SettingsMenuProps = {
   anchor: HTMLElement | null;
