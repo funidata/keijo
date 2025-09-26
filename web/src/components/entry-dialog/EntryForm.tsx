@@ -28,13 +28,13 @@ import {
   GetMySettingsDocument,
   UpdateSettingsDocument,
 } from "../../graphql/generated/graphql";
-import { JiraIntegrationAlert } from "../../jira/components/JiraIntegrationAlert";
-import JiraIssueComboBox from "../../jira/components/JiraIssueComboBox";
 import { useIsJiraAuthenticated } from "../../jira/jira-api";
 import usePreferSetRemainingHours from "../user-preferences/usePreferSetRemainingHours";
 import BigDeleteEntryButton from "./BigDeleteEntryButton";
 import DimensionComboBox from "./DimensionComboBox";
 import DurationSlider from "./DurationSlider";
+import { JiraIntegrationAlert } from "./JiraIntegrationAlert";
+import JiraIssueComboBox from "./JiraIssueComboBox";
 import ResponsiveDatePicker from "./ResponsiveDatePicker";
 import WorkdayHours from "./WorkdayHours";
 import useEntryForm, { EntryFormSchema } from "./useEntryForm";

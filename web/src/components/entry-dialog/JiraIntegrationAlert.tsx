@@ -1,7 +1,7 @@
 import { Alert, AlertTitle, Box, Button, useMediaQuery, useTheme } from "@mui/material";
 import { t } from "i18next";
 import { useState } from "react";
-import { JiraInfoDialog } from "./JiraInfoDialog";
+import { JiraInfoDialog } from "../../jira/components/JiraInfoDialog";
 
 type JiraIntegrationAlertProps = {
   onHide: () => void;

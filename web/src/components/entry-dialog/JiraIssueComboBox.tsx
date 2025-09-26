@@ -1,10 +1,10 @@
 import { ListItem, ListItemText, useMediaQuery, useTheme } from "@mui/material";
 import { ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import FormComboBox from "../../components/entry-dialog/FormComboBox";
-import { JiraIssue } from "../jira-types";
-import { useAllJiraIssues } from "../useAllJiraIssues";
-import { useRecentJiraIssues } from "../useRecentJiraIssues";
+import { JiraIssue } from "../../jira/jira-types";
+import { useAllJiraIssues } from "../../jira/useAllJiraIssues";
+import { useRecentJiraIssues } from "../../jira/useRecentJiraIssues";
+import FormComboBox from "./FormComboBox";
 
 const issueToOption = (issueType: "all" | "recent") => (issue: JiraIssue) => ({
   label: issue.key,
