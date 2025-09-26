@@ -65,12 +65,12 @@ export const disconnectJira = () => {
  *
  * The result is wrapped in double quotes.
  */
-export const escapeUserInputForJql = (raw: string): string => {
-  const escaped = raw
+export const escapeUserInputForJql = (input: string): string => {
+  const escaped = input
     // Backslash is the escape character, so escape it first.
-    .replace("\\", "\\\\")
+    .replace(/\\/g, "\\\\")
     // Escape double quotes.
-    .replace('"', '\\"');
+    .replace(/"/g, '\\"');
 
   // Wrap the result in double quotes so we don't have to worry about singles, etc.
   return `"${escaped}"`;
