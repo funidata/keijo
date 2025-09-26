@@ -22,7 +22,7 @@ export const useJiraTextSearch = (searchTerm: string): JiraIssue[] => {
         fields: ["summary"],
         // Pagination support required if this is raised too much.
         maxResults: 100,
-        jql: `summary ~ ${escapeUserInputForJql(searchTerm)} ORDER BY lastViewed DESC`,
+        jql: `summary ~ ${escapeUserInputForJql(searchTerm.concat("*"))} ORDER BY lastViewed DESC`,
       };
 
       const result = await axiosJira.post<JiraIssueResult>("/search/jql", payload);
