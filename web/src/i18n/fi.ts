@@ -119,6 +119,7 @@ const fi = {
       searchResults: "Hakutulokset",
       noSearchResults: "Ei hakutuloksia",
       typeToSearch: "Kirjoita hakeaksesi Jirasta tiketin tunnuksella tai otsikolla",
+      loading: "Haetaan...",
     },
     connectNotificationTitle: "Uutta: Jira-integraatio",
     connectNotification1:

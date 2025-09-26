@@ -36,11 +36,11 @@ const JiraIssueComboBox = <T extends FieldValues>(props: JiraIssueComboBoxProps<
   const textSearchResultGroupLabel = t("jira.issueGroups.textSearchResults");
 
   const recent = useRecentJiraIssues();
-  const textSearch = useJiraTextSearch(searchTerm);
-  const keySearch = useJiraIssueKeySearch(searchTerm);
+  const { issues: textSearchIssues, loading: textSearchLoading } = useJiraTextSearch(searchTerm);
+  const { issues: keySearchIssues, loading: keySearchLoading } = useJiraIssueKeySearch(searchTerm);
 
-  const keySearchOptions = keySearch.map(issueToOption(keySearchResultGroupLabel));
-  const textSearchOptions = textSearch.map(issueToOption(textSearchResultGroupLabel));
+  const keySearchOptions = keySearchIssues.map(issueToOption(keySearchResultGroupLabel));
+  const textSearchOptions = textSearchIssues.map(issueToOption(textSearchResultGroupLabel));
   const recentOptions = recent.map(issueToOption(recentGroupLabel));
 
   const searchResultsGroupLabel = t("jira.issueGroups.searchResults");
@@ -48,7 +48,7 @@ const JiraIssueComboBox = <T extends FieldValues>(props: JiraIssueComboBoxProps<
   const typeToSearchLabel = t("jira.issueGroups.typeToSearch");
 
   const noSearchResults =
-    keySearch.length === 0 && textSearch.length === 0
+    keySearchIssues.length === 0 && textSearchIssues.length === 0
       ? [
           {
             value: "",
@@ -59,7 +59,26 @@ const JiraIssueComboBox = <T extends FieldValues>(props: JiraIssueComboBoxProps<
         ]
       : [];
 
-  const options = keySearchOptions.concat(textSearchOptions, noSearchResults, recentOptions);
+  const loadingLabel = t("jira.issueGroups.loading");
+
+  const loadingIndicator =
+    noSearchResults.length === 0 && (textSearchLoading || keySearchLoading)
+      ? [
+          {
+            value: "",
+            label: loadingLabel,
+            groupLabel: searchResultsGroupLabel,
+            disabled: true,
+          },
+        ]
+      : [];
+
+  const options = keySearchOptions.concat(
+    textSearchOptions,
+    noSearchResults,
+    loadingIndicator,
+    recentOptions,
+  );
 
   return (
     <FormComboBox

@@ -119,6 +119,7 @@ const en = {
       searchResults: "Search Results",
       noSearchResults: "No results",
       typeToSearch: "Start typing to search Jira by issue key and title",
+      loading: "Loading...",
     },
     connectNotificationTitle: "New: Jira Integration",
     connectNotification1:

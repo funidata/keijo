@@ -3,7 +3,7 @@ import { sortBy } from "lodash";
 import { useMemo } from "react";
 import { useDimensionOptions } from "../common/useDimensionOptions";
 import { axiosJira } from "./axiosInstance";
-import { JiraIssue, JiraIssueResult } from "./jira-types";
+import { JiraIssueResult } from "./jira-types";
 import { keyIsInKeys } from "./jql";
 
 /**
@@ -18,7 +18,7 @@ import { keyIsInKeys } from "./jql";
  * beginning of a string thus not supporting searching with just the number part of an issue key,
  * for example.
  */
-export const useJiraIssueKeySearch = (searchTerm: string): JiraIssue[] => {
+export const useJiraIssueKeySearch = (searchTerm: string) => {
   const dimensionOptions = useDimensionOptions();
   const nvIssueKeys = dimensionOptions.issue;
 
@@ -46,7 +46,7 @@ export const useJiraIssueKeySearch = (searchTerm: string): JiraIssue[] => {
     return sorted.slice(0, 100);
   }, [nvIssueKeys, searchTerm]);
 
-  const res = useQuery({
+  const query = useQuery({
     queryKey: ["jira-issue-key-search", nvMatches],
     // Don't fire when there are no matching issues to begin with.
     enabled: nvMatches.length > 0,
@@ -65,5 +65,10 @@ export const useJiraIssueKeySearch = (searchTerm: string): JiraIssue[] => {
     },
   });
 
-  return res.data?.issues || [];
+  const issues = query.data?.issues || [];
+
+  return {
+    issues,
+    loading: query.isLoading,
+  };
 };
