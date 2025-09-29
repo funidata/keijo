@@ -1,6 +1,5 @@
-import { useQuery } from "@apollo/client";
 import { ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
-import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
+import { useDimensionOptions } from "../../common/useDimensionOptions";
 import FormComboBox from "./FormComboBox";
 
 type DimensionComboBoxProps<T extends FieldValues> = {
@@ -11,8 +10,8 @@ type DimensionComboBoxProps<T extends FieldValues> = {
 };
 
 const DimensionComboBox = <T extends FieldValues>({ ...props }: DimensionComboBoxProps<T>) => {
-  const { data } = useQuery(FindDimensionOptionsDocument);
-  const options = data?.findDimensionOptions[props.name] || [];
+  const dimensionOptions = useDimensionOptions();
+  const options = dimensionOptions[props.name];
 
   return <FormComboBox {...props} autoCompleteProps={{ options }} />;
 };

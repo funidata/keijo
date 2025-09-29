@@ -5,7 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { t } from "i18next";
-import { connectToJira } from "../jiraUtils";
+import { connectToJira } from "../jira-utils";
 
 type JiraInfoDialogProps = {
   open: boolean;

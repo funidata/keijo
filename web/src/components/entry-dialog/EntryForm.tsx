@@ -1,3 +1,4 @@
+import { useMutation, useQuery } from "@apollo/client";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { LoadingButton } from "@mui/lab";
 import {
@@ -27,17 +28,16 @@ import {
   GetMySettingsDocument,
   UpdateSettingsDocument,
 } from "../../graphql/generated/graphql";
+import { useIsJiraAuthenticated } from "../../jira/jira-api";
 import usePreferSetRemainingHours from "../user-preferences/usePreferSetRemainingHours";
 import BigDeleteEntryButton from "./BigDeleteEntryButton";
 import DimensionComboBox from "./DimensionComboBox";
 import DurationSlider from "./DurationSlider";
+import { JiraIntegrationAlert } from "./JiraIntegrationAlert";
+import JiraIssueComboBox from "./JiraIssueComboBox";
 import ResponsiveDatePicker from "./ResponsiveDatePicker";
 import WorkdayHours from "./WorkdayHours";
 import useEntryForm, { EntryFormSchema } from "./useEntryForm";
-import { useIsJiraAuthenticated } from "../../jira/jiraApi";
-import JiraIssueComboBox from "../../jira/components/JiraIssueComboBox";
-import { JiraIntegrationAlert } from "../../jira/components/JiraIntegrationAlert";
-import { useMutation, useQuery } from "@apollo/client";
 
 export type EntryFormProps = {
   form: UseFormReturn<EntryFormSchema>;

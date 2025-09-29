@@ -113,8 +113,13 @@ const en = {
   },
   jira: {
     issueGroups: {
-      all: "All",
       recent: "Recent",
+      keySearchResults: "Search Results (Issue Key)",
+      textSearchResults: "Search Results (Title)",
+      searchResults: "Search Results",
+      noSearchResults: "No results",
+      typeToSearch: "Start typing to search Jira by issue key and title",
+      loading: "Loading...",
     },
     connectNotificationTitle: "New: Jira Integration",
     connectNotification1:
