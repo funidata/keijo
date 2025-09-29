@@ -1,5 +1,5 @@
 # Backend image for development and test environments, complete with all the tooling, etc.
-FROM node:22.19 AS dev
+FROM node:22.20 AS dev
 
 # Install dependencies.
 WORKDIR /usr/src/app
@@ -12,7 +12,7 @@ COPY . .
 CMD ["npx", "nest", "start", "--watch", "--preserveWatchOutput"]
 
 # This stage is for reducing image size in CI which makes artifact upload faster.
-FROM node:22.19-alpine
+FROM node:22.20-alpine
 
 WORKDIR /usr/src/app
 COPY --from=dev /usr/src/app .
