@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import { useDimensionOptions } from "../common/useDimensionOptions";
 import { axiosJira } from "./axiosInstance";
 import { JiraIssue, JiraIssueResult } from "./jira-types";
+import { escapeUserInputForJql } from "./jira-utils";
 
 /**
  * User's recent issues.
@@ -12,8 +13,13 @@ export const useRecentJiraIssues = (): JiraIssue[] => {
   const nvIssueKeys = dimensionOptions.issue;
 
   const projects = useMemo(() => {
+    // FIXME: This list must be filtered by project keys fetched from Jira to prevent keys that will fail the query.
+    // FIXME: In production, there are both malformed ticket keys that cannot be parsed like this and tickets of
+    // FIXME: projects that no longer exist.
     return Array.from(new Set(nvIssueKeys.map((key) => key.split("-")[0])));
   }, [nvIssueKeys]);
+
+  const jqlProjectList = projects.map((name) => escapeUserInputForJql(name)).join(",");
 
   const res = useQuery({
     queryKey: ["recentIssues"],
@@ -27,7 +33,7 @@ export const useRecentJiraIssues = (): JiraIssue[] => {
         maxResults: 30,
         jql: `
           (issuekey IN issueHistory() OR assignee = currentUser() OR reporter = currentUser())
-          AND project IN (${projects.join(",")})
+          AND project IN (${jqlProjectList})
           ORDER BY lastViewed DESC
           `,
       };
