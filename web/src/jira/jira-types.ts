@@ -13,3 +13,21 @@ export type JiraIssueResult = {
   nextPageToken: string;
   isLast: boolean;
 };
+
+export type JiraProject = {
+  id: string;
+  key: string;
+  self: string;
+  expand: string;
+  name: string;
+  projectTypeKey: string;
+  isPrivate: boolean;
+};
+
+export type JiraProjectResult = {
+  maxResults: number;
+  startAt: number;
+  total: number;
+  isLast: boolean;
+  values: JiraProject[];
+};
