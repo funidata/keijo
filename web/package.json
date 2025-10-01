@@ -42,7 +42,7 @@
     "@graphql-codegen/cli": "^6.0.0",
     "@graphql-codegen/typed-document-node": "^5.1.2",
     "@graphql-codegen/typescript": "^5.0.1",
-    "@graphql-codegen/typescript-operations": "^4.6.1",
+    "@graphql-codegen/typescript-operations": "^5.0.1",
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/lodash": "^4.17.20",
     "@types/node": "^22.18.7",
