@@ -12,11 +12,14 @@ import { keyIsInKeys } from "./jql";
  * Matches from the beginning of issue keys. Optionally, if the search term is a string containing
  * only an integer, the number part of issue key is used for matching.
  */
-const issueKeySearchFilter = (searchTerm: string) => {
+const issueKeySearchFilter = (searchTerm: string): ((key: string) => boolean) => {
   if (/^\d+$/.test(searchTerm)) {
-    return (key: string) => key.split("-")[1].startsWith(searchTerm);
+    return (key) => {
+      const numberPart = key.split("-")[1] || "";
+      return numberPart.startsWith(searchTerm);
+    };
   }
-  return (key: string) => key.startsWith(searchTerm.toUpperCase());
+  return (key) => key.startsWith(searchTerm.toUpperCase());
 };
 
 /**
