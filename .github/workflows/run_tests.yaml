@@ -105,7 +105,7 @@ jobs:
           API_URL: http://localhost:4000
         working-directory: e2e
       - name: Upload blob report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: ${{ !cancelled() }}
         with:
           name: blob-report-${{ matrix.shardIndex }}
@@ -146,7 +146,7 @@ jobs:
         run: npx playwright merge-reports --reporter html ./all-blob-reports
         working-directory: e2e
       - name: Upload HTML report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: e2e-test-report--attempt-${{ github.run_attempt }}
           path: e2e/playwright-report
