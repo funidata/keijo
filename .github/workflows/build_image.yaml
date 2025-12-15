@@ -23,7 +23,7 @@ jobs:
           secrets: |
             "mui_x_license=${{ secrets.MUI_X_LICENSE }}"
       - name: Save test image as artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: keijo-test
           path: /tmp/keijo-test.tar
@@ -38,7 +38,7 @@ jobs:
           secrets: |
             "mui_x_license=${{ secrets.MUI_X_LICENSE }}"
       - name: Save production image as artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: keijo
           path: /tmp/keijo.tar
