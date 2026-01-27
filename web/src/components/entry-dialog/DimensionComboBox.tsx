@@ -3,27 +3,20 @@ import { Autocomplete, AutocompleteProps, FormControl, Grid, TextField } from "@
 import { Control, Controller, ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
 import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
 import { useTranslation } from "react-i18next";
+import { useDimensionOptions } from "../../common/useDimensionOptions";
+import FormComboBox from "./FormComboBox";
+
 
 type DimensionComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
   name: "product" | "activity" | "issue" | "client";
   title: string;
   rules?: ControllerProps["rules"];
-  autoCompleteProps?: Partial<
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    AutocompleteProps<any, boolean | undefined, boolean | undefined, boolean | undefined>
-  >;
 };
 
-const DimensionComboBox = <T extends FieldValues>({
-  form,
-  name,
-  title,
-  rules,
-  autoCompleteProps,
-}: DimensionComboBoxProps<T>) => {
-  const { data } = useQuery(FindDimensionOptionsDocument);
-  const options = data?.findDimensionOptions[name] || [];
+const DimensionComboBox = <T extends FieldValues>({ ...props }: DimensionComboBoxProps<T>) => {
+  const dimensionOptions = useDimensionOptions();
+  const options = dimensionOptions[props.name];
 
   const { t } = useTranslation();
   const validateIssue = (value: string | null) => {

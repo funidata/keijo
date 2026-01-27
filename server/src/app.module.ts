@@ -6,19 +6,23 @@ import { join } from "path";
 import { CacheModule } from "./cache/cache.module";
 import { ConfigModule } from "./config/config.module";
 import { DatabaseModule } from "./database/database.module";
+import { DevToolsModule } from "./dev-tools/dev-tools.module";
 import graphQlModuleConfig from "./graphql-module-config";
 import { appGuards } from "./guards/app-guards";
+import { JiraModule } from "./jira/jira.module";
 import { LoggerModule } from "./logger/logger.module";
 import { NetvisorModule } from "./netvisor/netvisor.module";
 import { SessionModule } from "./session/session.module";
 import { UserSettingsModule } from "./user-settings/user-settings.module";
-import { JiraModule } from "./jira/jira.module";
+
+const devTools = process.env.DEV_TOOLS === "true";
+const devEnvImports = devTools ? [DevToolsModule] : [];
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, "..", "public"),
-      exclude: ["/graphql/(.*)"],
+      exclude: ["/graphql/{*_}"],
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>(graphQlModuleConfig),
     CacheModule,
@@ -29,6 +33,7 @@ import { JiraModule } from "./jira/jira.module";
     DatabaseModule,
     UserSettingsModule,
     JiraModule,
+    ...devEnvImports,
   ],
   providers: [...appGuards],
 })

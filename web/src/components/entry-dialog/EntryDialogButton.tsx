@@ -14,10 +14,17 @@ const EntryDialogButton = ({ date, ...props }: EntryDialogButtonProps) => {
   const location = useLocation();
   const { t } = useTranslation();
 
+  const label = date
+    ? t("controls.addEntryWithDate", {
+        date: date.format("L").toString(),
+        interpolation: { escapeValue: false },
+      })
+    : t("controls.addEntry");
+
   return (
     <Box onClick={(e) => e.stopPropagation()}>
       <LabelledIconButton
-        label={t("controls.addEntry")}
+        label={label}
         onClick={() =>
           navigate(generatePath(`${location.pathname}/create`), {
             state: { date: date?.format("YYYY-MM-DD") },

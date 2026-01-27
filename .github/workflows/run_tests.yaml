@@ -6,10 +6,12 @@ on:
 jobs:
   lint:
     name: Lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup
         run: npm ci
       - name: Lint backend
@@ -21,12 +23,14 @@ jobs:
 
   formatting:
     name: Format
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
       - name: Install dependencies
@@ -36,14 +40,16 @@ jobs:
 
   unit-tests:
     name: Unit tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Download artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: keijo-test
           path: /tmp
@@ -54,10 +60,17 @@ jobs:
 
   e2e-tests:
     name: E2E tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2, 3, 4]
+        shardTotal: [4]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Start backend services
         run: docker compose -f compose.ci.yaml up -d db nv-mock
       - name: Wait for mock NV API
@@ -65,7 +78,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Download artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: keijo
           path: /tmp
@@ -75,14 +88,8 @@ jobs:
         run: docker compose -f compose.ci.yaml up -d server
       - name: Wait for backend
         run: curl -v --head -X GET --retry 10 --retry-all-errors --retry-delay 5 http://localhost:4000
-      - name: Print debug output
-        if: failure()
-        run: |
-          docker ps
-          docker compose -f compose.ci.yaml logs server
-          docker compose -f compose.ci.yaml logs db
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
       - name: Install Playwright
@@ -91,17 +98,55 @@ jobs:
           CI: true
         working-directory: e2e
       - name: Run E2E tests
-        run: npm test
+        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{
+          matrix.shardTotal }}
+        env:
+          CI: true
+          API_URL: http://localhost:4000
         working-directory: e2e
-      - name: Upload test report
-        uses: actions/upload-artifact@v4
-        if: always()
+      - name: Upload blob report
+        uses: actions/upload-artifact@v5
+        if: ${{ !cancelled() }}
         with:
-          name: playwright-report
-          path: e2e/playwright-report/
-      - name: Upload test results on failure
-        uses: actions/upload-artifact@v4
+          name: blob-report-${{ matrix.shardIndex }}
+          path: e2e/blob-report/
+          retention-days: 1
+      - name: Print debug output
         if: failure()
+        run: |
+          docker ps
+          docker compose -f compose.ci.yaml logs server
+          docker compose -f compose.ci.yaml logs db
+
+  e2e-report:
+    name: E2E test report
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    needs:
+      - e2e-tests
+    if: ${{ !cancelled() }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
         with:
-          name: test-results
-          path: e2e/test-results/
+          node-version-file: .nvmrc
+      - name: Install dependencies
+        run: npm ci
+        working-directory: e2e
+      - name: Download blob reports
+        uses: actions/download-artifact@v6
+        with:
+          path: e2e/all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+      - name: Merge into HTML Report
+        run: npx playwright merge-reports --reporter html ./all-blob-reports
+        working-directory: e2e
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v5
+        with:
+          name: e2e-test-report--attempt-${{ github.run_attempt }}
+          path: e2e/playwright-report

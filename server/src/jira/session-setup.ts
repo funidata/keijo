@@ -3,7 +3,8 @@ import expressSession from "express-session";
 import pg from "pg";
 import { ConfigService } from "../config/config.service";
 
-export function createSession(configService: ConfigService) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function createSession(configService: ConfigService): any {
   const { username, password, host, port, name, ssl } = configService.config.database;
   const pgPool = new pg.Pool({
     database: name,

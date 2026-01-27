@@ -15,4 +15,8 @@ export class UserSettings {
   @Column({ nullable: true })
   @Field({ nullable: true })
   activityPreset: string;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  jiraNotificationIgnore: boolean;
 }

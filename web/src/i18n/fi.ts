@@ -10,11 +10,10 @@ const fi = {
     confirmDelete: "Vahvista poisto",
     confirmDeleteForDialog: "Vahvista merkinnän poisto",
     addEntry: "Lisää työaikakirjaus",
+    addEntryWithDate: "Lisää työaikakirjaus {{date}}",
     deleteEntry: "Poista merkintä",
     editEntry: "Muokkaa merkintää",
-    endDate: "Loppu",
     selectWeek: "Viikko",
-    startDate: "Alku",
     openMenu: "Avaa valikko",
     useDarkMode: "Synkkyys",
     selectLanguage: "Valitse kieli",
@@ -24,6 +23,7 @@ const fi = {
     jiraDisconnect: "Katkaise Jira-yhteys",
     showWeekend: "Näytä Viikonloppu",
     hideWeekend: "Piilota Viikonloppu",
+    dateRange: "Aikaväli",
   },
   dimensionNames: {
     product: "Tuote",
@@ -37,6 +37,9 @@ const fi = {
       "Palkansaajanumeroasi ei löytynyt HTTP-otsakkeista. Keijoa ei voi käyttää ilman tätä tietoa. Ilmoita ongelmasta esihenkilöllesi.",
     unknownError: "Keijo kohtasi tuntemattoman virheen. Ota yhteyttä Kettu-tiimiin.",
     notFound: "Pyydettyä sivua ei löytynyt. Tarkasta osoite.",
+    oldWeekParamFormat:
+      "Sivun osoitteessa on vanhan muotoinen viikkoparametri. Mene ensin etusivulle, jonka jälkeen voit jatkaa käyttöä normaalisti.",
+    invalidWeekParam: "Annettu viikkoparametri ei ole kelvollinen.",
   },
   entryDialog: {
     title: { create: "Lisää työaikakirjaus", edit: "Muokkaa kirjausta" },
@@ -86,6 +89,7 @@ const fi = {
     weekend: "Viikonloppu",
     vacation: "Vuosiloma",
     flexLeave: "Saldovapaa",
+    holidayPayLeave: "Lomarahavapaa",
     sickLeave: "Sairauspoissaolo",
     unknownEntry: "Tuntematon kirjauslaji",
     unknownEntryNote: "Käytä Netvisoria tämän kirjauslajin tarkastelemiseen ja muokkamiseen.",
@@ -107,6 +111,28 @@ const fi = {
   },
   titles: {
     workdayBrowser: "Työaikakirjaukset",
+  },
+  jira: {
+    issueGroups: {
+      recent: "Viimeaikaiset",
+      keySearchResults: "Hakutulokset (tiketin tunnus)",
+      textSearchResults: "Hakutulokset (otsikko)",
+      searchResults: "Hakutulokset",
+      noSearchResults: "Ei hakutuloksia",
+      typeToSearch: "Kirjoita hakeaksesi Jirasta tiketin tunnuksella tai otsikolla",
+      loading: "Haetaan...",
+    },
+    connectNotificationTitle: "Uutta: Jira-integraatio",
+    connectNotification1:
+      "Keijo voi lukea tikettien tietoja Jirasta kirjausten helpottamiseksi. Voit ottaa Jira-ominaisuudet käyttöön yhdistämällä Keijon Jiraan henkilökohtaisen Atlassian-tilisi kautta.",
+    connectNotification2:
+      "Voit myös sulkea tämän huomautuksen ja halutessasi yhdistää Jiraan myöhemmin asetusvalikon kautta.",
+    infoDialog: {
+      title: "Keijo-Jira",
+      // Site could also be set dynamically from server or simply by <your-company>.atlassian.net
+      content:
+        "Sinut ohjataan valtuuttamaan Jira-integraatio käyttäjälläsi. Kirjaudu Atlassianin sivulla ja valitse valikosta Keijolle oikeudet käytettävälle sivulle esim. funidata.atlassian.net.",
+    },
   },
 };
 
