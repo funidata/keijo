@@ -83,15 +83,17 @@ const JiraIssueComboBox = <T extends FieldValues>(props: JiraIssueComboBoxProps<
   return (
     <FormComboBox
       {...props}
-      getFormValue={(option) => option.value}
       autoCompleteProps={{
         options: options,
         getOptionDisabled: (option) => option.disabled,
-        renderOption: (props, option) => (
-          <ListItem {...props} style={{ overflowWrap: "break-word" }}>
-            <ListItemText>{option.label}</ListItemText>
-          </ListItem>
-        ),
+        renderOption: (props, option) => {
+          const { key, ...rest } = props;
+          return (
+            <ListItem key={key} {...rest} style={{ overflowWrap: "break-word" }}>
+              <ListItemText>{option.label}</ListItemText>
+            </ListItem>
+          );
+        },
         groupBy: (option) => option.groupLabel,
         componentsProps: !mobile
           ? {

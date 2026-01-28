@@ -1,5 +1,6 @@
 import { Autocomplete, AutocompleteProps, FormControl, Grid, TextField } from "@mui/material";
 import { Control, Controller, ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 type FormComboBoxProps<T extends FieldValues, E> = {
   form: UseFormReturn<T>;
@@ -10,7 +11,6 @@ type FormComboBoxProps<T extends FieldValues, E> = {
     AutocompleteProps<E, false, boolean | undefined, true>,
     "renderInput" | "value"
   >;
-  getFormValue?: (value: E) => string;
 };
 
 const FormComboBox = <T extends FieldValues, E>({
@@ -19,8 +19,23 @@ const FormComboBox = <T extends FieldValues, E>({
   title,
   rules,
   autoCompleteProps,
-  getFormValue,
 }: FormComboBoxProps<T, E>) => {
+  const { t } = useTranslation();
+
+  // Validation for 'issue' field
+  // Make sure the selected value exists in the options and convert value to string
+  const validateIssue = (value: string | E | null) => {
+    if (!value) return true;
+    const exists = autoCompleteProps.options.some((option) =>
+      typeof option === "string"
+        ? option === value
+        : (option as E & { value: string }).value === value,
+    );
+    return exists ? true : t("entryDialog.validation.issueInOptions");
+  };
+
+  const mergedRules = { ...(rules || {}), validate: validateIssue };
+
   return (
     <Grid
       size={{
@@ -30,22 +45,18 @@ const FormComboBox = <T extends FieldValues, E>({
     >
       <FormControl fullWidth>
         <Controller
-          control={form.control as unknown as Control<FieldValues>}
+          control={form.control as Control<FieldValues>}
           name={name}
-          rules={rules}
+          rules={mergedRules}
           render={({ field: { value, onChange }, fieldState: { error } }) => (
             <Autocomplete
               autoHighlight
               freeSolo
               forcePopupIcon
               {...autoCompleteProps}
-              value={value || null}
-              onChange={(_, v) => {
-                if (typeof v === "string" || v === null || !getFormValue) {
-                  onChange(v);
-                  return;
-                }
-                onChange(getFormValue(v));
+              value={value ?? ""}
+              onChange={(_, value) => {
+                onChange(value);
               }}
               renderInput={(params) => (
                 <TextField
