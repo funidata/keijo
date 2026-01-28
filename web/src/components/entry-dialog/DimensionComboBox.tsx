@@ -1,5 +1,12 @@
 import { Autocomplete, FormControl, TextField, Grid } from "@mui/material";
-import { Controller, ControllerProps, FieldValues, Control, UseFormReturn, Path } from "react-hook-form";
+import {
+  Controller,
+  ControllerProps,
+  FieldValues,
+  Control,
+  UseFormReturn,
+  Path,
+} from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useDimensionOptions } from "../../common/useDimensionOptions";
 
@@ -10,7 +17,12 @@ type DimensionComboBoxProps<T extends FieldValues> = {
   rules?: ControllerProps["rules"];
 };
 
-const DimensionComboBox = <T extends FieldValues>({ form, name, title, rules }: DimensionComboBoxProps<T>) => {
+const DimensionComboBox = <T extends FieldValues>({
+  form,
+  name,
+  title,
+  rules,
+}: DimensionComboBoxProps<T>) => {
   const dimensionOptions = useDimensionOptions();
   const options = dimensionOptions[name] || [];
   const { t } = useTranslation();
@@ -21,9 +33,7 @@ const DimensionComboBox = <T extends FieldValues>({ form, name, title, rules }: 
   };
 
   // Merge rules and validate
-  const mergedRules = name === "issue"
-    ? { ...(rules || {}), validate: validateIssue }
-    : rules;
+  const mergedRules = name === "issue" ? { ...(rules || {}), validate: validateIssue } : rules;
 
   return (
     <Grid size={{ xs: 12, md: 6 }}>
@@ -36,9 +46,9 @@ const DimensionComboBox = <T extends FieldValues>({ form, name, title, rules }: 
             <Autocomplete
               value={value ?? ""}
               onChange={(_, newValue) => onChange(newValue)}
-							onInputChange={(_, newInputValue) => {
-									onChange(newInputValue);
-							}}
+              onInputChange={(_, newInputValue) => {
+                onChange(newInputValue);
+              }}
               options={options}
               autoHighlight
               freeSolo={name === "issue"}

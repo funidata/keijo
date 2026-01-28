@@ -20,23 +20,21 @@ const FormComboBox = <T extends FieldValues, E>({
   rules,
   autoCompleteProps,
 }: FormComboBoxProps<T, E>) => {
+  const { t } = useTranslation();
 
-const { t } = useTranslation();
-
-// Validation for 'issue' field
-// Make sure the selected value exists in the options and convert value to string
-const validateIssue = (value: string | E | null) => {
-  if (!value) return true;
-  const exists = autoCompleteProps.options.some(
-    (option) =>
+  // Validation for 'issue' field
+  // Make sure the selected value exists in the options and convert value to string
+  const validateIssue = (value: string | E | null) => {
+    if (!value) return true;
+    const exists = autoCompleteProps.options.some((option) =>
       typeof option === "string"
         ? option === value
-        : (option as E & { value: string }).value === value
-  );
-  return exists ? true : t("entryDialog.validation.issueInOptions");
-};
+        : (option as E & { value: string }).value === value,
+    );
+    return exists ? true : t("entryDialog.validation.issueInOptions");
+  };
 
-const mergedRules = { ...(rules || {}), validate: validateIssue };
+  const mergedRules = { ...(rules || {}), validate: validateIssue };
 
   return (
     <Grid
@@ -58,7 +56,7 @@ const mergedRules = { ...(rules || {}), validate: validateIssue };
               {...autoCompleteProps}
               value={value ?? ""}
               onChange={(_, value) => {
-								onChange(value);
+                onChange(value);
               }}
               renderInput={(params) => (
                 <TextField
