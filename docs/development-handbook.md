@@ -67,6 +67,16 @@ See [test documentation](./tests.md) for more testing commands and information.
 npm test
 ```
 
+#### Run Formatting and Lint
+
+```bash
+npm run format
+```
+
+```bash
+npm run lint
+```
+
 #### Remove Local Database Volume
 
 ```
