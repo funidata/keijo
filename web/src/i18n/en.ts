@@ -65,6 +65,7 @@ const en = {
       activityRequired: "Function is required",
       descriptionRequired: "Description is required.",
       ticketOrDescriptionRequired: "Description is required if there is no relevant issue.",
+      issueInOptions: "Issue needs to be one of the options",
     },
     totalHoursToday: "Time on selected day before this entry",
     setRemainingHours: "Set remaining hours automatically",
