@@ -17,6 +17,14 @@
    - Apollo Sandbox: [localhost:3001/graphql](http://localhost:3001/graphql)
 6. Make sure your IDE is set up to use `eslint` and `prettier` from local `package.json` definitions and there are no global overrides in effect.
 
+## VS Code Extension Recommendations
+
+This repository includes a list of recommended VS Code extensions in `.vscode/extensions.json`. 
+
+- If you use VS Code, these extensions will be listed in the Extensions tab and should be installed for an optimal developer experience.
+
+The recommendations are based on the tooling used in this repo (Prettier, ESLint, Docker Compose, Playwright, GraphQL, etc.). The file also contains an `unwantedRecommendations` list for extensions that are redundant or conflict with the preferred setup.
+
 ## Command Reference
 
 Run commands in repository root.
