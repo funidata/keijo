@@ -19,7 +19,7 @@
 
 ## VS Code Extension Recommendations
 
-This repository includes a list of recommended VS Code extensions in `.vscode/extensions.json`. 
+This repository includes a list of recommended VS Code extensions in `.vscode/extensions.json`.
 
 - If you use VS Code, these extensions will be listed in the Extensions tab and should be installed for an optimal developer experience.
 
