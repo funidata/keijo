@@ -17,7 +17,7 @@ test.describe("Jira connection", () => {
     await expect(page).toHaveURL(/.*id\.atlassian\.com\/login.*/);
   });
 
-  test("Disconnect from Jira", async ({ page, t, context, appBar }) => {
+  test("Disconnect from Jira", async ({ page, context, appBar }) => {
     await page.route("**/access-token", (route) =>
       route.fulfill({
         status: 200,

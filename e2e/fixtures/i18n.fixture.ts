@@ -28,5 +28,5 @@ export const i18nFixture = test.extend(
  */
 export type TFunction = (
   key: string,
-  options?: Record<string, any> & { interpolation?: { escapeValue?: boolean } },
+  options?: Record<string, unknown> & { interpolation?: { escapeValue?: boolean } },
 ) => string;
