@@ -15,7 +15,7 @@
     "dayjs": "^1.11.18",
     "eslint": "^9.36.0",
     "eslint-config-prettier": "^10.1.8",
-    "fast-xml-parser": "^5.2.5",
+    "fast-xml-parser": "^5.3.8",
     "jiti": "^2.6.0",
     "playwright-i18next-fixture": "^1.0.0",
     "translations": "file:../web/src/i18n",
