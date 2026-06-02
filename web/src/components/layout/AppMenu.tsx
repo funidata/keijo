@@ -80,7 +80,7 @@ const AppMenuButton = () => {
               <ListItemIcon>
                 <AddCircleIcon {...iconProps} />
               </ListItemIcon>
-              <ListItemText primaryTypographyProps={{ variant: "h5" }}>
+              <ListItemText slotProps={{ primary: { variant: "h5" } }}>
                 {t("controls.addEntry")}
               </ListItemText>
             </ListItemButton>
@@ -96,7 +96,7 @@ const AppMenuButton = () => {
               <ListItemIcon>
                 <TuneIcon {...iconProps} />
               </ListItemIcon>
-              <ListItemText primaryTypographyProps={{ variant: "h5" }}>
+              <ListItemText slotProps={{ primary: { variant: "h5" } }}>
                 {t("controls.defaultsView")}
               </ListItemText>
             </ListItemButton>
@@ -107,7 +107,7 @@ const AppMenuButton = () => {
               <ListItemIcon>
                 {isJiraAuth ? <LogoutIcon {...iconProps} /> : <LoginIcon {...iconProps} />}
               </ListItemIcon>
-              <ListItemText primaryTypographyProps={{ variant: "h5" }}>
+              <ListItemText slotProps={{ primary: { variant: "h5" } }}>
                 {isJiraAuth ? t("controls.jiraDisconnect") : t("controls.jiraConnect")}
               </ListItemText>
             </ListItemButton>
@@ -117,7 +117,7 @@ const AppMenuButton = () => {
             <ListItemIcon onClick={useDarkMode}>
               {darkMode ? <Brightness7Icon {...iconProps} /> : <Brightness4Icon {...iconProps} />}
             </ListItemIcon>
-            <ListItemText primaryTypographyProps={{ variant: "h5" }} onClick={toggleDarkMode}>
+            <ListItemText slotProps={{ primary: { variant: "h5" } }} onClick={toggleDarkMode}>
               {t("controls.useDarkMode")}
             </ListItemText>
             <Switch edge="end" onChange={toggleDarkMode} checked={darkMode} sx={{ mr: 2 }} />
@@ -128,7 +128,7 @@ const AppMenuButton = () => {
               <ListItemIcon>
                 <CheckIcon {...iconProps} visibility={visibilityFor("fi")} />
               </ListItemIcon>
-              <ListItemText primaryTypographyProps={{ variant: "h5" }}>Suomi</ListItemText>
+              <ListItemText slotProps={{ primary: { variant: "h5" } }}>Suomi</ListItemText>
             </ListItemButton>
           </ListItem>
           <ListItem>
@@ -136,7 +136,7 @@ const AppMenuButton = () => {
               <ListItemIcon>
                 <CheckIcon {...iconProps} visibility={visibilityFor("en")} />
               </ListItemIcon>
-              <ListItemText primaryTypographyProps={{ variant: "h5" }}>English</ListItemText>
+              <ListItemText slotProps={{ primary: { variant: "h5" } }}>English</ListItemText>
             </ListItemButton>
           </ListItem>
         </List>

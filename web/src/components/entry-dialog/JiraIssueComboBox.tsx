@@ -95,7 +95,7 @@ const JiraIssueComboBox = <T extends FieldValues>(props: JiraIssueComboBoxProps<
           );
         },
         groupBy: (option) => option.groupLabel,
-        componentsProps: !mobile
+        slotProps: !mobile
           ? {
               popper: {
                 style: {
