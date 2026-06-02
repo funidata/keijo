@@ -1,6 +1,6 @@
 import { AddWorkdayEntryDocument, FindWorkdaysDocument } from "../../../graphql/generated/graphql";
 import { LoadingButton } from "@mui/lab";
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
 import { useTranslation } from "react-i18next";
 import { useNotification } from "../../global-notification/useNotification";
 import { Dayjs } from "dayjs";

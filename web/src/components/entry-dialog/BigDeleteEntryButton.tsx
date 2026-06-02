@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { useState } from "react";
