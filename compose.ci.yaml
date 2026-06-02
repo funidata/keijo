@@ -2,6 +2,9 @@
 services:
   server:
     image: keijo
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
       ENABLE_AUDIT_LOGS: true
       ENABLE_JSON_LOGS: false
