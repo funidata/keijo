@@ -3,7 +3,7 @@ import { CustomParamFactory } from "@nestjs/common/interfaces";
 import { GqlExecutionContext } from "@nestjs/graphql";
 import { get } from "lodash";
 
-export const decoratorFactory: CustomParamFactory<object, ExecutionContext, string> = (
+export const decoratorFactory: CustomParamFactory<object, string> = (
   _,
   context: ExecutionContext,
 ) => {

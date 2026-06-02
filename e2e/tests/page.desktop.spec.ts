@@ -1,11 +1,12 @@
 import { Page, expect } from "@playwright/test";
-import { test } from "../playwright.config";
+import { Dayjs } from "dayjs";
 import { TFunction } from "i18next";
 import { getMockEntries } from "mock-data";
-import { Dayjs } from "dayjs";
+import { test } from "../fixtures/fixtures";
 
 const mockEntries = getMockEntries();
-const mockEntryWeekUrl = "/entries/week/20";
+const testDate = "2024-05-13";
+const mockEntryWeekUrl = `/entries/week/${testDate}`;
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
@@ -24,13 +25,13 @@ test.describe("Landing page", () => {
     await expect(page.getByText(t("entryTable.totalHoursInWeek"))).toBeVisible();
     await expect(page.getByText(t("entryTable.tabs.browseByWeek"))).toBeVisible();
     await expect(page.getByText(t("entryTable.tabs.browseByDates"))).toBeVisible();
-    await checkWeekdays(page, 20, t, dayjs());
+    await checkWeekdays(page, 20, t, dayjs(testDate));
   });
 
   test("Should have correct mock entries", async ({ page, dayjs }) => {
     for (const entry of mockEntries) {
       const date = dayjs(entry.date);
-      await page.goto(`/entries/week/${date.week()}`);
+      await page.goto(mockEntryWeekUrl);
       const workdayEntryList = page
         .locator("div", {
           has: page.getByRole("button", { name: date.format("dd l") }),
@@ -53,7 +54,7 @@ test.describe("Landing page", () => {
   test("Should have correct amount of total hours", async ({ page, dayjs }) => {
     for (const entry of mockEntries) {
       const date = dayjs(entry.date);
-      await page.goto(`/entries/week/${date.week()}`);
+      await page.goto(mockEntryWeekUrl);
       const totalTime = mockEntries
         .filter((ent) => dayjs(ent.date).week() === date.week())
         .reduce((a, entry) => a + Number(entry.hours), 0);
@@ -70,8 +71,8 @@ test.describe("Landing page", () => {
   });
 });
 
-const checkWeekdays = async (page: Page, week: number, t: TFunction, dayjs: Dayjs) => {
-  const date = dayjs.week(week).startOf("week").locale("en-gb");
+const checkWeekdays = async (page: Page, week: number, t: TFunction, testDate: Dayjs) => {
+  const date = testDate.week(week).startOf("week").locale("en-gb");
   // check Weekday dropdowns exist
   await expect(page.getByRole("button", { name: date.format("dd l") })).toBeVisible();
   await expect(page.getByRole("button", { name: date.add(1, "day").format("dd l") })).toBeVisible();
@@ -90,7 +91,9 @@ const checkWeekdays = async (page: Page, week: number, t: TFunction, dayjs: Dayj
 
 const checkAppBar = async (page: Page, t: TFunction) => {
   await expect(page.getByRole("img", { name: "Keijo logo" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: t("titles.workdayBrowser") })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: t("titles.workdayBrowser"), exact: true }),
+  ).toBeVisible();
   await expect(
     page.getByRole("banner").getByRole("button", { name: t("entryDialog.title.create") }),
   ).toBeVisible();

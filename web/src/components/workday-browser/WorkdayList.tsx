@@ -59,12 +59,11 @@ const WorkdayList = () => {
   return (
     <>
       <TotalHours workdays={workdays} />
-
       <Paper>
         {dividedWorkdays.map((wdArr) => {
           if (isWeekend(wdArr[0].date)) {
             return (
-              <Collapse in={checked}>
+              <Collapse in={checked} key={wdArr[0].date.toString()}>
                 {wdArr.map((wd) => (
                   <WorkdayAccordion workday={wd} key={wd.date.toString()} />
                 ))}

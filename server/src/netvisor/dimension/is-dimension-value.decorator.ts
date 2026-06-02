@@ -7,8 +7,7 @@ import { DimensionConstraint } from "./dimension.constraint";
  * Decorated property name must be one of the keys of `DimensionOptions`.
  */
 export const IsDimensionValue =
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  (validationOptions?: ValidatorOptions) => (object: Object, propertyName: string) => {
+  (validationOptions?: ValidatorOptions) => (object: object, propertyName: string) => {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,

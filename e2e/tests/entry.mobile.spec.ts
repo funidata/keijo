@@ -1,12 +1,12 @@
 import { Page, expect } from "@playwright/test";
-import { test } from "../playwright.config";
 import { TFunction } from "i18next";
 import {
-  getMockProductNames,
   getMockActivityNames,
-  getMockIssueNames,
   getMockClientNames,
+  getMockIssueNames,
+  getMockProductNames,
 } from "mock-data";
+import { test } from "../fixtures/fixtures";
 
 type TestEntry = {
   product: string;
@@ -22,8 +22,8 @@ const productNames = getMockProductNames();
 const activityNames = getMockActivityNames();
 const issueNames = getMockIssueNames();
 const clientNames = getMockClientNames();
-const mockEntryWeekUrl = "/entries/week/20";
-const emptyWeekUrl = "/entries/week/21";
+const mockEntryWeekUrl = "/entries/week/2024-05-13";
+const emptyWeekUrl = "/entries/week/2024-05-20";
 
 const entries: Array<TestEntry> = [
   {
@@ -32,7 +32,7 @@ const entries: Array<TestEntry> = [
     issue: issueNames[0],
     client: clientNames[0],
     description: "no comment",
-    duration: "3.00",
+    duration: "3",
     date: "21.5.2024",
   },
 ];
@@ -51,7 +51,10 @@ test.describe("Add entry mobile", () => {
     await fillEntryFormMobile(page, t, entries[0]);
     // Submit
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
+    await expect(
+      page.getByRole("heading", { name: t("entryDialog.title.edit") }),
+    ).not.toBeAttached();
+    await expect(page.getByRole("alert")).toContainText(t("notifications.addEntry.success"));
   });
 
   test("Should add entry from entry row", async ({ page, t }) => {
@@ -63,7 +66,10 @@ test.describe("Add entry mobile", () => {
     await expect(page).toHaveURL(/.*\/create$/);
     await fillEntryFormMobile(page, t, entries[0]);
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
+    await expect(
+      page.getByRole("heading", { name: t("entryDialog.title.edit") }),
+    ).not.toBeAttached();
+    await expect(page.getByRole("alert")).toContainText(t("notifications.addEntry.success"));
   });
 });
 
@@ -80,7 +86,10 @@ test.describe("Edit entry mobile", () => {
     await expect(page).toHaveURL(/.*\/edit$/);
     await fillEntryFormMobile(page, t, { ...entries[0] });
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(page.getByText(t("notifications.editEntry.success"))).toBeAttached();
+    await expect(
+      page.getByRole("heading", { name: t("entryDialog.title.edit") }),
+    ).not.toBeAttached();
+    await expect(page.getByRole("alert")).toContainText(t("notifications.editEntry.success"));
   });
 });
 
@@ -96,7 +105,10 @@ test.describe("Delete entry mobile", () => {
       .click();
     await page.getByRole("button", { name: t("entryDialog.delete") }).click();
     await page.getByRole("button", { name: t("controls.deleteEntry") }).click();
-    await expect(page.getByText(t("notifications.deleteEntry.success"))).toBeAttached();
+    await expect(
+      page.getByRole("heading", { name: t("controls.confirmDeleteForDialog") }),
+    ).not.toBeAttached();
+    await expect(page.getByText(t("notifications.deleteEntry.success"))).toBeInViewport();
   });
 });
 
@@ -108,9 +120,13 @@ test.describe("Entry defaults mobile", () => {
       .getByRole("button", { name: t("entryDialog.title.create") })
       .first()
       .click();
-    await expect(page.getByRole("textbox", { name: "Duration" })).toHaveValue("00:00");
+    await expect(page.getByRole("group", { name: t("entryDialog.duration") })).toContainText(
+      "00:00",
+    );
     await page.getByRole("checkbox", { name: t("entryDialog.setRemainingHours") }).click();
-    await expect(page.getByRole("textbox", { name: "Duration" })).toHaveValue("07:30");
+    await expect(page.getByRole("group", { name: t("entryDialog.duration") })).toContainText(
+      "07:30",
+    );
   });
 
   test("Should use set default values", async ({ page, t }) => {
@@ -120,11 +136,12 @@ test.describe("Entry defaults mobile", () => {
 });
 
 const fillEntryFormMobile = async (page: Page, t: TFunction, entry: TestEntry) => {
-  await page.getByLabel(t("entryDialog.product")).fill(entry.product);
+  await page.getByLabel(t("entryDialog.product")).click();
+  await page.getByRole("option", { name: entry.product }).click();
   await page.getByLabel(t("entryDialog.activity")).fill(entry.activity);
   await page.getByLabel(t("entryDialog.description")).fill(entry.description);
-  await page.getByLabel(t("entryDialog.duration")).pressSequentially(entry.duration);
-  await page.getByRole("textbox", { name: "date" }).click();
+  await page.getByRole("spinbutton", { name: "Hours" }).pressSequentially(entry.duration);
+  await page.getByRole("button", { name: "Choose date" }).click();
   await page.getByRole("gridcell", { name: entry.date.split(".")[0] }).click();
   await page.getByRole("button", { name: "OK" }).click();
 };

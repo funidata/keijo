@@ -4,6 +4,7 @@ query GetMySettings {
     productPreset
     activityPreset
     projectsPreset
+    jiraNotificationIgnore
   }
 }
 

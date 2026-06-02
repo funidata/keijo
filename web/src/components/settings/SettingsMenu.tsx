@@ -1,13 +1,15 @@
-import TuneIcon from "@mui/icons-material/Tune";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
+import TuneIcon from "@mui/icons-material/Tune";
 import { ListItemIcon } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
-import { keijoJiraApiUrl } from "../../jira/jiraConfig";
-import { useIsJiraAuthenticated } from "../../jira/jiraApi";
+import { JiraInfoDialog } from "../../jira/components/JiraInfoDialog";
+import { useIsJiraAuthenticated } from "../../jira/jira-api";
+import { disconnectJira } from "../../jira/jira-utils";
 
 type SettingsMenuProps = {
   anchor: HTMLElement | null;
@@ -19,6 +21,7 @@ const SettingsMenu = ({ anchor, onClose }: SettingsMenuProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isJiraAuth } = useIsJiraAuthenticated();
+  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
 
   const handleSetDefaultValues = () => {
     onClose();
@@ -26,13 +29,12 @@ const SettingsMenu = ({ anchor, onClose }: SettingsMenuProps) => {
   };
 
   const handleConnectToJira = () => {
-    onClose();
-    window.location.href = keijoJiraApiUrl;
+    setInfoDialogOpen(true);
   };
 
   const handleDisconnectJira = () => {
     onClose();
-    window.location.href = keijoJiraApiUrl + "/remove-session";
+    disconnectJira();
   };
 
   return (
@@ -63,6 +65,7 @@ const SettingsMenu = ({ anchor, onClose }: SettingsMenuProps) => {
           {t("controls.jiraConnect")}
         </MenuItem>
       )}
+      <JiraInfoDialog open={infoDialogOpen} handleClose={() => setInfoDialogOpen(false)} />
     </Menu>
   );
 };

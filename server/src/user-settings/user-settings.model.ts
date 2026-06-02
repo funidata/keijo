@@ -19,4 +19,8 @@ export class UserSettings {
   @Column("simple-array", { nullable: true })
   @Field(() => [String], { nullable: true })
   projectsPreset: string[];
+  
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  jiraNotificationIgnore: boolean;
 }

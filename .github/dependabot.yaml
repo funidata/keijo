@@ -1,0 +1,26 @@
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+  - package-ecosystem: docker
+    directories:
+      - server
+      - web
+    schedule:
+      interval: daily
+  - package-ecosystem: npm
+    directories:
+      - e2e
+      - server
+      - web
+    schedule:
+      interval: daily
+    groups:
+      npm:
+        applies-to: version-updates
+        update-types:
+          - patch
+          - minor

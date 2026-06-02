@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Inject, Injectable, Scope } from "@nestjs/common";
+import { REQUEST } from "@nestjs/core";
+import { Request } from "express";
 import { AxiosService } from "../axios/axios.service";
 import { ConfigService } from "../config/config.service";
 import { JiraTokens } from "./jira.types";
-import { REQUEST } from "@nestjs/core";
-import { Request } from "express";
 
 @Injectable({ scope: Scope.REQUEST })
 export class JiraService {
@@ -29,7 +29,7 @@ export class JiraService {
         },
       );
       return { refreshToken: res.data.refresh_token, accessToken: res.data.access_token };
-    } catch (error) {
+    } catch {
       this.request.session.user = undefined;
       throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
     }
