@@ -73,7 +73,7 @@ const WorkdayList = () => {
           return wdArr.map((wd) => <WorkdayAccordion workday={wd} key={wd.date.toString()} />);
         })}
       </Paper>
-      <Box textAlign="left" mt="1em">
+      <Box sx={{ textAlign: "left", mt: "1em" }}>
         <Button
           onClick={handleChange}
           size="small"
