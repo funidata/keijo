@@ -43,9 +43,9 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
     AddWorkdayEntryDocument,
     {
       refetchQueries: [FindWorkdaysDocument],
-      onCompleted: async () => {
-        await client.resetStore();
+      onCompleted: () => {
         showSuccessNotification(t("notifications.addEntry.success"));
+        void client.resetStore();
       },
     },
   );
@@ -55,9 +55,9 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
     {
       refetchQueries: [FindWorkdaysDocument],
       notifyOnNetworkStatusChange: true,
-      onCompleted: async () => {
-        await client.resetStore();
+      onCompleted: () => {
         showSuccessNotification(t("notifications.editEntry.success"));
+        void client.resetStore();
       },
     },
   );
