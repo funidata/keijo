@@ -1,5 +1,5 @@
 import { AddWorkdayEntryDocument, FindWorkdaysDocument } from "../../../graphql/generated/graphql";
-import { LoadingButton } from "@mui/lab";
+import { Button } from "@mui/material";
 import { useMutation } from "@apollo/client/react";
 import { useTranslation } from "react-i18next";
 import { useNotification } from "../../global-notification/useNotification";
@@ -36,7 +36,7 @@ const AddZeroEntryButton = ({ date }: AddZeroEntryButtonProps) => {
     });
   };
   return (
-    <LoadingButton
+    <Button
       loading={loading}
       onClick={addWorkday}
       type="submit"
@@ -45,7 +45,7 @@ const AddZeroEntryButton = ({ date }: AddZeroEntryButtonProps) => {
       color="inherit"
     >
       {t("entryTable.addZeroEntry")}
-    </LoadingButton>
+    </Button>
   );
 };
 
