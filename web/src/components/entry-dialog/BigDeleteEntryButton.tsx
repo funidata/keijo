@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { useState } from "react";
@@ -15,10 +15,9 @@ const BigDeleteEntryButton = ({ entryKey, date }: DeleteEntryButtonProps) => {
   const { showSuccessNotification } = useNotification();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const [removeWorkdayEntry, { client }] = useMutation(RemoveWorkdayEntryDocument, {
+  const [removeWorkdayEntry] = useMutation(RemoveWorkdayEntryDocument, {
     refetchQueries: [FindWorkdaysDocument],
-    onCompleted: async () => {
-      await client.resetStore();
+    onCompleted: () => {
       showSuccessNotification(t("notifications.deleteEntry.success"));
     },
   });

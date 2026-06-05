@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { Outlet } from "react-router-dom";
 import { GetSessionStatusDocument } from "../../graphql/generated/graphql";
 import { Exception } from "./Exception";

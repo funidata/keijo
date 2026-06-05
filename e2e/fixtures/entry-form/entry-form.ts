@@ -40,7 +40,7 @@ export class EntryForm {
   }
 
   getRemainingHoursToggle() {
-    return this.page.getByRole("checkbox", {
+    return this.page.getByRole("switch", {
       name: this.t("entryDialog.setRemainingHours"),
     });
   }

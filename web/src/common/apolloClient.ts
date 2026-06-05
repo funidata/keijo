@@ -1,5 +1,12 @@
-import { ApolloClient, HttpLink, InMemoryCache, from } from "@apollo/client";
-import { onError } from "@apollo/client/link/error";
+import {
+  ApolloClient,
+  HttpLink,
+  InMemoryCache,
+  ApolloLink,
+  CombinedGraphQLErrors,
+  ServerError,
+} from "@apollo/client";
+import { ErrorLink } from "@apollo/client/link/error";
 import { useNotificationState } from "../components/global-notification/useNotification";
 
 const apiUrl = import.meta.env.VITE_API_URL_OVERRIDE || import.meta.env.VITE_API_URL;
@@ -11,20 +18,24 @@ const httpLink = new HttpLink({
     : {},
 });
 
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors) {
-    graphQLErrors.forEach(({ message, path }) =>
+const errorLink = new ErrorLink(({ error }) => {
+  if (CombinedGraphQLErrors.is(error)) {
+    error.errors.forEach(({ message, path }) =>
       useNotificationState.getState().setNotification({
         message: `Error in GraphQL request "${path}". Message: ${message}`,
         type: "error",
         autoHide: false,
       }),
     );
-  }
-
-  if (networkError) {
+  } else if (ServerError.is(error)) {
     useNotificationState.getState().setNotification({
-      message: `GraphQL network error: ${networkError}`,
+      message: `Server error: ${error}`,
+      type: "error",
+      autoHide: false,
+    });
+  } else if (error) {
+    useNotificationState.getState().setNotification({
+      message: `Error: ${error}`,
       type: "error",
       autoHide: false,
     });
@@ -33,5 +44,5 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 export const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
-  link: from([errorLink, httpLink]),
+  link: ApolloLink.from([errorLink, httpLink]),
 });

@@ -124,7 +124,7 @@ test.describe("Entry defaults", () => {
     await expect(page.getByRole("group", { name: t("entryDialog.duration") })).toContainText(
       "00:00",
     );
-    await page.getByRole("checkbox", { name: t("entryDialog.setRemainingHours") }).click();
+    await page.getByRole("switch", { name: t("entryDialog.setRemainingHours") }).click();
     await expect(page.getByRole("group", { name: t("entryDialog.duration") })).toContainText(
       "07:30",
     );

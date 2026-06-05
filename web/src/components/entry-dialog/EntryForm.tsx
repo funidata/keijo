@@ -1,6 +1,5 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client/react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { LoadingButton } from "@mui/lab";
 import {
   Accordion,
   AccordionDetails,
@@ -219,15 +218,9 @@ const EntryForm = () => {
         {mobile ? (
           <>
             <Grid sx={{ mt: 2 }} size={12}>
-              <LoadingButton
-                loading={loading}
-                type="submit"
-                variant="contained"
-                size="large"
-                fullWidth
-              >
+              <Button loading={loading} type="submit" variant="contained" size="large" fullWidth>
                 {t("entryDialog.submit")}
-              </LoadingButton>
+              </Button>
             </Grid>
             <Grid size={12}>
               <Button
@@ -287,9 +280,9 @@ const EntryForm = () => {
                 <Button type="reset" variant="outlined" size="large" onClick={() => reset()}>
                   {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
                 </Button>
-                <LoadingButton loading={loading} type="submit" variant="contained" size="large">
+                <Button loading={loading} type="submit" variant="contained" size="large">
                   {t("entryDialog.submit")}
-                </LoadingButton>
+                </Button>
               </Box>
             </Grid>
           </>
