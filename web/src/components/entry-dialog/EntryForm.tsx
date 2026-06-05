@@ -39,10 +39,7 @@ import JiraIssueComboBox from "./JiraIssueComboBox";
 import ResponsiveDatePicker from "./ResponsiveDatePicker";
 import WorkdayHours from "./WorkdayHours";
 import useEntryForm, { EntryFormSchema } from "./useEntryForm";
-import { useIsJiraAuthenticated } from "../../jira/jiraApi";
-import JiraIssueComboBox from "../../jira/components/JiraIssueComboBox";
 import ProjectFilter from "./ProjectFilter";
-import useFormFilters from "./useFormFilters";
 
 export type EntryFormProps = {
   form: UseFormReturn<EntryFormSchema>;
@@ -85,7 +82,6 @@ const EntryForm = () => {
   const { userPrefersSetRemainingHours, toggleRemainingHours } = usePreferSetRemainingHours();
   const { control, watch } = form;
   const dateWatch = dayjs(watch("date")).locale(dayjs.locale());
-  const { numOfFilters, hasFilters } = useFormFilters();
   const [showFilters, setShowFilters] = useState(false);
   const { isJiraAuth, isLoading } = useIsJiraAuthenticated();
 
@@ -156,17 +152,17 @@ const EntryForm = () => {
                 )}
               />
             </Grid>
-            <Grid item xs={12} md={12}>
+            <Grid size={12}>
               <Button
                 onClick={() => setShowFilters((prev) => !prev)}
                 size="small"
                 variant="text"
                 aria-label={showFilters ? t("controls.hideFilters") : t("controls.showFilters")}
               >
-                {`${showFilters ? t("controls.hideFilters") : t("controls.showFilters")} ${hasFilters ? `+${numOfFilters}` : ""}`}
+                {showFilters ? t("controls.hideFilters") : t("controls.showFilters")}
               </Button>
             </Grid>
-            <Grid item xs={12} md={12}>
+            <Grid size={12}>
               <Collapse in={showFilters}>
                 <ProjectFilter />
               </Collapse>

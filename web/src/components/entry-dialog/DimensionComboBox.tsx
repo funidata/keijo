@@ -4,22 +4,12 @@ import {
   AutocompleteProps,
   FormControl,
   Grid,
-  GridOwnProps,
+  GridProps,
   TextField,
 } from "@mui/material";
-import { Control, Controller, ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
-import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
+import { Control, Controller, ControllerProps, FieldValues, Path, UseFormReturn } from "react-hook-form";
 import useOptionsFilter from "./useOptionsFilter";
 import { createFilterOptions } from "@mui/material/Autocomplete";
-import { Autocomplete, FormControl, TextField, Grid } from "@mui/material";
-import {
-  Controller,
-  ControllerProps,
-  FieldValues,
-  Control,
-  UseFormReturn,
-  Path,
-} from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useDimensionOptions } from "../../common/useDimensionOptions";
 
@@ -32,7 +22,7 @@ type DimensionComboBoxProps<T extends FieldValues> = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     AutocompleteProps<any, boolean | undefined, boolean | undefined, boolean | undefined>
   >;
-  gridProps?: GridOwnProps;
+  gridProps?: GridProps;
 };
 
 const inputFilter = createFilterOptions({
@@ -62,7 +52,7 @@ const DimensionComboBox = <T extends FieldValues>({
   const extFilter = useOptionsFilter<string>((option) => option);
 
   return (
-    <Grid item xs={12} md={6} {...gridProps}>
+    <Grid size={{ xs: 12, md: 6 }} {...gridProps}>
       <FormControl fullWidth>
         <Controller
           control={form.control as Control<FieldValues>}
