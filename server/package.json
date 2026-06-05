@@ -37,7 +37,7 @@
     "class-validator": "^0.14.2",
     "connect-pg-simple": "^10.0.0",
     "cookie-parser": "^1.4.7",
-    "dayjs": "^1.11.18",
+    "dayjs": "^1.11.21",
     "express-session": "^1.18.2",
     "fast-xml-parser": "^5.8.0",
     "graphql": "^16.11.0",
