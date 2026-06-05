@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { DimensionOptions, FindDimensionOptionsDocument } from "../graphql/generated/graphql";
 
 /**

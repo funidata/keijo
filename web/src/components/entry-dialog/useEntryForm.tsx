@@ -1,4 +1,4 @@
-import { useLazyQuery, useMutation } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client/react";
 import { Dayjs } from "dayjs";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -39,12 +39,11 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
   const { showSuccessNotification } = useNotification();
   const dayjs = useDayjs();
 
-  const [addWorkdayEntryMutation, { loading: addQueryLoading, client }] = useMutation(
+  const [addWorkdayEntryMutation, { loading: addQueryLoading }] = useMutation(
     AddWorkdayEntryDocument,
     {
       refetchQueries: [FindWorkdaysDocument],
-      onCompleted: async () => {
-        await client.resetStore();
+      onCompleted: () => {
         showSuccessNotification(t("notifications.addEntry.success"));
       },
     },
@@ -54,9 +53,7 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
     ReplaceWorkdayEntryDocument,
     {
       refetchQueries: [FindWorkdaysDocument],
-      notifyOnNetworkStatusChange: true,
-      onCompleted: async () => {
-        await client.resetStore();
+      onCompleted: () => {
         showSuccessNotification(t("notifications.editEntry.success"));
       },
     },
@@ -64,7 +61,12 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
 
   const [getMySettings] = useLazyQuery(GetMySettingsDocument);
   const getDefaultValues = async (): Promise<EntryFormSchema> => {
-    const { data: settingsData } = await getMySettings();
+    const { data: settingsData } = await getMySettings().catch((e: unknown) => {
+      const isAbortError =
+        (e instanceof DOMException || e instanceof Error) && e.name === "AbortError";
+      if (!isAbortError) throw e;
+      return { data: undefined };
+    });
 
     return {
       date: date ? dayjs(date) : dayjs(),

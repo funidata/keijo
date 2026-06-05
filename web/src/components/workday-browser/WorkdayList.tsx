@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { Box, Button, Collapse, Paper } from "@mui/material";
 import { range } from "lodash";
 import useDayjs from "../../common/useDayjs";
