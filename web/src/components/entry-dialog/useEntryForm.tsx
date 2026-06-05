@@ -61,7 +61,11 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
 
   const [getMySettings] = useLazyQuery(GetMySettingsDocument);
   const getDefaultValues = async (): Promise<EntryFormSchema> => {
-    const { data: settingsData } = await getMySettings();
+    const { data: settingsData } = await getMySettings().catch((e: unknown) => {
+      const isAbortError = (e instanceof DOMException || e instanceof Error) && e.name === "AbortError";
+      if (!isAbortError) throw e;
+      return { data: undefined };
+    });
 
     return {
       date: date ? dayjs(date) : dayjs(),
