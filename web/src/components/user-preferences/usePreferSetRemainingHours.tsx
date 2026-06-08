@@ -1,6 +1,6 @@
 import { useLocalStorage } from "usehooks-ts";
 import { GetMySettingsDocument, UpdateSettingsDocument } from "../../graphql/generated/graphql";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client/react";
 import { useEffect } from "react";
 
 const SET_REMAINING_HOURS_LOCAL_STORAGE_KEY = "use-set-remaining-hours";
