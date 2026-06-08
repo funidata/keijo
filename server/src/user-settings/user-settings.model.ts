@@ -19,7 +19,7 @@ export class UserSettings {
   @Column({ type: "varchar", array: true, nullable: true })
   @Field(() => [String], { nullable: true })
   projectsPreset: string[];
-  
+
   @Column({ nullable: true })
   @Field({ nullable: true })
   jiraNotificationIgnore: boolean;
