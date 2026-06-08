@@ -9,6 +9,9 @@ export class UpdateSettingsDto {
   activityPreset?: string;
 
   @Field({ nullable: true })
+  jiraNotificationIgnore?: boolean;
+
+  @Field({ nullable: true })
   showWeekend?: boolean;
 
   @Field({ nullable: true })

@@ -32,6 +32,10 @@ export class UserSettingsService {
     return this.findOneByEmployeeNumber(employeeNumber);
   }
 
+  async deleteByEmployeeNumber(employeeNumber: number) {
+    return this.userSettings.delete({ employeeNumber });
+  }
+
   /**
    * Create user settings database entry for user.
    *

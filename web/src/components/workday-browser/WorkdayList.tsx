@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client/react";
 import { Box, Button, Collapse, Paper } from "@mui/material";
 import { range } from "lodash";
 import useDayjs from "../../common/useDayjs";
@@ -69,12 +69,11 @@ const WorkdayList = () => {
   return (
     <>
       <TotalHours workdays={workdays} />
-
       <Paper>
         {dividedWorkdays.map((wdArr) => {
           if (isWeekend(wdArr[0].date)) {
             return (
-              <Collapse in={showWeekend}>
+              <Collapse in={showWeekend} key={wdArr[0].date.toString()}>
                 {wdArr.map((wd) => (
                   <WorkdayAccordion workday={wd} key={wd.date.toString()} />
                 ))}
@@ -84,7 +83,7 @@ const WorkdayList = () => {
           return wdArr.map((wd) => <WorkdayAccordion workday={wd} key={wd.date.toString()} />);
         })}
       </Paper>
-      <Box textAlign="left" mt="1em">
+      <Box sx={{ textAlign: "left", mt: "1em" }}>
         <Button
           onClick={handleChange}
           size="small"

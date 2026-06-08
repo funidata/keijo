@@ -1,6 +1,5 @@
 import { get, set } from "lodash";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 /**
  * Fix undefined lists in `data` at locations defined by `arrayPaths`.
  *

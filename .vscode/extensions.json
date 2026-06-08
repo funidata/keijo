@@ -1,0 +1,12 @@
+{
+  "unwantedRecommendations": [
+    // Unnecessary when using the official prettier and eslint extensions.
+    "rvest.vs-code-prettier-eslint"
+  ],
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "ms-playwright.playwright",
+    "orta.vscode-jest",
+  ]
+}

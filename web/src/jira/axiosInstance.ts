@@ -1,5 +1,5 @@
 import axios from "axios";
-import { jiraApiPath, jiraApiBaseUrl, keijoJiraApiUrl, jiraApiVersion } from "./jiraConfig";
+import { createJiraApiUrl, keijoJiraApiUrl } from "./jiraConfig";
 
 const axiosJira = axios.create({});
 
@@ -22,7 +22,7 @@ axiosJira.interceptors.response.use(
 axiosJira.interceptors.request.use(async (config) => {
   if (!axiosJira.defaults.baseURL || !axiosJira.defaults.headers.common.Authorization) {
     const token = (await axiosKeijo.get("/access-token")).data;
-    const jiraUrl = `${jiraApiBaseUrl}${token.cloud_id}${jiraApiPath}${jiraApiVersion}`;
+    const jiraUrl = createJiraApiUrl(token.cloud_id);
     axiosJira.defaults.baseURL = jiraUrl;
     config.baseURL = jiraUrl;
     axiosJira.defaults.headers.common.Authorization = "Bearer " + token.access_token;
@@ -31,4 +31,4 @@ axiosJira.interceptors.request.use(async (config) => {
   return config;
 });
 
-export { axiosKeijo, axiosJira };
+export { axiosJira, axiosKeijo };

@@ -2,6 +2,8 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import CheckIcon from "@mui/icons-material/Check";
+import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import TuneIcon from "@mui/icons-material/Tune";
 import {
@@ -19,6 +21,9 @@ import {
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
+import { JiraInfoDialog } from "../../jira/components/JiraInfoDialog";
+import { useIsJiraAuthenticated } from "../../jira/jira-api";
+import { keijoJiraApiUrl } from "../../jira/jiraConfig";
 import useDarkMode from "../../theme/useDarkMode";
 import LabelledIconButton from "../LabelledIconButton";
 
@@ -32,6 +37,14 @@ const AppMenuButton = () => {
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const { isJiraAuth } = useIsJiraAuthenticated();
+
+  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
+
+  const handleConnectToJira = () => {
+    setInfoDialogOpen(true);
+  };
+
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
   };
@@ -39,6 +52,11 @@ const AppMenuButton = () => {
   const selectLanguage = (languageCode: string) => {
     changeLanguage(languageCode);
     document.documentElement.lang = languageCode;
+  };
+
+  const handleDisconnectJira = () => {
+    toggleMenu();
+    window.location.href = keijoJiraApiUrl + "/remove-session";
   };
 
   const visibilityFor = (lang: string) => (language === lang ? "visible" : "hidden");
@@ -62,7 +80,7 @@ const AppMenuButton = () => {
               <ListItemIcon>
                 <AddCircleIcon {...iconProps} />
               </ListItemIcon>
-              <ListItemText primaryTypographyProps={{ variant: "h5" }}>
+              <ListItemText slotProps={{ primary: { variant: "h5" } }}>
                 {t("controls.addEntry")}
               </ListItemText>
             </ListItemButton>
@@ -78,8 +96,19 @@ const AppMenuButton = () => {
               <ListItemIcon>
                 <TuneIcon {...iconProps} />
               </ListItemIcon>
-              <ListItemText primaryTypographyProps={{ variant: "h5" }}>
+              <ListItemText slotProps={{ primary: { variant: "h5" } }}>
                 {t("controls.defaultsView")}
+              </ListItemText>
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem>
+            <ListItemButton onClick={isJiraAuth ? handleDisconnectJira : handleConnectToJira}>
+              <ListItemIcon>
+                {isJiraAuth ? <LogoutIcon {...iconProps} /> : <LoginIcon {...iconProps} />}
+              </ListItemIcon>
+              <ListItemText slotProps={{ primary: { variant: "h5" } }}>
+                {isJiraAuth ? t("controls.jiraDisconnect") : t("controls.jiraConnect")}
               </ListItemText>
             </ListItemButton>
           </ListItem>
@@ -88,7 +117,7 @@ const AppMenuButton = () => {
             <ListItemIcon onClick={useDarkMode}>
               {darkMode ? <Brightness7Icon {...iconProps} /> : <Brightness4Icon {...iconProps} />}
             </ListItemIcon>
-            <ListItemText primaryTypographyProps={{ variant: "h5" }} onClick={toggleDarkMode}>
+            <ListItemText slotProps={{ primary: { variant: "h5" } }} onClick={toggleDarkMode}>
               {t("controls.useDarkMode")}
             </ListItemText>
             <Switch edge="end" onChange={toggleDarkMode} checked={darkMode} sx={{ mr: 2 }} />
@@ -99,7 +128,7 @@ const AppMenuButton = () => {
               <ListItemIcon>
                 <CheckIcon {...iconProps} visibility={visibilityFor("fi")} />
               </ListItemIcon>
-              <ListItemText primaryTypographyProps={{ variant: "h5" }}>Suomi</ListItemText>
+              <ListItemText slotProps={{ primary: { variant: "h5" } }}>Suomi</ListItemText>
             </ListItemButton>
           </ListItem>
           <ListItem>
@@ -107,11 +136,12 @@ const AppMenuButton = () => {
               <ListItemIcon>
                 <CheckIcon {...iconProps} visibility={visibilityFor("en")} />
               </ListItemIcon>
-              <ListItemText primaryTypographyProps={{ variant: "h5" }}>English</ListItemText>
+              <ListItemText slotProps={{ primary: { variant: "h5" } }}>English</ListItemText>
             </ListItemButton>
           </ListItem>
         </List>
       </Drawer>
+      <JiraInfoDialog open={infoDialogOpen} handleClose={() => setInfoDialogOpen(false)} />
     </Box>
   );
 };

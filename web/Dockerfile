@@ -1,5 +1,4 @@
-FROM node:20.12
-
+FROM node:22.21
 
 # Install dependencies.
 WORKDIR /usr/src/app
@@ -8,4 +7,4 @@ RUN npm ci
 
 COPY . .
 
-CMD npm run dev -- --host
+CMD ["npm", "run", "dev", "--", "--host"]
