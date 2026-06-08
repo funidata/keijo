@@ -1,5 +1,5 @@
 import { GetMySettingsDocument } from "../../graphql/generated/graphql";
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 
 const useFormFilters = () => {
   const { data: settingsData } = useQuery(GetMySettingsDocument);

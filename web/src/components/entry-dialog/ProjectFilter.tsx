@@ -1,4 +1,4 @@
-  import { useApolloClient, useMutation, useQuery } from "@apollo/client";
+import { useApolloClient, useMutation, useQuery } from "@apollo/client/react";
 import { Autocomplete, Chip, FormControl, TextField } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -47,7 +47,7 @@ const ProjectFilter = () => {
           }
           updateSettings({ variables: { settings: { projectsPreset: value } } });
         }}
-        renderTags={(value, getTagProps) => {
+        renderValue={(value, getTagProps) => {
           const numTags = value.length;
           const limitTags = 1;
           return (

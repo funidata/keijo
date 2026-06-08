@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { GetMySettingsDocument } from "../../graphql/generated/graphql";
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 
 const useOptionsFilter = <T,>(getLabel: (option: T) => string) => {
   const { data: settingsData } = useQuery(GetMySettingsDocument);
