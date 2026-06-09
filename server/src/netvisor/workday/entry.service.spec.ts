@@ -92,11 +92,15 @@ describe("EntryService", () => {
       ]);
       await entryService.remove(employeeNumber, "", key, date);
 
-      expect(netvisorApiService.get).toBeCalledTimes(1);
-      expect(netvisorApiService.get).toBeCalledWith(NetvisorEndpoints.DELETE_WORKDAYHOUR, [], {
-        netvisorkey: key,
-      });
-      expect(logger.audit).toBeCalledTimes(1);
+      expect(netvisorApiService.get).toHaveBeenCalledTimes(1);
+      expect(netvisorApiService.get).toHaveBeenCalledWith(
+        NetvisorEndpoints.DELETE_WORKDAYHOUR,
+        [],
+        {
+          netvisorkey: key,
+        },
+      );
+      expect(logger.audit).toHaveBeenCalledTimes(1);
     });
 
     it("Denies removing an accepted entry", async () => {
@@ -139,8 +143,8 @@ describe("EntryService", () => {
         date: date.toDate(),
       });
       await expect(call).resolves.toBeUndefined();
-      expect(netvisorApiService.post).toBeCalledTimes(1);
-      expect(netvisorApiService.post).toBeCalledWith(NetvisorEndpoints.POST_WORKDAY, {
+      expect(netvisorApiService.post).toHaveBeenCalledTimes(1);
+      expect(netvisorApiService.post).toHaveBeenCalledWith(NetvisorEndpoints.POST_WORKDAY, {
         root: {
           workday: {
             date: {
@@ -181,7 +185,7 @@ describe("EntryService", () => {
           },
         },
       });
-      expect(logger.audit).toBeCalledTimes(1);
+      expect(logger.audit).toHaveBeenCalledTimes(1);
     });
 
     describe("replace", () => {
@@ -204,10 +208,10 @@ describe("EntryService", () => {
         const call = entryService.replace(employeeNumber, "", key, date, replacement);
 
         await expect(call).resolves.toBeUndefined();
-        expect(entryService.remove).toBeCalledTimes(1);
-        expect(entryService.remove).toBeCalledWith(employeeNumber, "", key, date);
-        expect(entryService.addWorkdayEntry).toBeCalledTimes(1);
-        expect(entryService.addWorkdayEntry).toBeCalledWith(employeeNumber, "", replacement);
+        expect(entryService.remove).toHaveBeenCalledTimes(1);
+        expect(entryService.remove).toHaveBeenCalledWith(employeeNumber, "", key, date);
+        expect(entryService.addWorkdayEntry).toHaveBeenCalledTimes(1);
+        expect(entryService.addWorkdayEntry).toHaveBeenCalledWith(employeeNumber, "", replacement);
       });
     });
   });
