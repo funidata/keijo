@@ -10,4 +10,7 @@ export class UpdateSettingsDto {
 
   @Field({ nullable: true })
   jiraNotificationIgnore?: boolean;
+
+  @Field(() => [String], { nullable: true })
+  projectsPreset?: string[];
 }

@@ -7,6 +7,7 @@ import {
   Alert,
   Box,
   Button,
+  Collapse,
   FormControlLabel,
   FormGroup,
   Grid,
@@ -16,7 +17,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { Dayjs } from "dayjs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -37,6 +38,7 @@ import JiraIssueComboBox from "./JiraIssueComboBox";
 import ResponsiveDatePicker from "./ResponsiveDatePicker";
 import WorkdayHours from "./WorkdayHours";
 import useEntryForm, { EntryFormSchema } from "./useEntryForm";
+import ProjectFilter from "./ProjectFilter";
 
 export type EntryFormProps = {
   form: UseFormReturn<EntryFormSchema>;
@@ -79,6 +81,7 @@ const EntryForm = () => {
   const { userPrefersSetRemainingHours, toggleRemainingHours } = usePreferSetRemainingHours();
   const { control, watch } = form;
   const dateWatch = dayjs(watch("date")).locale(dayjs.locale());
+  const [showFilters, setShowFilters] = useState(false);
   const { isJiraAuth, isLoading } = useIsJiraAuthenticated();
 
   const { data } = useQuery(GetMySettingsDocument);
@@ -147,6 +150,21 @@ const EntryForm = () => {
                   />
                 )}
               />
+            </Grid>
+            <Grid size={12}>
+              <Button
+                onClick={() => setShowFilters((prev) => !prev)}
+                size="small"
+                variant="text"
+                aria-label={showFilters ? t("controls.hideFilters") : t("controls.showFilters")}
+              >
+                {showFilters ? t("controls.hideFilters") : t("controls.showFilters")}
+              </Button>
+            </Grid>
+            <Grid size={12}>
+              <Collapse in={showFilters}>
+                <ProjectFilter />
+              </Collapse>
             </Grid>
             {data && !data.getMySettings.jiraNotificationIgnore && !isJiraAuth && !isLoading ? (
               <Grid>
