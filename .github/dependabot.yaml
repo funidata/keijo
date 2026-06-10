@@ -8,6 +8,10 @@ updates:
     schedule:
       interval: "cron"
       cronjob: "0 6 * * Mon%2"
+    cooldown:
+      semver-major-days: 14
+      semver-minor-days: 7
+      semver-patch-days: 3
     groups:
       npm:
         applies-to: "version-updates"
@@ -20,8 +24,12 @@ updates:
     schedule:
       interval: "cron"
       cronjob: "0 6 * * Mon%2"
+    cooldown:
+      default-days: 14
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "cron"
       cronjob: "0 6 * * Mon%2"
+    cooldown:
+      default-days: 14
