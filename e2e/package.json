@@ -20,6 +20,6 @@
     "jiti": "^2.7.0",
     "playwright-i18next-fixture": "^1.0.0",
     "translations": "file:../web/src/i18n",
-    "typescript-eslint": "^8.60.1"
+    "typescript-eslint": "^8.61.0"
   }
 }
