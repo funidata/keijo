@@ -11,7 +11,6 @@ if (process.env.NODE_ENV !== "production") {
 const graphQlModuleConfig: ApolloDriverConfig = {
   autoSchemaFile: true,
   driver: ApolloDriver,
-  graphiql: true,
   playground: false,
   plugins,
 };
