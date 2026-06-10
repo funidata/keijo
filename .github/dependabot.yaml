@@ -1,26 +1,37 @@
 version: 2
 
 updates:
-  - package-ecosystem: github-actions
-    directory: /
-    schedule:
-      interval: daily
-  - package-ecosystem: docker
+  - package-ecosystem: "npm"
     directories:
-      - server
-      - web
+      - "/"
+      - "e2e"
+      - "server"
+      - "web"
     schedule:
-      interval: daily
-  - package-ecosystem: npm
-    directories:
-      - e2e
-      - server
-      - web
-    schedule:
-      interval: daily
+      interval: "cron"
+      cronjob: "0 6 * * Mon%2"
+    cooldown:
+      semver-major-days: 14
+      semver-minor-days: 7
+      semver-patch-days: 3
     groups:
       npm:
-        applies-to: version-updates
+        applies-to: "version-updates"
         update-types:
-          - patch
-          - minor
+          - "patch"
+  - package-ecosystem: "docker"
+    directories:
+      - "server"
+      - "web"
+    schedule:
+      interval: "cron"
+      cronjob: "0 6 * * Mon%2"
+    cooldown:
+      default-days: 14
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "cron"
+      cronjob: "0 6 * * Mon%2"
+    cooldown:
+      default-days: 14
