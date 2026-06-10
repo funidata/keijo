@@ -10,4 +10,10 @@ export class UpdateSettingsDto {
 
   @Field({ nullable: true })
   jiraNotificationIgnore?: boolean;
+
+  @Field({ nullable: true })
+  showWeekend?: boolean;
+
+  @Field({ nullable: true })
+  setRemainingHours?: boolean;
 }
