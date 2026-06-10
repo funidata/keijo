@@ -6,7 +6,8 @@ updates:
       - "server"
       - "web"
     schedule:
-      interval: "weekly"
+      interval: "cron"
+      cronjob: "0 6 * * Mon%2"
     groups:
       npm:
         applies-to: "version-updates"
@@ -17,8 +18,10 @@ updates:
       - "server"
       - "web"
     schedule:
-      interval: "monthly"
+      interval: "cron"
+      cronjob: "0 6 * * Mon%2"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "cron"
+      cronjob: "0 6 * * Mon%2"
