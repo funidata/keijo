@@ -11,7 +11,7 @@ updates:
       npm:
         applies-to: "version-updates"
         update-types:
-          - "minor"
+          - "patch"
   - package-ecosystem: "docker"
     directories:
       - "server"
