@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import packageJson from "./package.json";
@@ -7,5 +8,8 @@ export default defineConfig({
   plugins: [react()],
   define: {
     "import.meta.env.APP_VERSION": JSON.stringify(packageJson.version),
+  },
+  test: {
+    environment: "jsdom",
   },
 });
