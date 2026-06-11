@@ -29,7 +29,11 @@ const ProjectFilter = () => {
 
   const { data } = useQuery(FindDimensionOptionsDocument);
   const issueKeys = data?.findDimensionOptions.issue || [];
-  const projects = [...new Set(issueKeys.map((key) => key.split("-")[0]))];
+  const projects = [...new Set(
+    issueKeys
+      .filter((key) => /^[A-Za-z]+-\d+$/.test(key))
+      .map((key) => key.split("-")[0])
+  )];
 
   return (
     <FormControl fullWidth>
