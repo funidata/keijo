@@ -7,6 +7,7 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
     permissions:
       contents: read
     steps:
@@ -40,6 +41,7 @@ jobs:
   formatting:
     name: Format
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
     permissions:
       contents: read
     steps:
@@ -59,6 +61,7 @@ jobs:
   unit-tests:
     name: Unit tests
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
     permissions:
       contents: read
     steps:
@@ -79,6 +82,7 @@ jobs:
   web-unit-tests:
     name: Web unit tests
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
     permissions:
       contents: read
     steps:
@@ -100,6 +104,7 @@ jobs:
   e2e-tests:
     name: E2E tests
     runs-on: ubuntu-24.04
+    timeout-minutes: 30
     permissions:
       contents: read
     strategy:
@@ -137,6 +142,7 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ hashFiles('e2e/package-lock.json') }}
+          restore-keys: playwright-
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
         working-directory: e2e
@@ -170,6 +176,7 @@ jobs:
   e2e-report:
     name: E2E test report
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
     permissions:
       contents: read
     needs:
