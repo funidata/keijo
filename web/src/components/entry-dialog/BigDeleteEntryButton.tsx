@@ -16,7 +16,7 @@ const BigDeleteEntryButton = ({ entryKey, date, onDeleted }: DeleteEntryButtonPr
   const { showSuccessNotification } = useNotification();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const [removeWorkdayEntry] = useMutation(RemoveWorkdayEntryDocument, {
+  const [removeWorkdayEntry, { loading }] = useMutation(RemoveWorkdayEntryDocument, {
     refetchQueries: [FindWorkdaysDocument],
     onCompleted: () => {
       showSuccessNotification(t("notifications.deleteEntry.success"));
@@ -49,10 +49,10 @@ const BigDeleteEntryButton = ({ entryKey, date, onDeleted }: DeleteEntryButtonPr
           {t("controls.confirmDeleteForDialog")}
         </DialogTitle>
         <DialogActions>
-          <Button onClick={onClose} color="secondary">
+          <Button onClick={onClose} color="secondary" disabled={loading}>
             {t("controls.cancel")}
           </Button>
-          <Button onClick={onConfirm} autoFocus>
+          <Button onClick={onConfirm} autoFocus loading={loading}>
             {t("controls.deleteEntry")}
           </Button>
         </DialogActions>
