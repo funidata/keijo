@@ -12,7 +12,9 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     coverage: {
-      reporter: ["html"],
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: ["src/i18n", "src/common/dayjs.ts", "src/**/*.enum.ts", "src/**/*.d.ts"],
+      reporter: ["text", "html"],
     },
   },
 });
