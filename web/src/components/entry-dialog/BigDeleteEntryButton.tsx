@@ -9,9 +9,10 @@ import { useNotification } from "../global-notification/useNotification";
 type DeleteEntryButtonProps = {
   entryKey: string;
   date: Dayjs;
+  onDeleted?: () => void;
 };
 
-const BigDeleteEntryButton = ({ entryKey, date }: DeleteEntryButtonProps) => {
+const BigDeleteEntryButton = ({ entryKey, date, onDeleted }: DeleteEntryButtonProps) => {
   const { showSuccessNotification } = useNotification();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -31,10 +32,11 @@ const BigDeleteEntryButton = ({ entryKey, date }: DeleteEntryButtonProps) => {
   };
 
   const onConfirm = async () => {
-    removeWorkdayEntry({
+    await removeWorkdayEntry({
       variables: { entry: { key: entryKey, date: date.format("YYYY-MM-DD") } },
     });
     onClose();
+    onDeleted?.();
   };
 
   return (
