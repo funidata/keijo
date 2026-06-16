@@ -1,11 +1,10 @@
+/** Internal type. DO NOT USE DIRECTLY. */
+type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+/** Internal type. DO NOT USE DIRECTLY. */
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -13,7 +12,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  DateTime: { input: any; output: any; }
+  DateTime: { input: unknown; output: unknown; }
 };
 
 export enum AcceptanceStatus {
@@ -137,37 +136,66 @@ export type Workday = {
   entries: Array<Entry>;
 };
 
+export type AcceptanceStatus =
+  | 'Accepted'
+  | 'Checked'
+  | 'Open'
+  | 'Paid';
+
+export type AddWorkdayEntryInput = {
+  activity?: string | null | undefined;
+  client?: string | null | undefined;
+  date: unknown;
+  description: string;
+  duration: number;
+  issue?: string | null | undefined;
+  product?: string | null | undefined;
+};
+
+export type RemoveWorkdayEntryInput = {
+  date: unknown;
+  key: string;
+};
+
+export type UpdateSettingsDto = {
+  activityPreset?: string | null | undefined;
+  jiraNotificationIgnore?: boolean | null | undefined;
+  productPreset?: string | null | undefined;
+  setRemainingHours?: boolean | null | undefined;
+  showWeekend?: boolean | null | undefined;
+};
+
 export type AddWorkdayEntryMutationVariables = Exact<{
   entry: AddWorkdayEntryInput;
 }>;
 
 
-export type AddWorkdayEntryMutation = { __typename?: 'Mutation', addWorkdayEntry: string };
+export type AddWorkdayEntryMutation = { addWorkdayEntry: string };
 
 export type FindDimensionOptionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FindDimensionOptionsQuery = { __typename?: 'Query', findDimensionOptions: { __typename?: 'DimensionOptions', product: Array<string>, activity: Array<string>, issue: Array<string>, client: Array<string> } };
+export type FindDimensionOptionsQuery = { findDimensionOptions: { product: Array<string>, activity: Array<string>, issue: Array<string>, client: Array<string> } };
 
 export type FindWorkdaysQueryVariables = Exact<{
-  start: Scalars['DateTime']['input'];
-  end: Scalars['DateTime']['input'];
+  start: unknown;
+  end: unknown;
 }>;
 
 
-export type FindWorkdaysQuery = { __typename?: 'Query', findWorkdays: Array<{ __typename?: 'Workday', date: any, entries: Array<{ __typename?: 'Entry', key: string, duration: number, durationInHours: boolean, description: string, acceptanceStatus: AcceptanceStatus, typeName: string, ratioNumber?: number | null, product?: string | null, activity?: string | null, issue?: string | null, client?: string | null }> }> };
+export type FindWorkdaysQuery = { findWorkdays: Array<{ date: unknown, entries: Array<{ key: string, duration: number, durationInHours: boolean, description: string, acceptanceStatus: AcceptanceStatus, typeName: string, ratioNumber: number | null, product: string | null, activity: string | null, issue: string | null, client: string | null }> }> };
 
 export type GetSessionStatusQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSessionStatusQuery = { __typename?: 'Query', getSessionStatus: { __typename?: 'SessionStatus', employeeNumber?: number | null } };
+export type GetSessionStatusQuery = { getSessionStatus: { employeeNumber: number | null } };
 
 export type RemoveWorkdayEntryMutationVariables = Exact<{
   entry: RemoveWorkdayEntryInput;
 }>;
 
 
-export type RemoveWorkdayEntryMutation = { __typename?: 'Mutation', removeWorkdayEntry: string };
+export type RemoveWorkdayEntryMutation = { removeWorkdayEntry: string };
 
 export type ReplaceWorkdayEntryMutationVariables = Exact<{
   originalEntry: RemoveWorkdayEntryInput;
@@ -175,19 +203,19 @@ export type ReplaceWorkdayEntryMutationVariables = Exact<{
 }>;
 
 
-export type ReplaceWorkdayEntryMutation = { __typename?: 'Mutation', replaceWorkdayEntry: string };
+export type ReplaceWorkdayEntryMutation = { replaceWorkdayEntry: string };
 
 export type GetMySettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMySettingsQuery = { __typename?: 'Query', getMySettings: { __typename?: 'UserSettings', employeeNumber: number, productPreset?: string | null, activityPreset?: string | null, jiraNotificationIgnore?: boolean | null, showWeekend?: boolean | null, setRemainingHours?: boolean | null } };
+export type GetMySettingsQuery = { getMySettings: { employeeNumber: number, productPreset: string | null, activityPreset: string | null, jiraNotificationIgnore: boolean | null, showWeekend: boolean | null, setRemainingHours: boolean | null } };
 
 export type UpdateSettingsMutationVariables = Exact<{
   settings: UpdateSettingsDto;
 }>;
 
 
-export type UpdateSettingsMutation = { __typename?: 'Mutation', updateSettings: { __typename?: 'UserSettings', employeeNumber: number } };
+export type UpdateSettingsMutation = { updateSettings: { employeeNumber: number } };
 
 
 export const AddWorkdayEntryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"AddWorkdayEntry"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"entry"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"AddWorkdayEntryInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addWorkdayEntry"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"entry"},"value":{"kind":"Variable","name":{"kind":"Name","value":"entry"}}}]}]}}]} as unknown as DocumentNode<AddWorkdayEntryMutation, AddWorkdayEntryMutationVariables>;
