@@ -7,7 +7,7 @@ const Footer = () => (
     </Typography>
     <Typography component="span" variant="caption">
       {" "}
-      &mdash; Made with ❤️ by 🦊
+      &mdash; Made with ❤️ by 🦊 &mdash; Maintained by ❄️🦊
     </Typography>
   </Box>
 );
