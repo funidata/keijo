@@ -1,20 +1,35 @@
 changelog:
   exclude:
     labels:
-      - exclude from release notes
+      - "exclude from release notes"
   categories:
-    - title: Maintenance
+    - title: "Breaking Changes"
       labels:
-        - maintenance
-    - title: New Features
+        - "breaking change"
+    - title: "Deprecated"
       labels:
-        - new feature
-    - title: Improvements
+        - "deprecated"
+    - title: "Features"
       labels:
-        - improvement
-    - title: Bug Fixes
+        - "feature"
+        - "new feature" # old label
+    - title: "Improvements"
       labels:
-        - bug
-    - title: Other
+        - "improvement"
+    - title: "Fixes"
+      labels:
+        - "bug fix"
+        - "bug" # old label
+    - title: "Chore"
+      labels:
+        - "chore"
+        - "maintenance" # old label
+    - title: "Dependencies"
+      labels:
+        - "dependencies"
+    - title: "Github Actions"
+      labels:
+        - "github actions"
+    - title: "Other"
       labels:
         - "*"
