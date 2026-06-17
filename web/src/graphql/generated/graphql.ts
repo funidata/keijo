@@ -19,12 +19,12 @@ export type FindDimensionOptionsQueryVariables = Exact<{ [key: string]: never; }
 export type FindDimensionOptionsQuery = { findDimensionOptions: { product: Array<string>, activity: Array<string>, issue: Array<string>, client: Array<string> } };
 
 export type FindWorkdaysQueryVariables = Exact<{
-  start: unknown;
-  end: unknown;
+  start: string;
+  end: string;
 }>;
 
 
-export type FindWorkdaysQuery = { findWorkdays: Array<{ date: unknown, entries: Array<{ key: string, duration: number, durationInHours: boolean, description: string, acceptanceStatus: Types.AcceptanceStatus, typeName: string, ratioNumber: number | null, product: string | null, activity: string | null, issue: string | null, client: string | null }> }> };
+export type FindWorkdaysQuery = { findWorkdays: Array<{ date: string, entries: Array<{ key: string, duration: number, durationInHours: boolean, description: string, acceptanceStatus: Types.AcceptanceStatus, typeName: string, ratioNumber: number | null, product: string | null, activity: string | null, issue: string | null, client: string | null }> }> };
 
 export type GetSessionStatusQueryVariables = Exact<{ [key: string]: never; }>;
 

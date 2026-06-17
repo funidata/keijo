@@ -15,3 +15,5 @@ generates:
       - typed-document-node
     config:
       importSchemaTypesFrom: "./src/graphql/generated/schema-types"
+      scalars:
+        DateTime: string

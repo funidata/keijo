@@ -113,9 +113,13 @@ const useEntryForm = ({ editEntry, date }: useEntryProps) => {
       throw new Error("Original entry not given.");
     }
 
+    if (!date) {
+      throw new Error("Original date not given.");
+    }
+
     await replaceWorkdayEntryMutation({
       variables: {
-        originalEntry: { key: editEntry.key, date: date?.format("YYYY-MM-DD") },
+        originalEntry: { key: editEntry.key, date: date.format("YYYY-MM-DD") },
         replacementEntry: {
           date: newDate.format("YYYY-MM-DD"),
           duration: Number(duration),
