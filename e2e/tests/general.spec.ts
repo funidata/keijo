@@ -8,7 +8,13 @@ test.describe("App bar", () => {
 
   test("Opens entry dialog", async ({ page, t, appBar }) => {
     await appBar.openEntryForm();
-    await expect(page.getByRole("heading", { name: t("entryDialog.title.edit") })).toBeVisible();
+
+    const dialog = page.getByRole("dialog", { name: t("entryDialog.title.create") });
+
+    await expect(dialog).toBeVisible();
+    await expect(
+      dialog.getByRole("heading", { name: t("entryDialog.title.create") }),
+    ).toBeVisible();
   });
 
   test("Switches between light and dark mode", async ({ appBar, page }) => {

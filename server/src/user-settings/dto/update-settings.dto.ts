@@ -13,4 +13,10 @@ export class UpdateSettingsDto {
 
   @Field(() => [String], { nullable: true })
   projectsPreset?: string[];
+
+  @Field({ nullable: true })
+  showWeekend?: boolean;
+
+  @Field({ nullable: true })
+  setRemainingHours?: boolean;
 }

@@ -5,6 +5,8 @@ query GetMySettings {
     activityPreset
     projectsPreset
     jiraNotificationIgnore
+    showWeekend
+    setRemainingHours
   }
 }
 

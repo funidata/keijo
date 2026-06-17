@@ -127,6 +127,10 @@ test.describe("Entry defaults mobile", () => {
     await expect(page.getByRole("group", { name: t("entryDialog.duration") })).toContainText(
       "07:30",
     );
+    await page.getByRole("switch", { name: t("entryDialog.setRemainingHours") }).click();
+    await expect(page.getByRole("group", { name: t("entryDialog.duration") })).toContainText(
+      "00:00",
+    );
   });
 
   test("Should use set default values", async ({ page, t }) => {

@@ -23,4 +23,12 @@ export class UserSettings {
   @Column({ nullable: true })
   @Field({ nullable: true })
   jiraNotificationIgnore: boolean;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  showWeekend: boolean;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  setRemainingHours: boolean;
 }
