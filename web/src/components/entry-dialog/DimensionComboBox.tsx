@@ -1,12 +1,21 @@
-import { Autocomplete, FormControl, TextField, Grid } from "@mui/material";
 import {
+  Autocomplete,
+  AutocompleteProps,
+  FormControl,
+  Grid,
+  GridProps,
+  TextField,
+} from "@mui/material";
+import {
+  Control,
   Controller,
   ControllerProps,
   FieldValues,
-  Control,
-  UseFormReturn,
   Path,
+  UseFormReturn,
 } from "react-hook-form";
+import useOptionsFilter from "./useOptionsFilter";
+import { createFilterOptions } from "@mui/material/Autocomplete";
 import { useTranslation } from "react-i18next";
 import { useDimensionOptions } from "../../common/useDimensionOptions";
 
@@ -15,13 +24,24 @@ type DimensionComboBoxProps<T extends FieldValues> = {
   name: "product" | "activity" | "issue" | "client";
   title: string;
   rules?: ControllerProps["rules"];
+  autoCompleteProps?: Partial<
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    AutocompleteProps<any, boolean | undefined, boolean | undefined, boolean | undefined>
+  >;
+  gridProps?: GridProps;
 };
+
+const inputFilter = createFilterOptions({
+  stringify: (option: string) => option,
+});
 
 const DimensionComboBox = <T extends FieldValues>({
   form,
   name,
   title,
   rules,
+  autoCompleteProps,
+  gridProps,
 }: DimensionComboBoxProps<T>) => {
   const dimensionOptions = useDimensionOptions();
   const options = dimensionOptions[name] || [];
@@ -35,8 +55,10 @@ const DimensionComboBox = <T extends FieldValues>({
   // Merge rules and validate
   const mergedRules = name === "issue" ? { ...(rules || {}), validate: validateIssue } : rules;
 
+  const extFilter = useOptionsFilter<string>((option) => option);
+
   return (
-    <Grid size={{ xs: 12, md: 6 }}>
+    <Grid size={{ xs: 12, md: 6 }} {...gridProps}>
       <FormControl fullWidth>
         <Controller
           control={form.control as Control<FieldValues>}
@@ -61,6 +83,10 @@ const DimensionComboBox = <T extends FieldValues>({
                   helperText={form.formState.errors[name]?.message as string}
                 />
               )}
+              filterOptions={(options, state) =>
+                inputFilter(name === "issue" ? extFilter(options) : options, state)
+              }
+              {...autoCompleteProps}
             />
           )}
         />

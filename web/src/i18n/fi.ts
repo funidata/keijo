@@ -23,6 +23,8 @@ const fi = {
     jiraDisconnect: "Katkaise Jira-yhteys",
     showWeekend: "Näytä Viikonloppu",
     hideWeekend: "Piilota Viikonloppu",
+    showFilters: "Suodattimet",
+    hideFilters: "Piilota Suodattimet",
     dateRange: "Aikaväli",
   },
   dimensionNames: {
@@ -69,6 +71,7 @@ const fi = {
     },
     totalHoursToday: "Päivän työaika ennen tätä kirjausta",
     setRemainingHours: "Aseta jäljellä olevat tunnit automaattisesti",
+    filterProjects: "Suodata Projektit",
   },
   entryTable: {
     accepted: "Hyväksytty",

@@ -1,6 +1,8 @@
+import { useQuery as useApolloQuery } from "@apollo/client/react";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useDimensionOptions } from "../common/useDimensionOptions";
+import { GetMySettingsDocument } from "../graphql/generated/graphql";
 import { axiosJira } from "./axiosInstance";
 import { JiraIssue, JiraIssueResult, JiraProjectResult } from "./jira-types";
 import { escapeUserInputForJql } from "./jira-utils";
@@ -14,6 +16,9 @@ const staleTime = 5 * 60 * 1000;
 export const useRecentJiraIssues = (): JiraIssue[] => {
   const dimensionOptions = useDimensionOptions();
   const nvIssueKeys = dimensionOptions.issue;
+
+  const { data: settingsData } = useApolloQuery(GetMySettingsDocument);
+  const projectsPreset = settingsData?.getMySettings.projectsPreset;
 
   const projectQuery = useQuery({
     queryKey: ["all-projects"],
@@ -39,13 +44,18 @@ export const useRecentJiraIssues = (): JiraIssue[] => {
 
     // Sanitize the list by filtering with actual Jira project keys.
     const jiraProjectKeys = jiraProjects.map((project) => project.key);
-    return nvProjects.filter((key) => jiraProjectKeys.includes(key));
-  }, [nvIssueKeys, jiraProjects]);
+    const sanitized = nvProjects.filter((key) => jiraProjectKeys.includes(key));
+
+    if (projectsPreset?.length) {
+      return sanitized.filter((key) => projectsPreset.includes(key));
+    }
+    return sanitized;
+  }, [nvIssueKeys, jiraProjects, projectsPreset]);
 
   const jqlProjectList = allowedProjects.map(escapeUserInputForJql).join(",");
 
   const issueQuery = useQuery({
-    queryKey: ["recentIssues"],
+    queryKey: ["recentIssues", projectsPreset],
     enabled: allowedProjects.length > 0,
     staleTime,
     queryFn: async () => {
