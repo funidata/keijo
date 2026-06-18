@@ -4,4 +4,4 @@ KEIJO-<jira-ticket-number>
   
 ### Developer's checklist
 - [ ] I wrote unit tests for relevant components
-- [ ] I created tickets for testing needs outside the scope of this ticket
+- [ ] I created tickets for testing needs found during this PR that are outside the scope of this ticket
