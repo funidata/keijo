@@ -1,5 +1,7 @@
+import { useQuery as useApolloQuery } from "@apollo/client/react";
 import { useQuery } from "@tanstack/react-query";
 import { useDimensionOptions } from "../common/useDimensionOptions";
+import { GetMySettingsDocument } from "../graphql/generated/graphql";
 import { axiosJira } from "./axiosInstance";
 import { JiraIssueResult } from "./jira-types";
 import { escapeUserInputForJql } from "./jira-utils";
@@ -10,6 +12,9 @@ import { escapeUserInputForJql } from "./jira-utils";
 export const useJiraTextSearch = (searchTerm: string) => {
   const dimensionOptions = useDimensionOptions();
   const nvIssueKeys = dimensionOptions.issue;
+
+  const { data: settingsData } = useApolloQuery(GetMySettingsDocument);
+  const projectsPreset = settingsData?.getMySettings.projectsPreset;
 
   const query = useQuery({
     queryKey: ["jira-text-search", searchTerm],
@@ -30,9 +35,15 @@ export const useJiraTextSearch = (searchTerm: string) => {
     },
   });
 
-  // Filter in only allowed issues and cap length.
+  // Filter in only allowed issues, apply project preset filter, and cap length.
   const issues =
-    query.data?.issues.filter((issue) => nvIssueKeys.includes(issue.key)).slice(0, 100) || [];
+    query.data?.issues
+      .filter((issue) => nvIssueKeys.includes(issue.key))
+      .filter((issue) => {
+        if (!projectsPreset?.length) return true;
+        return projectsPreset.some((p) => issue.key.startsWith(p + "-"));
+      })
+      .slice(0, 100) || [];
 
   return {
     issues,

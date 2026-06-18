@@ -111,6 +111,7 @@ export type UpdateSettingsDto = {
   activityPreset?: InputMaybe<Scalars['String']['input']>;
   jiraNotificationIgnore?: InputMaybe<Scalars['Boolean']['input']>;
   productPreset?: InputMaybe<Scalars['String']['input']>;
+  projectsPreset?: InputMaybe<Array<Scalars['String']['input']>>;
   setRemainingHours?: InputMaybe<Scalars['Boolean']['input']>;
   showWeekend?: InputMaybe<Scalars['Boolean']['input']>;
 };
@@ -121,6 +122,7 @@ export type UserSettings = {
   employeeNumber: Scalars['Float']['output'];
   jiraNotificationIgnore?: Maybe<Scalars['Boolean']['output']>;
   productPreset?: Maybe<Scalars['String']['output']>;
+  projectsPreset?: Maybe<Array<Scalars['String']['output']>>;
   setRemainingHours?: Maybe<Scalars['Boolean']['output']>;
   showWeekend?: Maybe<Scalars['Boolean']['output']>;
 };
