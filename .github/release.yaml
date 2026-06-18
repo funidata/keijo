@@ -12,18 +12,15 @@ changelog:
     - title: "Features"
       labels:
         - "feature"
-        - "new feature" # old label
     - title: "Improvements"
       labels:
         - "improvement"
     - title: "Fixes"
       labels:
         - "bug fix"
-        - "bug" # old label
     - title: "Chore"
       labels:
         - "chore"
-        - "maintenance" # old label
     - title: "Dependencies"
       labels:
         - "dependencies"
