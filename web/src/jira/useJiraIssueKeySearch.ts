@@ -1,7 +1,9 @@
+import { useQuery as useApolloQuery } from "@apollo/client/react";
 import { useQuery } from "@tanstack/react-query";
 import { sortBy } from "lodash";
 import { useMemo } from "react";
 import { useDimensionOptions } from "../common/useDimensionOptions";
+import { GetMySettingsDocument } from "../graphql/generated/graphql";
 import { axiosJira } from "./axiosInstance";
 import { JiraIssueResult } from "./jira-types";
 import { keyIsInKeys } from "./jql";
@@ -36,13 +38,21 @@ export const useJiraIssueKeySearch = (searchTerm: string) => {
   const dimensionOptions = useDimensionOptions();
   const nvIssueKeys = dimensionOptions.issue;
 
+  const { data: settingsData } = useApolloQuery(GetMySettingsDocument);
+  const projectsPreset = settingsData?.getMySettings.projectsPreset;
+
+  const filteredNvIssueKeys = useMemo(() => {
+    if (!projectsPreset?.length) return nvIssueKeys;
+    return nvIssueKeys.filter((key) => projectsPreset.some((p) => key.startsWith(p + "-")));
+  }, [nvIssueKeys, projectsPreset]);
+
   const nvMatches = useMemo(() => {
     // An empty string later in `String.startsWith` will match everything.
     if (!searchTerm) {
       return [];
     }
 
-    const matches = nvIssueKeys.filter(issueKeySearchFilter(searchTerm));
+    const matches = filteredNvIssueKeys.filter(issueKeySearchFilter(searchTerm));
 
     const sorted = sortBy(matches, [
       (value) => {
@@ -58,7 +68,7 @@ export const useJiraIssueKeySearch = (searchTerm: string) => {
     // `key IN ()` statements to 1000. If the limit is passed, the API may return issues that
     // we're not queried for causing surprising results.
     return sorted.slice(0, 100);
-  }, [nvIssueKeys, searchTerm]);
+  }, [filteredNvIssueKeys, searchTerm]);
 
   const query = useQuery({
     queryKey: ["jira-issue-key-search", nvMatches],
