@@ -235,7 +235,11 @@ const EntryForm = () => {
             </Grid>
             <Grid size={12}>
               {editEntry && originalDate && (
-                <BigDeleteEntryButton entryKey={editEntry.key} date={dayjs(originalDate)} />
+                <BigDeleteEntryButton
+                  entryKey={editEntry.key}
+                  date={dayjs(originalDate)}
+                  onDeleted={() => navigate("..")}
+                />
               )}
             </Grid>
             <Grid size={12}>
