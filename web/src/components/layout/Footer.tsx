@@ -1,15 +1,15 @@
-import { Box, Typography } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 const Footer = () => (
-  <Box component="span" sx={{ color: (theme) => theme.palette.text.secondary }}>
-    <Typography component="span" variant="overline">
+  <Stack direction="column" sx={{ color: "text.secondary" }}>
+    <Typography component="span" variant="overline" align="center">
       Keijo {import.meta.env.APP_VERSION}
     </Typography>
-    <Typography component="span" variant="caption">
-      {" "}
-      &mdash; Made with ❤️ by 🦊
+    <Typography component="span" variant="caption" align="center">
+      Made with ❤️ by 🦊 &mdash; Maintained by ❄️🦊
     </Typography>
-  </Box>
+  </Stack>
 );
 
 export default Footer;
