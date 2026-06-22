@@ -73,6 +73,7 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
   return (
     <AccordionSummary
       expandIcon={!disabled && <ExpandMoreIcon />}
+      aria-current={isCurrentDay ? "date" : undefined}
       sx={{
         border: isCurrentDay ? "1px solid" : "none",
         borderColor: isCurrentDay ? "secondary.main" : "transparent",
