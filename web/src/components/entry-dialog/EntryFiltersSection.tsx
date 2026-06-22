@@ -3,10 +3,12 @@ import Button from "@mui/material/Button";
 import ProjectFilter from "./ProjectFilter";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import useEntryFormFilters from "./useEntryFormFilters";
 
 export default function EntryFiltersSection() {
   const [showFilters, setShowFilters] = useState(false);
   const { t } = useTranslation();
+  const { filters, updateSelectedProjects } = useEntryFormFilters();
 
   return (
     <>
@@ -19,7 +21,10 @@ export default function EntryFiltersSection() {
         {showFilters ? t("controls.hideFilters") : t("controls.showFilters")}
       </Button>
       <Collapse in={showFilters}>
-        <ProjectFilter />
+        <ProjectFilter
+          selectedProjects={filters.projects}
+          onProjectsChange={updateSelectedProjects}
+        />
       </Collapse>
     </>
   );

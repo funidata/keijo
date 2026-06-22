@@ -2,12 +2,14 @@ import { useQuery } from "@apollo/client/react";
 import { Autocomplete, Chip, FormControl, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
-import useEntryFormFilters from "./useEntryFormFilters";
 
-const ProjectFilter = () => {
+interface ProjectFilterProps {
+  selectedProjects: string[];
+  onProjectsChange?: (projects: string[]) => void;
+}
+
+export default function ProjectFilter({ selectedProjects, onProjectsChange }: ProjectFilterProps) {
   const { t } = useTranslation();
-  const { filters, updateSelectedProjects } = useEntryFormFilters();
-
   const { data } = useQuery(FindDimensionOptionsDocument);
   const issueKeys = data?.findDimensionOptions.issue || [];
   const projectKeys = [
@@ -19,10 +21,10 @@ const ProjectFilter = () => {
   return (
     <FormControl fullWidth>
       <Autocomplete
-        value={filters.projects}
+        value={selectedProjects}
         options={projectKeys}
         onChange={(_, value) => {
-          updateSelectedProjects(value);
+          onProjectsChange?.(value);
         }}
         renderValue={(value, getTagProps) => {
           const numTags = value.length;
@@ -41,6 +43,4 @@ const ProjectFilter = () => {
       />
     </FormControl>
   );
-};
-
-export default ProjectFilter;
+}
