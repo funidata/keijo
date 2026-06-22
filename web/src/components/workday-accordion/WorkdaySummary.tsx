@@ -1,5 +1,6 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { AccordionSummary, Box, Chip, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import { roundToFullMinutes, totalDurationOfEntries } from "../../common/duration";
 import useDayjs from "../../common/useDayjs";
 import {
@@ -30,6 +31,7 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const dayjs = useDayjs();
   const date = dayjs(workday.date).locale(dayjs.locale());
+  const isCurrentDay = date.isSame(dayjs(), "day");
   const holiday = isHoliday(date);
   const weekend = isWeekend(date);
   const vacation = isVacation(workday);
@@ -69,7 +71,17 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
   };
 
   return (
-    <AccordionSummary expandIcon={!disabled && <ExpandMoreIcon />}>
+    <AccordionSummary
+      expandIcon={!disabled && <ExpandMoreIcon />}
+      sx={{
+        border: isCurrentDay ? "1px solid" : "none",
+        borderColor: isCurrentDay ? "secondary.main" : "transparent",
+        backgroundColor: isCurrentDay
+          ? (theme) =>
+              alpha(theme.palette.secondary.main, theme.palette.mode === "dark" ? 0.4 : 0.6)
+          : "inherit",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
