@@ -4,11 +4,12 @@ import ProjectFilter from "./ProjectFilter";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import useEntryFormFilters from "./useEntryFormFilters";
+import Badge from "@mui/material/Badge";
 
 export default function EntryFiltersSection() {
   const [showFilters, setShowFilters] = useState(false);
   const { t } = useTranslation();
-  const { filters, updateSelectedProjects } = useEntryFormFilters();
+  const { filters, updateSelectedProjects, activeFilters } = useEntryFormFilters();
 
   return (
     <>
@@ -16,9 +17,10 @@ export default function EntryFiltersSection() {
         onClick={() => setShowFilters((prev) => !prev)}
         size="small"
         variant="text"
-        aria-label={showFilters ? t("controls.hideFilters") : t("controls.showFilters")}
+        aria-label={showFilters ? undefined : t("controls.showFilters_aria", { count: activeFilters.length })}
       >
         {showFilters ? t("controls.hideFilters") : t("controls.showFilters")}
+        <Badge badgeContent={activeFilters.length} color="primary" sx={{ ml: 2 }} />
       </Button>
       <Collapse in={showFilters}>
         <ProjectFilter

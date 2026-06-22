@@ -1,5 +1,6 @@
 const en = {
   controls: {
+    activeFiltersCount: "",
     aria: {
       prevWeek: "Go to previous week",
       nextWeek: "Go to next week",
@@ -23,7 +24,10 @@ const en = {
     jiraDisconnect: "Disconnect from Jira",
     showWeekend: "Show Weekend",
     hideWeekend: "Hide Weekend",
-    showFilters: "Filters",
+    showFilters: "Show filters",
+    showFilters_aria_zero: "Show filters, no active filters",
+    showFilters_aria_one: "Show filters, 1 active filter",
+    showFilters_aria_other: "Show filters, {{count}} active filters",
     hideFilters: "Hide Filters",
     dateRange: "Date Range",
   },
