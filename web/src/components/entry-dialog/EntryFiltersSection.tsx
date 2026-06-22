@@ -20,10 +20,10 @@ export default function EntryFiltersSection() {
         aria-label={
           showFilters ? undefined : t("controls.showFilters_aria", { count: activeFilters.length })
         }
-        sx={{ marginBottom: 1 }}
+        sx={{ marginBottom: 1, color: "secondary.dark" }}
       >
         {showFilters ? t("controls.hideFilters") : t("controls.showFilters")}
-        <Badge badgeContent={activeFilters.length} color="primary" sx={{ ml: 2 }} />
+        <Badge badgeContent={activeFilters.length} color="secondary" sx={{ ml: 2 }} />
       </Button>
       <Collapse in={showFilters}>
         <ProjectFilter
