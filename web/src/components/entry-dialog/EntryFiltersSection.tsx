@@ -17,7 +17,10 @@ export default function EntryFiltersSection() {
         onClick={() => setShowFilters((prev) => !prev)}
         size="small"
         variant="text"
-        aria-label={showFilters ? undefined : t("controls.showFilters_aria", { count: activeFilters.length })}
+        aria-label={
+          showFilters ? undefined : t("controls.showFilters_aria", { count: activeFilters.length })
+        }
+        sx={{ marginBottom: 1 }}
       >
         {showFilters ? t("controls.hideFilters") : t("controls.showFilters")}
         <Badge badgeContent={activeFilters.length} color="primary" sx={{ ml: 2 }} />
