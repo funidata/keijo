@@ -17,6 +17,7 @@ export default function EntryFiltersSection() {
         onClick={() => setShowFilters((prev) => !prev)}
         size="small"
         variant="text"
+        color="secondary"
         aria-label={
           showFilters ? undefined : t("controls.showFilters_aria", { count: activeFilters.length })
         }
