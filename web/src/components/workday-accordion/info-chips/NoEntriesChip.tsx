@@ -1,14 +1,18 @@
-import { Chip } from "@mui/material";
+import { Chip, SxProps, Theme } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
-const NoEntriesChip = () => {
+type NoEntriesChipProps = {
+  sx?: SxProps<Theme>;
+};
+
+const NoEntriesChip = ({ sx }: NoEntriesChipProps) => {
   const { t } = useTranslation();
 
   return (
     <Chip
       label={t("entryTable.noEntries")}
       variant="outlined"
-      style={{ color: "inherit", fontStyle: "italic" }}
+      sx={{ color: "inherit", fontStyle: "italic", ...sx }}
     />
   );
 };

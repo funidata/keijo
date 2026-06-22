@@ -1,6 +1,6 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 afterEach(() => cleanup());
 import "../../i18n/i18n-config";
@@ -51,9 +51,111 @@ describe("WorkdaySummary", () => {
     expect(screen.queryByText(/\d+:\d+ h/)).toBeNull();
   });
 
+  it("shows 'Holiday Pay Leave' chip for paid leave day", () => {
+    renderWorkday({
+      date: "2026-06-10",
+      entries: [{ ...baseEntry, ratioNumber: EntryType.HolidayPayLeave }],
+    });
+
+    expect(screen.getByText("Holiday Pay Leave")).toBeTruthy();
+    // Hours chip is hidden for special single-entry days like holiday pay leave
+    expect(screen.queryByText(/\d+:\d+ h/)).toBeNull();
+  });
+
+  it("shows 'Sick Leave' chip for sick leave day", () => {
+    renderWorkday({
+      date: "2026-06-10",
+      entries: [{ ...baseEntry, ratioNumber: EntryType.SickLeave }],
+    });
+
+    expect(screen.getByText("Sick Leave")).toBeTruthy();
+    // Hours chip is hidden for special single-entry days like sick leave
+    expect(screen.queryByText(/\d+:\d+ h/)).toBeNull();
+  });
+
+  it("shows 'Flex Leave' chip for flex leave day", () => {
+    renderWorkday({
+      date: "2026-06-10",
+      entries: [
+        {
+          ...baseEntry,
+          key: "1",
+          ratioNumber: EntryType.FlexLeave,
+          duration: 1,
+          durationInHours: false,
+        },
+        {
+          ...baseEntry,
+          key: "2",
+          ratioNumber: EntryType.NormalWork,
+          duration: 0,
+          durationInHours: true,
+        },
+      ],
+    });
+
+    expect(screen.getByText("Flex Leave")).toBeTruthy();
+    // Hours chip is hidden for special single-entry days like flex leave day
+    expect(screen.queryByText(/\d+:\d+ h/)).toBeNull();
+  });
+
+  it("does not show 'Flex Leave' chip without zero hour normal work entry", () => {
+    renderWorkday({
+      date: "2026-06-10",
+      entries: [
+        {
+          ...baseEntry,
+          key: "1",
+          ratioNumber: EntryType.FlexLeave,
+          duration: 1,
+          durationInHours: false,
+        },
+      ],
+    });
+
+    expect(screen.queryByText("Flex Leave")).toBeNull();
+  });
+
+  it("shows 'Holiday' chip for  holiday", () => {
+    renderWorkday({
+      date: "2026-06-19", // Midsummer Eve in Finland
+      entries: [],
+    });
+
+    expect(screen.getByText("Holiday")).toBeTruthy();
+  });
+
   it("shows 'Weekend' chip for a Saturday", () => {
     renderWorkday({ date: "2026-06-13", entries: [] }); // Saturday
 
     expect(screen.getByText("Weekend")).toBeTruthy();
+  });
+
+  it("has aria-current='date' for current day", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 5, 10, 12, 0, 0)); // 2026-06-10 local time
+
+    renderWorkday({
+      date: "2026-06-10",
+      entries: [{ ...baseEntry, ratioNumber: EntryType.NormalWork }],
+    });
+
+    expect(document.querySelector('[aria-current="date"]')).toBeTruthy();
+
+    vi.useRealTimers();
+  });
+
+  it("does not set aria-current for non-current day", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 5, 10, 12, 0, 0)); // 2026-06-10 local time
+
+    renderWorkday({
+      date: "2026-06-11",
+      entries: [{ ...baseEntry, ratioNumber: EntryType.NormalWork }],
+    });
+
+    expect(document.querySelector('[aria-current="date"]')).toBeNull();
+
+    vi.useRealTimers();
   });
 });
