@@ -1,6 +1,6 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 afterEach(() => cleanup());
 import "../../i18n/i18n-config";
@@ -55,5 +55,33 @@ describe("WorkdaySummary", () => {
     renderWorkday({ date: "2026-06-13", entries: [] }); // Saturday
 
     expect(screen.getByText("Weekend")).toBeTruthy();
+  });
+
+  it("has aria-current='date' for current day", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 5, 10, 12, 0, 0)); // 2026-06-10 local time
+
+    renderWorkday({
+      date: "2026-06-10",
+      entries: [{ ...baseEntry, ratioNumber: EntryType.NormalWork }],
+    });
+
+    expect(document.querySelector('[aria-current="date"]')).toBeTruthy();
+
+    vi.useRealTimers();
+  });
+
+  it("does not set aria-current for non-current day", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 5, 10, 12, 0, 0)); // 2026-06-10 local time
+
+    renderWorkday({
+      date: "2026-06-11",
+      entries: [{ ...baseEntry, ratioNumber: EntryType.NormalWork }],
+    });
+
+    expect(document.querySelector('[aria-current="date"]')).toBeNull();
+
+    vi.useRealTimers();
   });
 });
