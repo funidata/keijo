@@ -158,8 +158,4 @@ describe("WorkdaySummary", () => {
 
     vi.useRealTimers();
   });
-
-  describe("Fixed entries", () => {
-    it("shows 'Vacation' chip for a vacation day", () => {});
-  });
 });
