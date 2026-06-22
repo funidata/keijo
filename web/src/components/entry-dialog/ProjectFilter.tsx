@@ -1,5 +1,9 @@
 import { useQuery } from "@apollo/client/react";
-import { Autocomplete, Chip, FormControl, TextField } from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
+import Chip from "@mui/material/Chip";
+import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
+import FormHelperText from "@mui/material/FormHelperText";
 import { useTranslation } from "react-i18next";
 import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
 
@@ -7,6 +11,8 @@ interface ProjectFilterProps {
   selectedProjects: string[];
   onProjectsChange?: (projects: string[]) => void;
 }
+
+const helperId = "project-filter-helper-text";
 
 export default function ProjectFilter({ selectedProjects, onProjectsChange }: ProjectFilterProps) {
   const { t } = useTranslation();
@@ -40,7 +46,9 @@ export default function ProjectFilter({ selectedProjects, onProjectsChange }: Pr
         }}
         multiple
         renderInput={(params) => <TextField {...params} label={t("entryDialog.filterProjects")} />}
+        aria-describedby={helperId}
       />
+      <FormHelperText id={helperId}>{t("entryDialog.filterProjectsHelperText")}</FormHelperText>
     </FormControl>
   );
 }
