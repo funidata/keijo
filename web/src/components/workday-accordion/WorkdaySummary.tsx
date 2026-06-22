@@ -65,7 +65,7 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
       return <HolidayChip />;
     }
     if (empty) {
-      return <NoEntriesChip />;
+      return <NoEntriesChip sx={{ borderColor: isCurrentDay ? "grey.800" : "grey.400" }} />;
     }
     return null;
   };
@@ -109,7 +109,15 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
           {!disabled && (
             <>
               <EntryDialogButton date={date} size="medium" />
-              <Chip label={`${totalHoursFormatted} h`} sx={{ mr: 2, color: "inherit" }} />
+              <Chip
+                label={`${totalHoursFormatted} h`}
+                sx={{
+                  mr: 2,
+                  color: "inherit",
+                  border: isCurrentDay ? "1px solid" : "none",
+                  borderColor: isCurrentDay ? "grey.800" : "grey.400",
+                }}
+              />
             </>
           )}
           {disabled && !mobile && <Box sx={{ width: 133 }} />}
