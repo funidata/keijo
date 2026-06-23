@@ -22,7 +22,7 @@ services:
       - VITE_API_URL=http://localhost:4001/graphql
       - VITE_KEIJO_JIRA_API_URL=http://localhost:4001/jira
     ports:
-      - 4000:5173
+      - 4000:3000
 
   server:
     extends:

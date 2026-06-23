@@ -1,5 +1,6 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { AccordionSummary, Box, Chip, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import { roundToFullMinutes, totalDurationOfEntries } from "../../common/duration";
 import useDayjs from "../../common/useDayjs";
 import {
@@ -30,6 +31,7 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const dayjs = useDayjs();
   const date = dayjs(workday.date).locale(dayjs.locale());
+  const isCurrentDay = date.isSame(dayjs(), "day");
   const holiday = isHoliday(date);
   const weekend = isWeekend(date);
   const vacation = isVacation(workday);
@@ -63,14 +65,25 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
       return <HolidayChip />;
     }
     if (empty) {
-      return <NoEntriesChip />;
+      return <NoEntriesChip sx={{ borderColor: isCurrentDay ? "grey.800" : "grey.400" }} />;
     }
     return null;
   };
 
   return (
     <Box sx={{ position: "relative" }}>
-      <AccordionSummary expandIcon={!disabled && <ExpandMoreIcon />}>
+      <AccordionSummary
+        expandIcon={!disabled && <ExpandMoreIcon />}
+        aria-current={isCurrentDay ? "date" : undefined}
+        sx={{
+          border: isCurrentDay ? "1px solid" : "none",
+          borderColor: isCurrentDay ? "secondary.main" : "transparent",
+          backgroundColor: isCurrentDay
+            ? (theme) =>
+                alpha(theme.palette.secondary.main, theme.palette.mode === "dark" ? 0.4 : 0.6)
+            : "inherit",
+        }}
+      >
         <Box
           sx={{
             display: "flex",
@@ -97,7 +110,15 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
           </Box>
           {!mobile && <InfoChip />}
           {!disabled && (
-            <Chip label={`${totalHoursFormatted} h`} sx={{ mr: 2, color: "inherit" }} />
+            <Chip
+              label={`${totalHoursFormatted} h`}
+              sx={{
+                mr: 2,
+                color: "inherit",
+                border: isCurrentDay ? "1px solid" : "none",
+                borderColor: isCurrentDay ? "grey.800" : "grey.400",
+              }}
+            />
           )}
           {disabled && !mobile && <Box sx={{ width: 133 }} />}
         </Box>

@@ -12,9 +12,7 @@ const SickLeaveChip = () => {
         color: "black",
         fontWeight: 500,
         bgcolor: (theme) =>
-          theme.palette.mode === "dark"
-            ? theme.palette.secondary.main
-            : theme.palette.secondary.main,
+          theme.palette.mode === "dark" ? theme.palette.primary.main : theme.palette.secondary.main,
       }}
     />
   );
