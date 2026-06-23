@@ -4,7 +4,7 @@ import Footer from "./Footer";
 
 const ContentContainer = ({ children }: ChildrenProps) => (
   <>
-    <Container>{children}</Container>
+    <Container role="main">{children}</Container>
     <Box component="footer" sx={{ display: "flex", justifyContent: "center", mt: 8, mb: 3 }}>
       <Footer />
     </Box>
