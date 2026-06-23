@@ -61,7 +61,9 @@ const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
             mr: 1,
           }}
         >
-          <Typography variant="h6">{roundedDuration.format("H:mm")}</Typography>
+          <Typography component="h4" variant="h6">
+            {roundedDuration.format("H:mm")}
+          </Typography>
         </Box>
         {product && <DimensionChip dimension="product" label={product} />}
         {activity && <DimensionChip dimension="activity" label={activity} />}
@@ -69,6 +71,7 @@ const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
         {client && <DimensionChip dimension="client" label={client} />}
         {(paid || open || accepted) && !product && !activity && !issue && !client && typeName && (
           <Typography
+            component="h5"
             variant="subtitle1"
             sx={{ overflow: { xs: "visible", md: "hidden" }, textOverflow: "ellipsis" }}
           >
@@ -77,6 +80,7 @@ const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
         )}
         {description && (
           <Typography
+            component="h5"
             variant="subtitle2"
             sx={{ overflow: { xs: "visible", md: "hidden" }, textOverflow: "ellipsis" }}
           >
