@@ -59,12 +59,8 @@ test.describe("Add entry", () => {
     await expect(page.getByRole("alert")).toContainText(t("notifications.addEntry.success"));
   });
 
-  test("Should add entry from entry row", async ({ page, t }) => {
-    await page
-      .getByRole("button")
-      .getByRole("button", { name: t("entryDialog.title.create") })
-      .first()
-      .click();
+  test("Should add entry from entry row", async ({ entryBrowser, page, t }) => {
+    await entryBrowser.getAccordionAddEntryButton().first().click();
     await expect(page).toHaveURL(/.*\/create$/);
     await fillEntryForm(page, t, entries[0]);
     await page.getByRole("button", { name: t("entryDialog.submit") }).click();
@@ -114,13 +110,9 @@ test.describe("Delete entry", () => {
 });
 
 test.describe("Entry defaults", () => {
-  test("Should set remaining hours when enabled", async ({ page, t }) => {
+  test("Should set remaining hours when enabled", async ({ entryBrowser, page, t }) => {
     await page.goto(emptyWeekUrl);
-    await page
-      .getByRole("button")
-      .getByRole("button", { name: t("entryDialog.title.create") })
-      .first()
-      .click();
+    await entryBrowser.getAccordionAddEntryButton().first().click();
     await expect(page.getByRole("group", { name: t("entryDialog.duration") })).toContainText(
       "00:00",
     );
