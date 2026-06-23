@@ -14,7 +14,11 @@ const AppBar = () => {
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <MuiAppBar position="sticky" sx={{ mb: 4 }}>
+    <MuiAppBar
+      position="sticky"
+      sx={{ mb: 4 }}
+      {...(import.meta.env.DEV && { color: "error", enableColorOnDark: true })}
+    >
       <Toolbar sx={{ gap: 2 }}>
         <KeijoLogo />
         <Title />
