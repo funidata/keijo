@@ -58,11 +58,13 @@ const FormComboBox = <T extends FieldValues, E>({
               onChange={(_, value) => {
                 onChange(value);
               }}
+              onInputChange={(_, newInputValue) => {
+                onChange(newInputValue);
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   label={title}
-                  onChange={onChange}
                   error={!!error}
                   helperText={error?.message as string}
                 />
