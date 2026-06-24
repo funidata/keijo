@@ -71,60 +71,66 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
   };
 
   return (
-    <AccordionSummary
-      expandIcon={!disabled && <ExpandMoreIcon />}
-      aria-current={isCurrentDay ? "date" : undefined}
-      sx={{
-        border: isCurrentDay ? "1px solid" : "none",
-        borderColor: isCurrentDay ? "secondary.main" : "transparent",
-        backgroundColor: isCurrentDay
-          ? (theme) =>
-              alpha(theme.palette.secondary.main, theme.palette.mode === "dark" ? 0.4 : 0.6)
-          : "inherit",
-      }}
-    >
-      <Box
+    <Box sx={{ position: "relative" }}>
+      <AccordionSummary
+        expandIcon={!disabled && <ExpandMoreIcon />}
+        aria-current={isCurrentDay ? "date" : undefined}
         sx={{
-          display: "flex",
-          flexGrow: 1,
-          justifyContent: "space-between",
-          alignItems: "center",
+          border: isCurrentDay ? "1px solid" : "none",
+          borderColor: isCurrentDay ? "secondary.main" : "transparent",
+          backgroundColor: isCurrentDay
+            ? (theme) =>
+                alpha(theme.palette.secondary.main, theme.palette.mode === "dark" ? 0.4 : 0.6)
+            : "inherit",
         }}
       >
         <Box
-          sx={
-            disabled ? { display: "flex", flexDirection: "row", alignItems: "center", gap: 2 } : {}
-          }
+          sx={{
+            display: "flex",
+            flexGrow: 1,
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
         >
-          <Typography sx={{ textTransform: "capitalize", minWidth: 105 }}>
-            {date.format("dd l")}
-          </Typography>
-          {mobile && (
-            <Box sx={!disabled ? { mt: 1 } : {}}>
-              <InfoChip />
-            </Box>
-          )}
-        </Box>
-        {!mobile && <InfoChip />}
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box
+            sx={
+              disabled
+                ? { display: "flex", flexDirection: "row", alignItems: "center", gap: 2 }
+                : {}
+            }
+          >
+            <Typography sx={{ textTransform: "capitalize", minWidth: 105 }}>
+              {date.format("dd l")}
+            </Typography>
+            {mobile && (
+              <Box sx={!disabled ? { mt: 1 } : {}}>
+                <InfoChip />
+              </Box>
+            )}
+          </Box>
+          {!mobile && <InfoChip />}
           {!disabled && (
-            <>
-              <EntryDialogButton date={date} size="medium" />
-              <Chip
-                label={`${totalHoursFormatted} h`}
-                sx={{
-                  mr: 2,
-                  color: "inherit",
-                  border: isCurrentDay ? "1px solid" : "none",
-                  borderColor: isCurrentDay ? "grey.800" : "grey.400",
-                }}
-              />
-            </>
+            <Chip
+              label={`${totalHoursFormatted} h`}
+              sx={{
+                mr: 2,
+                color: "inherit",
+                border: isCurrentDay ? "1px solid" : "none",
+                borderColor: isCurrentDay ? "grey.800" : "grey.400",
+              }}
+            />
           )}
           {disabled && !mobile && <Box sx={{ width: 133 }} />}
         </Box>
-      </Box>
-    </AccordionSummary>
+      </AccordionSummary>
+      {!disabled && (
+        <Box
+          sx={{ position: "absolute", top: "50%", transform: "translateY(-50%)", right: "116px" }}
+        >
+          <EntryDialogButton date={date} size="medium" />
+        </Box>
+      )}
+    </Box>
   );
 };
 

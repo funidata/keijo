@@ -62,6 +62,7 @@ const DurationSlider = ({ field }: DurationSliderProps) => {
         }}
       />
       <Slider
+        aria-label={t("entryDialog.duration")}
         min={0}
         max={600}
         step={15}
