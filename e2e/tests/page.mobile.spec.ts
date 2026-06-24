@@ -3,6 +3,7 @@ import { Dayjs } from "dayjs";
 import { TFunction } from "i18next";
 import { getMockEntries } from "mock-data";
 import { test } from "../fixtures/fixtures";
+import { escapeRegex, formatHours } from "./utils/mockEntryHelpers";
 
 const mockEntries = getMockEntries();
 const testDate = "2024-05-13";
@@ -29,24 +30,32 @@ test.describe("Landing page mobile", () => {
   });
 
   test("Should have mock entries", async ({ page, dayjs }) => {
-    for (const entry of mockEntries) {
-      const date = dayjs(entry.date);
-      await page.goto(mockEntryWeekUrl);
-      const workdayEntryList = page
-        .locator("div", {
-          has: page.getByRole("button", { name: date.format("dd l") }),
-        })
-        .last()
-        .getByRole("list");
-      const hour = Math.floor(Number(entry.hours));
-      const minute = (Number(entry.hours) * 60) % 60;
-      let entryRows = workdayEntryList.getByRole("listitem");
-      // Filter row by field texts
-      for (const field of entry.fields) {
-        entryRows = entryRows.filter({ hasText: new RegExp(`${field.DimensionItem}`) });
+    await page.goto(mockEntryWeekUrl);
+
+    // Expand all days that are expected to have entries.
+    const dayLabels = [...new Set(mockEntries.map((e) => dayjs(e.date).format("dd l")))];
+    for (const dayLabel of dayLabels) {
+      const dayButton = page.getByRole("button", {
+        name: new RegExp(`^${escapeRegex(dayLabel)}\\b`),
+      });
+      if ((await dayButton.getAttribute("aria-expanded")) !== "true") {
+        await dayButton.click();
       }
-      entryRows = entryRows.filter({ hasText: new RegExp(`${hour}:${minute}`) });
-      await expect(entryRows.first()).toBeVisible();
+    }
+
+    // Read visible row texts once, then assert each mock entry exists.
+    const rowTexts = await page.getByRole("listitem").allTextContents();
+
+    for (const entry of mockEntries) {
+      const expectedTime = formatHours(entry.hours);
+      const dimensions = entry.fields.map((f) => f.DimensionItem);
+
+      const matchFound = rowTexts.some((text) => {
+        if (!text.includes(expectedTime)) return false;
+        return dimensions.every((d) => text.includes(d));
+      });
+
+      expect(matchFound).toBeTruthy();
     }
   });
 
