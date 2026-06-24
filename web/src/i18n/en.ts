@@ -37,6 +37,9 @@ const en = {
     issue: "Issue",
     client: "Client",
   },
+  environment: {
+    development: "Development",
+  },
   errors: {
     error: "Error",
     missingEmployeeNumber:
