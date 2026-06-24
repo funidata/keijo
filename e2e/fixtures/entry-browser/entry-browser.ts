@@ -12,4 +12,16 @@ export class EntryBrowser {
       this.t("controls.addEntryWithDate", { date, interpolation: { escapeValue: false } }),
     );
   }
+
+  private escapeRegex(value: string) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
+  getAccordionAddEntryButton() {
+    // "Add New Entry on {{date}}" -> match the localized prefix + a date digit
+    const withDatePrefix = this.t("controls.addEntryWithDate", { date: "" }).trim();
+    return this.page.getByRole("button", {
+      name: new RegExp(`^${this.escapeRegex(withDatePrefix)}\\s*\\d`),
+    });
+  }
 }

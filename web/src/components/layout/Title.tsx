@@ -10,7 +10,11 @@ const Title = () => {
   }, [title]);
 
   return (
-    <Typography variant="h6" sx={{ flexGrow: 1, overflow: "hidden", textOverflow: "ellipsis" }}>
+    <Typography
+      component="h1"
+      variant="h6"
+      sx={{ flexGrow: 1, overflow: "hidden", textOverflow: "ellipsis" }}
+    >
       {title}
     </Typography>
   );
