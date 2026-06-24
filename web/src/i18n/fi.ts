@@ -33,6 +33,9 @@ const fi = {
     issue: "Tiketti",
     client: "Asiakas",
   },
+  environment: {
+    development: "Kehitys",
+  },
   errors: {
     error: "Virhe",
     missingEmployeeNumber:
