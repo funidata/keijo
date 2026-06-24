@@ -1,6 +1,5 @@
 const fi = {
   controls: {
-    activeFiltersCount: "{{count}} aktiivista filtteriä",
     aria: {
       prevWeek: "Näytä edellinen viikko",
       nextWeek: "Näytä seuraava viikko",
