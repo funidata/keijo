@@ -1,6 +1,5 @@
 const en = {
   controls: {
-    activeFiltersCount: "",
     aria: {
       prevWeek: "Go to previous week",
       nextWeek: "Go to next week",
