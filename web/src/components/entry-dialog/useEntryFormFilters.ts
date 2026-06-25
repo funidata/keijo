@@ -2,12 +2,10 @@ import { useQuery, useMutation, useApolloClient } from "@apollo/client/react";
 import { useMemo, useEffect, useRef, useState, useCallback } from "react";
 import { GetMySettingsDocument, UpdateSettingsDocument } from "../../graphql/generated/graphql";
 
-type EntryFormFilters = {
-  projects: string[];
-};
-
 // Add new filter keys with OR ("|")
-type EntryFormFilterKey = "projects";
+export type EntryFormFilterKey = "projects";
+
+type EntryFormFilters = Record<EntryFormFilterKey, string[]>;
 
 type EntryFormFiltersResult = {
   filters: EntryFormFilters;
