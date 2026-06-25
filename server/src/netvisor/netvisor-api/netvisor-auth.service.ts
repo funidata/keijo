@@ -1,5 +1,5 @@
+import { createHmac } from "crypto";
 import { Injectable } from "@nestjs/common";
-import sha from "sha.js";
 import { v4 as uuid } from "uuid";
 import { Config } from "../../config/config.schema";
 import { ConfigService } from "../../config/config.service";
@@ -53,9 +53,8 @@ export class NetvisorAuthService {
       organizationKey,
     ].join("&");
 
-
-    // TODO
-    const mac = sha("SHA256").update(hashable).digest("hex");
+    const hmacKey = customerKey + "&" + organizationKey;
+    const mac = createHmac("sha256", hmacKey).update(hashable).digest("hex");
 
     const headers = {
       "X-Netvisor-Authentication-Sender": sender,

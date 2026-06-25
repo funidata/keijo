@@ -46,9 +46,11 @@ describe("Netvisor authentication", () => {
 
       const expectedHeaders = {
         "X-Netvisor-Authentication-CustomerId": "test-customer-id",
-        "X-Netvisor-Authentication-MACHashCalculationAlgorithm": "SHA256",
+        "X-Netvisor-Authentication-MACHashCalculationAlgorithm": "HMACSHA256",
         "X-Netvisor-Authentication-PartnerId": "test-partner-id",
         "X-Netvisor-Authentication-Sender": "keijo",
+        "X-Netvisor-Authentication-TimestampUnix": dayjs(now).unix(),
+        "X-Netvisor-Authentication-UseHTTPResponseStatusCodes": 1,
         "X-Netvisor-Interface-Language": "fi",
         "X-Netvisor-Organisation-ID": "test-org-id",
       };
