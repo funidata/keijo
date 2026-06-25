@@ -77,8 +77,8 @@ const fi = {
     },
     totalHoursToday: "Päivän työaika ennen tätä kirjausta",
     setRemainingHours: "Aseta jäljellä olevat tunnit automaattisesti",
-    filterProjects: "Projektit",
-    filterProjectsHelperText: "Hae tikettejä vain valituista projekteista.",
+    filterProjects: "JIRA-projektit",
+    filterProjectsHelperText: "Hae tikettejä vain valituista JIRA-projekteista.",
   },
   entryTable: {
     accepted: "Hyväksytty",

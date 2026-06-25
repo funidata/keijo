@@ -77,8 +77,8 @@ const en = {
     },
     totalHoursToday: "Time on selected day before this entry",
     setRemainingHours: "Set remaining hours automatically",
-    filterProjects: "Projects",
-    filterProjectsHelperText: "Search tickets only from selected projects.",
+    filterProjects: "JIRA projects",
+    filterProjectsHelperText: "Search issues only from selected JIRA projects.",
   },
   entryTable: {
     accepted: "Accepted",
