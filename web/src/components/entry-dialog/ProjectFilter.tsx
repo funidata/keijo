@@ -1,35 +1,24 @@
-import { useApolloClient, useMutation, useQuery } from "@apollo/client/react";
-import { Autocomplete, Chip, FormControl, TextField } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useQuery } from "@apollo/client/react";
+import Autocomplete from "@mui/material/Autocomplete";
+import Chip from "@mui/material/Chip";
+import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
+import FormHelperText from "@mui/material/FormHelperText";
 import { useTranslation } from "react-i18next";
-import {
-  FindDimensionOptionsDocument,
-  GetMySettingsDocument,
-  UpdateSettingsDocument,
-} from "../../graphql/generated/graphql";
+import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
 
-const ProjectFilter = () => {
+interface ProjectFilterProps {
+  selectedProjects: string[];
+  onProjectsChange?: (projects: string[]) => void;
+}
+
+const helperId = "project-filter-helper-text";
+
+export default function ProjectFilter({ selectedProjects, onProjectsChange }: ProjectFilterProps) {
   const { t } = useTranslation();
-  const client = useApolloClient();
-  const { data: settingsData } = useQuery(GetMySettingsDocument);
-  const [updateSettings] = useMutation(UpdateSettingsDocument, {
-    refetchQueries: [GetMySettingsDocument],
-  });
-
-  const serverPreset = settingsData?.getMySettings.projectsPreset;
-  const [selected, setSelected] = useState<string[]>([]);
-  const initialized = useRef(false);
-
-  useEffect(() => {
-    if (!initialized.current && serverPreset !== undefined) {
-      initialized.current = true;
-      setSelected(serverPreset ?? []);
-    }
-  }, [serverPreset]);
-
   const { data } = useQuery(FindDimensionOptionsDocument);
   const issueKeys = data?.findDimensionOptions.issue || [];
-  const projects = [
+  const projectKeys = [
     ...new Set(
       issueKeys.filter((key) => /^[A-Za-z]+-\d+$/.test(key)).map((key) => key.split("-")[0]),
     ),
@@ -38,18 +27,10 @@ const ProjectFilter = () => {
   return (
     <FormControl fullWidth>
       <Autocomplete
-        value={selected}
-        options={projects}
+        value={selectedProjects}
+        options={projectKeys}
         onChange={(_, value) => {
-          setSelected(value);
-          const existing = client.readQuery({ query: GetMySettingsDocument });
-          if (existing) {
-            client.writeQuery({
-              query: GetMySettingsDocument,
-              data: { getMySettings: { ...existing.getMySettings, projectsPreset: value } },
-            });
-          }
-          updateSettings({ variables: { settings: { projectsPreset: value } } });
+          onProjectsChange?.(value);
         }}
         renderValue={(value, getTagProps) => {
           const numTags = value.length;
@@ -65,9 +46,9 @@ const ProjectFilter = () => {
         }}
         multiple
         renderInput={(params) => <TextField {...params} label={t("entryDialog.filterProjects")} />}
+        aria-describedby={helperId}
       />
+      <FormHelperText id={helperId}>{t("entryDialog.filterProjectsHelperText")}</FormHelperText>
     </FormControl>
   );
-};
-
-export default ProjectFilter;
+}

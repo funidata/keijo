@@ -23,8 +23,11 @@ const en = {
     jiraDisconnect: "Disconnect from Jira",
     showWeekend: "Show Weekend",
     hideWeekend: "Hide Weekend",
-    showFilters: "Filters",
-    hideFilters: "Hide Filters",
+    showFilters: "Show filters",
+    showFilters_aria_zero: "Show filters, no active filters",
+    showFilters_aria_one: "Show filters, 1 active filter",
+    showFilters_aria_other: "Show filters, {{count}} active filters",
+    hideFilters: "Hide filters",
     dateRange: "Date Range",
   },
   dimensionNames: {
@@ -74,7 +77,8 @@ const en = {
     },
     totalHoursToday: "Time on selected day before this entry",
     setRemainingHours: "Set remaining hours automatically",
-    filterProjects: "Filter Projects",
+    filterProjects: "JIRA projects",
+    filterProjectsHelperText: "Search issues only from selected JIRA projects.",
   },
   entryTable: {
     accepted: "Accepted",
