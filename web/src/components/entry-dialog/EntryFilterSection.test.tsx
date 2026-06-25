@@ -26,9 +26,9 @@ vi.mock("@mui/material/Collapse", () => ({
     isOpen ? <>{children}</> : null,
 }));
 
-const mockUseEntryFormFilters = (activeFilters: string[] = []) => {
+const mockUseEntryFormFilters = (activeFilters: string[] = [], selectedProjects: string[] = []) => {
   entryFormFiltersMock.useEntryFormFilters.mockReturnValue({
-    filters: { projects: [] },
+    filters: { projects: selectedProjects },
     updateSelectedProjects: vi.fn(),
     activeFilters,
   });
@@ -60,10 +60,10 @@ describe("EntryFiltersSection", () => {
   });
 
   it("shows the active filter count badge when filters are active", () => {
-    mockUseEntryFormFilters(["projects"]);
+    mockUseEntryFormFilters(["projects"], ["project-1", "project-2"]);
 
     render(<EntryFiltersSection />);
 
-    expect(screen.getByText("1")).toBeTruthy();
+    expect(screen.getByText("2")).toBeTruthy();
   });
 });
