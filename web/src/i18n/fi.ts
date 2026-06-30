@@ -23,8 +23,11 @@ const fi = {
     jiraDisconnect: "Katkaise Jira-yhteys",
     showWeekend: "Näytä Viikonloppu",
     hideWeekend: "Piilota Viikonloppu",
-    showFilters: "Suodattimet",
-    hideFilters: "Piilota Suodattimet",
+    showFilters: "Näytä suodattimet",
+    showFilters_aria_zero: "Näytä suodattimet, ei aktiivisia suodattimia",
+    showFilters_aria_one: "Näytä suodattimet, 1 aktiivinen suodatin",
+    showFilters_aria_other: "Näytä suodattimet, {{count}} aktiivista suodatinta",
+    hideFilters: "Piilota suodattimet",
     dateRange: "Aikaväli",
   },
   dimensionNames: {
@@ -32,6 +35,9 @@ const fi = {
     activity: "Toiminto",
     issue: "Tiketti",
     client: "Asiakas",
+  },
+  environment: {
+    development: "Kehitys",
   },
   errors: {
     error: "Virhe",
@@ -71,7 +77,8 @@ const fi = {
     },
     totalHoursToday: "Päivän työaika ennen tätä kirjausta",
     setRemainingHours: "Aseta jäljellä olevat tunnit automaattisesti",
-    filterProjects: "Suodata Projektit",
+    filterProjects: "JIRA-projektit",
+    filterProjectsHelperText: "Hae tikettejä vain valituista JIRA-projekteista.",
   },
   entryTable: {
     accepted: "Hyväksytty",
