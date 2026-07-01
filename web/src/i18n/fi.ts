@@ -43,7 +43,7 @@ const fi = {
     error: "Virhe",
     missingEmployeeNumber:
       "Palkansaajanumeroasi ei löytynyt HTTP-otsakkeista. Keijoa ei voi käyttää ilman tätä tietoa. Ilmoita ongelmasta esihenkilöllesi.",
-    unknownError: "Keijo kohtasi tuntemattoman virheen. Ota yhteyttä Kettu-tiimiin.",
+    unknownError: "Keijo kohtasi tuntemattoman virheen. Ota yhteyttä Naali-tiimiin.",
     notFound: "Pyydettyä sivua ei löytynyt. Tarkasta osoite.",
     oldWeekParamFormat:
       "Sivun osoitteessa on vanhan muotoinen viikkoparametri. Mene ensin etusivulle, jonka jälkeen voit jatkaa käyttöä normaalisti.",
