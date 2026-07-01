@@ -2,9 +2,8 @@ import { useQuery as useApolloQuery } from "@apollo/client/react";
 import { useQuery } from "@tanstack/react-query";
 import { useDimensionOptions } from "../common/useDimensionOptions";
 import { GetMySettingsDocument } from "../graphql/generated/graphql";
-import { axiosJira } from "./axiosInstance";
+import { axiosKeijo } from "./axiosInstance";
 import { JiraIssueResult } from "./jira-types";
-import { escapeUserInputForJql } from "./jira-utils";
 
 /**
  * Search for issues by text. Targets issue summary (title) only.
@@ -23,14 +22,11 @@ export const useJiraTextSearch = (searchTerm: string) => {
     // Cache briefly to prevent duplicate queries when user erases some text, etc.
     staleTime: 2 * 60 * 1000,
     queryFn: async () => {
-      const payload = {
-        fields: ["summary"],
+      const result = await axiosKeijo.post<JiraIssueResult>("/issues/search-text", {
+        searchTerm,
         // Pagination support required if this is raised too much.
         maxResults: 100,
-        jql: `summary ~ ${escapeUserInputForJql(searchTerm.concat("*"))} ORDER BY lastViewed DESC`,
-      };
-
-      const result = await axiosJira.post<JiraIssueResult>("/search/jql", payload);
+      });
       return result.data;
     },
   });

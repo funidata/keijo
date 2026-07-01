@@ -4,9 +4,8 @@ import { sortBy } from "lodash";
 import { useMemo } from "react";
 import { useDimensionOptions } from "../common/useDimensionOptions";
 import { GetMySettingsDocument } from "../graphql/generated/graphql";
-import { axiosJira } from "./axiosInstance";
+import { axiosKeijo } from "./axiosInstance";
 import { JiraIssueResult } from "./jira-types";
-import { keyIsInKeys } from "./jql";
 
 /**
  * Filter factory for searching issue keys by string.
@@ -77,14 +76,11 @@ export const useJiraIssueKeySearch = (searchTerm: string) => {
     // Cache briefly to prevent duplicate queries when user erases some text, etc.
     staleTime: 2 * 60 * 1000,
     queryFn: async () => {
-      const payload = {
-        fields: ["summary"],
+      const result = await axiosKeijo.post<JiraIssueResult>("/issues/search-key", {
+        keys: nvMatches,
         // Pagination support required if this is raised too much.
         maxResults: 100,
-        jql: `${keyIsInKeys(nvMatches)} ORDER BY lastViewed DESC`,
-      };
-
-      const result = await axiosJira.post<JiraIssueResult>("/search/jql", payload);
+      });
       return result.data;
     },
   });
