@@ -13,7 +13,7 @@ type FormComboBoxProps<T extends FieldValues, E> = {
   >;
 };
 
-const FormComboBox = <T extends FieldValues, E>({
+const FormComboBox = <T extends FieldValues, E extends { value: string }>({
   form,
   name,
   title,
@@ -55,8 +55,12 @@ const FormComboBox = <T extends FieldValues, E>({
               forcePopupIcon
               {...autoCompleteProps}
               value={value ?? ""}
-              onChange={(_, value) => {
-                onChange(value);
+              onChange={(_, selectedOption) => {
+                if (selectedOption == null || typeof selectedOption === "string") {
+                  onChange(selectedOption);
+                } else {
+                  onChange(selectedOption.value);
+                }
               }}
               onInputChange={(_, newInputValue) => {
                 onChange(newInputValue);
