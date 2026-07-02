@@ -18,12 +18,14 @@ interface Option {
   disabled: boolean;
 }
 
-const issueToOption = (groupLabel: string) => (issue: JiraIssue): Option => ({
-  value: issue.key,
-  label: `${issue.key}: ${issue.fields.summary}`,
-  groupLabel,
-  disabled: false,
-});
+const issueToOption =
+  (groupLabel: string) =>
+  (issue: JiraIssue): Option => ({
+    value: issue.key,
+    label: `${issue.key}: ${issue.fields.summary}`,
+    groupLabel,
+    disabled: false,
+  });
 
 type JiraIssueComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -97,12 +99,10 @@ const JiraIssueComboBox = <T extends FieldValues>({
 
   // Validation for 'issue' field
   // Make sure the selected value exists in the options and convert value to string
-  const validateIssue = (value: string | null | Option ) => {
+  const validateIssue = (value: string | null | Option) => {
     if (!value) return true;
     const exists = options.some((option) =>
-      typeof option === "string"
-        ? option === value
-        : option.value === value,
+      typeof option === "string" ? option === value : option.value === value,
     );
     return exists ? true : t("entryDialog.validation.issueInOptions");
   };
