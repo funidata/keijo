@@ -1,11 +1,9 @@
 import { useQuery as useApolloQuery } from "@apollo/client/react";
 import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
 import { useDimensionOptions } from "../common/useDimensionOptions";
 import { GetMySettingsDocument } from "../graphql/generated/graphql";
-import { axiosJira } from "./axiosInstance";
-import { JiraIssue, JiraIssueResult, JiraProjectResult } from "./jira-types";
-import { escapeUserInputForJql } from "./jira-utils";
+import { axiosKeijo } from "./axiosInstance";
+import { JiraIssue, JiraIssueResult } from "./jira-types";
 
 // Cache query data for 5 minutes.
 const staleTime = 5 * 60 * 1000;
@@ -20,64 +18,29 @@ export const useRecentJiraIssues = (): JiraIssue[] => {
   const { data: settingsData } = useApolloQuery(GetMySettingsDocument);
   const projectsPreset = settingsData?.getMySettings.projectsPreset;
 
-  const projectQuery = useQuery({
-    queryKey: ["all-projects"],
-    staleTime,
-    queryFn: async () => {
-      const result = await axiosJira.get<JiraProjectResult>("/project/search", {
-        params: {
-          maxResults: 100,
-          status: "live",
-        },
-      });
-
-      return result.data;
-    },
-  });
-
-  const jiraProjects = projectQuery.data?.values || [];
-
-  const allowedProjects = useMemo(() => {
-    // This list can include pretty much anything if there are malformed tickets entered into
-    // Netvisor by accident, etc.
-    const nvProjects = Array.from(new Set(nvIssueKeys.map((key) => key.split("-")[0])));
-
-    // Sanitize the list by filtering with actual Jira project keys.
-    const jiraProjectKeys = jiraProjects.map((project) => project.key);
-    const sanitized = nvProjects.filter((key) => jiraProjectKeys.includes(key));
-
-    if (projectsPreset?.length) {
-      return sanitized.filter((key) => projectsPreset.includes(key));
-    }
-    return sanitized;
-  }, [nvIssueKeys, jiraProjects, projectsPreset]);
-
-  const jqlProjectList = allowedProjects.map(escapeUserInputForJql).join(",");
+  const normalizedNvIssueKeys = Array.from(new Set(nvIssueKeys)).sort();
+  const normalizedProjectsPreset = Array.from(new Set(projectsPreset ?? [])).sort();
 
   const issueQuery = useQuery({
-    queryKey: ["recentIssues", projectsPreset],
-    enabled: allowedProjects.length > 0,
+    queryKey: ["recentIssues", normalizedProjectsPreset, normalizedNvIssueKeys],
+    enabled: normalizedNvIssueKeys.length > 0,
     staleTime,
     queryFn: async () => {
-      const payload = {
-        fields: ["summary"],
+      const result = await axiosKeijo.post<JiraIssueResult>("/issues/search-recent", {
+        nvIssueKeys: normalizedNvIssueKeys,
+        projectsPreset: normalizedProjectsPreset,
         // Fetch a little bit more than we're going to use as the result may include issues that
         // are not in Netvisor.
         maxResults: 30,
-        jql: `
-          (issuekey IN issueHistory() OR assignee = currentUser() OR reporter = currentUser())
-          AND project IN (${jqlProjectList})
-          ORDER BY lastViewed DESC
-          `,
-      };
-
-      const result = await axiosJira.post<JiraIssueResult>("/search/jql", payload);
+      });
       return result.data;
     },
   });
 
   // Filter in only allowed issues and cap length.
   return (
-    issueQuery.data?.issues.filter((issue) => nvIssueKeys.includes(issue.key)).slice(0, 20) || []
+    issueQuery.data?.issues
+      .filter((issue) => normalizedNvIssueKeys.includes(issue.key))
+      .slice(0, 20) || []
   );
 };
