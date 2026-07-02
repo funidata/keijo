@@ -1,31 +1,12 @@
 import { ListItem, ListItemText, useMediaQuery, useTheme } from "@mui/material";
 import { Control, ControllerProps, FieldValues, UseFormReturn, Controller } from "react-hook-form";
-import { useTranslation } from "react-i18next";
 import { useDebounceValue } from "usehooks-ts";
-import { JiraIssue } from "../../jira/jira-types";
-import { useJiraIssueKeySearch } from "../../jira/useJiraIssueKeySearch";
-import { useJiraTextSearch } from "../../jira/useJiraTextSearch";
-import { useRecentJiraIssues } from "../../jira/useRecentJiraIssues";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import FormControl from "@mui/material/FormControl";
-
-interface Option {
-  value: string;
-  label: string;
-  groupLabel: string;
-  disabled: boolean;
-}
-
-const issueToOption =
-  (groupLabel: string) =>
-  (issue: JiraIssue): Option => ({
-    value: issue.key,
-    label: `${issue.key}: ${issue.fields.summary}`,
-    groupLabel,
-    disabled: false,
-  });
+import useJiraIssueOptions, { type Option } from "./useJiraIssueOptions";
+import { useTranslation } from "react-i18next";
 
 type JiraIssueComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -41,61 +22,13 @@ const JiraIssueComboBox = <T extends FieldValues>({
   rules,
 }: JiraIssueComboBoxProps<T>) => {
   const { t } = useTranslation();
-
   // Debounce search term to avoid firing queries on every key press.
   const [searchTerm, setSearchTerm] = useDebounceValue("", 300);
 
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const recentGroupLabel = t("jira.issueGroups.recent");
-  const keySearchResultGroupLabel = t("jira.issueGroups.keySearchResults");
-  const textSearchResultGroupLabel = t("jira.issueGroups.textSearchResults");
-
-  const recent = useRecentJiraIssues();
-  const { issues: textSearchIssues, loading: textSearchLoading } = useJiraTextSearch(searchTerm);
-  const { issues: keySearchIssues, loading: keySearchLoading } = useJiraIssueKeySearch(searchTerm);
-
-  const keySearchOptions = keySearchIssues.map(issueToOption(keySearchResultGroupLabel));
-  const textSearchOptions = textSearchIssues.map(issueToOption(textSearchResultGroupLabel));
-  const recentOptions = recent.map(issueToOption(recentGroupLabel));
-
-  const searchResultsGroupLabel = t("jira.issueGroups.searchResults");
-  const noSearchResultsLabel = t("jira.issueGroups.noSearchResults");
-  const typeToSearchLabel = t("jira.issueGroups.typeToSearch");
-
-  const noSearchResults =
-    keySearchIssues.length === 0 && textSearchIssues.length === 0
-      ? [
-          {
-            value: "",
-            label: searchTerm ? noSearchResultsLabel : typeToSearchLabel,
-            groupLabel: searchResultsGroupLabel,
-            disabled: true,
-          },
-        ]
-      : [];
-
-  const loadingLabel = t("jira.issueGroups.loading");
-
-  const loadingIndicator =
-    noSearchResults.length === 0 && (textSearchLoading || keySearchLoading)
-      ? [
-          {
-            value: "",
-            label: loadingLabel,
-            groupLabel: searchResultsGroupLabel,
-            disabled: true,
-          },
-        ]
-      : [];
-
-  const options = keySearchOptions.concat(
-    textSearchOptions,
-    noSearchResults,
-    loadingIndicator,
-    recentOptions,
-  );
+  const { options } = useJiraIssueOptions(searchTerm);
 
   // Validation for 'issue' field
   // Make sure the selected value exists in the options and convert value to string
