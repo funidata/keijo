@@ -110,4 +110,20 @@ describe("JiraIssueComboBox", () => {
     });
     expect(onSubmit.mock.calls[0][0]).toEqual({ issue: "ABC-1" });
   });
+
+  it("shows a validation error when the typed issue is unknown", async () => {
+    const onSubmit = vi.fn();
+
+    render(<TestForm onSubmit={onSubmit} />);
+
+    const input = screen.getByLabelText("Issue") as HTMLInputElement;
+    fireEvent.change(input, { target: { value: "UNKNOWN-1" } });
+    fireEvent.click(screen.getByRole("button", { name: "Save" }));
+
+    await waitFor(() => {
+      expect(screen.getByText("entryDialog.validation.issueInOptions")).toBeTruthy();
+    });
+
+    expect(onSubmit).not.toHaveBeenCalled();
+  });
 });
