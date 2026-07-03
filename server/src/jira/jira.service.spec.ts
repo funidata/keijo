@@ -83,7 +83,7 @@ describe("JiraService", () => {
         expect.objectContaining({
           fields: ["summary"],
           maxResults: 100,
-          jql: expect.stringContaining('summary ~ "something*"'),
+          jql: 'summary ~ "something*" ORDER BY lastViewed DESC',
         }),
         expectJiraHeaders(),
       );
@@ -114,15 +114,10 @@ describe("JiraService", () => {
         expect.objectContaining({
           fields: ["summary"],
           maxResults: 100,
-          jql: expect.stringContaining("key in ("),
+          jql: "key in ('TEST-2', 'TEST-3') ORDER BY lastViewed DESC",
         }),
         expectJiraHeaders(),
       );
-
-      const payload = axiosService.post.mock.calls[0][1];
-      expect(payload.jql).toContain("'TEST-2'");
-      expect(payload.jql).toContain("'TEST-3'");
-      expect(payload.jql).toContain("ORDER BY lastViewed DESC");
 
       expect(result).toEqual(mockedResponse.data);
     });
@@ -184,14 +179,11 @@ describe("JiraService", () => {
         expect.objectContaining({
           fields: ["summary"],
           maxResults: 30,
-          jql: expect.stringContaining("issueHistory()"),
+          jql: '(issuekey IN issueHistory() OR assignee = currentUser() OR reporter = currentUser()) AND project IN ("TEST") ORDER BY lastViewed DESC',
         }),
         expectJiraHeaders(),
       );
 
-      const payload = axiosService.post.mock.calls[0][1];
-      expect(payload.jql).toContain('project IN ("TEST")');
-      expect(payload.jql).toContain("ORDER BY lastViewed DESC");
       expect(result).toEqual(mockedResponse.data);
     });
   });
