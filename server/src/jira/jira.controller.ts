@@ -34,20 +34,10 @@ export class JiraController {
   }
 
   @BypassHeadersGuard()
-  @UseGuards(SessionTokenGuard)
-  @Get("refresh")
-  async refreshTokens(@SessionUser() jiraTokens: JiraTokens) {
-    const freshTokens = await this.jiraService.getFreshTokens(jiraTokens.refreshToken);
-    this.jiraService.setJiraSessionTokens(freshTokens);
-    return { access_token: freshTokens.accessToken };
-  }
-
-  @BypassHeadersGuard()
-  @UseGuards(SessionTokenGuard)
-  @Get("access-token")
-  async getAccessToken(@SessionUser() jiraTokens: JiraTokens) {
-    const cloudId = this.configService.config.jira.cloudId;
-    return { access_token: jiraTokens.accessToken, cloud_id: cloudId };
+  @Get("status")
+  jiraStatus(@Req() request: Request) {
+    const user = request.session?.user;
+    return { authenticated: !!(user?.accessToken && user?.refreshToken) };
   }
 
   @BypassHeadersGuard()
