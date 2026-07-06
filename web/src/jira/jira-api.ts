@@ -1,21 +1,29 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { axiosJira, axiosKeijo } from "./axiosInstance";
+import { axiosKeijo } from "./axiosInstance";
 
-const getAccessToken = async () => {
-  const token = (await axiosKeijo.get("/access-token")).data;
-  axiosJira.defaults.headers.common.Authorization = "Bearer " + token.access_token;
-  return token;
+type JiraStatus = {
+  authenticated: boolean;
 };
 
-const useGetAccessToken = (): UseQueryResult<{ access_token: string }> => {
+const getJiraStatus = async (): Promise<JiraStatus> => {
+  const result = await axiosKeijo.get<JiraStatus>("/status");
+  return result.data;
+};
+
+const useGetJiraStatus = (): UseQueryResult<JiraStatus> => {
   return useQuery({
-    queryKey: ["accessToken"],
-    queryFn: getAccessToken,
+    queryKey: ["jiraStatus"],
+    queryFn: getJiraStatus,
     retry: false,
   });
 };
 
 export const useIsJiraAuthenticated = () => {
-  const { data, error, isLoading } = useGetAccessToken();
-  return { isJiraAuth: !isLoading && !error && !!data, data, error, isLoading };
+  const { data, error, isLoading } = useGetJiraStatus();
+  return {
+    isJiraAuth: !!data?.authenticated,
+    data,
+    error,
+    isLoading,
+  };
 };
