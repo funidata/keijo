@@ -18,10 +18,10 @@ test.describe("Jira connection", () => {
   });
 
   test("Disconnect from Jira", async ({ page, context, appBar }) => {
-    await page.route("**/access-token", (route) =>
+    await page.route("**/jira/status", (route) =>
       route.fulfill({
         status: 200,
-        body: "{'access_token': 'test_token','cloud_id': 'test_cloud_id' }",
+        body: JSON.stringify({ authenticated: true }),
       }),
     );
     let sessionRemoveRequested = false;
