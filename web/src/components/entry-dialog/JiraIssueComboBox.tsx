@@ -1,5 +1,12 @@
 import { ListItem, ListItemText, useMediaQuery, useTheme } from "@mui/material";
-import { Control, ControllerProps, FieldValues, UseFormReturn, Controller } from "react-hook-form";
+import {
+  Control,
+  ControllerProps,
+  FieldValues,
+  UseFormReturn,
+  Controller,
+  Path,
+} from "react-hook-form";
 import { useDebounceValue } from "usehooks-ts";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -7,7 +14,7 @@ import Autocomplete, { type AutocompleteInputChangeReason } from "@mui/material/
 import FormControl from "@mui/material/FormControl";
 import useJiraIssueOptions, { type Option } from "./useJiraIssueOptions";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type JiraIssueComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -32,6 +39,18 @@ const JiraIssueComboBox = <T extends FieldValues>({
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const { options } = useJiraIssueOptions(searchTerm);
+
+  useEffect(() => {
+    const currentIssue = form.getValues(name as Path<T>) as string | null;
+
+    if (!currentIssue) {
+      setInputValue("");
+      return;
+    }
+
+    const matched = options.find((option) => option.value === currentIssue);
+    setInputValue(matched ? matched.label : currentIssue);
+  }, [form, name, options]);
 
   const validateIssue = (value: string | null | Option) => {
     if (!value) return true;

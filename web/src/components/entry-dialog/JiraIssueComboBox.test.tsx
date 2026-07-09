@@ -44,7 +44,7 @@ vi.mock("../../jira/useJiraIssueKeySearch", () => ({
 }));
 
 type TestFormValues = {
-  issue: string;
+  issue: string | null;
 };
 
 const issue = {
@@ -52,8 +52,14 @@ const issue = {
   fields: { summary: "Test issue" },
 };
 
-const TestForm = ({ onSubmit }: { onSubmit: (values: TestFormValues) => void }) => {
-  const form = useForm<TestFormValues>({ defaultValues: { issue: "" } });
+const TestForm = ({
+  onSubmit,
+  defaultIssue = "",
+}: {
+  onSubmit: (values: TestFormValues) => void;
+  defaultIssue?: string | null;
+}) => {
+  const form = useForm<TestFormValues>({ defaultValues: { issue: defaultIssue } });
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -87,6 +93,7 @@ describe("JiraIssueComboBox", () => {
 
     const option = await screen.findByRole("option", { name: "ABC-1: Test issue" });
     fireEvent.click(option);
+    expect(input.value).toBe("ABC-1: Test issue");
 
     fireEvent.click(screen.getByRole("button", { name: "Save" }));
 
@@ -125,5 +132,35 @@ describe("JiraIssueComboBox", () => {
     });
 
     expect(onSubmit).not.toHaveBeenCalled();
+  });
+
+  it("shows prefilled issue in input when editing existing workday entry", async () => {
+    const onSubmit = vi.fn();
+
+    render(<TestForm onSubmit={onSubmit} defaultIssue="ABC-1" />);
+
+    const input = screen.getByLabelText("Issue") as HTMLInputElement;
+
+    await waitFor(() => {
+      expect(input.value === "ABC-1" || input.value === "ABC-1: Test issue").toBeTruthy();
+    });
+  });
+
+  it("clears input when the clear button is clicked", async () => {
+    const onSubmit = vi.fn();
+
+    render(<TestForm onSubmit={onSubmit} />);
+
+    const input = screen.getByLabelText("Issue") as HTMLInputElement;
+    fireEvent.change(input, { target: { value: "ABC-1" } });
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+
+    const option = await screen.findByRole("option", { name: "ABC-1: Test issue" });
+    fireEvent.click(option);
+
+    const clearButton = screen.getByLabelText("Clear");
+    fireEvent.click(clearButton);
+
+    expect(input.value).toBe("");
   });
 });
