@@ -136,6 +136,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
                     }
                   : undefined
               }
+              clearText={t("entryDialog.input.clear")}
               filterOptions={() => options}
             />
           )}

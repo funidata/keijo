@@ -46,6 +46,7 @@ export default function ProjectFilter({ selectedProjects, onProjectsChange }: Pr
         }}
         multiple
         renderInput={(params) => <TextField {...params} label={t("entryDialog.filterProjects")} />}
+        clearText={t("entryDialog.input.clear")}
         aria-describedby={helperId}
       />
       <FormHelperText id={helperId}>{t("entryDialog.filterProjectsHelperText")}</FormHelperText>
