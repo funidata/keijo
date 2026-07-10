@@ -157,8 +157,12 @@ describe("JiraIssueComboBox", () => {
 
     const option = await screen.findByRole("option", { name: "ABC-1: Test issue" });
     fireEvent.click(option);
+    input.focus();
 
-    const clearButton = screen.getByLabelText("Clear");
+    const clearButton = await screen.findByRole("button", {
+      name: "entryDialog.input.clear",
+      hidden: true,
+    });
     fireEvent.click(clearButton);
 
     expect(input.value).toBe("");
