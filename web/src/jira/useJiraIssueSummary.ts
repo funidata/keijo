@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useIsJiraAuthenticated } from "./jira-api";
-import { axiosJira } from "./axiosInstance";
+import { axiosKeijo } from "./axiosInstance";
 import { JiraIssueResult } from "./jira-types";
-import { keyIsInKeys } from "./jql";
 
 export const useJiraIssueSummary = (issueKey: string | null) => {
   const { isJiraAuth } = useIsJiraAuthenticated();
@@ -12,10 +11,9 @@ export const useJiraIssueSummary = (issueKey: string | null) => {
     enabled: isJiraAuth && !!issueKey,
     staleTime: 5 * 60 * 1000,
     queryFn: async () => {
-      const result = await axiosJira.post<JiraIssueResult>("/search/jql", {
-        fields: ["summary"],
+      const result = await axiosKeijo.post<JiraIssueResult>("/issues/search-key", {
+        keys: [issueKey!],
         maxResults: 1,
-        jql: keyIsInKeys([issueKey!]),
       });
       return result.data;
     },
