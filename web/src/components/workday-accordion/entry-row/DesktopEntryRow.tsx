@@ -1,4 +1,4 @@
-import { Box, ListItem, Typography } from "@mui/material";
+import { Box, ListItem, Tooltip, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import dayjs from "dayjs";
 import { roundToFullMinutes } from "../../../common/duration";
@@ -12,10 +12,12 @@ import AcceptedChip from "./status-chips/AcceptedChip";
 import OpenChip from "./status-chips/OpenChip";
 import PaidChip from "./status-chips/PaidChip";
 import { EntryType } from "../../../common/entryType.enum";
+import { useJiraIssueSummary } from "../../../jira/useJiraIssueSummary";
 
 const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
   const { darkMode } = useDarkMode();
   const { product, activity, issue, client, description, ratioNumber, typeName } = entry;
+  const { summary: issueSummary, isJiraAuth } = useJiraIssueSummary(issue ?? null);
   const editable = ratioNumber === EntryType.NormalWork;
   const accepted = entry.acceptanceStatus === AcceptanceStatus.Accepted;
   const paid = entry.acceptanceStatus === AcceptanceStatus.Paid;
@@ -67,7 +69,11 @@ const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
         </Box>
         {product && <DimensionChip dimension="product" label={product} />}
         {activity && <DimensionChip dimension="activity" label={activity} />}
-        {issue && <DimensionChip dimension="issue" label={issue} />}
+        {issue && (
+          isJiraAuth
+            ? <Tooltip title={issueSummary ?? issue}><DimensionChip dimension="issue" label={issue} /></Tooltip>
+            : <DimensionChip dimension="issue" label={issue} />
+        )}
         {client && <DimensionChip dimension="client" label={client} />}
         {(paid || open || accepted) && !product && !activity && !issue && !client && typeName && (
           <Typography
