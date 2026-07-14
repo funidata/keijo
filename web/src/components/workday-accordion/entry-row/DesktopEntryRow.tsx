@@ -69,11 +69,14 @@ const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
         </Box>
         {product && <DimensionChip dimension="product" label={product} />}
         {activity && <DimensionChip dimension="activity" label={activity} />}
-        {issue && (
-          isJiraAuth
-            ? <Tooltip title={issueSummary ?? issue}><DimensionChip dimension="issue" label={issue} /></Tooltip>
-            : <DimensionChip dimension="issue" label={issue} />
-        )}
+        {issue &&
+          (isJiraAuth ? (
+            <Tooltip title={issueSummary ?? issue}>
+              <DimensionChip dimension="issue" label={issue} />
+            </Tooltip>
+          ) : (
+            <DimensionChip dimension="issue" label={issue} />
+          ))}
         {client && <DimensionChip dimension="client" label={client} />}
         {(paid || open || accepted) && !product && !activity && !issue && !client && typeName && (
           <Typography

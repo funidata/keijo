@@ -88,11 +88,14 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
       >
         {product && <DimensionChip dimension="product" label={product} />}
         {activity && <DimensionChip dimension="activity" label={activity} />}
-        {issue && (
-          isJiraAuth
-            ? <Tooltip title={issueSummary ?? issue}><DimensionChip dimension="issue" label={issue} /></Tooltip>
-            : <DimensionChip dimension="issue" label={issue} />
-        )}
+        {issue &&
+          (isJiraAuth ? (
+            <Tooltip title={issueSummary ?? issue}>
+              <DimensionChip dimension="issue" label={issue} />
+            </Tooltip>
+          ) : (
+            <DimensionChip dimension="issue" label={issue} />
+          ))}
         {client && <DimensionChip dimension="client" label={client} />}
         {(paid || open || accepted) && !product && !activity && !issue && !client && typeName && (
           <Typography variant="subtitle1" sx={{ width: "100%", mt: 1, ml: 1 }}>
