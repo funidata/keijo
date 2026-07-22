@@ -65,7 +65,13 @@ describe("JiraService", () => {
     it("builds expected JQL payload and returns Jira data", async () => {
       const mockedResponse = {
         data: {
-          issues: [{ id: "10001", key: "TEST-1", fields: { summary: "Test issue, do something", status: { name: "In Progress" } } }],
+          issues: [
+            {
+              id: "10001",
+              key: "TEST-1",
+              fields: { summary: "Test issue, do something", status: { name: "In Progress" } },
+            },
+          ],
           isLast: true,
           nextPageToken: "",
         },
