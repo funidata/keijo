@@ -65,7 +65,7 @@ describe("JiraService", () => {
     it("builds expected JQL payload and returns Jira data", async () => {
       const mockedResponse = {
         data: {
-          issues: [{ id: "10001", key: "TEST-1", fields: { summary: "Test issue, do something" } }],
+          issues: [{ id: "10001", key: "TEST-1", fields: { summary: "Test issue, do something", status: { name: "In Progress" } } }],
           isLast: true,
           nextPageToken: "",
         },
@@ -81,7 +81,7 @@ describe("JiraService", () => {
       expect(axiosService.post).toHaveBeenCalledWith(
         "https://api.atlassian.com/ex/jira/test-cloud-id/rest/api/3/search/jql",
         expect.objectContaining({
-          fields: ["summary"],
+          fields: ["summary", "status"],
           maxResults: 100,
           jql: 'summary ~ "something*" ORDER BY lastViewed DESC',
         }),
@@ -112,7 +112,7 @@ describe("JiraService", () => {
       expect(axiosService.post).toHaveBeenCalledWith(
         "https://api.atlassian.com/ex/jira/test-cloud-id/rest/api/3/search/jql",
         expect.objectContaining({
-          fields: ["summary"],
+          fields: ["summary", "status"],
           maxResults: 100,
           jql: "key in ('TEST-2', 'TEST-3') ORDER BY lastViewed DESC",
         }),
@@ -177,7 +177,7 @@ describe("JiraService", () => {
       expect(axiosService.post).toHaveBeenCalledWith(
         "https://api.atlassian.com/ex/jira/test-cloud-id/rest/api/3/search/jql",
         expect.objectContaining({
-          fields: ["summary"],
+          fields: ["summary", "status"],
           maxResults: 30,
           jql: '(issuekey IN issueHistory() OR assignee = currentUser() OR reporter = currentUser()) AND project IN ("TEST") ORDER BY lastViewed DESC',
         }),
