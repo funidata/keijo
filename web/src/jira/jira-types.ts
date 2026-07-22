@@ -5,6 +5,7 @@ export type JiraIssue = {
   expand: string;
   fields: {
     summary: string;
+    status: { name: string }
   };
 };
 
