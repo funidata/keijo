@@ -93,7 +93,10 @@ const JiraIssueComboBox = <T extends FieldValues>({
                     {showJiraIssueStatus && option.status && (
                       <ListItemText
                         secondary={
-                          <Typography color="primary" noWrap>
+                          <Typography
+                            sx={{ color: theme.palette.secondary.dark }}
+                            noWrap
+                          >
                             {option.status}
                           </Typography>
                         }
