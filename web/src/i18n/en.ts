@@ -77,7 +77,7 @@ const en = {
     },
     totalHoursToday: "Time on selected day before this entry",
     setRemainingHours: "Set remaining hours automatically",
-    showJiraIssueStatus: "Show Jira issue status",
+    showJiraIssueStatus: "Show JIRA issue status",
     filterProjects: "JIRA projects",
     filterProjectsHelperText: "Search issues only from selected JIRA projects.",
   },
