@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -35,24 +36,27 @@ export class UserSettingsService {
 
   async addEntryTemplate(employeeNumber: number, entry: EntryTemplateInput): Promise<UserSettings> {
     const settings = await this.findOneByEmployeeNumber(employeeNumber);
+    const existingTemplates = settings.entryTemplates ?? [];
+
     await this.userSettings.update(
       { employeeNumber },
       {
-        entryTemplates: [
-          ...(settings.entryTemplates || []),
-          { key: (settings.entryTemplates?.length || 0).toString(), ...entry },
-        ],
+        entryTemplates: [...existingTemplates, { key: randomUUID(), ...entry }],
       },
     );
+
     return this.findOneByEmployeeNumber(employeeNumber);
   }
 
   async removeEntryTemplate(employeeNumber: number, entryKey: string): Promise<UserSettings> {
     const settings = await this.findOneByEmployeeNumber(employeeNumber);
+    const existingTemplates = settings.entryTemplates ?? [];
+
     await this.userSettings.update(
       { employeeNumber },
-      { entryTemplates: settings.entryTemplates.filter((entry) => entry.key !== entryKey) },
+      { entryTemplates: existingTemplates.filter((entry) => entry.key !== entryKey) },
     );
+
     return this.findOneByEmployeeNumber(employeeNumber);
   }
 
