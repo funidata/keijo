@@ -33,7 +33,11 @@ const TemplateAccordion = () => {
         >
           {settingsData?.getMySettings.entryTemplates?.length ? (
             settingsData?.getMySettings.entryTemplates?.map((template) => (
-              <EntryTemplateRow entry={template} listItemProps={{ sx: { mt: 1 } }} />
+              <EntryTemplateRow
+                key={template.key}
+                entry={template}
+                listItemProps={{ sx: { mt: 1 } }}
+              />
             ))
           ) : (
             <ListItem sx={{ display: "flex", justifyContent: "center" }}>

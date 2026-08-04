@@ -1,4 +1,3 @@
-import { LoadingButton } from "@mui/lab";
 import { Box, Button, Grid, TextField, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -34,10 +33,10 @@ const TemplateForm = () => {
   const { date: originalDate, editEntry }: LocationState = state || {};
 
   const { showSuccessNotification } = useNotification();
-  const [addEntryTemplate, { client, loading }] = useMutation(AddEntryTemplateDocument, {
+  const [addEntryTemplate, { loading }] = useMutation(AddEntryTemplateDocument, {
     refetchQueries: [GetMySettingsDocument],
-    onCompleted: async () => {
-      await client.resetStore();
+    awaitRefetchQueries: true,
+    onCompleted: () => {
       showSuccessNotification(t("notifications.addEntry.success"));
     },
   });
@@ -82,7 +81,7 @@ const TemplateForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
-        <Grid size={{ xs: 12, md: 6}}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Grid container spacing={2}>
             <DimensionComboBox
               form={form}
@@ -149,15 +148,9 @@ const TemplateForm = () => {
         {mobile ? (
           <>
             <Grid size={12} sx={{ mt: 2 }}>
-              <LoadingButton
-                loading={loading}
-                type="submit"
-                variant="contained"
-                size="large"
-                fullWidth
-              >
+              <Button loading={loading} type="submit" variant="contained" size="large" fullWidth>
                 {t("entryDialog.submit")}
-              </LoadingButton>
+              </Button>
             </Grid>
             <Grid size={12}>
               <Button
@@ -182,9 +175,9 @@ const TemplateForm = () => {
               <Button type="reset" variant="outlined" size="large" onClick={() => reset()}>
                 {t("entryDialog.clear")}
               </Button>
-              <LoadingButton loading={loading} type="submit" variant="contained" size="large">
+              <Button loading={loading} type="submit" variant="contained" size="large">
                 {t("entryDialog.submit")}
-              </LoadingButton>
+              </Button>
             </Box>
           </Grid>
         )}
