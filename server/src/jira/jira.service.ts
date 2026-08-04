@@ -65,7 +65,7 @@ export class JiraService {
 
   async searchIssuesByText(accessToken: string, body: JiraSearchTextDto) {
     const payload: JiraSearchJqlDto = {
-      fields: ["summary"],
+      fields: ["summary", "status"],
       maxResults: body.maxResults ?? 100,
       jql: `summary ~ ${escapeUserInputForJql(body.searchTerm.concat("*"))} ORDER BY lastViewed DESC`,
     };
@@ -78,7 +78,7 @@ export class JiraService {
     }
 
     const payload: JiraSearchJqlDto = {
-      fields: ["summary"],
+      fields: ["summary", "status"],
       maxResults: body.maxResults ?? 100,
       jql: `${keyIsInKeys(body.keys)} ORDER BY lastViewed DESC`,
     };
@@ -105,7 +105,7 @@ export class JiraService {
     const jqlProjectList = allowedProjects.map(escapeUserInputForJql).join(",");
 
     const payload: JiraSearchJqlDto = {
-      fields: ["summary"],
+      fields: ["summary", "status"],
       maxResults: body.maxResults ?? 30,
       jql: [
         "(issuekey IN issueHistory() OR assignee = currentUser() OR reporter = currentUser())",

@@ -31,4 +31,8 @@ export class UserSettings {
   @Column({ nullable: true })
   @Field({ nullable: true })
   setRemainingHours: boolean;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  showJiraIssueStatus: boolean;
 }

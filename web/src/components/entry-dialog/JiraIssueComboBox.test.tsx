@@ -3,14 +3,18 @@ import { useForm } from "react-hook-form";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import JiraIssueComboBox from "./JiraIssueComboBox";
 
-const { mockRecentIssues, mockTextIssues, mockKeyIssues, useDebounceValueMock } = vi.hoisted(
-  () => ({
+const { mockRecentIssues, mockTextIssues, mockKeyIssues, useDebounceValueMock, mockUseQuery } =
+  vi.hoisted(() => ({
     mockRecentIssues: vi.fn(),
     mockTextIssues: vi.fn(),
     mockKeyIssues: vi.fn(),
     useDebounceValueMock: vi.fn(),
-  }),
-);
+    mockUseQuery: vi.fn(),
+  }));
+
+vi.mock("@apollo/client/react", () => ({
+  useQuery: mockUseQuery,
+}));
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({
@@ -27,7 +31,10 @@ vi.mock("@mui/material", async () => {
   return {
     ...actual,
     useMediaQuery: () => false,
-    useTheme: () => ({ breakpoints: { down: () => "" } }),
+    useTheme: () => ({
+      breakpoints: { down: () => "" },
+      palette: { secondary: { dark: "#8778b9" } },
+    }),
   };
 });
 
@@ -49,7 +56,7 @@ type TestFormValues = {
 
 const issue = {
   key: "ABC-1",
-  fields: { summary: "Test issue" },
+  fields: { summary: "Test issue", status: { name: "In Progress" } },
 };
 
 const TestForm = ({ onSubmit }: { onSubmit: (values: TestFormValues) => void }) => {
@@ -74,6 +81,7 @@ describe("JiraIssueComboBox", () => {
     mockRecentIssues.mockReturnValue([]);
     mockTextIssues.mockReturnValue([]);
     mockKeyIssues.mockReturnValue([issue]);
+    mockUseQuery.mockReturnValue({ data: { getMySettings: { showJiraIssueStatus: false } } });
   });
 
   it("submits the selected Jira issue key", async () => {
@@ -125,5 +133,31 @@ describe("JiraIssueComboBox", () => {
     });
 
     expect(onSubmit).not.toHaveBeenCalled();
+  });
+
+  it("shows issue status in options when showJiraIssueStatus is enabled", async () => {
+    mockUseQuery.mockReturnValue({ data: { getMySettings: { showJiraIssueStatus: true } } });
+
+    render(<TestForm onSubmit={vi.fn()} />);
+
+    const input = screen.getByLabelText("Issue") as HTMLInputElement;
+    fireEvent.change(input, { target: { value: "ABC-1" } });
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+
+    await screen.findByRole("option", { name: /ABC-1: Test issue/ });
+
+    expect(screen.getByText("In Progress")).toBeTruthy();
+  });
+
+  it("does not show issue status in options when showJiraIssueStatus is disabled", async () => {
+    render(<TestForm onSubmit={vi.fn()} />);
+
+    const input = screen.getByLabelText("Issue") as HTMLInputElement;
+    fireEvent.change(input, { target: { value: "ABC-1" } });
+    fireEvent.keyDown(input, { key: "ArrowDown" });
+
+    await screen.findByRole("option", { name: /ABC-1: Test issue/ });
+
+    expect(screen.queryByText("In Progress")).toBeNull();
   });
 });
