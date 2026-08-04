@@ -77,7 +77,7 @@ const fi = {
     },
     totalHoursToday: "Päivän työaika ennen tätä kirjausta",
     setRemainingHours: "Aseta jäljellä olevat tunnit automaattisesti",
-    showJiraIssueStatus: "Näytä Jira-tiketin tila",
+    showJiraIssueStatus: "Näytä JIRA-tiketin tila",
     filterProjects: "JIRA-projektit",
     filterProjectsHelperText: "Hae tikettejä vain valituista JIRA-projekteista.",
   },
