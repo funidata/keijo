@@ -1,14 +1,40 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useIsJiraAuthenticated } from "./jira-api";
 import { axiosKeijo } from "./axiosInstance";
-import { JiraIssueResult } from "./jira-types";
+import { JiraIssue, JiraIssueResult } from "./jira-types";
+
+const findCachedIssue = (
+  issueKey: string,
+  queryClient: ReturnType<typeof useQueryClient>,
+): JiraIssue | undefined => {
+  const queryPrefixes = [
+    ["jira-text-search"],
+    ["jira-issue-key-search"],
+    ["recentIssues"],
+  ] as const;
+
+  for (const queryPrefix of queryPrefixes) {
+    const matchingQueries = queryClient.getQueriesData<JiraIssueResult>({ queryKey: queryPrefix });
+
+    for (const [, data] of matchingQueries) {
+      const cachedIssue = data?.issues.find((issue) => issue.key === issueKey);
+      if (cachedIssue) {
+        return cachedIssue;
+      }
+    }
+  }
+  return undefined;
+};
 
 export const useJiraIssueSummary = (issueKey: string | null) => {
   const { isJiraAuth } = useIsJiraAuthenticated();
+  const queryClient = useQueryClient();
+
+  const cachedIssue = issueKey ? findCachedIssue(issueKey, queryClient) : undefined;
 
   const query = useQuery({
     queryKey: ["jira-issue-summary", issueKey],
-    enabled: isJiraAuth && !!issueKey,
+    enabled: isJiraAuth && !!issueKey && !cachedIssue,
     staleTime: 5 * 60 * 1000,
     queryFn: async () => {
       const result = await axiosKeijo.post<JiraIssueResult>("/issues/search-key", {
@@ -18,5 +44,8 @@ export const useJiraIssueSummary = (issueKey: string | null) => {
       return result.data;
     },
   });
-  return { summary: query.data?.issues[0]?.fields.summary, isJiraAuth };
+  return {
+    summary: cachedIssue?.fields.summary || query.data?.issues[0]?.fields.summary,
+    isJiraAuth,
+  };
 };
