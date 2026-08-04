@@ -1,5 +1,5 @@
+import { createHmac } from "crypto";
 import { Injectable } from "@nestjs/common";
-import sha from "sha.js";
 import { v4 as uuid } from "uuid";
 import { Config } from "../../config/config.schema";
 import { ConfigService } from "../../config/config.service";
@@ -31,7 +31,9 @@ export class NetvisorAuthService {
     const urlWithParams = urlParams ? [endpointUrl, urlParams].join("?") : endpointUrl;
 
     // ANSI datetime string.
-    const timestamp = dayjs().utc().format("YYYY-MM-DD HH:mm:ss.SSS");
+    const time = dayjs();
+    const timestamp = time.utc().format("YYYY-MM-DD HH:mm:ss.SSS");
+    const timestampUnix = time.unix();
 
     // Transaction ID must be unique for every request.
     const transactionId = uuid();
@@ -46,22 +48,26 @@ export class NetvisorAuthService {
       lang,
       organizationId,
       transactionId,
+      timestampUnix,
       customerKey,
       organizationKey,
     ].join("&");
 
-    const mac = sha("SHA256").update(hashable).digest("hex");
+    const hmacKey = customerKey + "&" + organizationKey;
+    const mac = createHmac("sha256", hmacKey).update(hashable).digest("hex");
 
     const headers = {
       "X-Netvisor-Authentication-Sender": sender,
       "X-Netvisor-Authentication-CustomerId": customerId,
       "X-Netvisor-Authentication-PartnerId": partnerId,
+      "X-Netvisor-Authentication-TimestampUnix": timestampUnix,
       "X-Netvisor-Authentication-Timestamp": timestamp,
       "X-Netvisor-Authentication-TransactionId": transactionId,
       "X-Netvisor-Interface-Language": lang,
       "X-Netvisor-Organisation-ID": organizationId,
       "X-Netvisor-Authentication-MAC": mac,
-      "X-Netvisor-Authentication-MACHashCalculationAlgorithm": "SHA256",
+      "X-Netvisor-Authentication-MACHashCalculationAlgorithm": "HMACSHA256",
+      "X-Netvisor-Authentication-UseHTTPResponseStatusCodes": 1,
     };
 
     return headers;

@@ -14,10 +14,10 @@ import BigDeleteEntryButton from "../entry-dialog/BigDeleteEntryButton";
 import DimensionComboBox from "../entry-dialog/DimensionComboBox";
 import DurationSlider from "../entry-dialog/DurationSlider";
 
-import { useIsJiraAuthenticated } from "../../jira/jiraApi";
-import JiraIssueComboBox from "../../jira/components/JiraIssueComboBox";
+import { useIsJiraAuthenticated } from "../../jira/jira-api";
+import JiraIssueComboBox from "../entry-dialog/JiraIssueComboBox";
 import { EntryFormSchema } from "../entry-form/useEntryForm";
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
 import { useNotification } from "../global-notification/useNotification";
 
 type LocationState = {
@@ -82,7 +82,7 @@ const TemplateForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6}}>
           <Grid container spacing={2}>
             <DimensionComboBox
               form={form}
@@ -102,7 +102,7 @@ const TemplateForm = () => {
               <DimensionComboBox form={form} name="issue" title={t("entryDialog.issue")} />
             )}
             <DimensionComboBox form={form} name="client" title={t("entryDialog.client")} />
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Controller
                 name="description"
                 control={control}
@@ -138,7 +138,7 @@ const TemplateForm = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Controller
             name="duration"
             control={control}
@@ -148,7 +148,7 @@ const TemplateForm = () => {
 
         {mobile ? (
           <>
-            <Grid item xs={12} sx={{ mt: 2 }}>
+            <Grid size={12} sx={{ mt: 2 }}>
               <LoadingButton
                 loading={loading}
                 type="submit"
@@ -159,7 +159,7 @@ const TemplateForm = () => {
                 {t("entryDialog.submit")}
               </LoadingButton>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Button
                 type="reset"
                 variant="outlined"
@@ -170,14 +170,14 @@ const TemplateForm = () => {
                 {t("entryDialog.clear")}
               </Button>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               {editEntry && originalDate && (
                 <BigDeleteEntryButton entryKey={editEntry.key} date={dayjs(originalDate)} />
               )}
             </Grid>
           </>
         ) : (
-          <Grid item xs={12} sx={{ mt: 2 }}>
+          <Grid size={12} sx={{ mt: 2 }}>
             <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
               <Button type="reset" variant="outlined" size="large" onClick={() => reset()}>
                 {t("entryDialog.clear")}

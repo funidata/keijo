@@ -1,12 +1,14 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { AccordionSummary, Box, Chip, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
 import { useTranslation } from "react-i18next";
+import { alpha } from "@mui/material/styles";
 import { roundToFullMinutes, totalDurationOfEntries } from "../../common/duration";
 import useDayjs from "../../common/useDayjs";
 import {
   isFlexLeaveDay,
   isHoliday,
+  isHolidayPayLeave,
   isSickLeave,
   isSpecialSingleEntryDay,
   isVacation,
@@ -29,6 +31,7 @@ import { useEntryContext } from "../workday-browser/entry-context/useEntryContex
 import { useNotification } from "../global-notification/useNotification";
 import PasteEntryButton from "./PasteEntryButton";
 import PasteEditEntryButton from "./PasteEditEntryButton";
+import HolidayPayLeaveChip from "./info-chips/HolidayPayLeaveChip";
 
 type WorkdayAccordionProps = {
   workday: Workday;
@@ -39,10 +42,12 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const dayjs = useDayjs();
   const date = dayjs(workday.date).locale(dayjs.locale());
+  const isCurrentDay = date.isSame(dayjs(), "day");
   const holiday = isHoliday(date);
   const weekend = isWeekend(date);
   const vacation = isVacation(workday);
   const flexLeave = isFlexLeaveDay(workday);
+  const holidayPayLeave = isHolidayPayLeave(workday);
   const sickLeave = isSickLeave(workday);
   const disabled = isSpecialSingleEntryDay(workday);
 
@@ -86,6 +91,9 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
     if (flexLeave) {
       return <FlexLeaveChip />;
     }
+    if (holidayPayLeave) {
+      return <HolidayPayLeaveChip />;
+    }
     if (sickLeave) {
       return <SickLeaveChip />;
     }
@@ -96,58 +104,85 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
       return <HolidayChip />;
     }
     if (empty) {
-      return <NoEntriesChip />;
+      return <NoEntriesChip sx={{ borderColor: isCurrentDay ? "grey.800" : "grey.400" }} />;
     }
     return null;
   };
 
   return (
-    <AccordionSummary expandIcon={!disabled && <ExpandMoreIcon />}>
-      <Box
+    <Box sx={{ position: "relative" }}>
+      <AccordionSummary
+        expandIcon={!disabled && <ExpandMoreIcon />}
+        aria-current={isCurrentDay ? "date" : undefined}
         sx={{
-          display: "flex",
-          flexGrow: 1,
-          justifyContent: "space-between",
-          alignItems: "center",
+          border: isCurrentDay ? "1px solid" : "none",
+          borderColor: isCurrentDay ? "secondary.main" : "transparent",
+          backgroundColor: isCurrentDay
+            ? (theme) =>
+                alpha(theme.palette.secondary.main, theme.palette.mode === "dark" ? 0.4 : 0.6)
+            : "inherit",
         }}
       >
         <Box
-          sx={
-            disabled ? { display: "flex", flexDirection: "row", alignItems: "center", gap: 2 } : {}
-          }
+          sx={{
+            display: "flex",
+            flexGrow: 1,
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
         >
-          <Typography sx={{ textTransform: "capitalize", minWidth: 105 }}>
-            {date.format("dd l")}
-          </Typography>
-          {mobile && (
-            <Box sx={!disabled ? { mt: 1 } : {}}>
-              <InfoChip />
-            </Box>
-          )}
-        </Box>
-        {!mobile && <InfoChip />}
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          {hasEntries ? (
-            <>
-              <PasteEditEntryButton date={date} />
-              <PasteEntryButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handlePasteEntries(selectedEntries);
-                }}
-              />
-            </>
-          ) : null}
+          <Box
+            sx={
+              disabled
+                ? { display: "flex", flexDirection: "row", alignItems: "center", gap: 2 }
+                : {}
+            }
+          >
+            <Typography sx={{ textTransform: "capitalize", minWidth: 105 }}>
+              {date.format("dd l")}
+            </Typography>
+            {mobile && (
+              <Box sx={!disabled ? { mt: 1 } : {}}>
+                <InfoChip />
+              </Box>
+            )}
+          </Box>
+          {!mobile && <InfoChip />}
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            {hasEntries ? (
+              <>
+                <PasteEditEntryButton date={date} />
+                <PasteEntryButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePasteEntries(selectedEntries);
+                  }}
+                />
+              </>
+            ) : null}
+          </Box>
           {!disabled && (
-            <>
-              <EntryDialogButton date={date} size="medium" />
-              <Chip label={`${totalHoursFormatted} h`} sx={{ mr: 2, color: "inherit" }} />
-            </>
+            <Chip
+              label={`${totalHoursFormatted} h`}
+              sx={{
+                mr: 2,
+                color: "inherit",
+                border: isCurrentDay ? "1px solid" : "none",
+                borderColor: isCurrentDay ? "grey.800" : "grey.400",
+              }}
+            />
           )}
           {disabled && !mobile && <Box sx={{ width: 133 }} />}
         </Box>
-      </Box>
-    </AccordionSummary>
+      </AccordionSummary>
+      {!disabled && (
+        <Box
+          sx={{ position: "absolute", top: "50%", transform: "translateY(-50%)", right: "116px" }}
+        >
+          <EntryDialogButton date={date} size="medium" />
+        </Box>
+      )}
+    </Box>
   );
 };
 

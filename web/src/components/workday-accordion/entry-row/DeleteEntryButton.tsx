@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Menu, MenuItem } from "@mui/material";
 import { Dayjs } from "dayjs";
@@ -20,10 +20,9 @@ const DeleteEntryButton = ({ entryKey, date }: DeleteEntryButtonProps) => {
   const { showSuccessNotification } = useNotification();
   const { t } = useTranslation();
   const [anchor, setAnchor] = useState<Element | null>(null);
-  const [removeWorkdayEntry, { client }] = useMutation(RemoveWorkdayEntryDocument, {
+  const [removeWorkdayEntry] = useMutation(RemoveWorkdayEntryDocument, {
     refetchQueries: [FindWorkdaysDocument],
-    onCompleted: async () => {
-      await client.resetStore();
+    onCompleted: () => {
       showSuccessNotification(t("notifications.deleteEntry.success"));
     },
   });

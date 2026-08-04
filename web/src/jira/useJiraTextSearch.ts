@@ -1,0 +1,48 @@
+import { useQuery as useApolloQuery } from "@apollo/client/react";
+import { useQuery } from "@tanstack/react-query";
+import { useDimensionOptions } from "../common/useDimensionOptions";
+import { GetMySettingsDocument } from "../graphql/generated/graphql";
+import { axiosKeijo } from "./axiosInstance";
+import { JiraIssueResult } from "./jira-types";
+
+/**
+ * Search for issues by text. Targets issue summary (title) only.
+ */
+export const useJiraTextSearch = (searchTerm: string) => {
+  const dimensionOptions = useDimensionOptions();
+  const nvIssueKeys = dimensionOptions.issue;
+
+  const { data: settingsData } = useApolloQuery(GetMySettingsDocument);
+  const projectsPreset = settingsData?.getMySettings.projectsPreset;
+
+  const query = useQuery({
+    queryKey: ["jira-text-search", searchTerm],
+    // Don't fire on empty search terms.
+    enabled: !!searchTerm,
+    // Cache briefly to prevent duplicate queries when user erases some text, etc.
+    staleTime: 2 * 60 * 1000,
+    queryFn: async () => {
+      const result = await axiosKeijo.post<JiraIssueResult>("/issues/search-text", {
+        searchTerm,
+        // Pagination support required if this is raised too much.
+        maxResults: 100,
+      });
+      return result.data;
+    },
+  });
+
+  // Filter in only allowed issues, apply project preset filter, and cap length.
+  const issues =
+    query.data?.issues
+      .filter((issue) => nvIssueKeys.includes(issue.key))
+      .filter((issue) => {
+        if (!projectsPreset?.length) return true;
+        return projectsPreset.some((p) => issue.key.startsWith(p + "-"));
+      })
+      .slice(0, 100) || [];
+
+  return {
+    issues,
+    loading: query.isLoading,
+  };
+};

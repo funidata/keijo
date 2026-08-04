@@ -1,8 +1,19 @@
 schema: http://localhost:3001/graphql
 documents: "./src/**/*.graphql"
+config:
+  scalars:
+    DateTime: string
 generates:
-  ./src/graphql/generated/graphql.ts:
+  ./src/graphql/generated/schema-types.ts:
     plugins:
       - typescript
+  ./src/graphql/generated/graphql.ts:
+    plugins:
+      - add:
+          content: "export * from './schema-types';"
       - typescript-operations
       - typed-document-node
+    config:
+      importSchemaTypesFrom: "./src/graphql/generated/schema-types"
+      scalars:
+        DateTime: string

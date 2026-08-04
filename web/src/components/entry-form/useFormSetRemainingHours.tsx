@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { Dayjs } from "dayjs";
 import { useEffect } from "react";
 import { UseFormReturn } from "react-hook-form";

@@ -159,6 +159,40 @@
           "default": false,
           "crudKey": "id",
           "callbacks": []
+        },
+        {
+          "uuid": "a31de0ac-2b73-403f-9e27-5dfe31b2abf6",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "FILE",
+          "filePath": "data/getworkdays-13-5-24.nv.xml",
+          "databucketID": "",
+          "sendFileAsBody": true,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "workhourstartdate",
+              "value": "2024-05-13",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "workhourenddate",
+              "value": "2024-05-13",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
         }
       ],
       "responseMode": null

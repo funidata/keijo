@@ -11,7 +11,7 @@ export class ConfigService {
   private readonly logger = new Logger(ConfigService.name);
 
   constructor() {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const config = require("./config").default;
 
     try {

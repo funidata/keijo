@@ -19,7 +19,9 @@ export class XmlParserService {
     const parser = new XMLParser(this.getOptions(arrayPaths));
 
     try {
-      return parser.parse(xmlData, validationOptions);
+      return validationOptions !== undefined
+        ? parser.parse(xmlData, validationOptions)
+        : parser.parse(xmlData);
     } catch (error) {
       const description = "XML parsing failed.";
       this.logger.error(`${description} [${error.message}]`);

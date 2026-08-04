@@ -16,7 +16,7 @@ const LoadingIndicator = () => {
       }}
     >
       <CircularProgress />
-      <Typography variant="h6" fontStyle="italic">
+      <Typography variant="h6" sx={{ fontStyle: "italic" }}>
         {t("entryTable.loading")}
       </Typography>
     </Box>

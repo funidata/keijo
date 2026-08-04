@@ -29,22 +29,22 @@ describe("HeadersGuard", () => {
 
   it("Denies activation with empty employee number header", () => {
     const ctx = mockContextWithHeaders({ [defaultMockConfig.employeeNumberHeaderKey]: "" });
-    expect(() => guard.canActivate(ctx)).toThrowError(AuthenticationError);
+    expect(() => guard.canActivate(ctx)).toThrow(AuthenticationError);
   });
 
   it("Denies activation with undefined employee number header", () => {
     const ctx = mockContextWithHeaders({ [defaultMockConfig.employeeNumberHeaderKey]: undefined });
-    expect(() => guard.canActivate(ctx)).toThrowError(AuthenticationError);
+    expect(() => guard.canActivate(ctx)).toThrow(AuthenticationError);
   });
 
   it("Denies activation with missing employee number header", () => {
     const ctx = mockContextWithHeaders({});
-    expect(() => guard.canActivate(ctx)).toThrowError(AuthenticationError);
+    expect(() => guard.canActivate(ctx)).toThrow(AuthenticationError);
   });
 
   it("Denies activation with an invalid employee number header", () => {
     const ctx = mockContextWithHeaders({ [defaultMockConfig.employeeNumberHeaderKey]: "123a" });
-    expect(() => guard.canActivate(ctx)).toThrowError(AuthenticationError);
+    expect(() => guard.canActivate(ctx)).toThrow(AuthenticationError);
   });
 
   describe("With bypass on", () => {

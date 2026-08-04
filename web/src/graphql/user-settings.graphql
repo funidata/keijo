@@ -3,6 +3,10 @@ query GetMySettings {
     employeeNumber
     productPreset
     activityPreset
+    projectsPreset
+    jiraNotificationIgnore
+    showWeekend
+    setRemainingHours
     entryTemplates {
       key
       duration

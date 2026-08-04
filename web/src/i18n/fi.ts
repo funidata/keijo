@@ -10,11 +10,10 @@ const fi = {
     confirmDelete: "Vahvista poisto",
     confirmDeleteForDialog: "Vahvista merkinnän poisto",
     addEntry: "Lisää työaikakirjaus",
+    addEntryWithDate: "Lisää työaikakirjaus {{date}}",
     deleteEntry: "Poista merkintä",
     editEntry: "Muokkaa merkintää",
-    endDate: "Loppu",
     selectWeek: "Viikko",
-    startDate: "Alku",
     openMenu: "Avaa valikko",
     useDarkMode: "Synkkyys",
     selectLanguage: "Valitse kieli",
@@ -28,6 +27,12 @@ const fi = {
     pasteEntry: "Liitä työaikakirjaus",
     pasteAndEditEntry: "Liitä ja muokkaa kirjausta",
     addTemplate: "Lisää kirjauspohja",
+    showFilters: "Näytä suodattimet",
+    showFilters_aria_zero: "Näytä suodattimet, ei aktiivisia suodattimia",
+    showFilters_aria_one: "Näytä suodattimet, 1 aktiivinen suodatin",
+    showFilters_aria_other: "Näytä suodattimet, {{count}} aktiivista suodatinta",
+    hideFilters: "Piilota suodattimet",
+    dateRange: "Aikaväli",
   },
   dimensionNames: {
     product: "Tuote",
@@ -35,12 +40,18 @@ const fi = {
     issue: "Tiketti",
     client: "Asiakas",
   },
+  environment: {
+    development: "Kehitys",
+  },
   errors: {
     error: "Virhe",
     missingEmployeeNumber:
       "Palkansaajanumeroasi ei löytynyt HTTP-otsakkeista. Keijoa ei voi käyttää ilman tätä tietoa. Ilmoita ongelmasta esihenkilöllesi.",
-    unknownError: "Keijo kohtasi tuntemattoman virheen. Ota yhteyttä Kettu-tiimiin.",
+    unknownError: "Keijo kohtasi tuntemattoman virheen. Ota yhteyttä Naali-tiimiin.",
     notFound: "Pyydettyä sivua ei löytynyt. Tarkasta osoite.",
+    oldWeekParamFormat:
+      "Sivun osoitteessa on vanhan muotoinen viikkoparametri. Mene ensin etusivulle, jonka jälkeen voit jatkaa käyttöä normaalisti.",
+    invalidWeekParam: "Annettu viikkoparametri ei ole kelvollinen.",
   },
   entryDialog: {
     title: { create: "Lisää työaikakirjaus", edit: "Muokkaa kirjausta" },
@@ -66,9 +77,12 @@ const fi = {
       activityRequired: "Toiminto on pakollinen tieto.",
       descriptionRequired: "Kommentti on pakollinen tieto.",
       ticketOrDescriptionRequired: "Lisää kommentti, mikäli työlle ei löydy tikettiä.",
+      issueInOptions: "Tiketin pitää olla jokin vaihtoehdoista",
     },
     totalHoursToday: "Päivän työaika ennen tätä kirjausta",
     setRemainingHours: "Aseta jäljellä olevat tunnit automaattisesti",
+    filterProjects: "JIRA-projektit",
+    filterProjectsHelperText: "Hae tikettejä vain valituista JIRA-projekteista.",
   },
   entryTable: {
     accepted: "Hyväksytty",
@@ -89,6 +103,7 @@ const fi = {
     weekend: "Viikonloppu",
     vacation: "Vuosiloma",
     flexLeave: "Saldovapaa",
+    holidayPayLeave: "Lomarahavapaa",
     sickLeave: "Sairauspoissaolo",
     unknownEntry: "Tuntematon kirjauslaji",
     unknownEntryNote: "Käytä Netvisoria tämän kirjauslajin tarkastelemiseen ja muokkamiseen.",
@@ -112,6 +127,28 @@ const fi = {
     workdayBrowser: "Työaikakirjaukset",
     templates: "Omat kirjauspohjat",
     noTemplates: "Ei kirjauspohjia.",
+  },
+  jira: {
+    issueGroups: {
+      recent: "Viimeaikaiset",
+      keySearchResults: "Hakutulokset (tiketin tunnus)",
+      textSearchResults: "Hakutulokset (otsikko)",
+      searchResults: "Hakutulokset",
+      noSearchResults: "Ei hakutuloksia",
+      typeToSearch: "Kirjoita hakeaksesi Jirasta tiketin tunnuksella tai otsikolla",
+      loading: "Haetaan...",
+    },
+    connectNotificationTitle: "Uutta: Jira-integraatio",
+    connectNotification1:
+      "Keijo voi lukea tikettien tietoja Jirasta kirjausten helpottamiseksi. Voit ottaa Jira-ominaisuudet käyttöön yhdistämällä Keijon Jiraan henkilökohtaisen Atlassian-tilisi kautta.",
+    connectNotification2:
+      "Voit myös sulkea tämän huomautuksen ja halutessasi yhdistää Jiraan myöhemmin asetusvalikon kautta.",
+    infoDialog: {
+      title: "Keijo-Jira",
+      // Site could also be set dynamically from server or simply by <your-company>.atlassian.net
+      content:
+        "Sinut ohjataan valtuuttamaan Jira-integraatio käyttäjälläsi. Kirjaudu Atlassianin sivulla ja valitse valikosta Keijolle oikeudet käytettävälle sivulle esim. funidata.atlassian.net.",
+    },
   },
 };
 

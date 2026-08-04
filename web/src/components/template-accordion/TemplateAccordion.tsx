@@ -2,7 +2,7 @@ import { Box, List, ListItem, Paper, Typography } from "@mui/material";
 import { GetMySettingsDocument } from "../../graphql/generated/graphql";
 import CreateTemplateButton from "./AddTemplateButton";
 import EntryTemplateRow from "./EntryTemplateRow";
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { useTranslation } from "react-i18next";
 
 const TemplateAccordion = () => {
@@ -37,7 +37,7 @@ const TemplateAccordion = () => {
             ))
           ) : (
             <ListItem sx={{ display: "flex", justifyContent: "center" }}>
-              <Typography color={(theme) => theme.palette.text.disabled}>
+              <Typography color="textDisabled" variant="body2">
                 {t("titles.noTemplates")}
               </Typography>
             </ListItem>

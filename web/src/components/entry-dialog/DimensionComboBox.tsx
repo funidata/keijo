@@ -1,7 +1,23 @@
-import { useQuery } from "@apollo/client";
-import { Autocomplete, AutocompleteProps, FormControl, Grid, TextField } from "@mui/material";
-import { Control, Controller, ControllerProps, FieldValues, UseFormReturn } from "react-hook-form";
-import { FindDimensionOptionsDocument } from "../../graphql/generated/graphql";
+import {
+  Autocomplete,
+  AutocompleteProps,
+  FormControl,
+  Grid,
+  GridProps,
+  TextField,
+} from "@mui/material";
+import {
+  Control,
+  Controller,
+  ControllerProps,
+  FieldValues,
+  Path,
+  UseFormReturn,
+} from "react-hook-form";
+import useOptionsFilter from "./useOptionsFilter";
+import { createFilterOptions } from "@mui/material/Autocomplete";
+import { useTranslation } from "react-i18next";
+import { useDimensionOptions } from "../../common/useDimensionOptions";
 
 type DimensionComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -12,7 +28,12 @@ type DimensionComboBoxProps<T extends FieldValues> = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     AutocompleteProps<any, boolean | undefined, boolean | undefined, boolean | undefined>
   >;
+  gridProps?: GridProps;
 };
+
+const inputFilter = createFilterOptions({
+  stringify: (option: string) => option,
+});
 
 const DimensionComboBox = <T extends FieldValues>({
   form,
@@ -20,35 +41,51 @@ const DimensionComboBox = <T extends FieldValues>({
   title,
   rules,
   autoCompleteProps,
+  gridProps,
 }: DimensionComboBoxProps<T>) => {
-  const { data } = useQuery(FindDimensionOptionsDocument);
-  const options = data?.findDimensionOptions[name] || [];
+  const dimensionOptions = useDimensionOptions();
+  const options = dimensionOptions[name] || [];
+  const { t } = useTranslation();
+
+  // Validation for 'issue' field
+  const validateIssue = (value: string | null) => {
+    return !value || options.includes(value) ? true : t("entryDialog.validation.issueInOptions");
+  };
+
+  // Merge rules and validate
+  const mergedRules = name === "issue" ? { ...(rules || {}), validate: validateIssue } : rules;
+
+  const extFilter = useOptionsFilter<string>((option) => option);
 
   return (
-    <Grid item xs={12} md={6}>
+    <Grid size={{ xs: 12, md: 6 }} {...gridProps}>
       <FormControl fullWidth>
         <Controller
-          control={form.control as unknown as Control<FieldValues>}
-          name={name}
-          rules={rules}
+          control={form.control as Control<FieldValues>}
+          name={name as Path<T>}
+          rules={mergedRules}
           render={({ field: { value, onChange } }) => (
             <Autocomplete
-              value={value || null}
-              onChange={(_, value) => onChange(value?.label || value)}
+              value={value ?? ""}
+              onChange={(_, newValue) => onChange(newValue)}
+              onInputChange={(_, newInputValue) => {
+                onChange(newInputValue);
+              }}
               options={options}
               autoHighlight
-              freeSolo
+              freeSolo={name === "issue"}
               forcePopupIcon
-              clearOnBlur
               renderInput={(params) => (
                 <TextField
                   {...params}
                   label={title}
-                  onChange={onChange}
                   error={!!form.formState.errors[name]}
                   helperText={form.formState.errors[name]?.message as string}
                 />
               )}
+              filterOptions={(options, state) =>
+                inputFilter(name === "issue" ? extFilter(options) : options, state)
+              }
               {...autoCompleteProps}
             />
           )}

@@ -7,4 +7,16 @@ export class UpdateSettingsDto {
 
   @Field({ nullable: true })
   activityPreset?: string;
+
+  @Field({ nullable: true })
+  jiraNotificationIgnore?: boolean;
+
+  @Field(() => [String], { nullable: true })
+  projectsPreset?: string[];
+
+  @Field({ nullable: true })
+  showWeekend?: boolean;
+
+  @Field({ nullable: true })
+  setRemainingHours?: boolean;
 }

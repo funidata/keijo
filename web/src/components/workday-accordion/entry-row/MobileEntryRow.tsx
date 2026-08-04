@@ -10,9 +10,12 @@ import PaidChip from "./status-chips/PaidChip";
 import CopyEntryButton from "./CopyEntryButton";
 import MobileEntryListItem from "./MobileEntryListItem";
 import { useEntryContext } from "../../workday-browser/entry-context/useEntryContext";
+import { EntryType } from "../../../common/entryType.enum";
 
 const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
   const { darkMode } = useDarkMode();
+  const { ratioNumber } = entry;
+  const editable = ratioNumber === EntryType.NormalWork;
   const accepted = entry.acceptanceStatus === AcceptanceStatus.Accepted;
   const paid = entry.acceptanceStatus === AcceptanceStatus.Paid;
   const open = entry.acceptanceStatus === AcceptanceStatus.Open;
@@ -41,10 +44,12 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
             </Box>
           ) : (
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Box>
-                <CopyEntryButton entry={templateEntry} />
-                <EditEntryButton date={date} entry={entry} />
-              </Box>
+              {editable && (
+                <Box>
+                  <CopyEntryButton entry={templateEntry} />
+                  <EditEntryButton date={date} entry={entry} />
+                </Box>
+              )}
             </Box>
           )}
           {open && (
