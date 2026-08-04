@@ -48,13 +48,13 @@ const DesktopEntryRow = ({ entry, date, listItemProps }: EntryRowProps) => {
                 <CopyEntryButton entry={templateEntry} />
               </Box>
               {editable && (
-              <Box>
-                <EditEntryButton date={date} entry={entry} />
+                <Box>
+                  <EditEntryButton date={date} entry={entry} />
+                </Box>
+              )}
+              <Box sx={{ display: { xs: "none", md: "block" }, ml: -0.5 }}>
+                <DeleteEntryButton date={date} entryKey={entry.key} />
               </Box>
-            )}
-            <Box sx={{ display: { xs: "none", md: "block" }, ml: -0.5 }}>
-              <DeleteEntryButton date={date} entryKey={entry.key} />
-            </Box>
             </Box>
           )}
           {open && (
