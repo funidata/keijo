@@ -19,4 +19,7 @@ export class UpdateSettingsDto {
 
   @Field({ nullable: true })
   setRemainingHours?: boolean;
+
+  @Field({ nullable: true })
+  showJiraIssueStatus?: boolean;
 }
