@@ -31,7 +31,7 @@ vi.mock("@mui/material", async () => {
   return {
     ...actual,
     useMediaQuery: () => false,
-    useTheme: () => ({ breakpoints: { down: () => "" } }),
+    useTheme: () => ({ breakpoints: { down: () => "" }, palette: { secondary: { dark: "#8778b9" } } }),
   };
 });
 
