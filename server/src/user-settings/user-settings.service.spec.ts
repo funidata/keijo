@@ -60,4 +60,16 @@ describe("UserSettingsService", () => {
     expect(repository.update).toHaveBeenCalledWith({ employeeNumber: 1 }, { entryTemplates: [] });
     expect(result.entryTemplates).toEqual([]);
   });
+
+  it("removes a template identified by a UUID-like key", async () => {
+    repository.findOneBy.mockResolvedValueOnce({
+      employeeNumber: 1,
+      entryTemplates: [{ key: "123e4567-e89b-12d3-a456-426614174000" }],
+    });
+    repository.findOneBy.mockResolvedValueOnce({ employeeNumber: 1, entryTemplates: [] });
+
+    await service.removeEntryTemplate(1, "123e4567-e89b-12d3-a456-426614174000");
+
+    expect(repository.update).toHaveBeenCalledWith({ employeeNumber: 1 }, { entryTemplates: [] });
+  });
 });

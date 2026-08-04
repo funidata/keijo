@@ -5,7 +5,10 @@ import { MouseEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import LabelledIconButton from "../LabelledIconButton";
 import { useNotification } from "../global-notification/useNotification";
-import { FindWorkdaysDocument, RemoveEntryTemplateDocument } from "../../graphql/generated/graphql";
+import {
+  GetMySettingsDocument,
+  RemoveEntryTemplateDocument,
+} from "../../graphql/generated/graphql";
 
 type DeleteTemplateButtonProps = {
   templateKey: string;
@@ -15,10 +18,10 @@ const DeleteTemplateButton = ({ templateKey }: DeleteTemplateButtonProps) => {
   const { showSuccessNotification } = useNotification();
   const { t } = useTranslation();
   const [anchor, setAnchor] = useState<Element | null>(null);
-  const [removeEntryTemplate, { client }] = useMutation(RemoveEntryTemplateDocument, {
-    refetchQueries: [FindWorkdaysDocument],
-    onCompleted: async () => {
-      await client.resetStore();
+  const [removeEntryTemplate] = useMutation(RemoveEntryTemplateDocument, {
+    refetchQueries: [GetMySettingsDocument],
+    awaitRefetchQueries: true,
+    onCompleted: () => {
       showSuccessNotification(t("notifications.deleteEntry.success"));
     },
   });
@@ -32,7 +35,7 @@ const DeleteTemplateButton = ({ templateKey }: DeleteTemplateButtonProps) => {
   };
 
   const onConfirm = async () => {
-    removeEntryTemplate({
+    await removeEntryTemplate({
       variables: { templateKey: { key: templateKey } },
     });
     onClose();
