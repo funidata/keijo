@@ -1,5 +1,12 @@
 import { useMutation, useQuery } from "@apollo/client/react";
-import { Autocomplete, FormControl, Grid, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  Switch,
+  TextField,
+} from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useDimensionOptions } from "../../common/useDimensionOptions";
 import { GetMySettingsDocument, UpdateSettingsDocument } from "../../graphql/generated/graphql";
@@ -51,6 +58,21 @@ const DefaultsForm = () => {
             renderInput={(params) => <TextField {...params} label={t("entryDialog.activity")} />}
           />
         </FormControl>
+      </Grid>
+      <Grid size={{ xs: 12 }}>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={!!settingsData.getMySettings.showJiraIssueStatus}
+              onChange={(e) =>
+                updateSettings({
+                  variables: { settings: { showJiraIssueStatus: e.target.checked } },
+                })
+              }
+            />
+          }
+          label={t("entryDialog.showJiraIssueStatus")}
+        />
       </Grid>
     </Grid>
   );

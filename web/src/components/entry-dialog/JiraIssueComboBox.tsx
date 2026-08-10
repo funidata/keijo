@@ -1,4 +1,4 @@
-import { ListItem, ListItemText, useMediaQuery, useTheme } from "@mui/material";
+import { ListItem, ListItemText, Typography, useMediaQuery, useTheme } from "@mui/material";
 import {
   Control,
   ControllerProps,
@@ -15,6 +15,8 @@ import FormControl from "@mui/material/FormControl";
 import useJiraIssueOptions, { type Option } from "./useJiraIssueOptions";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
+import { useQuery } from "@apollo/client/react";
+import { GetMySettingsDocument } from "../../graphql/generated/graphql";
 
 type JiraIssueComboBoxProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -39,6 +41,8 @@ const JiraIssueComboBox = <T extends FieldValues>({
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const { options } = useJiraIssueOptions(searchTerm);
+  const { data: settingsData } = useQuery(GetMySettingsDocument);
+  const showJiraIssueStatus = !!settingsData?.getMySettings.showJiraIssueStatus;
 
   useEffect(() => {
     const currentIssue = form.getValues(name as Path<T>) as string | null;
@@ -118,7 +122,17 @@ const JiraIssueComboBox = <T extends FieldValues>({
                 const { key, ...rest } = props;
                 return (
                   <ListItem key={key} {...rest} style={{ overflowWrap: "break-word" }}>
-                    <ListItemText>{option.label}</ListItemText>
+                    <ListItemText primary={option.label} sx={{ flex: 1, minWidth: 0, mr: 2 }} />
+                    {showJiraIssueStatus && option.status && (
+                      <ListItemText
+                        secondary={
+                          <Typography sx={{ color: theme.palette.secondary.dark }} noWrap>
+                            {option.status}
+                          </Typography>
+                        }
+                        sx={{ flex: "none" }}
+                      />
+                    )}
                   </ListItem>
                 );
               }}
