@@ -150,7 +150,7 @@ describe("JiraIssueComboBox", () => {
     const input = screen.getByLabelText("Issue") as HTMLInputElement;
 
     await waitFor(() => {
-      expect(input.value === "ABC-1" || input.value === "ABC-1: Test issue").toBeTruthy();
+      expect(input.value).toBe("ABC-1: Test issue");
     });
   });
 

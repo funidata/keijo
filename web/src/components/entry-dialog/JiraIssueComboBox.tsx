@@ -53,8 +53,19 @@ const JiraIssueComboBox = <T extends FieldValues>({
     }
 
     const matched = options.find((option) => option.value === currentIssue);
-    setInputValue(matched ? matched.label : currentIssue);
-  }, [form, name, options]);
+
+    if (matched) {
+      setInputValue(matched.label);
+    } else {
+      setInputValue(currentIssue);
+
+      // Available options are built from recent issues and search results, so if current issue is not included in user's recent issues list,
+      // update the search term to fetch it from Jira, so that the issue label can be displayed in the input field.
+      if (searchTerm !== currentIssue) {
+        setSearchTerm(currentIssue);
+      }
+    }
+  }, [form, name, options, searchTerm, setSearchTerm]);
 
   const validateIssue = (value: string | null | Option) => {
     if (!value) return true;
