@@ -3,6 +3,9 @@ name: Build and save images
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: Build and save images
