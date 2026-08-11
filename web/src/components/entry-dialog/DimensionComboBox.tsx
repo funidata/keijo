@@ -83,6 +83,7 @@ const DimensionComboBox = <T extends FieldValues>({
                   helperText={form.formState.errors[name]?.message as string}
                 />
               )}
+              clearText={t("entryDialog.input.clear")}
               filterOptions={(options, state) =>
                 inputFilter(name === "issue" ? extFilter(options) : options, state)
               }

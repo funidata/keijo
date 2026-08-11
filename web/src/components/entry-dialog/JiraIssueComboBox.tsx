@@ -1,12 +1,20 @@
 import { ListItem, ListItemText, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { Control, ControllerProps, FieldValues, UseFormReturn, Controller } from "react-hook-form";
+import {
+  Control,
+  ControllerProps,
+  FieldValues,
+  UseFormReturn,
+  Controller,
+  Path,
+} from "react-hook-form";
 import { useDebounceValue } from "usehooks-ts";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
+import Autocomplete, { type AutocompleteInputChangeReason } from "@mui/material/Autocomplete";
 import FormControl from "@mui/material/FormControl";
 import useJiraIssueOptions, { type Option } from "./useJiraIssueOptions";
 import { useTranslation } from "react-i18next";
+import { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client/react";
 import { GetMySettingsDocument } from "../../graphql/generated/graphql";
 
@@ -24,8 +32,10 @@ const JiraIssueComboBox = <T extends FieldValues>({
   rules,
 }: JiraIssueComboBoxProps<T>) => {
   const { t } = useTranslation();
+
   // Debounce search term to avoid firing queries on every key press.
   const [searchTerm, setSearchTerm] = useDebounceValue("", 300);
+  const [inputValue, setInputValue] = useState("");
 
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -34,13 +44,33 @@ const JiraIssueComboBox = <T extends FieldValues>({
   const { data: settingsData } = useQuery(GetMySettingsDocument);
   const showJiraIssueStatus = !!settingsData?.getMySettings.showJiraIssueStatus;
 
-  // Validation for 'issue' field
-  // Make sure the selected value exists in the options and convert value to string
+  useEffect(() => {
+    const currentIssue = form.getValues(name as Path<T>) as string | null;
+
+    if (!currentIssue) {
+      setInputValue("");
+      return;
+    }
+
+    const matched = options.find((option) => option.value === currentIssue);
+
+    if (matched) {
+      setInputValue(matched.label);
+    } else {
+      setInputValue(currentIssue);
+
+      // Available options are built from recent issues and search results, so if current issue is not included in user's recent issues list,
+      // update the search term to fetch it from Jira, so that the issue label can be displayed in the input field.
+      if (searchTerm !== currentIssue) {
+        setSearchTerm(currentIssue);
+      }
+    }
+  }, [form, name, options, searchTerm, setSearchTerm]);
+
   const validateIssue = (value: string | null | Option) => {
     if (!value) return true;
-    const exists = options.some((option) =>
-      typeof option === "string" ? option === value : option.value === value,
-    );
+    const normalizedValue = typeof value === "string" ? value : value.value;
+    const exists = options.some((option) => option.value === normalizedValue);
     return exists ? true : t("entryDialog.validation.issueInOptions");
   };
 
@@ -64,16 +94,29 @@ const JiraIssueComboBox = <T extends FieldValues>({
               freeSolo
               forcePopupIcon
               value={value ?? ""}
+              inputValue={inputValue}
               onChange={(_, selectedOption) => {
-                if (selectedOption == null || typeof selectedOption === "string") {
+                if (selectedOption == null) {
+                  onChange(null);
+                  setInputValue("");
+                } else if (typeof selectedOption === "string") {
                   onChange(selectedOption);
+                  setInputValue(selectedOption);
                 } else {
                   onChange(selectedOption.value);
+                  setInputValue(selectedOption.label);
                 }
               }}
-              onInputChange={(_, value) => {
-                onChange(value);
-                setSearchTerm(value);
+              onInputChange={(_, value, reason: AutocompleteInputChangeReason) => {
+                if (reason === "input") {
+                  setSearchTerm(value);
+                  setInputValue(value);
+                  onChange(value);
+                } else if (reason === "clear") {
+                  setSearchTerm("");
+                  setInputValue("");
+                  onChange(null);
+                }
               }}
               renderInput={(params) => (
                 <TextField
@@ -84,6 +127,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
                 />
               )}
               options={options}
+              getOptionLabel={(option) => (typeof option === "string" ? option : option.label)}
               getOptionDisabled={(option) => option.disabled}
               renderOption={(props, option) => {
                 const { key, ...rest } = props;
@@ -117,6 +161,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
                     }
                   : undefined
               }
+              clearText={t("entryDialog.input.clear")}
               filterOptions={() => options}
             />
           )}
