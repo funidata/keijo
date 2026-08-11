@@ -33,6 +33,10 @@ export class UserSettings {
   @Field({ nullable: true })
   setRemainingHours: boolean;
 
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  showJiraIssueStatus: boolean;
+
   @Column("simple-json", { nullable: true })
   @Field(() => [EntryTemplateType], { nullable: true })
   entryTemplates: EntryTemplateType[];

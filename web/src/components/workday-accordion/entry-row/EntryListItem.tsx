@@ -1,9 +1,10 @@
-import { Box, ListItem, ListItemProps, Typography } from "@mui/material";
+import { Box, ListItem, ListItemProps, Typography, Tooltip } from "@mui/material";
 import dayjs from "dayjs";
 import { roundToFullMinutes } from "../../../common/duration";
 import { AcceptanceStatus, EntryTemplateType, Entry } from "../../../graphql/generated/graphql";
 import DimensionChip from "./DimensionChip";
 import { ReactNode } from "react";
+import { useJiraIssueSummary } from "../../../jira/useJiraIssueSummary";
 
 type EntryListItemProps = {
   entry: EntryTemplateType | Entry;
@@ -14,6 +15,7 @@ const isEntry = (value: EntryTemplateType | Entry): value is Entry => "acceptanc
 
 const EntryListItem = ({ entry, action, ...listItemProps }: EntryListItemProps) => {
   const { product, activity, issue, client, description } = entry;
+  const { summary: issueSummary, isJiraAuth } = useJiraIssueSummary(issue ?? null);
 
   const acceptanceStatus = isEntry(entry) ? entry.acceptanceStatus : undefined;
   const typeName = isEntry(entry) ? entry.typeName : undefined;
@@ -69,7 +71,14 @@ const EntryListItem = ({ entry, action, ...listItemProps }: EntryListItemProps) 
         </Box>
         {product && <DimensionChip dimension="product" label={product} />}
         {activity && <DimensionChip dimension="activity" label={activity} />}
-        {issue && <DimensionChip dimension="issue" label={issue} />}
+        {issue &&
+          (isJiraAuth ? (
+            <Tooltip title={issueSummary ?? issue}>
+              <DimensionChip dimension="issue" label={issue} />
+            </Tooltip>
+          ) : (
+            <DimensionChip dimension="issue" label={issue} />
+          ))}
         {client && <DimensionChip dimension="client" label={client} />}
         {(paid || open || accepted) && !product && !activity && !issue && !client && typeName && (
           <Typography

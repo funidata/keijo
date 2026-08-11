@@ -7,6 +7,7 @@ import { JiraIssue } from "../../jira/jira-types";
 export interface Option {
   value: string;
   label: string;
+  status?: string;
   groupLabel: string;
   disabled: boolean;
 }
@@ -16,6 +17,7 @@ const issueToOption =
   (issue: JiraIssue): Option => ({
     value: issue.key,
     label: `${issue.key}: ${issue.fields.summary}`,
+    status: issue.fields.status?.name,
     groupLabel,
     disabled: false,
   });

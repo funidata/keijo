@@ -149,6 +149,7 @@ export type UpdateSettingsDto = {
   productPreset?: InputMaybe<Scalars['String']['input']>;
   projectsPreset?: InputMaybe<Array<Scalars['String']['input']>>;
   setRemainingHours?: InputMaybe<Scalars['Boolean']['input']>;
+  showJiraIssueStatus?: InputMaybe<Scalars['Boolean']['input']>;
   showWeekend?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
@@ -161,6 +162,7 @@ export type UserSettings = {
   productPreset?: Maybe<Scalars['String']['output']>;
   projectsPreset?: Maybe<Array<Scalars['String']['output']>>;
   setRemainingHours?: Maybe<Scalars['Boolean']['output']>;
+  showJiraIssueStatus?: Maybe<Scalars['Boolean']['output']>;
   showWeekend?: Maybe<Scalars['Boolean']['output']>;
 };
 

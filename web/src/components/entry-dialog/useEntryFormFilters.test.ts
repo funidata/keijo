@@ -25,6 +25,7 @@ const buildSettings = (projectsPreset: string[] | null): GetMySettingsQuery => (
     showWeekend: null,
     setRemainingHours: null,
     entryTemplates: [],
+    showJiraIssueStatus: null,
   },
 });
 
