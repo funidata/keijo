@@ -1,5 +1,12 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { AccordionSummary, Box, Chip, Typography, useMediaQuery, useTheme } from "@mui/material";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Box  from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Chip from "@mui/material/Chip";
+import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import Divider from "@mui/material/Divider";
 import { useMutation } from "@apollo/client/react";
 import { useTranslation } from "react-i18next";
 import { alpha } from "@mui/material/styles";
@@ -148,39 +155,43 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
             )}
           </Box>
           {!mobile && <InfoChip />}
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            {hasEntries ? (
+          <Stack direction="row" sx={{ alignItems: "center" }}>
+            {!disabled && (
               <>
-                <PasteEditEntryButton date={date} />
-                <PasteEntryButton
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlePasteEntries(selectedEntries);
+                <Chip
+                  label={`${totalHoursFormatted} h`}
+                  sx={{
+                    mr: 2,
+                    color: "inherit",
+                    border: isCurrentDay ? "1px solid" : "none",
+                    borderColor: isCurrentDay ? "grey.800" : "grey.400",
                   }}
                 />
               </>
-            ) : null}
-          </Box>
-          {!disabled && (
-            <Chip
-              label={`${totalHoursFormatted} h`}
-              sx={{
-                mr: 2,
-                color: "inherit",
-                border: isCurrentDay ? "1px solid" : "none",
-                borderColor: isCurrentDay ? "grey.800" : "grey.400",
-              }}
-            />
-          )}
-          {disabled && !mobile && <Box sx={{ width: 133 }} />}
+            )}
+            {disabled && !mobile && <Box sx={{ width: 133 }} />}
+          </Stack>
         </Box>
       </AccordionSummary>
       {!disabled && (
-        <Box
+        <Stack
+          direction="row"
           sx={{ position: "absolute", top: "50%", transform: "translateY(-50%)", right: "116px" }}
         >
+          {hasEntries ? (
+            <>
+              <PasteEditEntryButton date={date} />
+              <PasteEntryButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePasteEntries(selectedEntries);
+                }}
+              />
+              <Divider orientation="vertical" flexItem />
+            </>
+          ) : null}
           <EntryDialogButton date={date} size="medium" />
-        </Box>
+        </Stack>
       )}
     </Box>
   );
