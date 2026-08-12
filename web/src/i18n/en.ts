@@ -72,6 +72,9 @@ const en = {
       "You are editing an existing entry. Note that this entry will move to the end of the list. This is due to Netvisor API not supporting actually editing entries, rather the old entry will be deleted and a new one created in its place.",
     openStatusNote:
       "This entry has been left with an open acceptance status in Netvisor. You can either save the entry as is with Keijo or switch to Netvisor and update the status there.",
+    input: {
+      clear: "Clear selection",
+    },
     validation: {
       productRequired: "Product is required",
       activityRequired: "Function is required",
