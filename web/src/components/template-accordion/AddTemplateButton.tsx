@@ -12,15 +12,16 @@ const CreateTemplateButton = ({ ...props }: CreateTemplateButtonProps) => {
   const { t } = useTranslation();
 
   return (
-    <Box onClick={(e) => e.stopPropagation()}>
-      <LabelledIconButton
-        label={t("controls.addTemplate")}
-        onClick={() => navigate(generatePath(`${location.pathname}/create-template`))}
-        {...props}
-      >
-        <AddIcon fontSize="inherit" />
-      </LabelledIconButton>
-    </Box>
+    <LabelledIconButton
+      label={t("controls.addTemplate")}
+      onClick={(e) => {
+        e.stopPropagation();
+        navigate(generatePath(`${location.pathname}/create-template`));
+      }}
+      {...props}
+    >
+      <AddIcon fontSize="inherit" />
+    </LabelledIconButton>
   );
 };
 

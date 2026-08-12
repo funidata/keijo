@@ -57,6 +57,7 @@ export type EntryTemplateInput = {
   duration: Scalars['Float']['input'];
   issue?: InputMaybe<Scalars['String']['input']>;
   product?: InputMaybe<Scalars['String']['input']>;
+  templateName: Scalars['String']['input'];
 };
 
 export type EntryTemplateType = {
@@ -68,6 +69,7 @@ export type EntryTemplateType = {
   issue?: Maybe<Scalars['String']['output']>;
   key: Scalars['String']['output'];
   product?: Maybe<Scalars['String']['output']>;
+  templateName: Scalars['String']['output'];
 };
 
 export type FindWorkdaysInput = {

@@ -1,4 +1,4 @@
-import { Box, List, ListItem, Paper, Typography } from "@mui/material";
+import { Box, Stack, Grid, Typography } from "@mui/material";
 import { GetMySettingsDocument } from "../../graphql/generated/graphql";
 import CreateTemplateButton from "./AddTemplateButton";
 import EntryTemplateRow from "./EntryTemplateRow";
@@ -10,45 +10,36 @@ const TemplateAccordion = () => {
   const { t } = useTranslation();
 
   return (
-    <Paper sx={{ mb: 2 }}>
+    <Box sx={{ mb: 4 }}>
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "1em 1em 0em 1em",
+          mb: 2,
         }}
       >
-        <Typography>{t("titles.templates")}</Typography>
-
+        <Typography component="h2" variant="h6">{t("titles.templates")}</Typography>
         <CreateTemplateButton size="medium" />
       </Box>
-      <Box sx={{ display: "block", padding: "8px 16px 16px;" }}>
-        <List
-          sx={{
-            maxHeight: "20vh",
-            width: "100%",
-            overflow: "auto",
-          }}
-        >
+      <Box>
+        <Grid container spacing={1}>
           {settingsData?.getMySettings.entryTemplates?.length ? (
             settingsData?.getMySettings.entryTemplates?.map((template) => (
-              <EntryTemplateRow
-                key={template.key}
-                entry={template}
-                listItemProps={{ sx: { mt: 1 } }}
-              />
+              <Grid key={template.key} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+                <EntryTemplateRow key={template.key} entry={template} />
+              </Grid>
             ))
           ) : (
-            <ListItem sx={{ display: "flex", justifyContent: "center" }}>
+            <Stack sx={{ justifyContent: "center", alignItems: "center", width: "100%" }}>
               <Typography color="textDisabled" variant="body2">
                 {t("titles.noTemplates")}
               </Typography>
-            </ListItem>
+            </Stack>
           )}
-        </List>
+        </Grid>
       </Box>
-    </Paper>
+    </Box>
   );
 };
 

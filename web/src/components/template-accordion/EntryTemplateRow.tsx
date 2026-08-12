@@ -1,79 +1,82 @@
-import { Box, ListItemProps, useMediaQuery, useTheme } from "@mui/material";
-import { grey } from "@mui/material/colors";
-import EntryListItem from "../workday-accordion/entry-row/EntryListItem";
+import {
+  Typography,
+  AccordionActions,
+  AccordionDetails,
+  AccordionSummary,
+  Accordion,
+  Box,
+  Stack,
+  Button,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CopyEntryButton from "../workday-accordion/entry-row/CopyEntryButton";
 import { EntryTemplateType } from "../../graphql/generated/graphql";
-import { useEntryContext } from "../workday-browser/entry-context/useEntryContext";
-import useDarkMode from "../../theme/useDarkMode";
-import MobileEntryListItem from "../workday-accordion/entry-row/MobileEntryListItem";
 import DeleteTemplateButton from "./DeleteTemplateButton";
+import { roundToFullMinutes } from "../../common/duration";
+import useDayjs from "../../common/useDayjs";
 
 type EntryTemplateRowProps = {
   entry: EntryTemplateType;
-  listItemProps?: ListItemProps;
 };
 
-const EntryTemplateRow = ({ entry, listItemProps }: EntryTemplateRowProps) => {
-  const { darkMode } = useDarkMode();
-  const { hasEntry } = useEntryContext();
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("md"));
+const EntryTemplateRow = ({ entry }: EntryTemplateRowProps) => {
+  const dayjs = useDayjs();
+  const totalHoursFormatted = roundToFullMinutes(dayjs.duration(entry.duration, "hour")).format(
+    "H:mm",
+  );
 
   return (
-    <>
-      {!mobile ? (
-        <EntryListItem
-          action={
-            <>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Box>
-                  <CopyEntryButton entry={entry} />
-                </Box>
-                <Box>
-                  <DeleteTemplateButton templateKey={entry.key} />
-                </Box>
-                <Box sx={{ display: { xs: "none", md: "block" }, ml: -0.5 }}></Box>
-              </Box>
-            </>
-          }
-          entry={entry}
-          {...listItemProps}
-          sx={{
-            bgcolor: darkMode ? grey[800] : "primary.light",
-            backgroundColor: (theme) =>
-              hasEntry(entry)
-                ? darkMode
-                  ? theme.palette.grey[700]
-                  : theme.palette.primary.main
-                : undefined,
-            ...listItemProps?.sx,
-          }}
-        />
-      ) : (
-        <MobileEntryListItem
-          entry={entry}
-          action={
-            <>
-              <Box>
-                <CopyEntryButton entry={entry} />
-                <DeleteTemplateButton templateKey={entry.key} />
-              </Box>
-            </>
-          }
-          {...listItemProps}
-          sx={{
-            bgcolor: darkMode ? grey[800] : "primary.light",
-            backgroundColor: (theme) =>
-              hasEntry(entry)
-                ? darkMode
-                  ? theme.palette.grey[700]
-                  : theme.palette.primary.main
-                : undefined,
-            ...listItemProps?.sx,
-          }}
-        />
-      )}
-    </>
+    <Box>
+      <Accordion sx={{ backgroundColor: "background.paper" }}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Stack
+            direction="row"
+            sx={{ justifyContent: "space-between", alignItems: "center", width: "100%" }}
+          >
+            <Typography component="span" sx={{ fontWeight: "medium" }}>
+              {entry.templateName}
+            </Typography>
+            <CopyEntryButton entry={entry} />
+          </Stack>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Stack direction="column">
+            <Typography>
+              <b>Kesto:</b> {totalHoursFormatted}h
+            </Typography>
+            {entry.product && (
+              <Typography>
+                <b>Tuote:</b> {entry.product}
+              </Typography>
+            )}
+            {entry.activity && (
+              <Typography>
+                <b>Toiminto:</b> {entry.activity}
+              </Typography>
+            )}
+            {entry.client && (
+              <Typography>
+                <b>Asiakas:</b> {entry.client}
+              </Typography>
+            )}
+            {entry.issue && (
+              <Typography>
+                <b>Tiketti:</b> {entry.issue}
+              </Typography>
+            )}
+            {entry.description && (
+              <Typography>
+                <b>Kommentti:</b> {entry.description}
+              </Typography>
+            )}
+          </Stack>
+        </AccordionDetails>
+        <AccordionActions>
+          <Button>Muokkaa</Button>
+          <DeleteTemplateButton templateKey={entry.key} />
+        </AccordionActions>
+      </Accordion>
+    </Box>
   );
 };
 

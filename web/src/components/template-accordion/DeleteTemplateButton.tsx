@@ -1,9 +1,7 @@
 import { useMutation } from "@apollo/client/react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Menu, MenuItem } from "@mui/material";
+import { Menu, MenuItem, Button } from "@mui/material";
 import { MouseEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import LabelledIconButton from "../LabelledIconButton";
 import { useNotification } from "../global-notification/useNotification";
 import {
   GetMySettingsDocument,
@@ -43,14 +41,9 @@ const DeleteTemplateButton = ({ templateKey }: DeleteTemplateButtonProps) => {
 
   return (
     <>
-      <LabelledIconButton
-        label={t("controls.deleteEntry")}
-        onClick={onOpen}
-        color="error"
-        size="medium"
-      >
-        <DeleteIcon />
-      </LabelledIconButton>
+      <Button onClick={onOpen} size="medium">
+        {t("controls.deleteEntry")}
+      </Button>
 
       <Menu open={!!anchor} anchorEl={anchor} onClose={onClose}>
         <MenuItem onClick={onConfirm}>{t("controls.confirmDelete")}</MenuItem>

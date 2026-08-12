@@ -26,6 +26,10 @@ type LocationState = {
   templateEntries?: Entry[];
 };
 
+type TemplateFormSchema = {
+  templateName: string;
+} & Omit<EntryFormSchema, "date">;
+
 const TemplateForm = () => {
   const { state } = useLocation();
   const dayjs = useDayjs();
@@ -41,8 +45,9 @@ const TemplateForm = () => {
     },
   });
 
-  const form = useForm<Omit<EntryFormSchema, "date">>({
+  const form = useForm<TemplateFormSchema>({
     defaultValues: {
+      templateName: "",
       duration: "",
       description: "",
       product: "",
@@ -58,7 +63,7 @@ const TemplateForm = () => {
     formState: { isSubmitSuccessful },
   } = form;
 
-  const onSubmit: SubmitHandler<Omit<EntryFormSchema, "date">> = async (formValues) => {
+  const onSubmit: SubmitHandler<TemplateFormSchema> = async (formValues) => {
     addEntryTemplate({
       variables: { template: { ...formValues, duration: Number(formValues.duration) } },
     });
@@ -81,6 +86,31 @@ const TemplateForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
+        <Grid size={12}>
+          <Controller
+            name="templateName"
+            control={control}
+            rules={{
+              validate: (templateNameValue) => {
+                if (typeof templateNameValue == "string" && templateNameValue.trim().length > 0) {
+                  return true;
+                }
+                return t("templateDialog.validation.templateNameRequired");
+              },
+            }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                value={field.value || ""}
+                label={t("entryDialog.templateName")}
+                error={!!form.formState.errors.templateName}
+                helperText={form.formState.errors.templateName?.message}
+                fullWidth
+                sx={{ mb: 3 }}
+              />
+            )}
+          />
+        </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <Grid container spacing={2}>
             <DimensionComboBox

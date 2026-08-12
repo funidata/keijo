@@ -30,6 +30,7 @@ describe("UserSettingsService", () => {
 
   it("adds entry templates with a generated UUID key", async () => {
     const entry: EntryTemplateInput = {
+      templateName: "Daily Review template",
       duration: 60,
       description: "Daily review",
       product: null,

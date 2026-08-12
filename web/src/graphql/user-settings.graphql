@@ -10,6 +10,7 @@ query GetMySettings {
     showJiraIssueStatus
     entryTemplates {
       key
+      templateName
       duration
       description
       product
@@ -29,11 +30,31 @@ mutation UpdateSettings($settings: UpdateSettingsDto!) {
 mutation AddEntryTemplate($template: EntryTemplateInput!) {
   addEntryTemplate(template: $template) {
     employeeNumber
+    entryTemplates {
+      key
+      templateName
+      duration
+      description
+      product
+      activity
+      issue
+      client
+    }
   }
 }
 
 mutation RemoveEntryTemplate($templateKey: RemoveEntryTemplateInput!) {
   removeEntryTemplate(templateKey: $templateKey) {
     employeeNumber
+    entryTemplates {
+      key
+      templateName
+      duration
+      description
+      product
+      activity
+      issue
+      client
+    }
   }
 }

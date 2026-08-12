@@ -6,6 +6,10 @@ import { IsString } from "class-validator";
 @InputType({ isAbstract: true })
 class EntryTemplate {
   @Field()
+  @IsString()
+  templateName: string;
+
+  @Field()
   duration: number;
 
   @Field()
