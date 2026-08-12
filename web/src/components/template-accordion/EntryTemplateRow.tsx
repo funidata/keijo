@@ -28,17 +28,24 @@ const EntryTemplateRow = ({ entry }: EntryTemplateRowProps) => {
   return (
     <Box>
       <Accordion sx={{ backgroundColor: "background.paper" }}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Box sx={{ position: "relative" }}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Stack
+              direction="row"
+              sx={{ justifyContent: "space-between", alignItems: "center", width: "100%", paddingY: 1}}
+            >
+              <Typography component="span" sx={{ fontWeight: "medium" }}>
+                {entry.templateName}
+              </Typography>
+            </Stack>
+          </AccordionSummary>
           <Stack
             direction="row"
-            sx={{ justifyContent: "space-between", alignItems: "center", width: "100%" }}
+            sx={{ position: "absolute", top: "50%", transform: "translateY(-50%)", right: "42px" }}
           >
-            <Typography component="span" sx={{ fontWeight: "medium" }}>
-              {entry.templateName}
-            </Typography>
             <CopyEntryButton entry={entry} />
           </Stack>
-        </AccordionSummary>
+        </Box>
         <AccordionDetails>
           <Stack direction="column">
             <Typography>
