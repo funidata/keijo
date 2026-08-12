@@ -3,6 +3,7 @@ import { ToggleButton, Tooltip } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { EntryTemplateType } from "../../../graphql/generated/graphql";
 import { useEntryContext } from "../../workday-browser/entry-context/useEntryContext";
+import { useCallback } from "react";
 
 type CopyEntryButtonProps = {
   entry: EntryTemplateType;
@@ -11,7 +12,15 @@ type CopyEntryButtonProps = {
 const CopyEntryButton = ({ entry }: CopyEntryButtonProps) => {
   const { t } = useTranslation();
   const { hasEntry, addSelectedEntry, removeSelectedEntry } = useEntryContext();
+  const entryButtonClickHandler = useCallback((event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
 
+    if (hasEntry(entry)) {
+      removeSelectedEntry(entry);
+    } else {
+      addSelectedEntry(entry);
+    }
+  }, []);
   return (
     <>
       <Tooltip title={t("controls.copyEntry")} arrow placement="bottom">
@@ -19,10 +28,7 @@ const CopyEntryButton = ({ entry }: CopyEntryButtonProps) => {
           value={t("controls.copyEntry")}
           aria-label={t("controls.copyEntry")}
           size="medium"
-          onClick={(e) => {
-            e.stopPropagation();
-            !hasEntry(entry) ? addSelectedEntry(entry) : removeSelectedEntry(entry);
-          }}
+          onClick={entryButtonClickHandler}
           sx={(theme) => ({
             color:
               theme.palette.mode === "dark"
