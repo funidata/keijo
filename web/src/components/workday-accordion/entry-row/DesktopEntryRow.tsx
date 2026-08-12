@@ -44,9 +44,11 @@ const DesktopEntryRow = ({ entry, date, listItemProps }: EntryRowProps) => {
             </Box>
           ) : (
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Box>
-                <CopyEntryButton entry={templateEntry} />
-              </Box>
+              {hasEntry(templateEntry) && (
+                <Box>
+                  <CopyEntryButton entry={templateEntry} />
+                </Box>
+              )}
               {editable && (
                 <Box>
                   <EditEntryButton date={date} entry={entry} />

@@ -44,9 +44,13 @@ const MobileEntryRow = ({ entry, date }: EntryRowProps) => {
             </Box>
           ) : (
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              {editable && (
+              {hasEntry(templateEntry) && (
                 <Box>
                   <CopyEntryButton entry={templateEntry} />
+                </Box>
+              )}
+              {editable && (
+                <Box>
                   <EditEntryButton date={date} entry={entry} />
                 </Box>
               )}
