@@ -9,8 +9,12 @@ const PasteEntryButton = ({ ...props }: PasteEntryButtonProps) => {
   const { t } = useTranslation();
 
   return (
-    <Box onClick={(e) => e.stopPropagation()}>
-      <LabelledIconButton size="medium" label={t("controls.pasteEntry")} {...props}>
+    <Box onClick={(e) => e.stopPropagation()} sx={{ color: "secondary.dark"}}>
+      <LabelledIconButton
+        size="medium"
+        label={t("controls.pasteEntry")}
+        {...props}
+      >
         <ContentPasteGoIcon fontSize="inherit" />
       </LabelledIconButton>
     </Box>
