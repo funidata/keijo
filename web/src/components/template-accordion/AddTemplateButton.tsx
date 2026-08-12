@@ -1,27 +1,34 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Box, IconButtonProps } from "@mui/material";
+import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
-import LabelledIconButton from "../LabelledIconButton";
 
-type CreateTemplateButtonProps = IconButtonProps;
-
-const CreateTemplateButton = ({ ...props }: CreateTemplateButtonProps) => {
+const CreateTemplateButton = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
 
   return (
-    <LabelledIconButton
-      label={t("controls.addTemplate")}
+    <Button
       onClick={(e) => {
         e.stopPropagation();
         navigate(generatePath(`${location.pathname}/create-template`));
       }}
-      {...props}
+      startIcon={<AddIcon />}
+      size="large"
+      variant="outlined"
+      sx={{
+        border: "2px dashed",
+        borderColor: "secondary.main",
+        paddingY: 2,
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
-      <AddIcon fontSize="inherit" />
-    </LabelledIconButton>
+      {t("controls.addTemplate")}
+    </Button>
   );
 };
 

@@ -26,7 +26,7 @@ const fi = {
     copyEntry: "Kopioi työaikakirjaus",
     pasteEntry: "Liitä työaikakirjaus",
     pasteAndEditEntry: "Liitä ja muokkaa kirjausta",
-    addTemplate: "Lisää kirjauspohja",
+    addTemplate: "Luo kirjauspohja",
     showFilters: "Näytä suodattimet",
     showFilters_aria_zero: "Näytä suodattimet, ei aktiivisia suodattimia",
     showFilters_aria_one: "Näytä suodattimet, 1 aktiivinen suodatin",

@@ -26,7 +26,7 @@ const en = {
     copyEntry: "Copy Entry",
     pasteEntry: "Paste Entry",
     pasteAndEditEntry: "Paste and Edit Entry",
-    addTemplate: "Add New Entry Template",
+    addTemplate: "Create entry template",
     showFilters: "Show filters",
     showFilters_aria_zero: "Show filters, no active filters",
     showFilters_aria_one: "Show filters, 1 active filter",
