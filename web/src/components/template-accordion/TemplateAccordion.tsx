@@ -13,10 +13,13 @@ const TemplateAccordion = () => {
   const { data: settingsData } = useQuery(GetMySettingsDocument);
   const { t } = useTranslation();
 
-  const hasTemplates = useMemo(() => {
-    const templates = settingsData?.getMySettings.entryTemplates;
-    return templates?.length && templates.length > 0;
+  const templates = useMemo(() => {
+    return settingsData?.getMySettings.entryTemplates ?? null;
   }, [settingsData]);
+
+  const hasTemplates = useMemo(() => {
+    return templates !== null && templates.length > 0;
+  }, [templates]);
 
   return (
     <Box sx={{ mb: 4 }}>
