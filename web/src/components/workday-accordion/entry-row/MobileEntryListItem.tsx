@@ -1,24 +1,20 @@
 import { Box, ListItem, ListItemProps, Typography, Tooltip } from "@mui/material";
 import dayjs from "dayjs";
 import { roundToFullMinutes } from "../../../common/duration";
-import { AcceptanceStatus, EntryTemplateType, Entry } from "../../../graphql/generated/graphql";
+import { AcceptanceStatus, Entry } from "../../../graphql/generated/graphql";
 import DimensionChip from "./DimensionChip";
 import { ReactNode } from "react";
 import { useJiraIssueSummary } from "../../../jira/useJiraIssueSummary";
 
 type MobileEntryListItemProps = {
-  entry: EntryTemplateType | Entry;
+  entry: Entry;
   action: ReactNode;
 } & ListItemProps;
 
-const isEntry = (value: EntryTemplateType | Entry): value is Entry => "acceptanceStatus" in value;
 
 const MobileEntryListItem = ({ entry, action, ...listItemProps }: MobileEntryListItemProps) => {
-  const { product, activity, issue, client, description } = entry;
+  const { product, activity, issue, client, description , acceptanceStatus, typeName} = entry;
   const { summary: issueSummary, isJiraAuth } = useJiraIssueSummary(issue ?? null);
-
-  const acceptanceStatus = isEntry(entry) ? entry.acceptanceStatus : undefined;
-  const typeName = isEntry(entry) ? entry.typeName : undefined;
 
   const accepted = acceptanceStatus === AcceptanceStatus.Accepted;
   const paid = acceptanceStatus === AcceptanceStatus.Paid;
