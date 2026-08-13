@@ -1,6 +1,6 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AccordionSummary from "@mui/material/AccordionSummary";
-import Box  from "@mui/material/Box";
+import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
@@ -176,9 +176,9 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
       {!disabled && (
         <Stack
           direction="row"
-          sx={{ position: "absolute", top: "50%", transform: "translateY(-50%)", right: "116px" }}
+          sx={{ position: "absolute", top: "50%", transform: "translateY(-50%)", right: "120px" }}
         >
-          {hasEntries ? (
+          {hasEntries && (
             <>
               <PasteEditEntryButton date={date} />
               <PasteEntryButton
@@ -187,10 +187,9 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
                   handlePasteEntries(selectedEntries);
                 }}
               />
-              <Divider orientation="vertical" flexItem />
             </>
-          ) : null}
-          <EntryDialogButton date={date} size="medium" />
+          )}
+          {!hasEntries && <EntryDialogButton date={date} size="medium" />}
         </Stack>
       )}
     </Box>
