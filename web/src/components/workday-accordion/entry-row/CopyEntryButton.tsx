@@ -30,10 +30,10 @@ const CopyEntryButton = ({ entry }: CopyEntryButtonProps) => {
       aria-label={t("controls.copyEntry")}
       size="large"
       onClick={entryButtonClickHandler}
-      sx={{
+      sx={(theme) => ({
         border: "none",
-        color: "secondary.dark",
-      }}
+        color: theme.palette.mode === "light" ? "secondary.dark" : "primary",
+      })}
       selected={hasEntry(entry)}
     >
       <ContentCopyIcon />

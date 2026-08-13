@@ -15,12 +15,12 @@ const CreateTemplateButton = () => {
         navigate(generatePath(`${location.pathname}/create-template`));
       }}
       startIcon={<AddIcon />}
-      size="large"
+      size="medium"
       variant="outlined"
       sx={{
         border: "2px dashed",
         borderColor: "secondary.main",
-        paddingY: 2,
+        paddingY: 2.25,
         width: "100%",
         display: "flex",
         justifyContent: "center",

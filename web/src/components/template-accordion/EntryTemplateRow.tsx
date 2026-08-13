@@ -26,7 +26,7 @@ const EntryTemplateRow = ({ entry }: EntryTemplateRowProps) => {
 
   return (
     <Box>
-      <Accordion sx={{ backgroundColor: "background.paper" }}>
+      <Accordion sx={{ backgroundColor: "background.paper" }} disableGutters>
         <Box sx={{ position: "relative" }}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ flexDirection: "row-reverse" }}>
             <Stack
