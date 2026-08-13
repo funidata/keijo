@@ -12,6 +12,7 @@ const fi = {
     addEntry: "Lisää työaikakirjaus",
     addEntryWithDate: "Lisää työaikakirjaus {{date}}",
     deleteEntry: "Poista merkintä",
+    deleteEntryTemplate: "Poista",
     editEntry: "Muokkaa merkintää",
     selectWeek: "Viikko",
     openMenu: "Avaa valikko",

@@ -12,6 +12,7 @@ const en = {
     addEntry: "Add New Entry",
     addEntryWithDate: "Add New Entry on {{date}}",
     deleteEntry: "Delete entry",
+    deleteEntryTemplate: "Delete",
     editEntry: "Edit entry",
     selectWeek: "Week",
     openMenu: "Open menu",

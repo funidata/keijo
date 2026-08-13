@@ -41,8 +41,8 @@ const DeleteTemplateButton = ({ templateKey }: DeleteTemplateButtonProps) => {
 
   return (
     <>
-      <Button onClick={onOpen} size="medium">
-        {t("controls.deleteEntry")}
+      <Button onClick={onOpen} size="medium" sx={{ color: "secondary.dark"}}>
+        {t("controls.deleteEntryTemplate")}
       </Button>
 
       <Menu open={!!anchor} anchorEl={anchor} onClose={onClose}>
