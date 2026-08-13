@@ -28,11 +28,10 @@ const CopyEntryButton = ({ entry }: CopyEntryButtonProps) => {
     <ToggleButton
       value={t("controls.copyEntry")}
       aria-label={t("controls.copyEntry")}
-      size="medium"
+      size="large"
       onClick={entryButtonClickHandler}
       sx={{
         border: "none",
-        borderRadius: "50%",
         color: "secondary.dark",
       }}
       selected={hasEntry(entry)}
