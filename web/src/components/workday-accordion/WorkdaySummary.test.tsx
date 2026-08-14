@@ -134,7 +134,6 @@ describe("WorkdaySummary", () => {
   it("has aria-current='date' for current day", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date(2026, 5, 10, 12, 0, 0)); // 2026-06-10 local time
-
     renderWorkday({
       date: "2026-06-10",
       entries: [{ ...baseEntry, ratioNumber: EntryType.NormalWork }],
@@ -142,6 +141,46 @@ describe("WorkdaySummary", () => {
 
     expect(document.querySelector('[aria-current="date"]')).toBeTruthy();
 
+    vi.useRealTimers();
+  });
+
+  it("shows 'today' text on current date in desktop view", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 5, 10, 12, 0, 0)); // 2026-06-10 local time 
+    renderWorkday({
+      date: "2026-06-10",
+      entries: [{ ...baseEntry, ratioNumber: EntryType.NormalWork }],
+    });
+
+    expect(screen.getByText("(Today)")).toBeTruthy();
+    vi.useRealTimers();
+  });
+
+  it("does not show '(Today)' text on mobile view (below md breakpoint)", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 5, 10, 12, 0, 0)); // 2026-06-10 local time
+
+    const originalMatchMedia = window.matchMedia;
+    // mobile (below md breakpoint)
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
+      matches: true,
+      media: query,
+      onchange: null,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => false,
+    }));
+
+    renderWorkday({
+      date: "2026-06-10",
+      entries: [{ ...baseEntry, ratioNumber: EntryType.NormalWork }],
+    });
+
+    expect(screen.queryByText("(Today)")).toBeNull();
+
+    window.matchMedia = originalMatchMedia;
     vi.useRealTimers();
   });
 
