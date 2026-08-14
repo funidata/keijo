@@ -98,7 +98,7 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
               }}
             >
               {date.format("dd l")}
-              <Typography component="span" sx={{ position: "absolute", right: "-65px" }}>
+              <Typography component="span" sx={{ position: "absolute", paddingLeft: 1 }}>
                 {isCurrentDay && !mobile && `(${t("general.today")})`}
               </Typography>
             </Typography>
