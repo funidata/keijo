@@ -99,7 +99,10 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
               aria-current={isCurrentDay ? "date" : undefined}
             >
               {date.format("dd l")}
-              <Typography component="span" sx={{ position: "absolute", paddingLeft: 1 }}>
+              <Typography
+                component="span"
+                sx={{ position: "absolute", paddingLeft: 1, fontWeight: "medium" }}
+              >
                 {isCurrentDay && !mobile && `(${t("general.today")})`}
               </Typography>
             </Typography>
