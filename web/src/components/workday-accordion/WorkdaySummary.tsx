@@ -96,6 +96,7 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
                 minWidth: 105,
                 ...(isCurrentDay && { fontWeight: "medium" }),
               }}
+              aria-current={isCurrentDay ? "date" : undefined}
             >
               {date.format("dd l")}
               <Typography component="span" sx={{ position: "absolute", paddingLeft: 1 }}>
