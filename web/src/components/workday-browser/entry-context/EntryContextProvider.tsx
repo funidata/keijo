@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
+import { ReactNode, useCallback, useMemo, useState } from "react";
 import { EntryContext } from "./EntryContext";
 import { Dayjs } from "dayjs";
 import { EntryTemplateType } from "../../../graphql/generated/graphql";

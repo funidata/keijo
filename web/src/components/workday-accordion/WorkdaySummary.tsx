@@ -6,7 +6,6 @@ import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-import Divider from "@mui/material/Divider";
 import { useMutation } from "@apollo/client/react";
 import { useTranslation } from "react-i18next";
 import { alpha } from "@mui/material/styles";
