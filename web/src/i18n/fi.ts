@@ -112,6 +112,9 @@ const fi = {
     addZeroEntry: "Lisää nollatuntikirjaus",
     zeroEntryAlert: "Nollatuntikirjaus vaaditaan saldovapaan laskemiseen.",
   },
+  general: {
+    today: "Tänään",
+  },
   notifications: {
     addEntry: {
       success: "Uusi työaikakirjaus lisätty.",
