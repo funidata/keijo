@@ -146,7 +146,7 @@ describe("WorkdaySummary", () => {
 
   it("shows 'today' text on current date in desktop view", () => {
     vi.useFakeTimers();
-    vi.setSystemTime(new Date(2026, 5, 10, 12, 0, 0)); // 2026-06-10 local time 
+    vi.setSystemTime(new Date(2026, 5, 10, 12, 0, 0)); // 2026-06-10 local time
     renderWorkday({
       date: "2026-06-10",
       entries: [{ ...baseEntry, ratioNumber: EntryType.NormalWork }],
