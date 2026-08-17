@@ -11,7 +11,6 @@ type EntryListItemProps = {
   action: ReactNode;
 } & ListItemProps;
 
-
 const EntryListItem = ({ entry, action, ...listItemProps }: EntryListItemProps) => {
   const { product, activity, issue, client, description, typeName, acceptanceStatus } = entry;
   const { summary: issueSummary, isJiraAuth } = useJiraIssueSummary(issue ?? null);

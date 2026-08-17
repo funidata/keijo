@@ -38,7 +38,10 @@ const EntryTemplateRow = ({ entry }: EntryTemplateRowProps) => {
                 paddingY: 1,
               }}
             >
-              <Typography component="span" sx={{ fontWeight: "medium", paddingLeft: 2, width: "calc(100% - 58px + 15px)" }}>
+              <Typography
+                component="span"
+                sx={{ fontWeight: "medium", paddingLeft: 2, width: "calc(100% - 58px + 15px)" }}
+              >
                 {entry.templateName}
               </Typography>
             </Stack>
@@ -53,31 +56,49 @@ const EntryTemplateRow = ({ entry }: EntryTemplateRowProps) => {
         <AccordionDetails>
           <Stack direction="column">
             <Typography>
-              <Typography component="span" sx={{ fontWeight: "medium"}}>Kesto:</Typography> {totalHoursFormatted}h
+              <Typography component="span" sx={{ fontWeight: "medium" }}>
+                Kesto:
+              </Typography>{" "}
+              {totalHoursFormatted}h
             </Typography>
             {entry.product && (
               <Typography>
-                <Typography component="span" sx={{ fontWeight: "medium"}}>Tuote:</Typography> {entry.product}
+                <Typography component="span" sx={{ fontWeight: "medium" }}>
+                  Tuote:
+                </Typography>{" "}
+                {entry.product}
               </Typography>
             )}
             {entry.activity && (
               <Typography>
-                <Typography component="span" sx={{ fontWeight: "medium"}}>Toiminto:</Typography> {entry.activity}
+                <Typography component="span" sx={{ fontWeight: "medium" }}>
+                  Toiminto:
+                </Typography>{" "}
+                {entry.activity}
               </Typography>
             )}
             {entry.client && (
               <Typography>
-                <Typography component="span" sx={{ fontWeight: "medium"}}>Asiakas:</Typography> {entry.client}
+                <Typography component="span" sx={{ fontWeight: "medium" }}>
+                  Asiakas:
+                </Typography>{" "}
+                {entry.client}
               </Typography>
             )}
             {entry.issue && (
               <Typography>
-                <Typography component="span" sx={{ fontWeight: "medium"}}>Tiketti:</Typography> {entry.issue}
+                <Typography component="span" sx={{ fontWeight: "medium" }}>
+                  Tiketti:
+                </Typography>{" "}
+                {entry.issue}
               </Typography>
             )}
             {entry.description && (
               <Typography>
-                <Typography component="span" sx={{ fontWeight: "medium"}}>Kommentti:</Typography> {entry.description}
+                <Typography component="span" sx={{ fontWeight: "medium" }}>
+                  Kommentti:
+                </Typography>{" "}
+                {entry.description}
               </Typography>
             )}
           </Stack>

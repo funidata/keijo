@@ -41,7 +41,13 @@ const DeleteTemplateButton = ({ templateKey }: DeleteTemplateButtonProps) => {
 
   return (
     <>
-      <Button onClick={onOpen} size="medium" sx={(theme) => ({ color: theme.palette.mode === "light" ? "secondary.dark" : "primary.main" })}>
+      <Button
+        onClick={onOpen}
+        size="medium"
+        sx={(theme) => ({
+          color: theme.palette.mode === "light" ? "secondary.dark" : "primary.main",
+        })}
+      >
         {t("controls.deleteEntryTemplate")}
       </Button>
 

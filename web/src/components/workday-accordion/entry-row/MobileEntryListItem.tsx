@@ -11,9 +11,8 @@ type MobileEntryListItemProps = {
   action: ReactNode;
 } & ListItemProps;
 
-
 const MobileEntryListItem = ({ entry, action, ...listItemProps }: MobileEntryListItemProps) => {
-  const { product, activity, issue, client, description , acceptanceStatus, typeName} = entry;
+  const { product, activity, issue, client, description, acceptanceStatus, typeName } = entry;
   const { summary: issueSummary, isJiraAuth } = useJiraIssueSummary(issue ?? null);
 
   const accepted = acceptanceStatus === AcceptanceStatus.Accepted;
