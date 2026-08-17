@@ -61,7 +61,6 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
   const totalHoursFormatted = roundToFullMinutes(totalDuration).format("H:mm");
 
   const empty = workday.entries.length === 0;
-  const { t } = useTranslation();
 
   const { selectedEntries, hasEntries, clearEntries } = useEntryContext();
   const { showSuccessNotification } = useNotification();
