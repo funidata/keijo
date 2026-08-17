@@ -8,6 +8,29 @@ import { AcceptanceStatus } from "../../graphql/generated/graphql";
 import { EntryType } from "../../common/entryType.enum";
 import WorkdaySummary from "./WorkdaySummary";
 
+vi.mock("../workday-browser/entry-context/useEntryContext", () => ({
+  useEntryContext: vi.fn(() => ({
+    selectedEntries: [],
+    addSelectedEntry: vi.fn(),
+    removeSelectedEntry: vi.fn(),
+    clearEntries: vi.fn(),
+    hasEntry: vi.fn(),
+    hasEntries: false,
+    editDate: null,
+    setEditDate: vi.fn(),
+  })),
+}));
+
+vi.mock("@apollo/client/react", () => ({
+  useMutation: vi.fn(() => [vi.fn()]),
+}));
+
+vi.mock("../global-notification/useNotification", () => ({
+  useNotification: vi.fn(() => ({
+    showSuccessNotification: vi.fn(),
+  })),
+}));
+
 const baseEntry = {
   key: "1",
   duration: 8,
