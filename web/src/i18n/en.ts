@@ -119,6 +119,9 @@ const en = {
     addZeroEntry: "Add Zero Entry",
     zeroEntryAlert: "Entry with zero hours is required for flex leave.",
   },
+  general: {
+    today: "Today",
+  },
   notifications: {
     addEntry: {
       success: "Workday entry created.",

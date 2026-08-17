@@ -8,7 +8,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { useMutation } from "@apollo/client/react";
 import { useTranslation } from "react-i18next";
-import { alpha } from "@mui/material/styles";
 import { roundToFullMinutes, totalDurationOfEntries } from "../../common/duration";
 import useDayjs from "../../common/useDayjs";
 import {
@@ -45,6 +44,7 @@ type WorkdayAccordionProps = {
 
 const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const dayjs = useDayjs();
   const date = dayjs(workday.date).locale(dayjs.locale());
@@ -110,25 +110,14 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
       return <HolidayChip />;
     }
     if (empty) {
-      return <NoEntriesChip sx={{ borderColor: isCurrentDay ? "grey.800" : "grey.400" }} />;
+      return <NoEntriesChip sx={{ borderColor: "grey.400" }} />;
     }
     return null;
   };
 
   return (
     <Box sx={{ position: "relative" }}>
-      <AccordionSummary
-        expandIcon={!disabled && <ExpandMoreIcon />}
-        aria-current={isCurrentDay ? "date" : undefined}
-        sx={{
-          border: isCurrentDay ? "1px solid" : "none",
-          borderColor: isCurrentDay ? "secondary.main" : "transparent",
-          backgroundColor: isCurrentDay
-            ? (theme) =>
-                alpha(theme.palette.secondary.main, theme.palette.mode === "dark" ? 0.4 : 0.6)
-            : "inherit",
-        }}
-      >
+      <AccordionSummary expandIcon={!disabled && <ExpandMoreIcon />}>
         <Box
           sx={{
             display: "flex",
@@ -144,8 +133,22 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
                 : {}
             }
           >
-            <Typography sx={{ textTransform: "capitalize", minWidth: 105 }}>
+            <Typography
+              sx={{
+                textTransform: "capitalize",
+                position: "relative",
+                minWidth: 105,
+                ...(isCurrentDay && { fontWeight: "medium" }),
+              }}
+              aria-current={isCurrentDay ? "date" : undefined}
+            >
               {date.format("dd l")}
+              <Typography
+                component="span"
+                sx={{ position: "absolute", paddingLeft: 1, fontWeight: "medium" }}
+              >
+                {isCurrentDay && !mobile && `(${t("general.today")})`}
+              </Typography>
             </Typography>
             {mobile && (
               <Box sx={!disabled ? { mt: 1 } : {}}>
@@ -156,17 +159,14 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
           {!mobile && <InfoChip />}
           <Stack direction="row" sx={{ alignItems: "center" }}>
             {!disabled && (
-              <>
-                <Chip
-                  label={`${totalHoursFormatted} h`}
-                  sx={{
-                    mr: 2,
-                    color: "inherit",
-                    border: isCurrentDay ? "1px solid" : "none",
-                    borderColor: isCurrentDay ? "grey.800" : "grey.400",
-                  }}
-                />
-              </>
+              <Chip
+                label={`${totalHoursFormatted} h`}
+                sx={{
+                  mr: 2,
+                  color: "inherit",
+                  ...(isCurrentDay && { fontWeight: "medium" }),
+                }}
+              />
             )}
             {disabled && !mobile && <Box sx={{ width: 133 }} />}
           </Stack>
