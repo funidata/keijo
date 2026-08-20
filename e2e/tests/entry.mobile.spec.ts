@@ -47,25 +47,36 @@ test.describe("Add entry mobile", () => {
     await page.getByRole("banner").getByLabel(t("controls.openMenu")).click();
     await page.getByRole("button", { name: t("entryDialog.title.create") }).click();
     await expect(page).toHaveURL(/.*\/create$/);
-    // Fill entry fields
-    await fillEntryFormMobile(page, t, entries[0]);
-    // Submit
-    await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(
-      page.getByRole("heading", { name: t("entryDialog.title.edit") }),
-    ).not.toBeAttached();
-    await expect(page.getByRole("alert")).toContainText(t("notifications.addEntry.success"));
+    await submitEntryMobile(page, t, entries[0]);
+    await expect(page).not.toHaveURL(/.*\/create$/);
   });
 
   test("Should add entry from entry row", async ({ entryBrowser, page, t }) => {
     await entryBrowser.getAccordionAddEntryButton().first().click();
     await expect(page).toHaveURL(/.*\/create$/);
-    await fillEntryFormMobile(page, t, entries[0]);
-    await page.getByRole("button", { name: t("entryDialog.submit") }).click();
-    await expect(
-      page.getByRole("heading", { name: t("entryDialog.title.edit") }),
-    ).not.toBeAttached();
-    await expect(page.getByRole("alert")).toContainText(t("notifications.addEntry.success"));
+    await submitEntryMobile(page, t, entries[0]);
+    await expect(page).not.toHaveURL(/.*\/create$/);
+  });
+});
+
+test.describe("Add More entry mobile", () => {
+  test("Should add more entry from app bar", async ({ page, t }) => {
+    await page.getByRole("banner").getByLabel(t("controls.openMenu")).click();
+    await page.getByRole("button", { name: t("entryDialog.title.create") }).click();
+    await expect(page).toHaveURL(/.*\/create$/);
+    await addMoreEntryMobile(page, t, entries[0]);
+    await expect(page).toHaveURL(/.*\/create$/);
+  });
+
+  test("Should add more entry from entry row", async ({ page, t }) => {
+    await page
+      .getByRole("button")
+      .getByRole("button", { name: t("entryDialog.title.create") })
+      .first()
+      .click();
+    await expect(page).toHaveURL(/.*\/create$/);
+    await addMoreEntryMobile(page, t, entries[0]);
+    await expect(page).toHaveURL(/.*\/create$/);
   });
 });
 
@@ -160,4 +171,18 @@ const setDefaultValuesMobile = async (
   await expect(page.getByRole("combobox", { name: t("entryDialog.activity") })).toHaveValue(
     activity,
   );
+};
+
+const submitEntryMobile = async (page: Page, t: TFunction, entry: TestEntry) => {
+  await fillEntryFormMobile(page, t, entry);
+  await page.getByRole("button", { name: t("entryDialog.submit") }).click();
+  await expect(page.getByRole("heading", { name: t("entryDialog.title.edit") })).not.toBeAttached();
+  await expect(page.getByRole("alert")).toContainText(t("notifications.addEntry.success"));
+  await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
+};
+
+const addMoreEntryMobile = async (page: Page, t: TFunction, entry: TestEntry) => {
+  await fillEntryFormMobile(page, t, entry);
+  await page.getByRole("button", { name: t("entryDialog.addMore") }).click();
+  await expect(page.getByText(t("notifications.addEntry.success"))).toBeAttached();
 };
