@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
 
-const CreateTemplateButton = () => {
+const AddTemplateButton = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
@@ -32,4 +32,4 @@ const CreateTemplateButton = () => {
   );
 };
 
-export default CreateTemplateButton;
+export default AddTemplateButton;
