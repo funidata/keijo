@@ -41,7 +41,7 @@ const TemplateForm = () => {
     refetchQueries: [GetMySettingsDocument],
     awaitRefetchQueries: true,
     onCompleted: () => {
-      showSuccessNotification(t("notifications.addEntry.success"));
+      showSuccessNotification(t("notifications.addTemplate.success"));
     },
   });
 

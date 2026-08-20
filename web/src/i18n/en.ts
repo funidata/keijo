@@ -140,6 +140,12 @@ const en = {
     deleteEntry: {
       success: "Workday entry deleted.",
     },
+    addTemplate: {
+      success: "Workday entry template created.",
+    },
+    deleteTemplate: {
+      success: "Workday entry template deleted.",
+    },
   },
   titles: {
     workdayBrowser: "Entries",

@@ -20,7 +20,7 @@ const DeleteTemplateButton = ({ templateKey }: DeleteTemplateButtonProps) => {
     refetchQueries: [GetMySettingsDocument],
     awaitRefetchQueries: true,
     onCompleted: () => {
-      showSuccessNotification(t("notifications.deleteEntry.success"));
+      showSuccessNotification(t("notifications.deleteTemplate.success"));
     },
   });
 

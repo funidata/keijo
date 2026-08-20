@@ -140,6 +140,12 @@ const fi = {
     deleteEntry: {
       success: "Työaikakirjaus poistettu.",
     },
+    addTemplate: {
+      success: "Uusi kirjauspohja lisätty.",
+    },
+    deleteTemplate: {
+      success: "Kirjauspohja poistettu.",
+    },
   },
   titles: {
     workdayBrowser: "Työaikakirjaukset",
