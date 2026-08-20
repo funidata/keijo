@@ -12,6 +12,7 @@ const fi = {
     addEntry: "Lisää työaikakirjaus",
     addEntryWithDate: "Lisää työaikakirjaus {{date}}",
     deleteEntry: "Poista merkintä",
+    deleteEntryTemplate: "Poista",
     editEntry: "Muokkaa merkintää",
     selectWeek: "Viikko",
     openMenu: "Avaa valikko",
@@ -23,6 +24,13 @@ const fi = {
     jiraDisconnect: "Katkaise Jira-yhteys",
     showWeekend: "Näytä Viikonloppu",
     hideWeekend: "Piilota Viikonloppu",
+    selectEntryTemplate: "Valitse kirjauspohja",
+    deselectEntryTemplate: "Poista kirjauspohjan valinta",
+    pasteEntry_one: "Luo työaikakirjaus pohjasta",
+    pasteEntry_other: "Luo työaikakirjaukset {{ count }} pohjasta",
+    pasteAndEditEntry_one: "Luo työaikakirjaus pohjasta ja muokkaa",
+    pasteAndEditEntry_other: "Luo työaikakirjaukset {{ count }} pohjasta ja muokkaa",
+    addTemplate: "Luo kirjauspohja",
     showFilters: "Näytä suodattimet",
     showFilters_aria_zero: "Näytä suodattimet, ei aktiivisia suodattimia",
     showFilters_aria_one: "Näytä suodattimet, 1 aktiivinen suodatin",
@@ -77,12 +85,14 @@ const fi = {
       descriptionRequired: "Kommentti on pakollinen tieto.",
       ticketOrDescriptionRequired: "Lisää kommentti, mikäli työlle ei löydy tikettiä.",
       issueInOptions: "Tiketin pitää olla jokin vaihtoehdoista",
+      templateNameRequired: "Lisää kirjauspohjan nimi.",
     },
     totalHoursToday: "Päivän työaika ennen tätä kirjausta",
     setRemainingHours: "Aseta jäljellä olevat tunnit automaattisesti",
     showJiraIssueStatus: "Näytä JIRA-tiketin tila",
     filterProjects: "JIRA-projektit",
     filterProjectsHelperText: "Hae tikettejä vain valituista JIRA-projekteista.",
+    templateName: "Kirjauspohjan nimi",
   },
   entryTable: {
     accepted: "Hyväksytty",
@@ -112,6 +122,14 @@ const fi = {
     addZeroEntry: "Lisää nollatuntikirjaus",
     zeroEntryAlert: "Nollatuntikirjaus vaaditaan saldovapaan laskemiseen.",
   },
+  entryTemplate: {
+    duration: "Kesto",
+    product: "Tuote",
+    activity: "Toiminto",
+    client: "Asiakas",
+    issue: "Tiketti",
+    description: "Kommentti",
+  },
   general: {
     today: "Tänään",
   },
@@ -125,9 +143,16 @@ const fi = {
     deleteEntry: {
       success: "Työaikakirjaus poistettu.",
     },
+    addTemplate: {
+      success: "Uusi kirjauspohja lisätty.",
+    },
+    deleteTemplate: {
+      success: "Kirjauspohja poistettu.",
+    },
   },
   titles: {
     workdayBrowser: "Työaikakirjaukset",
+    templates: "Omat kirjauspohjat",
   },
   jira: {
     issueGroups: {

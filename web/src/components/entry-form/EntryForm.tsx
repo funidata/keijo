@@ -29,15 +29,15 @@ import {
 } from "../../graphql/generated/graphql";
 import { useIsJiraAuthenticated } from "../../jira/jira-api";
 import usePreferSetRemainingHours from "../user-preferences/usePreferSetRemainingHours";
-import BigDeleteEntryButton from "./BigDeleteEntryButton";
-import DimensionComboBox from "./DimensionComboBox";
-import DurationSlider from "./DurationSlider";
-import { JiraIntegrationAlert } from "./JiraIntegrationAlert";
-import JiraIssueComboBox from "./JiraIssueComboBox";
-import ResponsiveDatePicker from "./ResponsiveDatePicker";
-import WorkdayHours from "./WorkdayHours";
+import BigDeleteEntryButton from "../entry-dialog/BigDeleteEntryButton";
+import DimensionComboBox from "../entry-dialog/DimensionComboBox";
+import DurationSlider from "../entry-dialog/DurationSlider";
+import { JiraIntegrationAlert } from "../entry-dialog/JiraIntegrationAlert";
+import JiraIssueComboBox from "../entry-dialog/JiraIssueComboBox";
+import ResponsiveDatePicker from "../entry-dialog/ResponsiveDatePicker";
+import WorkdayHours from "../entry-dialog/WorkdayHours";
 import useEntryForm, { EntryFormSchema } from "./useEntryForm";
-import EntryFiltersSection from "./EntryFiltersSection";
+import EntryFiltersSection from "../entry-dialog/EntryFiltersSection";
 
 export type EntryFormProps = {
   form: UseFormReturn<EntryFormSchema>;
@@ -51,14 +51,21 @@ export type EntryFormProps = {
 type LocationState = {
   date?: string;
   editEntry?: Entry;
+  template?: Entry;
+  templateEntries?: Entry[];
 };
 
 const EntryForm = () => {
   const { state } = useLocation();
   const dayjs = useDayjs();
   // state is possibly null
-  const { date: originalDate, editEntry }: LocationState = state || {};
-  const { form, onSubmit, loading } = useEntryForm({ editEntry, date: dayjs(originalDate) });
+  const { date: originalDate, editEntry, templateEntries }: LocationState = state || {};
+
+  const { form, onSubmit, loading } = useEntryForm({
+    editEntry,
+    date: dayjs(originalDate),
+    template: templateEntries && templateEntries[0],
+  });
   const navigate = useNavigate();
 
   const {
@@ -69,10 +76,25 @@ const EntryForm = () => {
 
   useEffect(() => {
     if (isSubmitSuccessful) {
-      reset();
-      navigate("..");
+      const remainingEntries = templateEntries && templateEntries.slice(1);
+      if (remainingEntries && remainingEntries.length > 0) {
+        const nextEntry = remainingEntries[0];
+        reset({
+          date: dayjs(originalDate),
+          duration: nextEntry.duration.toString(),
+          description: nextEntry.description || "",
+          product: nextEntry.product || "",
+          activity: nextEntry.activity || "",
+          issue: nextEntry.issue || null,
+          client: nextEntry.client || "",
+        });
+        navigate(".", { state: { date: originalDate, templateEntries: remainingEntries } });
+      } else {
+        reset();
+        navigate("..");
+      }
     }
-  }, [isSubmitSuccessful, navigate, reset]);
+  }, [dayjs, isSubmitSuccessful, navigate, originalDate, reset, templateEntries]);
 
   const { t } = useTranslation();
   const theme = useTheme();
@@ -229,7 +251,7 @@ const EntryForm = () => {
               )}
             </Grid>
             <Grid size={12}>
-              {!editEntry && (
+              {!editEntry && !templateEntries && (
                 <FormGroup>
                   <FormControlLabel
                     control={
@@ -249,7 +271,7 @@ const EntryForm = () => {
           <>
             <Grid sx={{ mt: 2 }} size={4}>
               <Box sx={{ display: "flex", justifyContent: "start", gap: 2 }}>
-                {!editEntry && (
+                {!editEntry && !templateEntries && (
                   <FormGroup>
                     <FormControlLabel
                       control={

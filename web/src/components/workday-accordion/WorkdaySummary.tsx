@@ -1,5 +1,13 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { AccordionSummary, Box, Chip, Typography, useMediaQuery, useTheme } from "@mui/material";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Chip from "@mui/material/Chip";
+import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import { useMutation } from "@apollo/client/react";
+import { useTranslation } from "react-i18next";
 import { roundToFullMinutes, totalDurationOfEntries } from "../../common/duration";
 import useDayjs from "../../common/useDayjs";
 import {
@@ -11,7 +19,12 @@ import {
   isVacation,
   isWeekend,
 } from "../../common/workdayUtils";
-import { Workday } from "../../graphql/generated/graphql";
+import {
+  AddWorkdayEntryDocument,
+  EntryTemplateType,
+  FindWorkdaysDocument,
+  Workday,
+} from "../../graphql/generated/graphql";
 import EntryDialogButton from "../entry-dialog/EntryDialogButton";
 import FlexLeaveChip from "./info-chips/FlexLeaveChip";
 import HolidayChip from "./info-chips/HolidayChip";
@@ -19,8 +32,11 @@ import NoEntriesChip from "./info-chips/NoEntriesChip";
 import SickLeaveChip from "./info-chips/SickLeaveChip";
 import VacationChip from "./info-chips/VacationChip";
 import WeekendChip from "./info-chips/WeekendChip";
+import { useEntryContext } from "../workday-browser/entry-context/useEntryContext";
+import { useNotification } from "../global-notification/useNotification";
+import PasteEntryButton from "./PasteEntryButton";
+import PasteEditEntryButton from "./PasteEditEntryButton";
 import HolidayPayLeaveChip from "./info-chips/HolidayPayLeaveChip";
-import { useTranslation } from "react-i18next";
 
 type WorkdayAccordionProps = {
   workday: Workday;
@@ -45,6 +61,33 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
   const totalHoursFormatted = roundToFullMinutes(totalDuration).format("H:mm");
 
   const empty = workday.entries.length === 0;
+
+  const { selectedEntries, hasEntries, clearEntries } = useEntryContext();
+  const { showSuccessNotification } = useNotification();
+  const [addWorkdayEntryMutation] = useMutation(AddWorkdayEntryDocument, {
+    refetchQueries: [FindWorkdaysDocument],
+    onCompleted: async () => {
+      showSuccessNotification(t("notifications.addEntry.success"));
+    },
+  });
+  const handlePasteEntries = (entries: EntryTemplateType[]) => {
+    entries.forEach((entry) => {
+      addWorkdayEntryMutation({
+        variables: {
+          entry: {
+            date: date.format("YYYY-MM-DD"),
+            duration: entry.duration,
+            description: entry.description,
+            product: entry.product,
+            activity: entry.activity,
+            issue: entry.issue,
+            client: entry.client,
+          },
+        },
+      });
+    });
+    clearEntries();
+  };
 
   const InfoChip = () => {
     if (vacation) {
@@ -113,25 +156,39 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
             )}
           </Box>
           {!mobile && <InfoChip />}
-          {!disabled && (
-            <Chip
-              label={`${totalHoursFormatted} h`}
-              sx={{
-                mr: 2,
-                color: "inherit",
-                ...(isCurrentDay && { fontWeight: "medium" }),
-              }}
-            />
-          )}
-          {disabled && !mobile && <Box sx={{ width: 133 }} />}
+          <Stack direction="row" sx={{ alignItems: "center" }}>
+            {!disabled && (
+              <Chip
+                label={`${totalHoursFormatted} h`}
+                sx={{
+                  mr: 2,
+                  color: "inherit",
+                  ...(isCurrentDay && { fontWeight: "medium" }),
+                }}
+              />
+            )}
+            {disabled && !mobile && <Box sx={{ width: 133 }} />}
+          </Stack>
         </Box>
       </AccordionSummary>
       {!disabled && (
-        <Box
-          sx={{ position: "absolute", top: "50%", transform: "translateY(-50%)", right: "116px" }}
+        <Stack
+          direction="row"
+          sx={{ position: "absolute", top: "50%", transform: "translateY(-50%)", right: "120px" }}
         >
-          <EntryDialogButton date={date} size="medium" />
-        </Box>
+          {hasEntries && (
+            <>
+              <PasteEntryButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePasteEntries(selectedEntries);
+                }}
+              />
+              <PasteEditEntryButton date={date} />
+            </>
+          )}
+          {!hasEntries && <EntryDialogButton date={date} size="medium" />}
+        </Stack>
       )}
     </Box>
   );

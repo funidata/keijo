@@ -1,130 +1,62 @@
-import { Box, ListItem, Tooltip, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import dayjs from "dayjs";
-import { roundToFullMinutes } from "../../../common/duration";
 import { AcceptanceStatus } from "../../../graphql/generated/graphql";
 import useDarkMode from "../../../theme/useDarkMode";
 import DeleteEntryButton from "./DeleteEntryButton";
-import DimensionChip from "./DimensionChip";
 import EditEntryButton from "./EditEntryButton";
 import { EntryRowProps } from "./EntryRow";
 import AcceptedChip from "./status-chips/AcceptedChip";
 import OpenChip from "./status-chips/OpenChip";
 import PaidChip from "./status-chips/PaidChip";
+import EntryListItem from "./EntryListItem";
 import { EntryType } from "../../../common/entryType.enum";
-import { useJiraIssueSummary } from "../../../jira/useJiraIssueSummary";
 
-const DesktopEntryRow = ({ entry, date }: EntryRowProps) => {
+const DesktopEntryRow = ({ entry, date, listItemProps }: EntryRowProps) => {
   const { darkMode } = useDarkMode();
-  const { product, activity, issue, client, description, ratioNumber, typeName } = entry;
-  const { summary: issueSummary, isJiraAuth } = useJiraIssueSummary(issue ?? null);
+  const { ratioNumber } = entry;
   const editable = ratioNumber === EntryType.NormalWork;
   const accepted = entry.acceptanceStatus === AcceptanceStatus.Accepted;
   const paid = entry.acceptanceStatus === AcceptanceStatus.Paid;
   const open = entry.acceptanceStatus === AcceptanceStatus.Open;
-  const roundedDuration = roundToFullMinutes(dayjs.duration(entry.duration, "hour"));
 
   return (
-    <ListItem
+    <EntryListItem
+      action={
+        <>
+          {accepted ? (
+            <Box>
+              <AcceptedChip />
+            </Box>
+          ) : paid ? (
+            <Box>
+              <PaidChip />
+            </Box>
+          ) : (
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              {editable && (
+                <Box>
+                  <EditEntryButton date={date} entry={entry} />
+                </Box>
+              )}
+              <Box sx={{ display: { xs: "none", md: "block" }, ml: -0.5 }}>
+                <DeleteEntryButton date={date} entryKey={entry.key} />
+              </Box>
+            </Box>
+          )}
+          {open && (
+            <Box>
+              <OpenChip />
+            </Box>
+          )}
+        </>
+      }
+      entry={entry}
       sx={{
         bgcolor: darkMode ? grey[800] : "primary.light",
-        borderRadius: 4,
-        pl: 1,
-        pt: 0,
-        pb: 0,
         pr: accepted || paid || open ? 0 : 1,
-        overflow: "hidden",
-        display: "flex",
-        alignItems: "stretch",
-        justifyContent: "space-between",
+        ...listItemProps?.sx,
       }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 2,
-          overflowX: { xs: "auto", md: "hidden" },
-          overflowY: "hidden",
-          whiteSpace: "nowrap",
-          mr: 1,
-          pt: 1,
-          pb: 1,
-          minHeight: 48,
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "end",
-            minWidth: 60,
-            textAlign: "right",
-            mr: 1,
-          }}
-        >
-          <Typography component="h4" variant="h6">
-            {roundedDuration.format("H:mm")}
-          </Typography>
-        </Box>
-        {product && <DimensionChip dimension="product" label={product} />}
-        {activity && <DimensionChip dimension="activity" label={activity} />}
-        {issue &&
-          (isJiraAuth ? (
-            <Tooltip title={issueSummary ?? issue}>
-              <DimensionChip dimension="issue" label={issue} />
-            </Tooltip>
-          ) : (
-            <DimensionChip dimension="issue" label={issue} />
-          ))}
-        {client && <DimensionChip dimension="client" label={client} />}
-        {(paid || open || accepted) && !product && !activity && !issue && !client && typeName && (
-          <Typography
-            component="h5"
-            variant="subtitle1"
-            sx={{ overflow: { xs: "visible", md: "hidden" }, textOverflow: "ellipsis" }}
-          >
-            {typeName}
-          </Typography>
-        )}
-        {description && (
-          <Typography
-            component="h5"
-            variant="subtitle2"
-            sx={{ overflow: { xs: "visible", md: "hidden" }, textOverflow: "ellipsis" }}
-          >
-            {description}
-          </Typography>
-        )}
-      </Box>
-      <Box sx={{ display: "flex" }}>
-        {accepted ? (
-          <Box>
-            <AcceptedChip />
-          </Box>
-        ) : paid ? (
-          <Box>
-            <PaidChip />
-          </Box>
-        ) : (
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            {editable && (
-              <Box>
-                <EditEntryButton date={date} entry={entry} />
-              </Box>
-            )}
-            <Box sx={{ display: { xs: "none", md: "block" }, ml: -0.5 }}>
-              <DeleteEntryButton date={date} entryKey={entry.key} />
-            </Box>
-          </Box>
-        )}
-        {open && (
-          <Box>
-            <OpenChip />
-          </Box>
-        )}
-      </Box>
-    </ListItem>
+    />
   );
 };
 
