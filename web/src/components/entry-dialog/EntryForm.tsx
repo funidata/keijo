@@ -77,7 +77,11 @@ const EntryForm = () => {
   useEffect(() => {
     if (isSubmitSuccessful) {
       reset();
-      submitter.current !== SubmitTypes.addMore && navigate("..");
+
+      if (submitter.current !== SubmitTypes.addMore) {
+        navigate("..");
+      }
+
       submitter.current = null;
     }
   }, [isSubmitSuccessful, navigate, reset]);
@@ -96,8 +100,8 @@ const EntryForm = () => {
   });
 
   const handleAddMore = () => {
-    handleSubmit(onSubmit)();
     submitter.current = SubmitTypes.addMore;
+    handleSubmit(onSubmit)();
   };
 
   return (
@@ -222,7 +226,7 @@ const EntryForm = () => {
               </Button>
             </Grid>
             {!editEntry && (
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <Button
                   loading={loading}
                   onClick={() => handleAddMore()}
