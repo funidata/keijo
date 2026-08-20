@@ -178,13 +178,13 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
         >
           {hasEntries && (
             <>
-              <PasteEditEntryButton date={date} />
               <PasteEntryButton
                 onClick={(e) => {
                   e.stopPropagation();
                   handlePasteEntries(selectedEntries);
                 }}
               />
+              <PasteEditEntryButton date={date} />
             </>
           )}
           {!hasEntries && <EntryDialogButton date={date} size="medium" />}
