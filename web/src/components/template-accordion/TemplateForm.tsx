@@ -95,7 +95,7 @@ const TemplateForm = () => {
                 if (typeof templateNameValue == "string" && templateNameValue.trim().length > 0) {
                   return true;
                 }
-                return t("templateDialog.validation.templateNameRequired");
+                return t("entryDialog.validation.templateNameRequired");
               },
             }}
             render={({ field }) => (
