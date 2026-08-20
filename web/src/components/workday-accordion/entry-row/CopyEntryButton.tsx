@@ -1,9 +1,10 @@
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ToggleButton from "@mui/material/ToggleButton";
+import Tooltip from "@mui/material/Tooltip";
 import { useTranslation } from "react-i18next";
 import { EntryTemplateType } from "../../../graphql/generated/graphql";
 import { useEntryContext } from "../../workday-browser/entry-context/useEntryContext";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 type CopyEntryButtonProps = {
   entry: EntryTemplateType;
@@ -12,6 +13,17 @@ type CopyEntryButtonProps = {
 const CopyEntryButton = ({ entry }: CopyEntryButtonProps) => {
   const { t } = useTranslation();
   const { hasEntry, addSelectedEntry, removeSelectedEntry } = useEntryContext();
+
+  const isSelected = useMemo(() => {
+    return hasEntry(entry);
+  }, [entry, hasEntry]);
+  const buttonText = useMemo(() => {
+    if (isSelected) {
+      return t("controls.deselectEntryTemplate");
+    }
+    return t("controls.selectEntryTemplate");
+  }, [isSelected, t]);
+
   const entryButtonClickHandler = useCallback(
     (event: React.MouseEvent<HTMLElement>) => {
       event.stopPropagation();
@@ -25,19 +37,21 @@ const CopyEntryButton = ({ entry }: CopyEntryButtonProps) => {
     [entry, hasEntry, addSelectedEntry, removeSelectedEntry],
   );
   return (
-    <ToggleButton
-      value={t("controls.copyEntry")}
-      aria-label={t("controls.copyEntry")}
-      size="large"
-      onClick={entryButtonClickHandler}
-      sx={(theme) => ({
-        border: "none",
-        color: theme.palette.mode === "light" ? "secondary.dark" : "primary",
-      })}
-      selected={hasEntry(entry)}
-    >
-      <ContentCopyIcon />
-    </ToggleButton>
+    <Tooltip title={buttonText}>
+      <ToggleButton
+        value={t("controls.selectEntryTemplate")}
+        aria-label={buttonText}
+        size="large"
+        onClick={entryButtonClickHandler}
+        sx={(theme) => ({
+          border: "none",
+          color: theme.palette.mode === "light" ? "secondary.dark" : "primary",
+        })}
+        selected={isSelected}
+      >
+        <ContentCopyIcon />
+      </ToggleButton>
+    </Tooltip>
   );
 };
 

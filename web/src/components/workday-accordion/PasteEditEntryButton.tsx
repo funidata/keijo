@@ -18,7 +18,7 @@ const PasteEditEntryButton = ({ date, ...props }: PasteEntryButtonProps) => {
     <Box onClick={(e) => e.stopPropagation()} sx={{ color: "secondary.dark" }}>
       <LabelledIconButton
         size="medium"
-        label={t("controls.pasteAndEditEntry")}
+        label={t("controls.pasteAndEditEntry", { count: selectedEntries.length })}
         onClick={() => {
           const templateEntries = selectedEntries;
           clearEntries();
