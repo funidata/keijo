@@ -1,5 +1,5 @@
+import { useMutation, useQuery } from "@apollo/client/react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { LoadingButton } from "@mui/lab";
 import {
   Accordion,
   AccordionDetails,
@@ -21,16 +21,23 @@ import { Controller, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import useDayjs from "../../common/useDayjs";
-import { AcceptanceStatus, Entry } from "../../graphql/generated/graphql";
+import {
+  AcceptanceStatus,
+  Entry,
+  GetMySettingsDocument,
+  UpdateSettingsDocument,
+} from "../../graphql/generated/graphql";
+import { useIsJiraAuthenticated } from "../../jira/jira-api";
 import usePreferSetRemainingHours from "../user-preferences/usePreferSetRemainingHours";
 import BigDeleteEntryButton from "./BigDeleteEntryButton";
 import DimensionComboBox from "./DimensionComboBox";
 import DurationSlider from "./DurationSlider";
+import { JiraIntegrationAlert } from "./JiraIntegrationAlert";
+import JiraIssueComboBox from "./JiraIssueComboBox";
 import ResponsiveDatePicker from "./ResponsiveDatePicker";
 import WorkdayHours from "./WorkdayHours";
 import useEntryForm, { EntryFormSchema } from "./useEntryForm";
-import { useIsJiraAuthenticated } from "../../jira/jiraApi";
-import JiraIssueComboBox from "../../jira/components/JiraIssueComboBox";
+import EntryFiltersSection from "./EntryFiltersSection";
 
 export type EntryFormProps = {
   form: UseFormReturn<EntryFormSchema>;
@@ -81,7 +88,12 @@ const EntryForm = () => {
   const { userPrefersSetRemainingHours, toggleRemainingHours } = usePreferSetRemainingHours();
   const { control, watch } = form;
   const dateWatch = dayjs(watch("date")).locale(dayjs.locale());
-  const { isJiraAuth } = useIsJiraAuthenticated();
+  const { isJiraAuth, isLoading } = useIsJiraAuthenticated();
+
+  const { data } = useQuery(GetMySettingsDocument);
+  const [updateSettings] = useMutation(UpdateSettingsDocument, {
+    refetchQueries: [GetMySettingsDocument],
+  });
 
   const handleAddMore = () => {
     handleSubmit(onSubmit)();
@@ -91,7 +103,12 @@ const EntryForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
+        <Grid
+          size={{
+            xs: 12,
+            md: 6,
+          }}
+        >
           <Grid container spacing={2}>
             <DimensionComboBox
               form={form}
@@ -111,7 +128,7 @@ const EntryForm = () => {
               <DimensionComboBox form={form} name="issue" title={t("entryDialog.issue")} />
             )}
             <DimensionComboBox form={form} name="client" title={t("entryDialog.client")} />
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Controller
                 name="description"
                 control={control}
@@ -145,9 +162,26 @@ const EntryForm = () => {
                 )}
               />
             </Grid>
+            <Grid size={12}>
+              <EntryFiltersSection />
+            </Grid>
+            {data && !data.getMySettings.jiraNotificationIgnore && !isJiraAuth && !isLoading ? (
+              <Grid>
+                <JiraIntegrationAlert
+                  onHide={() =>
+                    updateSettings({ variables: { settings: { jiraNotificationIgnore: true } } })
+                  }
+                />
+              </Grid>
+            ) : null}
           </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid
+          size={{
+            xs: 12,
+            md: 6,
+          }}
+        >
           <Controller name="duration" control={control} render={DurationSlider} />
           <Box sx={{ mt: 2, mb: 3 }}>
             <WorkdayHours date={dateWatch} />
@@ -171,31 +205,25 @@ const EntryForm = () => {
           )}
         </Grid>
         {editEntry?.acceptanceStatus === AcceptanceStatus.Open && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Alert severity="warning">{t("entryDialog.openStatusNote")}</Alert>
           </Grid>
         )}
         {editEntry && (
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Alert severity="info">{t("entryDialog.editingNote")}</Alert>
           </Grid>
         )}
         {mobile ? (
           <>
-            <Grid item xs={12} sx={{ mt: 2 }}>
-              <LoadingButton
-                loading={loading}
-                type="submit"
-                variant="contained"
-                size="large"
-                fullWidth
-              >
+            <Grid sx={{ mt: 2 }} size={12}>
+              <Button loading={loading} type="submit" variant="contained" size="large" fullWidth>
                 {t("entryDialog.submit")}
-              </LoadingButton>
+              </Button>
             </Grid>
             {!editEntry && (
               <Grid item xs={12}>
-                <LoadingButton
+                <Button
                   loading={loading}
                   onClick={() => handleAddMore()}
                   variant="contained"
@@ -203,10 +231,10 @@ const EntryForm = () => {
                   fullWidth
                 >
                   {t("entryDialog.addMore")}
-                </LoadingButton>
+                </Button>
               </Grid>
             )}
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Button
                 type="reset"
                 variant="outlined"
@@ -217,12 +245,16 @@ const EntryForm = () => {
                 {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
               </Button>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               {editEntry && originalDate && (
-                <BigDeleteEntryButton entryKey={editEntry.key} date={dayjs(originalDate)} />
+                <BigDeleteEntryButton
+                  entryKey={editEntry.key}
+                  date={dayjs(originalDate)}
+                  onDeleted={() => navigate("..")}
+                />
               )}
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               {!editEntry && (
                 <FormGroup>
                   <FormControlLabel
@@ -241,7 +273,7 @@ const EntryForm = () => {
           </>
         ) : (
           <>
-            <Grid item xs={4} sx={{ mt: 2 }}>
+            <Grid sx={{ mt: 2 }} size={4}>
               <Box sx={{ display: "flex", justifyContent: "start", gap: 2 }}>
                 {!editEntry && (
                   <FormGroup>
@@ -259,24 +291,24 @@ const EntryForm = () => {
                 )}
               </Box>
             </Grid>
-            <Grid item xs={8} sx={{ mt: 2 }}>
+            <Grid sx={{ mt: 2 }} size={8}>
               <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
                 <Button type="reset" variant="outlined" size="large" onClick={() => reset()}>
                   {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
                 </Button>
                 {!editEntry && (
-                  <LoadingButton
+                  <Button
                     loading={loading}
                     onClick={() => handleAddMore()}
                     variant="contained"
                     size="large"
                   >
                     {t("entryDialog.addMore")}
-                  </LoadingButton>
+                  </Button>
                 )}
-                <LoadingButton loading={loading} type="submit" variant="contained" size="large">
+                <Button loading={loading} type="submit" variant="contained" size="large">
                   {t("entryDialog.submit")}
-                </LoadingButton>
+                </Button>
               </Box>
             </Grid>
           </>

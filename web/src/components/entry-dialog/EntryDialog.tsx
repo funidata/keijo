@@ -3,10 +3,10 @@ import BigDialog from "../BigDialog";
 import EntryForm from "./EntryForm";
 
 type EntryDialogProps = {
-  variant: "create" | "edit";
+  variant?: "create" | "edit";
 };
 
-const EntryDialog = ({ variant }: EntryDialogProps) => {
+const EntryDialog = ({ variant = "create" }: EntryDialogProps) => {
   const { t } = useTranslation();
 
   const titleKey = variant === "create" ? "entryDialog.title.create" : "entryDialog.title.edit";
@@ -16,10 +16,6 @@ const EntryDialog = ({ variant }: EntryDialogProps) => {
       <EntryForm />
     </BigDialog>
   );
-};
-
-EntryDialog.defaultProps = {
-  variant: "create",
 };
 
 export default EntryDialog;

@@ -11,7 +11,7 @@ services:
       - VITE_API_URL=http://localhost:3001/graphql
       - VITE_KEIJO_JIRA_API_URL=http://localhost:3001/jira
     ports:
-      - 3000:5173
+      - 3000:3000
 
   web-test:
     extends:
@@ -22,7 +22,7 @@ services:
       - VITE_API_URL=http://localhost:4001/graphql
       - VITE_KEIJO_JIRA_API_URL=http://localhost:4001/jira
     ports:
-      - 4000:5173
+      - 4000:3000
 
   server:
     extends:
@@ -46,7 +46,7 @@ services:
       NETVISOR_API_URL: http://nv-mock:4002
       DATABASE_NAME: keijo_test
       CORS_ORIGIN: http://localhost:4000
-
+      LOG_LEVEL: debug
     ports:
       - 4001:3001
 

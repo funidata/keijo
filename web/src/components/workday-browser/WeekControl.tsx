@@ -89,8 +89,11 @@ const WeekControl = () => {
                   borderBottom: week.no === currentWeek ? "1px solid grey" : null,
                 }}
               >
-                <Typography variant="h5">{week.no}</Typography>
+                <Typography component="h2" variant="h5">
+                  {week.no}
+                </Typography>
                 <Typography
+                  component="h3"
                   variant="subtitle2"
                   sx={{ alignSelf: "end", mb: "3px", ml: 1, fontStyle: "italic" }}
                 >

@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { Duration } from "dayjs/plugin/duration";
 import { sumBy } from "lodash";
 import { Entry } from "../graphql/generated/graphql";
+import { EntryType } from "./entryType.enum";
 
 /**
  * Rounds duration to minute-precision.
@@ -36,7 +37,7 @@ export const roundToFullMinutes = (duration: Duration): Duration => {
  */
 export const totalDurationOfEntries = (entries: Entry[]): Duration => {
   const totalHours = sumBy(
-    entries.filter((entry) => entry.durationInHours),
+    entries.filter((entry) => entry.durationInHours && entry.ratioNumber !== EntryType.TravelTime),
     "duration",
   );
   return dayjs.duration(totalHours, "hour");

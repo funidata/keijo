@@ -18,6 +18,7 @@ services:
       - .env
     environment:
       NODE_ENV: development
+      DEV_TOOLS: true
       PORT: 3001
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: postgres

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ZodObject, ZodOptionalDef, literal, number, object, string, union } from "zod";
+import { ZodObject, literal, number, object, string, union } from "zod";
 import { jsonAppLogOutputSchema, jsonAuditLogOutputSchema } from "./json-log-output.schema";
 
 /**
@@ -42,7 +42,10 @@ const appLogTestSchema = object(appLogFields);
 const auditLogTestSchema = object({ ...appLogFields, ...auditLogFields });
 
 type ZodTestObject = {
-  _def: ZodOptionalDef;
+  _def: {
+    typeName: string;
+    innerType?: ZodTestObject;
+  };
 };
 
 /**
@@ -56,7 +59,7 @@ const testZodObjectDeep = (actual: ZodTestObject, test: ZodTestObject) => {
   expect(actual._def.typeName).toEqual(test._def.typeName);
 
   if (test._def.innerType) {
-    testZodObjectDeep(actual._def.innerType, test._def.innerType);
+    testZodObjectDeep(actual._def.innerType!, test._def.innerType);
   }
 };
 

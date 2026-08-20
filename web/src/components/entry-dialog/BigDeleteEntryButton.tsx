@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { useState } from "react";
@@ -9,16 +9,16 @@ import { useNotification } from "../global-notification/useNotification";
 type DeleteEntryButtonProps = {
   entryKey: string;
   date: Dayjs;
+  onDeleted?: () => void;
 };
 
-const BigDeleteEntryButton = ({ entryKey, date }: DeleteEntryButtonProps) => {
+const BigDeleteEntryButton = ({ entryKey, date, onDeleted }: DeleteEntryButtonProps) => {
   const { showSuccessNotification } = useNotification();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const [removeWorkdayEntry, { client }] = useMutation(RemoveWorkdayEntryDocument, {
+  const [removeWorkdayEntry, { loading }] = useMutation(RemoveWorkdayEntryDocument, {
     refetchQueries: [FindWorkdaysDocument],
-    onCompleted: async () => {
-      await client.resetStore();
+    onCompleted: () => {
       showSuccessNotification(t("notifications.deleteEntry.success"));
     },
   });
@@ -32,10 +32,11 @@ const BigDeleteEntryButton = ({ entryKey, date }: DeleteEntryButtonProps) => {
   };
 
   const onConfirm = async () => {
-    removeWorkdayEntry({
+    await removeWorkdayEntry({
       variables: { entry: { key: entryKey, date: date.format("YYYY-MM-DD") } },
     });
     onClose();
+    onDeleted?.();
   };
 
   return (
@@ -48,10 +49,10 @@ const BigDeleteEntryButton = ({ entryKey, date }: DeleteEntryButtonProps) => {
           {t("controls.confirmDeleteForDialog")}
         </DialogTitle>
         <DialogActions>
-          <Button onClick={onClose} color="secondary">
+          <Button onClick={onClose} color="secondary" disabled={loading}>
             {t("controls.cancel")}
           </Button>
-          <Button onClick={onConfirm} autoFocus>
+          <Button onClick={onConfirm} autoFocus loading={loading}>
             {t("controls.deleteEntry")}
           </Button>
         </DialogActions>

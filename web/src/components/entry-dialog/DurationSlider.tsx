@@ -48,12 +48,21 @@ const DurationSlider = ({ field }: DurationSliderProps) => {
         onChange={handleTimeFieldChange}
         label={t("entryDialog.duration")}
         ampm={false}
-        sx={{
-          width: { xs: "100%", md: "50%" },
-          input: { textAlign: "center", fontSize: "2rem", fontWeight: "bold" },
+        slotProps={{
+          textField: {
+            sx: {
+              width: { xs: "100%", md: "50%" },
+              ".MuiPickersSectionList-root": {
+                justifyContent: "center",
+                fontSize: "2rem",
+                fontWeight: "bold",
+              },
+            },
+          },
         }}
       />
       <Slider
+        aria-label={t("entryDialog.duration")}
         min={0}
         max={600}
         step={15}

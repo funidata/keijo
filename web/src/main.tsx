@@ -1,4 +1,4 @@
-import { ApolloProvider } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client/react";
 import { LicenseInfo } from "@mui/x-license";
 import React from "react";
 import ReactDOM from "react-dom/client";

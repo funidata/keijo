@@ -21,18 +21,18 @@ export class AxiosService implements OnModuleInit {
     });
   }
 
-  async get<T = any, R = AxiosResponse<T>, D = any>(
+  async get<T = any, D = any>(
     url: string,
     config?: AxiosRequestConfig<D>,
-  ): Promise<R> {
-    return axios.get(url, config);
+  ): Promise<AxiosResponse<T, D>> {
+    return axios.get<T, AxiosResponse<T, D>, D>(url, config);
   }
 
-  async post<T = any, R = AxiosResponse<T>, D = any>(
+  async post<T = any, D = any>(
     url: string,
     data?: D,
     config?: AxiosRequestConfig<D>,
-  ): Promise<R> {
-    return axios.post(url, data, config);
+  ): Promise<AxiosResponse<T, D>> {
+    return axios.post<T, AxiosResponse<T, D>, D>(url, data, config);
   }
 }

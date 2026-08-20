@@ -15,4 +15,24 @@ export class UserSettings {
   @Column({ nullable: true })
   @Field({ nullable: true })
   activityPreset: string;
+
+  @Column({ type: "varchar", array: true, nullable: true })
+  @Field(() => [String], { nullable: true })
+  projectsPreset: string[];
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  jiraNotificationIgnore: boolean;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  showWeekend: boolean;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  setRemainingHours: boolean;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  showJiraIssueStatus: boolean;
 }

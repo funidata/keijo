@@ -5,6 +5,7 @@ import useDayjs from "../../common/useDayjs";
 import {
   isFlexLeaveDay,
   isHoliday,
+  isHolidayPayLeave,
   isSickLeave,
   isSpecialSingleEntryDay,
   isVacation,
@@ -18,6 +19,8 @@ import NoEntriesChip from "./info-chips/NoEntriesChip";
 import SickLeaveChip from "./info-chips/SickLeaveChip";
 import VacationChip from "./info-chips/VacationChip";
 import WeekendChip from "./info-chips/WeekendChip";
+import HolidayPayLeaveChip from "./info-chips/HolidayPayLeaveChip";
+import { useTranslation } from "react-i18next";
 
 type WorkdayAccordionProps = {
   workday: Workday;
@@ -25,13 +28,16 @@ type WorkdayAccordionProps = {
 
 const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const dayjs = useDayjs();
   const date = dayjs(workday.date).locale(dayjs.locale());
+  const isCurrentDay = date.isSame(dayjs(), "day");
   const holiday = isHoliday(date);
   const weekend = isWeekend(date);
   const vacation = isVacation(workday);
   const flexLeave = isFlexLeaveDay(workday);
+  const holidayPayLeave = isHolidayPayLeave(workday);
   const sickLeave = isSickLeave(workday);
   const disabled = isSpecialSingleEntryDay(workday);
 
@@ -47,6 +53,9 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
     if (flexLeave) {
       return <FlexLeaveChip />;
     }
+    if (holidayPayLeave) {
+      return <HolidayPayLeaveChip />;
+    }
     if (sickLeave) {
       return <SickLeaveChip />;
     }
@@ -57,47 +66,74 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
       return <HolidayChip />;
     }
     if (empty) {
-      return <NoEntriesChip />;
+      return <NoEntriesChip sx={{ borderColor: "grey.400" }} />;
     }
     return null;
   };
 
   return (
-    <AccordionSummary expandIcon={!disabled && <ExpandMoreIcon />}>
-      <Box
-        sx={{
-          display: "flex",
-          flexGrow: 1,
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+    <Box sx={{ position: "relative" }}>
+      <AccordionSummary expandIcon={!disabled && <ExpandMoreIcon />}>
         <Box
-          sx={
-            disabled ? { display: "flex", flexDirection: "row", alignItems: "center", gap: 2 } : {}
-          }
+          sx={{
+            display: "flex",
+            flexGrow: 1,
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
         >
-          <Typography sx={{ textTransform: "capitalize", minWidth: 105 }}>
-            {date.format("dd l")}
-          </Typography>
-          {mobile && (
-            <Box sx={!disabled ? { mt: 1 } : {}}>
-              <InfoChip />
-            </Box>
-          )}
-        </Box>
-        {!mobile && <InfoChip />}
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box
+            sx={
+              disabled
+                ? { display: "flex", flexDirection: "row", alignItems: "center", gap: 2 }
+                : {}
+            }
+          >
+            <Typography
+              sx={{
+                textTransform: "capitalize",
+                position: "relative",
+                minWidth: 105,
+                ...(isCurrentDay && { fontWeight: "medium" }),
+              }}
+              aria-current={isCurrentDay ? "date" : undefined}
+            >
+              {date.format("dd l")}
+              <Typography
+                component="span"
+                sx={{ position: "absolute", paddingLeft: 1, fontWeight: "medium" }}
+              >
+                {isCurrentDay && !mobile && `(${t("general.today")})`}
+              </Typography>
+            </Typography>
+            {mobile && (
+              <Box sx={!disabled ? { mt: 1 } : {}}>
+                <InfoChip />
+              </Box>
+            )}
+          </Box>
+          {!mobile && <InfoChip />}
           {!disabled && (
-            <>
-              <EntryDialogButton date={date} size="medium" />
-              <Chip label={`${totalHoursFormatted} h`} sx={{ mr: 2, color: "inherit" }} />
-            </>
+            <Chip
+              label={`${totalHoursFormatted} h`}
+              sx={{
+                mr: 2,
+                color: "inherit",
+                ...(isCurrentDay && { fontWeight: "medium" }),
+              }}
+            />
           )}
           {disabled && !mobile && <Box sx={{ width: 133 }} />}
         </Box>
-      </Box>
-    </AccordionSummary>
+      </AccordionSummary>
+      {!disabled && (
+        <Box
+          sx={{ position: "absolute", top: "50%", transform: "translateY(-50%)", right: "116px" }}
+        >
+          <EntryDialogButton date={date} size="medium" />
+        </Box>
+      )}
+    </Box>
   );
 };
 

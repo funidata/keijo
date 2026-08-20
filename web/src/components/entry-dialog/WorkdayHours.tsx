@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { Box, Chip, Typography } from "@mui/material";
 import { Dayjs } from "dayjs";
 import { useTranslation } from "react-i18next";

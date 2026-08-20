@@ -10,11 +10,10 @@ const en = {
     confirmDelete: "Confirm delete",
     confirmDeleteForDialog: "Really delete this entry?",
     addEntry: "Add New Entry",
+    addEntryWithDate: "Add New Entry on {{date}}",
     deleteEntry: "Delete entry",
     editEntry: "Edit entry",
-    endDate: "To",
     selectWeek: "Week",
-    startDate: "From",
     openMenu: "Open menu",
     useDarkMode: "Dark Mode",
     selectLanguage: "Select language",
@@ -24,6 +23,12 @@ const en = {
     jiraDisconnect: "Disconnect from Jira",
     showWeekend: "Show Weekend",
     hideWeekend: "Hide Weekend",
+    showFilters: "Show filters",
+    showFilters_aria_zero: "Show filters, no active filters",
+    showFilters_aria_one: "Show filters, 1 active filter",
+    showFilters_aria_other: "Show filters, {{count}} active filters",
+    hideFilters: "Hide filters",
+    dateRange: "Date Range",
   },
   dimensionNames: {
     product: "Product",
@@ -31,12 +36,18 @@ const en = {
     issue: "Issue",
     client: "Client",
   },
+  environment: {
+    development: "Development",
+  },
   errors: {
     error: "Error",
     missingEmployeeNumber:
       "Your employee number was not found in HTTP headers. Keijo cannot be used without this information. Please report this problem to your superior.",
-    unknownError: "Unknown error occured. Please get in touch with Team Fox.",
+    unknownError: "Unknown error occured. Please get in touch with Team Arctic Fox.",
     notFound: "Page was not found. Please check the address.",
+    oldWeekParamFormat:
+      "The address contains a week number parameter in the old format. Please go to the frontpage, after which you can continue using Keijo as usual.",
+    invalidWeekParam: "Given week parameter is not valid.",
   },
   entryDialog: {
     title: { create: "Add New Entry", edit: "Edit Entry" },
@@ -58,14 +69,21 @@ const en = {
       "You are editing an existing entry. Note that this entry will move to the end of the list. This is due to Netvisor API not supporting actually editing entries, rather the old entry will be deleted and a new one created in its place.",
     openStatusNote:
       "This entry has been left with an open acceptance status in Netvisor. You can either save the entry as is with Keijo or switch to Netvisor and update the status there.",
+    input: {
+      clear: "Clear selection",
+    },
     validation: {
       productRequired: "Product is required",
       activityRequired: "Function is required",
       descriptionRequired: "Description is required.",
       ticketOrDescriptionRequired: "Description is required if there is no relevant issue.",
+      issueInOptions: "Issue needs to be one of the options",
     },
     totalHoursToday: "Time on selected day before this entry",
     setRemainingHours: "Set remaining hours automatically",
+    showJiraIssueStatus: "Show JIRA issue status",
+    filterProjects: "JIRA projects",
+    filterProjectsHelperText: "Search issues only from selected JIRA projects.",
   },
   entryTable: {
     accepted: "Accepted",
@@ -86,6 +104,7 @@ const en = {
     weekend: "Weekend",
     vacation: "Vacation",
     flexLeave: "Flex Leave",
+    holidayPayLeave: "Holiday Pay Leave",
     sickLeave: "Sick Leave",
     unknownEntry: "Unknown entry type",
     unknownEntryNote: "Use Netvisor for this type of entry.",
@@ -93,6 +112,9 @@ const en = {
     totalHoursInRange: "Total hours in range",
     addZeroEntry: "Add Zero Entry",
     zeroEntryAlert: "Entry with zero hours is required for flex leave.",
+  },
+  general: {
+    today: "Today",
   },
   notifications: {
     addEntry: {
@@ -107,6 +129,28 @@ const en = {
   },
   titles: {
     workdayBrowser: "Entries",
+  },
+  jira: {
+    issueGroups: {
+      recent: "Recent",
+      keySearchResults: "Search Results (Issue Key)",
+      textSearchResults: "Search Results (Title)",
+      searchResults: "Search Results",
+      noSearchResults: "No results",
+      typeToSearch: "Start typing to search Jira by issue key and title",
+      loading: "Loading...",
+    },
+    connectNotificationTitle: "New: Jira Integration",
+    connectNotification1:
+      "Keijo now supports reading issue data from Jira to make issue selection easier. You have to connect Keijo to Jira using your own Atlassian account to enable these features.",
+    connectNotification2:
+      "If you hide this notification, you can always connect later via the settings menu.",
+    infoDialog: {
+      title: "Keijo-Jira",
+      // Site could also be set dynamically from server or simply by <your-company>.atlassian.net
+      content:
+        "You will be redirected to authorize Keijo to use Jira. Login on Atlassian site and choose to authorize appropriate site e.g., funidata.atlassian.net from the dropdown.",
+    },
   },
 };
 
