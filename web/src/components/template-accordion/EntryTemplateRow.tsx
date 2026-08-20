@@ -74,7 +74,7 @@ const EntryTemplateRow = ({ entry }: EntryTemplateRowProps) => {
             {entry.activity && (
               <Typography>
                 <Typography component="span" sx={{ fontWeight: "medium" }}>
-                 {t("entryTemplate.activity")}:
+                  {t("entryTemplate.activity")}:
                 </Typography>{" "}
                 {entry.activity}
               </Typography>

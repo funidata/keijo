@@ -41,11 +41,7 @@ const DeleteTemplateButton = ({ templateKey }: DeleteTemplateButtonProps) => {
 
   return (
     <>
-      <Button
-        onClick={onOpen}
-        size="medium"
-        color="error"
-      >
+      <Button onClick={onOpen} size="medium" color="error">
         {t("controls.deleteEntryTemplate")}
       </Button>
 
