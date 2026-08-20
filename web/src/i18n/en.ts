@@ -119,6 +119,14 @@ const en = {
     addZeroEntry: "Add Zero Entry",
     zeroEntryAlert: "Entry with zero hours is required for flex leave.",
   },
+    entryTemplate: {
+    duration: "Duration",
+    product: "Product",
+    activity: "Activity",
+    client: "Client",
+    issue: "Issue",
+    description: "Comment",
+  },
   general: {
     today: "Today",
   },

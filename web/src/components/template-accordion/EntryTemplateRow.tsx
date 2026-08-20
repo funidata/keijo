@@ -13,6 +13,7 @@ import { EntryTemplateType } from "../../graphql/generated/graphql";
 import DeleteTemplateButton from "./DeleteTemplateButton";
 import { roundToFullMinutes } from "../../common/duration";
 import useDayjs from "../../common/useDayjs";
+import { useTranslation } from "react-i18next";
 
 type EntryTemplateRowProps = {
   entry: EntryTemplateType;
@@ -20,6 +21,7 @@ type EntryTemplateRowProps = {
 
 const EntryTemplateRow = ({ entry }: EntryTemplateRowProps) => {
   const dayjs = useDayjs();
+  const { t } = useTranslation();
   const totalHoursFormatted = roundToFullMinutes(dayjs.duration(entry.duration, "hour")).format(
     "H:mm",
   );
@@ -57,14 +59,14 @@ const EntryTemplateRow = ({ entry }: EntryTemplateRowProps) => {
           <Stack direction="column">
             <Typography>
               <Typography component="span" sx={{ fontWeight: "medium" }}>
-                Kesto:
+                {t("entryTemplate.duration")}:
               </Typography>{" "}
               {totalHoursFormatted}h
             </Typography>
             {entry.product && (
               <Typography>
                 <Typography component="span" sx={{ fontWeight: "medium" }}>
-                  Tuote:
+                  {t("entryTemplate.product")}:
                 </Typography>{" "}
                 {entry.product}
               </Typography>
@@ -72,7 +74,7 @@ const EntryTemplateRow = ({ entry }: EntryTemplateRowProps) => {
             {entry.activity && (
               <Typography>
                 <Typography component="span" sx={{ fontWeight: "medium" }}>
-                  Toiminto:
+                 {t("entryTemplate.activity")}:
                 </Typography>{" "}
                 {entry.activity}
               </Typography>
@@ -80,7 +82,7 @@ const EntryTemplateRow = ({ entry }: EntryTemplateRowProps) => {
             {entry.client && (
               <Typography>
                 <Typography component="span" sx={{ fontWeight: "medium" }}>
-                  Asiakas:
+                  {t("entryTemplate.client")}:
                 </Typography>{" "}
                 {entry.client}
               </Typography>
@@ -88,7 +90,7 @@ const EntryTemplateRow = ({ entry }: EntryTemplateRowProps) => {
             {entry.issue && (
               <Typography>
                 <Typography component="span" sx={{ fontWeight: "medium" }}>
-                  Tiketti:
+                  {t("entryTemplate.issue")}:
                 </Typography>{" "}
                 {entry.issue}
               </Typography>
@@ -96,7 +98,7 @@ const EntryTemplateRow = ({ entry }: EntryTemplateRowProps) => {
             {entry.description && (
               <Typography>
                 <Typography component="span" sx={{ fontWeight: "medium" }}>
-                  Kommentti:
+                  {t("entryTemplate.description")}:
                 </Typography>{" "}
                 {entry.description}
               </Typography>

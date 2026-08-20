@@ -119,6 +119,14 @@ const fi = {
     addZeroEntry: "Lisää nollatuntikirjaus",
     zeroEntryAlert: "Nollatuntikirjaus vaaditaan saldovapaan laskemiseen.",
   },
+  entryTemplate: {
+    duration: "Kesto",
+    product: "Tuote",
+    activity: "Toiminto",
+    client: "Asiakas",
+    issue: "Tiketti",
+    description: "Kommentti",
+  },
   general: {
     today: "Tänään",
   },
