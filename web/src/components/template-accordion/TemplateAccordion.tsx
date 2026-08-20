@@ -22,7 +22,7 @@ const TemplateAccordion = () => {
   }, [templates]);
 
   return (
-    <Box sx={{ mb: 4 }}>
+    <Box>
       <Typography component="h2" variant="h6" sx={visuallyHidden}>
         {t("titles.templates")}
       </Typography>
