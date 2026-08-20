@@ -144,7 +144,6 @@ const fi = {
   titles: {
     workdayBrowser: "Työaikakirjaukset",
     templates: "Omat kirjauspohjat",
-    noTemplates: "Ei kirjauspohjia.",
   },
   jira: {
     issueGroups: {
