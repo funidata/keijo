@@ -50,6 +50,28 @@ export type Entry = {
   typeName: Scalars['String']['output'];
 };
 
+export type EntryTemplateInput = {
+  activity?: InputMaybe<Scalars['String']['input']>;
+  client?: InputMaybe<Scalars['String']['input']>;
+  description: Scalars['String']['input'];
+  duration: Scalars['Float']['input'];
+  issue?: InputMaybe<Scalars['String']['input']>;
+  product?: InputMaybe<Scalars['String']['input']>;
+  templateName: Scalars['String']['input'];
+};
+
+export type EntryTemplateType = {
+  __typename?: 'EntryTemplateType';
+  activity?: Maybe<Scalars['String']['output']>;
+  client?: Maybe<Scalars['String']['output']>;
+  description: Scalars['String']['output'];
+  duration: Scalars['Float']['output'];
+  issue?: Maybe<Scalars['String']['output']>;
+  key: Scalars['String']['output'];
+  product?: Maybe<Scalars['String']['output']>;
+  templateName: Scalars['String']['output'];
+};
+
 export type FindWorkdaysInput = {
   end: Scalars['DateTime']['input'];
   start: Scalars['DateTime']['input'];
@@ -57,15 +79,27 @@ export type FindWorkdaysInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addEntryTemplate: UserSettings;
   addWorkdayEntry: Scalars['String']['output'];
+  removeEntryTemplate: UserSettings;
   removeWorkdayEntry: Scalars['String']['output'];
   replaceWorkdayEntry: Scalars['String']['output'];
   updateSettings: UserSettings;
 };
 
 
+export type MutationAddEntryTemplateArgs = {
+  template: EntryTemplateInput;
+};
+
+
 export type MutationAddWorkdayEntryArgs = {
   entry: AddWorkdayEntryInput;
+};
+
+
+export type MutationRemoveEntryTemplateArgs = {
+  templateKey: RemoveEntryTemplateInput;
 };
 
 
@@ -97,6 +131,10 @@ export type QueryFindWorkdaysArgs = {
   query: FindWorkdaysInput;
 };
 
+export type RemoveEntryTemplateInput = {
+  key: Scalars['String']['input'];
+};
+
 export type RemoveWorkdayEntryInput = {
   date: Scalars['DateTime']['input'];
   key: Scalars['String']['input'];
@@ -121,6 +159,7 @@ export type UserSettings = {
   __typename?: 'UserSettings';
   activityPreset?: Maybe<Scalars['String']['output']>;
   employeeNumber: Scalars['Float']['output'];
+  entryTemplates?: Maybe<Array<EntryTemplateType>>;
   jiraNotificationIgnore?: Maybe<Scalars['Boolean']['output']>;
   productPreset?: Maybe<Scalars['String']['output']>;
   projectsPreset?: Maybe<Array<Scalars['String']['output']>>;

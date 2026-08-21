@@ -1,5 +1,5 @@
 import { useLocalStorage } from "usehooks-ts";
-import { EntryFormSchema } from "../entry-dialog/useEntryForm";
+import { EntryFormSchema } from "../entry-form/useEntryForm";
 
 const DEFAULT_ENTRY_VALUES = "default-entry-values";
 

@@ -3,7 +3,7 @@ import { DatePicker, StaticDatePicker } from "@mui/x-date-pickers-pro";
 import { ControllerRenderProps } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import useDayjs from "../../common/useDayjs";
-import { EntryFormSchema } from "./useEntryForm";
+import { EntryFormSchema } from "../entry-form/useEntryForm";
 
 type ResponsiveDatePickerProps = {
   field: ControllerRenderProps<EntryFormSchema, "date">;

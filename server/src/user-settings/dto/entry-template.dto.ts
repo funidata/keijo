@@ -1,0 +1,50 @@
+import { Field, InputType, ObjectType } from "@nestjs/graphql";
+import { IsDimensionValue } from "../../netvisor/dimension/is-dimension-value.decorator";
+import { IsString } from "class-validator";
+
+@ObjectType({ isAbstract: true })
+@InputType({ isAbstract: true })
+class EntryTemplate {
+  @Field()
+  @IsString()
+  templateName: string;
+
+  @Field()
+  duration: number;
+
+  @Field()
+  description: string;
+
+  @IsDimensionValue()
+  @Field(() => String, { nullable: true })
+  product: string | null;
+
+  @IsDimensionValue()
+  @Field(() => String, { nullable: true })
+  activity: string | null;
+
+  @IsDimensionValue()
+  @Field(() => String, { nullable: true })
+  issue: string | null;
+
+  @IsDimensionValue()
+  @Field(() => String, { nullable: true })
+  client: string | null;
+}
+
+@InputType()
+export class EntryTemplateInput extends EntryTemplate {}
+
+@ObjectType()
+export class EntryTemplateType extends EntryTemplate {
+  @IsString()
+  @Field()
+  key: string;
+}
+
+@InputType()
+export class RemoveEntryTemplateInput {
+  @Field()
+  @IsString()
+  key: string;
+}

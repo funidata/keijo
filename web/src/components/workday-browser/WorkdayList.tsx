@@ -12,7 +12,7 @@ import WorkdayAccordion from "../workday-accordion/WorkdayAccordion";
 import LoadingIndicator from "./LoadingIndicator";
 import TotalHours from "./TotalHours";
 import { useWorkdayBrowserParams } from "./useWorkdayBrowserParams";
-import { isWeekend } from "../../common/workdayUtils";
+import { compileWorkdayRange, isWeekend } from "../../common/workdayUtils";
 import { t } from "i18next";
 
 const WorkdayList = () => {
@@ -34,9 +34,6 @@ const WorkdayList = () => {
     return <LoadingIndicator />;
   }
 
-  const normalizedStart = from.hour(0).minute(0).second(0).millisecond(0);
-  const normalizedEnd = to.hour(0).minute(0).second(0).millisecond(0);
-
   const showWeekend = !!settingsData?.getMySettings.showWeekend;
   const handleChange = () => {
     updateSettings({
@@ -44,14 +41,8 @@ const WorkdayList = () => {
     });
   };
 
-  // Construct requested date range to include days without entries.
-  const workdays: Workday[] = range(normalizedEnd.diff(normalizedStart, "day") + 1).map((i) => {
-    const date = normalizedStart.add(i, "day");
-    return {
-      date: date.format("YYYY-MM-DD"),
-      entries: data.findWorkdays.find((wd) => date.isSame(dayjs(wd.date), "day"))?.entries || [],
-    };
-  });
+
+  const workdays = compileWorkdayRange(data, { from, to });
 
   const dividedWorkdays = workdays.reduce<Workday[][]>((arr, curr) => {
     if (

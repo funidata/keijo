@@ -12,6 +12,7 @@ const en = {
     addEntry: "Add New Entry",
     addEntryWithDate: "Add New Entry on {{date}}",
     deleteEntry: "Delete entry",
+    deleteEntryTemplate: "Delete",
     editEntry: "Edit entry",
     selectWeek: "Week",
     openMenu: "Open menu",
@@ -23,6 +24,13 @@ const en = {
     jiraDisconnect: "Disconnect from Jira",
     showWeekend: "Show Weekend",
     hideWeekend: "Hide Weekend",
+    selectEntryTemplate: "Select template",
+    deselectEntryTemplate: "Deselect template",
+    pasteEntry_one: "Create entry from template",
+    pasteEntry_other: "Create entries from {{ count }} templates",
+    pasteAndEditEntry_one: "Create and edit entry from template",
+    pasteAndEditEntry_other: "Create and edit entries from {{ count }} templates",
+    addTemplate: "Create entry template",
     showFilters: "Show filters",
     showFilters_aria_zero: "Show filters, no active filters",
     showFilters_aria_one: "Show filters, 1 active filter",
@@ -77,12 +85,14 @@ const en = {
       descriptionRequired: "Description is required.",
       ticketOrDescriptionRequired: "Description is required if there is no relevant issue.",
       issueInOptions: "Issue needs to be one of the options",
+      templateNameRequired: "Template name is required.",
     },
     totalHoursToday: "Time on selected day before this entry",
     setRemainingHours: "Set remaining hours automatically",
     showJiraIssueStatus: "Show JIRA issue status",
     filterProjects: "JIRA projects",
     filterProjectsHelperText: "Search issues only from selected JIRA projects.",
+    templateName: "Template name",
   },
   entryTable: {
     accepted: "Accepted",
@@ -112,6 +122,14 @@ const en = {
     addZeroEntry: "Add Zero Entry",
     zeroEntryAlert: "Entry with zero hours is required for flex leave.",
   },
+  entryTemplate: {
+    duration: "Duration",
+    product: "Product",
+    activity: "Activity",
+    client: "Client",
+    issue: "Issue",
+    description: "Comment",
+  },
   general: {
     today: "Today",
   },
@@ -125,9 +143,16 @@ const en = {
     deleteEntry: {
       success: "Workday entry deleted.",
     },
+    addTemplate: {
+      success: "Workday entry template created.",
+    },
+    deleteTemplate: {
+      success: "Workday entry template deleted.",
+    },
   },
   titles: {
     workdayBrowser: "Entries",
+    templates: "My Entry Templates",
   },
   jira: {
     issueGroups: {
