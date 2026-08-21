@@ -71,11 +71,10 @@ export function compileWorkdayRange(
 
   const start = from.hour(0).minute(0).second(0).millisecond(0);
   const end = to.hour(0).minute(0).second(0).millisecond(0);
-  
+
   const workdayCount = end.diff(start, "day") + 1;
 
   return Array.from({ length: workdayCount }, (_, i) => {
-    console.log(i);
     const date = from.add(i, "day");
     return {
       date: date.format("YYYY-MM-DD"),
