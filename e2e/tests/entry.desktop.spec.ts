@@ -71,12 +71,8 @@ test.describe("Add More entry", () => {
     await expect(page).toHaveURL(/.*\/create$/);
   });
 
-  test("Should add more entry from entry row", async ({ page, t }) => {
-    await page
-      .getByRole("button")
-      .getByRole("button", { name: t("entryDialog.title.create") })
-      .first()
-      .click();
+  test("Should add more entry from entry row", async ({ entryBrowser, page, t }) => {
+    await entryBrowser.getAccordionAddEntryButton().first().click();
     await expect(page).toHaveURL(/.*\/create$/);
     await addMoreEntry(page, t, entries[0]);
     await expect(page).toHaveURL(/.*\/create$/);
@@ -95,7 +91,7 @@ test.describe("Edit entry", () => {
       .click();
     await expect(page).toHaveURL(/.*\/edit$/);
     await fillEntryForm(page, t, entries[0]);
-    await page.getByRole("button", { name: t("entryDialog.submit") }).click();
+    await page.getByRole("button", { name: t("entryDialog.submit"), exact: true }).click();
     await expect(
       page.getByRole("heading", { name: t("entryDialog.title.edit") }),
     ).not.toBeAttached();
@@ -176,7 +172,7 @@ const setDefaultValues = async (page: Page, t: TFunction, product: string, activ
 
 const submitEntry = async (page: Page, t: TFunction, entry: TestEntry) => {
   await fillEntryForm(page, t, entry);
-  await page.getByRole("button", { name: t("entryDialog.submit") }).click();
+  await page.getByRole("button", { name: t("entryDialog.submit"), exact: true }).click();
   await expect(page.getByRole("heading", { name: t("entryDialog.title.edit") })).not.toBeAttached();
   await expect(page.getByRole("alert")).toContainText(t("notifications.addEntry.success"));
 };
