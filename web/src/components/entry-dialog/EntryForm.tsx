@@ -230,7 +230,7 @@ const EntryForm = () => {
                 <Button
                   loading={loading}
                   onClick={() => handleAddMore()}
-                  variant="contained"
+                  variant="outlined"
                   size="large"
                   fullWidth
                 >
@@ -239,13 +239,7 @@ const EntryForm = () => {
               </Grid>
             )}
             <Grid size={12}>
-              <Button
-                type="reset"
-                variant="outlined"
-                size="large"
-                onClick={() => reset()}
-                fullWidth
-              >
+              <Button type="reset" variant="text" size="large" onClick={() => reset()} fullWidth>
                 {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
               </Button>
             </Grid>
@@ -297,14 +291,14 @@ const EntryForm = () => {
             </Grid>
             <Grid sx={{ mt: 2 }} size={8}>
               <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
-                <Button type="reset" variant="outlined" size="large" onClick={() => reset()}>
+                <Button type="reset" variant="text" size="large" onClick={() => reset()}>
                   {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
                 </Button>
                 {!editEntry && (
                   <Button
                     loading={loading}
                     onClick={() => handleAddMore()}
-                    variant="contained"
+                    variant="outlined"
                     size="large"
                   >
                     {t("entryDialog.addMore")}
