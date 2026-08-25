@@ -19,6 +19,14 @@ const lightComponents: ThemeOptions["components"] = {
         color: theme.palette.secondary.dark,
         borderColor: theme.palette.secondary.dark,
       }),
+      text: ({ theme }) => ({
+        color: theme.palette.secondary.dark,
+      }),
+    },
+  },
+  MuiBadge: {
+    defaultProps: {
+      color: "secondary",
     },
   },
 };
@@ -37,6 +45,11 @@ const darkComponents: ThemeOptions["components"] = {
           color: theme.palette.error.contrastText,
         },
       }),
+    },
+  },
+  MuiBadge: {
+    defaultProps: {
+      color: "primary",
     },
   },
 };
