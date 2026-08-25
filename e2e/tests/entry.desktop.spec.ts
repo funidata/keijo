@@ -77,6 +77,39 @@ test.describe("Add More entry", () => {
     await addMoreEntry(page, t, entries[0]);
     await expect(page).toHaveURL(/.*\/create$/);
   });
+
+  test("Should reset the form and allow another entry after Save and add more", async ({
+    page,
+    t,
+  }) => {
+    await page
+      .getByRole("banner")
+      .getByRole("button", { name: t("entryDialog.title.create") })
+      .click();
+
+    await fillEntryForm(page, t, entries[0]);
+    await page.getByRole("button", { name: t("entryDialog.addMore") }).click();
+
+    await expect(page).toHaveURL(/.*\/create$/);
+    await expect(
+      page.getByText(t("notifications.addEntry.success"), { exact: true }),
+    ).toBeVisible();
+
+    await expect(page.getByLabel(t("entryDialog.description"))).toHaveValue("");
+    await expect(page.getByRole("group", { name: t("entryDialog.duration") })).toContainText(
+      "00:00",
+    );
+
+    await fillEntryFormFields(page, t, {
+      ...entries[0],
+      description: "second entry",
+      duration: "2",
+    });
+
+    await page.getByRole("button", { name: t("entryDialog.submit"), exact: true }).click();
+
+    await expect(page).not.toHaveURL(/.*\/create$/);
+  });
 });
 
 test.describe("Edit entry", () => {
@@ -140,12 +173,16 @@ test.describe("Entry defaults", () => {
   });
 });
 
-const fillEntryForm = async (page: Page, t: TFunction, entry: TestEntry) => {
+const fillEntryFormFields = async (page: Page, t: TFunction, entry: TestEntry) => {
   await page.getByLabel(t("entryDialog.product")).click();
   await page.getByRole("option", { name: entry.product }).click();
   await page.getByLabel(t("entryDialog.activity")).fill(entry.activity);
   await page.getByLabel(t("entryDialog.description")).fill(entry.description);
   await page.getByRole("spinbutton", { name: "Hours" }).pressSequentially(entry.duration);
+};
+
+const fillEntryForm = async (page: Page, t: TFunction, entry: TestEntry) => {
+  await fillEntryFormFields(page, t, entry);
   await page.getByRole("button", { name: /.*\d\d.*/ }).click();
   await page
     .getByRole("gridcell", { name: entry.date.split(".")[0] })
