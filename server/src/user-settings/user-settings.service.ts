@@ -1,8 +1,10 @@
+import { randomUUID } from "crypto";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { UpdateSettingsDto } from "./dto/update-settings.dto";
 import { UserSettings } from "./user-settings.model";
+import { EntryTemplateInput } from "./dto/entry-template.dto";
 
 @Injectable()
 export class UserSettingsService {
@@ -28,6 +30,32 @@ export class UserSettingsService {
 
   async update(employeeNumber: number, settingsUpdate: UpdateSettingsDto): Promise<UserSettings> {
     await this.userSettings.update({ employeeNumber }, settingsUpdate);
+
+    return this.findOneByEmployeeNumber(employeeNumber);
+  }
+
+  async addEntryTemplate(employeeNumber: number, entry: EntryTemplateInput): Promise<UserSettings> {
+    const settings = await this.findOneByEmployeeNumber(employeeNumber);
+    const existingTemplates = settings.entryTemplates ?? [];
+
+    await this.userSettings.update(
+      { employeeNumber },
+      {
+        entryTemplates: [...existingTemplates, { key: randomUUID(), ...entry }],
+      },
+    );
+
+    return this.findOneByEmployeeNumber(employeeNumber);
+  }
+
+  async removeEntryTemplate(employeeNumber: number, entryKey: string): Promise<UserSettings> {
+    const settings = await this.findOneByEmployeeNumber(employeeNumber);
+    const existingTemplates = settings.entryTemplates ?? [];
+
+    await this.userSettings.update(
+      { employeeNumber },
+      { entryTemplates: existingTemplates.filter((entry) => entry.key !== entryKey) },
+    );
 
     return this.findOneByEmployeeNumber(employeeNumber);
   }

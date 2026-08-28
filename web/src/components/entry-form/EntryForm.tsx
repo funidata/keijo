@@ -15,9 +15,8 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Dayjs } from "dayjs";
 import { useEffect, useRef } from "react";
-import { Controller, UseFormReturn } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import useDayjs from "../../common/useDayjs";
@@ -29,28 +28,21 @@ import {
 } from "../../graphql/generated/graphql";
 import { useIsJiraAuthenticated } from "../../jira/jira-api";
 import usePreferSetRemainingHours from "../user-preferences/usePreferSetRemainingHours";
-import BigDeleteEntryButton from "./BigDeleteEntryButton";
-import DimensionComboBox from "./DimensionComboBox";
-import DurationSlider from "./DurationSlider";
-import { JiraIntegrationAlert } from "./JiraIntegrationAlert";
-import JiraIssueComboBox from "./JiraIssueComboBox";
-import ResponsiveDatePicker from "./ResponsiveDatePicker";
-import WorkdayHours from "./WorkdayHours";
-import useEntryForm, { EntryFormSchema } from "./useEntryForm";
-import EntryFiltersSection from "./EntryFiltersSection";
-
-export type EntryFormProps = {
-  form: UseFormReturn<EntryFormSchema>;
-  onSubmit: () => void;
-  reset: () => void;
-  editEntry?: Entry;
-  originalDate?: Dayjs;
-  loading?: boolean;
-};
+import BigDeleteEntryButton from "../entry-dialog/BigDeleteEntryButton";
+import DimensionComboBox from "../entry-dialog/DimensionComboBox";
+import DurationSlider from "../entry-dialog/DurationSlider";
+import { JiraIntegrationAlert } from "../entry-dialog/JiraIntegrationAlert";
+import JiraIssueComboBox from "../entry-dialog/JiraIssueComboBox";
+import ResponsiveDatePicker from "../entry-dialog/ResponsiveDatePicker";
+import WorkdayHours from "../entry-dialog/WorkdayHours";
+import useEntryForm from "./useEntryForm";
+import EntryFiltersSection from "../entry-dialog/EntryFiltersSection";
 
 type LocationState = {
   date?: string;
   editEntry?: Entry;
+  template?: Entry;
+  templateEntries?: Entry[];
 };
 
 enum SubmitTypes {
@@ -63,8 +55,13 @@ const EntryForm = () => {
   const { state } = useLocation();
   const dayjs = useDayjs();
   // state is possibly null
-  const { date: originalDate, editEntry }: LocationState = state || {};
-  const { form, onSubmit, loading } = useEntryForm({ editEntry, date: dayjs(originalDate) });
+  const { date: originalDate, editEntry, templateEntries }: LocationState = state || {};
+
+  const { form, onSubmit, loading } = useEntryForm({
+    editEntry,
+    date: dayjs(originalDate),
+    template: templateEntries && templateEntries[0],
+  });
   const navigate = useNavigate();
   const submitter = useRef<SubmitType>(null);
 
@@ -76,15 +73,29 @@ const EntryForm = () => {
 
   useEffect(() => {
     if (isSubmitSuccessful) {
-      reset();
+      const remainingEntries = templateEntries && templateEntries.slice(1);
+      if (remainingEntries && remainingEntries.length > 0) {
+        const nextEntry = remainingEntries[0];
+        reset({
+          date: dayjs(originalDate),
+          duration: nextEntry.duration.toString(),
+          description: nextEntry.description || "",
+          product: nextEntry.product || "",
+          activity: nextEntry.activity || "",
+          issue: nextEntry.issue || null,
+          client: nextEntry.client || "",
+        });
+        navigate(".", { state: { date: originalDate, templateEntries: remainingEntries } });
+      } else {
+        reset();
+        if (submitter.current !== SubmitTypes.addMore) {
+          navigate("..");
+        }
 
-      if (submitter.current !== SubmitTypes.addMore) {
-        navigate("..");
+        submitter.current = null;
       }
-
-      submitter.current = null;
     }
-  }, [isSubmitSuccessful, navigate, reset]);
+  }, [dayjs, isSubmitSuccessful, navigate, originalDate, reset, templateEntries]);
 
   const { t } = useTranslation();
   const theme = useTheme();
@@ -225,7 +236,7 @@ const EntryForm = () => {
                 {t("entryDialog.submit")}
               </Button>
             </Grid>
-            {!editEntry && (
+            {!editEntry && !templateEntries && (
               <Grid size={12}>
                 <Button
                   loading={loading}
@@ -253,7 +264,7 @@ const EntryForm = () => {
               )}
             </Grid>
             <Grid size={12}>
-              {!editEntry && (
+              {!editEntry && !templateEntries && (
                 <FormGroup>
                   <FormControlLabel
                     control={
@@ -273,7 +284,7 @@ const EntryForm = () => {
           <>
             <Grid sx={{ mt: 2 }} size={4}>
               <Box sx={{ display: "flex", justifyContent: "start", gap: 2 }}>
-                {!editEntry && (
+                {!editEntry && !templateEntries && (
                   <FormGroup>
                     <FormControlLabel
                       control={
@@ -294,7 +305,7 @@ const EntryForm = () => {
                 <Button type="reset" variant="text" size="large" onClick={() => reset()}>
                   {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
                 </Button>
-                {!editEntry && (
+                {!editEntry && !templateEntries && (
                   <Button
                     loading={loading}
                     onClick={() => handleAddMore()}
