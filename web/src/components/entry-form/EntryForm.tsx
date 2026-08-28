@@ -237,7 +237,7 @@ const EntryForm = () => {
                 {t("entryDialog.submit")}
               </Button>
             </Grid>
-            {!editEntry && (
+            {!editEntry && !templateEntries && (
               <Grid size={12}>
                 <Button
                   loading={loading}
@@ -306,7 +306,7 @@ const EntryForm = () => {
                 <Button type="reset" variant="text" size="large" onClick={() => reset()}>
                   {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
                 </Button>
-                {!editEntry && (
+                {!editEntry && !templateEntries && (
                   <Button
                     loading={loading}
                     onClick={() => handleAddMore()}
