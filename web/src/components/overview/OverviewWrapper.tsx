@@ -3,7 +3,7 @@ import { Entry, FindWorkdaysDocument, Workday } from "../../graphql/generated/gr
 import { useWorkdayBrowserParams } from "../workday-browser/useWorkdayBrowserParams";
 import LoadingIndicator from "../workday-browser/LoadingIndicator";
 import { compileWorkdayRange } from "../../common/workdayUtils";
-import { Box, Stack, Table, TableBody, TableCell, TableRow } from "@mui/material";
+import { Box, Stack, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
 import { Pie, Bar, Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -139,7 +139,7 @@ function LineChart({ workdays, variant }: ChartProps & LineChartProps) {
     scales: {
       y: {
         min: 0,
-      }
+      },
     },
     ...(variant === "stacked" && {
       scales: {
@@ -247,17 +247,33 @@ export default function OverviewWrapper() {
   const workdays = compileWorkdayRange(data, { from, to });
 
   return (
-    <Stack direction="row">
-      <Box sx={{ width: "30%" }}>
-        <PieChart workdays={workdays} />
-        <BarChart workdays={workdays} />
-        <BarChart workdays={workdays} orientation="horizontal" />
-      </Box>
-      <Box sx={{ width: "50%" }}>
-        <LineChart workdays={workdays} />
-        <LineChart workdays={workdays} variant="stacked" />
-      </Box>
-      {/* <TableView workdays={workdays} /> */}
-    </Stack>
+    <>
+      <Typography>Tuotteittain</Typography>
+      <Stack direction="row">
+        <Box sx={{ width: "30%" }}>
+          <PieChart workdays={workdays} />
+          <BarChart workdays={workdays} />
+          <BarChart workdays={workdays} orientation="horizontal" />
+        </Box>
+        <Box sx={{ width: "50%" }}>
+          <LineChart workdays={workdays} />
+          <LineChart workdays={workdays} variant="stacked" />
+        </Box>
+        <TableView workdays={workdays} />
+      </Stack>
+      <Typography>Toiminnoittain</Typography>
+      <Stack direction="row">
+        <Box sx={{ width: "30%" }}>
+          <PieChart workdays={workdays} />
+          <BarChart workdays={workdays} />
+          <BarChart workdays={workdays} orientation="horizontal" />
+        </Box>
+        <Box sx={{ width: "50%" }}>
+          <LineChart workdays={workdays} />
+          <LineChart workdays={workdays} variant="stacked" />
+        </Box>
+        <TableView workdays={workdays} />
+      </Stack>
+    </>
   );
 }
