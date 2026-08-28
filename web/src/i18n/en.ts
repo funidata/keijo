@@ -57,6 +57,7 @@ const en = {
     duration: "Duration",
     reset: "Reset",
     submit: "Save",
+    addMore: "Save and add more",
     product: "Product",
     activity: "Function",
     issue: "Issue",

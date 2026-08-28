@@ -57,6 +57,7 @@ const fi = {
     duration: "Kesto",
     reset: "Palauta",
     submit: "Tallenna",
+    addMore: "Tallenna ja lisää uusi",
     product: "Tuote",
     activity: "Toiminto",
     issue: "Tiketti",
