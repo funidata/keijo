@@ -16,7 +16,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { Dayjs } from "dayjs";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -36,17 +36,8 @@ import { JiraIntegrationAlert } from "../entry-dialog/JiraIntegrationAlert";
 import JiraIssueComboBox from "../entry-dialog/JiraIssueComboBox";
 import ResponsiveDatePicker from "../entry-dialog/ResponsiveDatePicker";
 import WorkdayHours from "../entry-dialog/WorkdayHours";
-import useEntryForm, { EntryFormSchema } from "./useEntryForm";
+import useEntryForm from "./useEntryForm";
 import EntryFiltersSection from "../entry-dialog/EntryFiltersSection";
-
-export type EntryFormProps = {
-  form: UseFormReturn<EntryFormSchema>;
-  onSubmit: () => void;
-  reset: () => void;
-  editEntry?: Entry;
-  originalDate?: Dayjs;
-  loading?: boolean;
-};
 
 type LocationState = {
   date?: string;
@@ -54,6 +45,12 @@ type LocationState = {
   template?: Entry;
   templateEntries?: Entry[];
 };
+
+enum SubmitTypes {
+  addMore = "addMore",
+  submit = "submit",
+}
+type SubmitType = SubmitTypes | null;
 
 const EntryForm = () => {
   const { state } = useLocation();
@@ -67,6 +64,7 @@ const EntryForm = () => {
     template: templateEntries && templateEntries[0],
   });
   const navigate = useNavigate();
+  const submitter = useRef<SubmitType>(null);
 
   const {
     handleSubmit,
@@ -91,7 +89,11 @@ const EntryForm = () => {
         navigate(".", { state: { date: originalDate, templateEntries: remainingEntries } });
       } else {
         reset();
-        navigate("..");
+        if (submitter.current !== SubmitTypes.addMore) {
+          navigate("..");
+        }
+
+        submitter.current = null;
       }
     }
   }, [dayjs, isSubmitSuccessful, navigate, originalDate, reset, templateEntries]);
@@ -108,6 +110,11 @@ const EntryForm = () => {
   const [updateSettings] = useMutation(UpdateSettingsDocument, {
     refetchQueries: [GetMySettingsDocument],
   });
+
+  const handleAddMore = () => {
+    submitter.current = SubmitTypes.addMore;
+    handleSubmit(onSubmit)();
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -230,14 +237,21 @@ const EntryForm = () => {
                 {t("entryDialog.submit")}
               </Button>
             </Grid>
+            {!editEntry && (
+              <Grid size={12}>
+                <Button
+                  loading={loading}
+                  onClick={() => handleAddMore()}
+                  variant="outlined"
+                  size="large"
+                  fullWidth
+                >
+                  {t("entryDialog.addMore")}
+                </Button>
+              </Grid>
+            )}
             <Grid size={12}>
-              <Button
-                type="reset"
-                variant="outlined"
-                size="large"
-                onClick={() => reset()}
-                fullWidth
-              >
+              <Button type="reset" variant="text" size="large" onClick={() => reset()} fullWidth>
                 {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
               </Button>
             </Grid>
@@ -289,9 +303,19 @@ const EntryForm = () => {
             </Grid>
             <Grid sx={{ mt: 2 }} size={8}>
               <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
-                <Button type="reset" variant="outlined" size="large" onClick={() => reset()}>
+                <Button type="reset" variant="text" size="large" onClick={() => reset()}>
                   {editEntry ? t("entryDialog.reset") : t("entryDialog.clear")}
                 </Button>
+                {!editEntry && (
+                  <Button
+                    loading={loading}
+                    onClick={() => handleAddMore()}
+                    variant="outlined"
+                    size="large"
+                  >
+                    {t("entryDialog.addMore")}
+                  </Button>
+                )}
                 <Button loading={loading} type="submit" variant="contained" size="large">
                   {t("entryDialog.submit")}
                 </Button>
