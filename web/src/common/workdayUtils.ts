@@ -1,6 +1,6 @@
 import { Dayjs } from "dayjs";
 import holidaysRaw from "../assets/holidays.json";
-import { Workday } from "../graphql/generated/graphql";
+import { Workday, FindWorkdaysQuery } from "../graphql/generated/graphql";
 import dayjs from "./dayjs";
 import { EntryType } from "./entryType.enum";
 
@@ -57,3 +57,28 @@ export const isSpecialSingleEntryDay = (workday: Workday): boolean =>
 
 export const hasOnlyFlexLeaveEntry = (workday: Workday): boolean =>
   workday.entries.length === 1 && workday.entries[0].ratioNumber === EntryType.FlexLeave;
+
+interface WorkdayRangeConfig {
+  from: Dayjs;
+  to: Dayjs;
+}
+
+export function compileWorkdayRange(
+  entries: FindWorkdaysQuery,
+  config: WorkdayRangeConfig,
+): Workday[] {
+  const { from, to } = config;
+
+  const start = from.hour(0).minute(0).second(0).millisecond(0);
+  const end = to.hour(0).minute(0).second(0).millisecond(0);
+
+  const workdayCount = end.diff(start, "day") + 1;
+
+  return Array.from({ length: workdayCount }, (_, i) => {
+    const date = from.add(i, "day");
+    return {
+      date: date.format("YYYY-MM-DD"),
+      entries: entries.findWorkdays.find((wd) => date.isSame(dayjs(wd.date), "day"))?.entries || [],
+    };
+  });
+}
