@@ -40,11 +40,26 @@ const workdays: Workday[] = [
   },
 ];
 
+const multiWeekWorkdays: Workday[] = [
+  {
+    date: "2026-08-17",
+    entries: [{ activity: "Toteutus", duration: 2, durationInHours: true, ...defaults }],
+  },
+  {
+    date: "2026-08-21",
+    entries: [{ activity: "Toteutus", duration: 3, durationInHours: true, ...defaults }],
+  },
+  {
+    date: "2026-08-24",
+    entries: [{ activity: "Toteutus", duration: 5, durationInHours: true, ...defaults }],
+  },
+];
+
 describe("chartUtils", () => {
   describe("formatAreaChartData", () => {
     it("formats area chart data correctly for stacked variant", () => {
       const expectation = {
-        labels: ["2026-08-18", "2026-08-19", "2026-08-20", "2026-08-21"],
+        labels: ["2026-08-18", "2026-08-19"],
         datasets: [
           {
             label: "Sisäiset tapahtumat ja palaverit",
@@ -77,7 +92,7 @@ describe("chartUtils", () => {
     });
     it("formats area chart data correctly for unstacked variant", () => {
       const expectations = {
-        labels: ["2026-08-18", "2026-08-19", "2026-08-20", "2026-08-21"],
+        labels: ["2026-08-18", "2026-08-19"],
         datasets: [
           {
             label: "Sisäiset tapahtumat ja palaverit",
@@ -103,6 +118,60 @@ describe("chartUtils", () => {
         ],
       };
       expect(formatAreaChartData(workdays, "activity", "default")).toEqual(expectations);
+    });
+    it("aggregates stacked chart data by week when the range exceeds seven days", () => {
+      expect(formatAreaChartData(multiWeekWorkdays, "activity", "stacked")).toEqual({
+        labels: ["2026-08-17", "2026-08-24"],
+        datasets: [
+          {
+            label: "Toteutus",
+            fill: "stack",
+            data: [
+              { date: "2026-08-24", hours: 5 },
+              { date: "2026-08-17", hours: 5 },
+            ],
+          },
+        ],
+      });
+    });
+    it("aggregates default chart data by week when the range exceeds seven days", () => {
+      expect(formatAreaChartData(multiWeekWorkdays, "activity", "default")).toEqual({
+        labels: ["2026-08-17", "2026-08-24"],
+        datasets: [
+          {
+            label: "Toteutus",
+            data: [
+              { date: "2026-08-24", hours: 5 },
+              { date: "2026-08-17", hours: 5 },
+            ],
+          },
+        ],
+      });
+    });
+    it("keeps daily chart data when the date range is exactly seven days", () => {
+      const oneWeekWorkdays: Workday[] = [
+        {
+          date: "2026-08-17",
+          entries: [{ activity: "Toteutus", duration: 2, durationInHours: true, ...defaults }],
+        },
+        {
+          date: "2026-08-23",
+          entries: [{ activity: "Toteutus", duration: 5, durationInHours: true, ...defaults }],
+        },
+      ];
+
+      expect(formatAreaChartData(oneWeekWorkdays, "activity", "default")).toEqual({
+        labels: ["2026-08-17", "2026-08-23"],
+        datasets: [
+          {
+            label: "Toteutus",
+            data: [
+              { date: "2026-08-23", hours: 5 },
+              { date: "2026-08-17", hours: 2 },
+            ],
+          },
+        ],
+      });
     });
   });
 });
