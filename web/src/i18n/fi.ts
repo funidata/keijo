@@ -151,6 +151,12 @@ const fi = {
       success: "Kirjauspohja poistettu.",
     },
   },
+  overview: {
+    hoursBy: {
+      product: "Tuntijakauma tuotteittain",
+      activity: "Tuntijakauma toiminnoittain",
+    },
+  },
   titles: {
     workdayBrowser: "Työaikakirjaukset",
     templates: "Omat kirjauspohjat",

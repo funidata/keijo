@@ -1,4 +1,5 @@
 import { useQuery } from "@apollo/client/react";
+import { useTranslation } from "react-i18next";
 import { FindWorkdaysDocument } from "../../graphql/generated/graphql";
 import { useWorkdayBrowserParams } from "../workday-browser/useWorkdayBrowserParams";
 import PieChart from "./PieChart";
@@ -44,8 +45,10 @@ ChartJS.register(
 
 export default function OverviewWrapper() {
   // TODO: get data for the given range
+  const { t } = useTranslation();
   const { from, to, formattedFrom, formattedTo } = useWorkdayBrowserParams();
-  const { chartAreaConfig, handleTotalsChartVariantChange, handleTimelineChartVariantChange } = useChartAreaConfig();
+  const { chartAreaConfig, handleTotalsChartVariantChange, handleTimelineChartVariantChange } =
+    useChartAreaConfig();
   const { data } = useQuery(FindWorkdaysDocument, {
     variables: { start: formattedFrom, end: formattedTo },
     // Poll every 5 minutes, mainly to keep IDP session alive.
@@ -59,11 +62,11 @@ export default function OverviewWrapper() {
   const workdays = compileWorkdayRange(data, { from, to });
 
   return (
-    <>
+    <Stack direction="column" spacing={4}>
       {chartAreaConfig.map((section, sectionIndex) => (
-        <div key={sectionIndex}>
-          <Typography variant="h6">{section.title}</Typography>
-          <Stack direction="row">
+        <Box key={sectionIndex}>
+          <Typography variant="h6">{t(`overview.hoursBy.${section.key}`)}</Typography>
+          <Stack direction="row" spacing={4}>
             {section.graphs.map((graph, graphIndex) => {
               switch (graph.type) {
                 case "totals":
@@ -136,8 +139,8 @@ export default function OverviewWrapper() {
               }
             })}
           </Stack>
-        </div>
+        </Box>
       ))}
-    </>
+    </Stack>
   );
 }
