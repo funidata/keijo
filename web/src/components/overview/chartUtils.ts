@@ -51,3 +51,37 @@ export function formatChartDataForPieChart(data: { datasets: Array<{ data: Datas
 
   return { datasets: [{ data: datapoints }], labels };
 }
+
+export function formatAreaChartData(
+  workdays: Workday[],
+  key: keyof Entry,
+  variant: "stacked" | "default",
+) {
+  const datasets = new Map<string, Map<string, number>>();
+
+  workdays.forEach((workday) => {
+    workday.entries.forEach((entry) => {
+      if (entry.duration === 0 || !entry.durationInHours) {
+        return;
+      }
+
+      const label = entry[key] ? String(entry[key]) : "unknown";
+      const dataByDate = datasets.get(label) ?? new Map<string, number>();
+      dataByDate.set(workday.date, (dataByDate.get(workday.date) ?? 0) + entry.duration);
+      datasets.set(label, dataByDate);
+    });
+  });
+
+  const labels = workdays.map((workday) => workday.date);
+
+  return {
+    datasets: Array.from(datasets, ([label, dataByDate]) => ({
+      label,
+      ...(variant === "stacked" && { fill: "stack" }),
+      data: (variant === "stacked" ? Array.from(dataByDate.keys()) : [...labels])
+        .reverse()
+        .map((date) => ({ date, hours: dataByDate.get(date) ?? 0 })),
+    })),
+    labels,
+  };
+}
