@@ -1,10 +1,11 @@
 import { useQuery } from "@apollo/client/react";
-import { Entry, FindWorkdaysDocument, Workday } from "../../graphql/generated/graphql";
+import { FindWorkdaysDocument, Workday } from "../../graphql/generated/graphql";
 import { useWorkdayBrowserParams } from "../workday-browser/useWorkdayBrowserParams";
+import PieChart from "./PieChart";
 import LoadingIndicator from "../workday-browser/LoadingIndicator";
 import { compileWorkdayRange } from "../../common/workdayUtils";
 import { Box, Stack, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
-import { Pie, Bar } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -21,6 +22,7 @@ import {
 } from "chart.js";
 import AreaChart from "./AreaChart";
 import { ChartProps } from "./chartTypes";
+import { formatAccumulatedChartData } from "./chartUtils";
 // import 'chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm';
 
 ChartJS.register(
@@ -36,68 +38,6 @@ ChartJS.register(
   TimeScale,
   Filler,
 );
-
-interface Dataset {
-  label: string;
-  value: number;
-}
-
-function formatAccumulatedChartData(data: Workday[]) {
-  const entries: Array<Entry> = [];
-
-  data.forEach((workday) => {
-    workday.entries.forEach((entry) => {
-      entries.push(entry);
-    });
-  });
-
-  const datasets = entries.reduce<Dataset[]>((accumulator, entry) => {
-    // Skip entries with no worktime to accumulate
-    if (entry.duration === 0) {
-      return accumulator;
-    }
-
-    if (entry.durationInHours) {
-      const label = entry.product ?? "unknown";
-      const existingDatasetIndex = accumulator.findIndex((dataset) => {
-        return dataset.label === label;
-      });
-
-      if (existingDatasetIndex === -1) {
-        accumulator.push({ label, value: entry.duration });
-      } else {
-        accumulator[existingDatasetIndex]["value"] =
-          accumulator[existingDatasetIndex]["value"] + entry.duration;
-      }
-    } else {
-      console.error("Duration not in hours, cannot be added to workhours summary.", entry);
-    }
-    return accumulator;
-  }, []);
-
-  console.log(datasets);
-
-  return { datasets: [{ data: datasets }], labels: [] };
-}
-
-function formatChartDataForPieChart(data: { datasets: Array<{ data: Dataset[] }> }) {
-  const labels: string[] = [];
-  const datapoints: number[] = [];
-  data.datasets[0].data.forEach((dataset) => {
-    labels.push(dataset.label);
-    datapoints.push(dataset.value);
-  });
-
-  return { datasets: [{ data: datapoints }], labels };
-}
-
-
-function PieChart({ workdays }: ChartProps) {
-  const chartData = formatAccumulatedChartData(workdays);
-  const data = formatChartDataForPieChart(chartData);
-
-  return <Pie data={data} />;
-}
 
 interface BarChartProps {
   orientation?: "vertical" | "horizontal";
@@ -186,7 +126,7 @@ export default function OverviewWrapper() {
           <AreaChart workdays={workdays} />
           <AreaChart workdays={workdays} variant="stacked" />
         </Box>
-        {/* <TableView workdays={workdays} /> */}
+        <TableView workdays={workdays} />
       </Stack>
       <Typography>Toiminnoittain</Typography>
       <Stack direction="row">
@@ -199,7 +139,7 @@ export default function OverviewWrapper() {
           <AreaChart workdays={workdays} />
           <AreaChart workdays={workdays} variant="stacked" />
         </Box>
-        {/* <TableView workdays={workdays} /> */}
+        <TableView workdays={workdays} />
       </Stack>
     </>
   );
