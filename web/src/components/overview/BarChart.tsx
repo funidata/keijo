@@ -9,8 +9,10 @@ interface BarChartProps {
 export default function BarChart({
   workdays,
   orientation = "vertical",
+  chartKey,
 }: ChartProps & BarChartProps) {
-  const chartData = formatAccumulatedChartData(workdays);
+  const chartData = formatAccumulatedChartData(workdays, chartKey);
+  console.log(chartData);
   const options = {
     plugins: {
       legend: {

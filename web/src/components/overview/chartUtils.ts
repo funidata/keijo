@@ -5,25 +5,25 @@ interface Dataset {
   value: number;
 }
 
-export function formatAccumulatedChartData(data: Workday[]) {
+export function formatAccumulatedChartData(workdays: Workday[], key: keyof Entry) {
   const entries: Array<Entry> = [];
 
-  data.forEach((workday) => {
+  workdays.forEach((workday) => {
     workday.entries.forEach((entry) => {
       entries.push(entry);
     });
   });
 
-  const datasets = entries.reduce<Dataset[]>((accumulator, entry) => {
+  const data = entries.reduce<Dataset[]>((accumulator, entry) => {
     // Skip entries with no worktime to accumulate
     if (entry.duration === 0) {
       return accumulator;
     }
 
     if (entry.durationInHours) {
-      const label = entry.product ?? "unknown";
-      const existingDatasetIndex = accumulator.findIndex((dataset) => {
-        return dataset.label === label;
+      const label = entry[key] ? String(entry[key]) : "unknown";
+      const existingDatasetIndex = accumulator.findIndex((data) => {
+        return data.label === label;
       });
 
       if (existingDatasetIndex === -1) {
@@ -38,9 +38,7 @@ export function formatAccumulatedChartData(data: Workday[]) {
     return accumulator;
   }, []);
 
-  console.log(datasets);
-
-  return { datasets: [{ data: datasets }], labels: [] };
+  return { datasets: [{ data }], labels: [] };
 }
 
 export function formatChartDataForPieChart(data: { datasets: Array<{ data: Dataset[] }> }) {

@@ -92,6 +92,7 @@ export default function OverviewWrapper() {
                       {graph.variant === "bar-horizontal" && (
                         <BarChart
                           key={`${sectionIndex}-${graphIndex}`}
+                          chartKey={section.key}
                           workdays={workdays}
                           orientation="horizontal"
                         />
@@ -99,12 +100,17 @@ export default function OverviewWrapper() {
                       {graph.variant === "bar-vertical" && (
                         <BarChart
                           key={`${sectionIndex}-${graphIndex}`}
+                          chartKey={section.key}
                           workdays={workdays}
                           orientation="vertical"
                         />
                       )}
                       {graph.variant === "pie" && (
-                        <PieChart key={`${sectionIndex}-${graphIndex}`} workdays={workdays} />
+                        <PieChart
+                          key={`${sectionIndex}-${graphIndex}`}
+                          chartKey={section.key}
+                          workdays={workdays}
+                        />
                       )}
                     </Box>
                   );
@@ -129,6 +135,7 @@ export default function OverviewWrapper() {
                       </Select>
                       <AreaChart
                         key={`${sectionIndex}-${graphIndex}`}
+                        chartKey={section.key}
                         workdays={workdays}
                         variant={graph.variant}
                       />

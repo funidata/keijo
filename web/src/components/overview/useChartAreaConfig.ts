@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { Entry } from "../../graphql/generated/graphql";
 
 type GraphConfig = TimelineChartConfig | TotalsChartConfig;
 type TimelineChartVariant = "stacked" | "default";
@@ -12,7 +13,7 @@ type TotalsChartConfig = {
   variant: TotalsChartVariant;
 };
 interface GraphAreaConfig {
-  key: string;
+  key: keyof Entry;
   graphs: GraphConfig[];
 }
 
