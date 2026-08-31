@@ -2,10 +2,10 @@ import { useQuery } from "@apollo/client/react";
 import { FindWorkdaysDocument, Workday } from "../../graphql/generated/graphql";
 import { useWorkdayBrowserParams } from "../workday-browser/useWorkdayBrowserParams";
 import PieChart from "./PieChart";
+import BarChart from "./BarChart";
 import LoadingIndicator from "../workday-browser/LoadingIndicator";
 import { compileWorkdayRange } from "../../common/workdayUtils";
 import { Box, Stack, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
-import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -21,8 +21,6 @@ import {
   Filler,
 } from "chart.js";
 import AreaChart from "./AreaChart";
-import { ChartProps } from "./chartTypes";
-import { formatAccumulatedChartData } from "./chartUtils";
 // import 'chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm';
 
 ChartJS.register(
@@ -38,34 +36,6 @@ ChartJS.register(
   TimeScale,
   Filler,
 );
-
-interface BarChartProps {
-  orientation?: "vertical" | "horizontal";
-}
-
-function BarChart({ workdays, orientation = "vertical" }: ChartProps & BarChartProps) {
-  const chartData = formatAccumulatedChartData(workdays);
-  const options = {
-    plugins: {
-      legend: {
-        display: false,
-      },
-    },
-    ...(orientation === "horizontal" && { indexAxis: "y" as const }),
-    parsing:
-      orientation === "horizontal"
-        ? {
-            yAxisKey: "label",
-            xAxisKey: "value",
-          }
-        : {
-            yAxisKey: "value",
-            xAxisKey: "label",
-          },
-  };
-
-  return <Bar data={chartData} options={options} />;
-}
 
 interface TableViewProps {
   workdays: Workday[];
