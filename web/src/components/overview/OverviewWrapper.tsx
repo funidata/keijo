@@ -1,11 +1,11 @@
 import { useQuery } from "@apollo/client/react";
-import { FindWorkdaysDocument, Workday } from "../../graphql/generated/graphql";
+import { FindWorkdaysDocument } from "../../graphql/generated/graphql";
 import { useWorkdayBrowserParams } from "../workday-browser/useWorkdayBrowserParams";
 import PieChart from "./PieChart";
 import BarChart from "./BarChart";
 import LoadingIndicator from "../workday-browser/LoadingIndicator";
 import { compileWorkdayRange } from "../../common/workdayUtils";
-import { Box, Stack, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -37,37 +37,6 @@ ChartJS.register(
   Filler,
 );
 
-interface TableViewProps {
-  workdays: Workday[];
-}
-
-function TableView({ workdays }: TableViewProps) {
-  return (
-    <Table>
-      <TableBody>
-        {workdays.map((workday) => {
-          return (
-            <>
-              {workday.entries.map((entry, i) => {
-                return (
-                  <TableRow>
-                    {i === 0 && (
-                      <TableCell rowSpan={workday.entries.length}>{workday.date}</TableCell>
-                    )}
-                    <TableCell>
-                      <code>{JSON.stringify(entry)}</code>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </>
-          );
-        })}
-      </TableBody>
-    </Table>
-  );
-}
-
 export default function OverviewWrapper() {
   // TODO: get data for the given range
   const { from, to, formattedFrom, formattedTo } = useWorkdayBrowserParams();
@@ -96,7 +65,6 @@ export default function OverviewWrapper() {
           <AreaChart workdays={workdays} />
           <AreaChart workdays={workdays} variant="stacked" />
         </Box>
-        <TableView workdays={workdays} />
       </Stack>
       <Typography>Toiminnoittain</Typography>
       <Stack direction="row">
@@ -109,7 +77,6 @@ export default function OverviewWrapper() {
           <AreaChart workdays={workdays} />
           <AreaChart workdays={workdays} variant="stacked" />
         </Box>
-        <TableView workdays={workdays} />
       </Stack>
     </>
   );
