@@ -1,4 +1,5 @@
 import { Entry, Workday } from "../../graphql/generated/schema-types";
+import dayjs from "../../common/dayjs";
 
 interface Dataset {
   label: string;
@@ -58,6 +59,13 @@ export function formatAreaChartData(
   variant: "stacked" | "default",
 ) {
   const datasets = new Map<string, Map<string, number>>();
+  const dates = workdays.map((workday) => workday.date);
+  const sortedDates = [...dates].sort();
+  const spansMoreThanSevenDays =
+    sortedDates.length > 0 && dayjs(sortedDates.at(-1)).diff(dayjs(sortedDates[0]), "day") + 1 > 7;
+  const labels = spansMoreThanSevenDays
+    ? Array.from(new Set(dates.map((date) => dayjs(date).startOf("week").format("YYYY-MM-DD"))))
+    : dates;
 
   workdays.forEach((workday) => {
     workday.entries.forEach((entry) => {
@@ -67,12 +75,13 @@ export function formatAreaChartData(
 
       const label = entry[key] ? String(entry[key]) : "unknown";
       const dataByDate = datasets.get(label) ?? new Map<string, number>();
-      dataByDate.set(workday.date, (dataByDate.get(workday.date) ?? 0) + entry.duration);
+      const date = spansMoreThanSevenDays
+        ? dayjs(workday.date).startOf("week").format("YYYY-MM-DD")
+        : workday.date;
+      dataByDate.set(date, (dataByDate.get(date) ?? 0) + entry.duration);
       datasets.set(label, dataByDate);
     });
   });
-
-  const labels = workdays.map((workday) => workday.date);
 
   return {
     datasets: Array.from(datasets, ([label, dataByDate]) => ({
