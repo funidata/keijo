@@ -2,13 +2,14 @@ import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Box, Tab } from "@mui/material";
 import { SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
+import OverviewWrapper from "../overview/OverviewWrapper";
 import DateControl from "./DateControl";
 import WeekControl from "./WeekControl";
 import { BrowsingMode, useWorkdayBrowserParams } from "./useWorkdayBrowserParams";
 
 const ListControls = () => {
   const { t } = useTranslation();
-  const { browsingMode, from, to, goToWeek, goToRange } = useWorkdayBrowserParams();
+  const { browsingMode, from, to, goToWeek, goToRange, goToOverview } = useWorkdayBrowserParams();
 
   const handleChange = (_: SyntheticEvent, newValue: BrowsingMode) => {
     if (newValue === "range") {
@@ -17,6 +18,10 @@ const ListControls = () => {
 
     if (newValue === "week") {
       goToWeek(from);
+    }
+
+    if (newValue === "overview") {
+      goToOverview(from, to);
     }
   };
 
@@ -27,6 +32,7 @@ const ListControls = () => {
           <TabList onChange={handleChange} aria-label={t("entryTable.tabs.aria")}>
             <Tab label={t("entryTable.tabs.browseByWeek")} value="week" />
             <Tab label={t("entryTable.tabs.browseByDates")} value="range" />
+            <Tab label={t("entryTable.tabs.overview")} value="overview" />
           </TabList>
         </Box>
         <TabPanel value="week">
@@ -34,6 +40,10 @@ const ListControls = () => {
         </TabPanel>
         <TabPanel value="range">
           <DateControl />
+        </TabPanel>
+        <TabPanel value="overview">
+          <DateControl />
+          <OverviewWrapper />
         </TabPanel>
       </TabContext>
     </Box>
