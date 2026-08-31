@@ -5,7 +5,11 @@ import PieChart from "./PieChart";
 import BarChart from "./BarChart";
 import LoadingIndicator from "../workday-browser/LoadingIndicator";
 import { compileWorkdayRange } from "../../common/workdayUtils";
-import { Box, Stack, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -21,6 +25,7 @@ import {
   Filler,
 } from "chart.js";
 import AreaChart from "./AreaChart";
+import useChartAreaConfig from "./useChartAreaConfig";
 // import 'chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm';
 
 ChartJS.register(
@@ -37,26 +42,10 @@ ChartJS.register(
   Filler,
 );
 
-type GraphConfig = TimelineChartConfig | TotalsChartConfig;
-
-type TimelineChartConfig = {
-  variant: "stacked" | "default";
-  type: "timeline";
-}
-
-type TotalsChartConfig = {
-  type: "totals";
-  variant: "bar" | "pie";
-};
-
-interface GraphAreaConfig {
-  title: string;
-  graphs: GraphConfig[];
-}
-
 export default function OverviewWrapper() {
   // TODO: get data for the given range
   const { from, to, formattedFrom, formattedTo } = useWorkdayBrowserParams();
+  const { chartAreaConfig, handleTotalsChartVariantChange, handleTimelineChartVariantChange } = useChartAreaConfig();
   const { data } = useQuery(FindWorkdaysDocument, {
     variables: { start: formattedFrom, end: formattedTo },
     // Poll every 5 minutes, mainly to keep IDP session alive.
@@ -69,39 +58,10 @@ export default function OverviewWrapper() {
 
   const workdays = compileWorkdayRange(data, { from, to });
 
-  const config: GraphAreaConfig[] = [
-    {
-      title: "Tuotteittain",
-      graphs: [
-        {
-          type: "totals",
-          variant: "bar",
-        },
-        {
-          type: "timeline",
-          variant: "stacked",
-        },
-      ],
-    },
-    {
-      title: "Toiminnoittain",
-      graphs: [
-        {
-          type: "totals",
-          variant: "pie",
-        },
-        {
-          type: "timeline",
-          variant: "default" as const
-        },
-      ],
-    },
-  ];
-
   return (
     <>
-      {config.map((section, index) => (
-        <div key={index}>
+      {chartAreaConfig.map((section, sectionIndex) => (
+        <div key={sectionIndex}>
           <Typography variant="h6">{section.title}</Typography>
           <Stack direction="row">
             {section.graphs.map((graph, graphIndex) => {
@@ -109,18 +69,66 @@ export default function OverviewWrapper() {
                 case "totals":
                   return (
                     <Box sx={{ width: "50%" }}>
-                      {graph.variant === "bar" && (
-                        <BarChart key={graphIndex} workdays={workdays} />
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={graph.variant}
+                        label="Variant"
+                        onChange={(event) =>
+                          handleTotalsChartVariantChange(
+                            event.target.value,
+                            graphIndex,
+                            sectionIndex,
+                          )
+                        }
+                      >
+                        <MenuItem value="bar-horizontal">Bar Horizontal</MenuItem>
+                        <MenuItem value="bar-vertical">Bar Vertical</MenuItem>
+                        <MenuItem value="pie">Pie</MenuItem>
+                      </Select>
+                      {graph.variant === "bar-horizontal" && (
+                        <BarChart
+                          key={`${sectionIndex}-${graphIndex}`}
+                          workdays={workdays}
+                          orientation="horizontal"
+                        />
+                      )}
+                      {graph.variant === "bar-vertical" && (
+                        <BarChart
+                          key={`${sectionIndex}-${graphIndex}`}
+                          workdays={workdays}
+                          orientation="vertical"
+                        />
                       )}
                       {graph.variant === "pie" && (
-                        <PieChart key={graphIndex} workdays={workdays} />
+                        <PieChart key={`${sectionIndex}-${graphIndex}`} workdays={workdays} />
                       )}
                     </Box>
                   );
                 case "timeline":
                   return (
                     <Box sx={{ width: "50%" }}>
-                      <AreaChart key={graphIndex} workdays={workdays} variant={graph.variant} />
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={graph.variant}
+                        label="Variant"
+                        onChange={(event) =>
+                          handleTimelineChartVariantChange(
+                            event.target.value,
+                            graphIndex,
+                            sectionIndex,
+                          )
+                        }
+                      >
+                        <MenuItem value="default">Unstacked</MenuItem>
+                        <MenuItem value="stacked">Stacked</MenuItem>
+                      </Select>
+                      <AreaChart
+                        key={`${sectionIndex}-${graphIndex}`}
+                        workdays={workdays}
+                        variant={graph.variant}
+                      />
                     </Box>
                   );
                 default:
