@@ -37,6 +37,23 @@ ChartJS.register(
   Filler,
 );
 
+type GraphConfig = TimelineChartConfig | TotalsChartConfig;
+
+type TimelineChartConfig = {
+  variant: "stacked" | "default";
+  type: "timeline";
+}
+
+type TotalsChartConfig = {
+  type: "totals";
+  variant: "bar" | "pie";
+};
+
+interface GraphAreaConfig {
+  title: string;
+  graphs: GraphConfig[];
+}
+
 export default function OverviewWrapper() {
   // TODO: get data for the given range
   const { from, to, formattedFrom, formattedTo } = useWorkdayBrowserParams();
@@ -52,32 +69,67 @@ export default function OverviewWrapper() {
 
   const workdays = compileWorkdayRange(data, { from, to });
 
+  const config: GraphAreaConfig[] = [
+    {
+      title: "Tuotteittain",
+      graphs: [
+        {
+          type: "totals",
+          variant: "bar",
+        },
+        {
+          type: "timeline",
+          variant: "stacked",
+        },
+      ],
+    },
+    {
+      title: "Toiminnoittain",
+      graphs: [
+        {
+          type: "totals",
+          variant: "pie",
+        },
+        {
+          type: "timeline",
+          variant: "default" as const
+        },
+      ],
+    },
+  ];
+
   return (
     <>
-      <Typography>Tuotteittain</Typography>
-      <Stack direction="row">
-        <Box sx={{ width: "30%" }}>
-          <PieChart workdays={workdays} />
-          <BarChart workdays={workdays} />
-          <BarChart workdays={workdays} orientation="horizontal" />
-        </Box>
-        <Box sx={{ width: "50%" }}>
-          <AreaChart workdays={workdays} />
-          <AreaChart workdays={workdays} variant="stacked" />
-        </Box>
-      </Stack>
-      <Typography>Toiminnoittain</Typography>
-      <Stack direction="row">
-        <Box sx={{ width: "30%" }}>
-          <PieChart workdays={workdays} />
-          <BarChart workdays={workdays} />
-          <BarChart workdays={workdays} orientation="horizontal" />
-        </Box>
-        <Box sx={{ width: "50%" }}>
-          <AreaChart workdays={workdays} />
-          <AreaChart workdays={workdays} variant="stacked" />
-        </Box>
-      </Stack>
+      {config.map((section, index) => (
+        <div key={index}>
+          <Typography variant="h6">{section.title}</Typography>
+          <Stack direction="row">
+            {section.graphs.map((graph, graphIndex) => {
+              switch (graph.type) {
+                case "totals":
+                  return (
+                    <Box sx={{ width: "50%" }}>
+                      {graph.variant === "bar" && (
+                        <BarChart key={graphIndex} workdays={workdays} />
+                      )}
+                      {graph.variant === "pie" && (
+                        <PieChart key={graphIndex} workdays={workdays} />
+                      )}
+                    </Box>
+                  );
+                case "timeline":
+                  return (
+                    <Box sx={{ width: "50%" }}>
+                      <AreaChart key={graphIndex} workdays={workdays} variant={graph.variant} />
+                    </Box>
+                  );
+                default:
+                  return null;
+              }
+            })}
+          </Stack>
+        </div>
+      ))}
     </>
   );
 }
