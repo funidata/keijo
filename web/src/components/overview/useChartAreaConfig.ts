@@ -12,14 +12,14 @@ type TotalsChartConfig = {
   variant: TotalsChartVariant;
 };
 interface GraphAreaConfig {
-  title: string;
+  key: string;
   graphs: GraphConfig[];
 }
 
 export default function useChartAreaConfig() {
   const [chartAreaConfig, setChartAreaConfig] = useState<GraphAreaConfig[]>([
     {
-      title: "Tuotteittain",
+      key: "product",
       graphs: [
         {
           type: "totals",
@@ -32,7 +32,7 @@ export default function useChartAreaConfig() {
       ],
     },
     {
-      title: "Toiminnoittain",
+      key: "activity",
       graphs: [
         {
           type: "totals",

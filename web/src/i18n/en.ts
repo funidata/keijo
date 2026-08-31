@@ -151,6 +151,12 @@ const en = {
       success: "Workday entry template deleted.",
     },
   },
+  overview: {
+    hoursBy: {
+      product: "Hours by product",
+      activity: "Hours by activity",
+    },
+  },
   titles: {
     workdayBrowser: "Entries",
     templates: "My Entry Templates",
