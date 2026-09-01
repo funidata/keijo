@@ -24,10 +24,24 @@ import {
   LineElement,
   TimeScale,
   Filler,
+  type Plugin,
 } from "chart.js";
 import AreaChart from "./AreaChart";
 import useChartAreaConfig from "./useChartAreaConfig";
 import FormControl from "@mui/material/FormControl";
+
+const opaqueBarBackgrounds: Plugin = {
+  id: "opaqueBarBackgrounds",
+  afterLayout(chart) {
+    if (!("type" in chart.config) || chart.config.type !== "bar") {
+      return;
+    }
+
+    for (const dataset of chart.data.datasets) {
+      dataset.backgroundColor = dataset.borderColor;
+    }
+  },
+};
 
 ChartJS.register(
   ArcElement,
@@ -41,6 +55,7 @@ ChartJS.register(
   LineElement,
   TimeScale,
   Filler,
+  opaqueBarBackgrounds,
 );
 
 export default function OverviewWrapper() {

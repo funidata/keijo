@@ -6,10 +6,19 @@ interface BarChartProps {
   orientation?: "vertical" | "horizontal";
 }
 
+const hoursScale = { ticks: { stepSize: 1 } };
+const labelScale = { ticks: { display: false } };
+
 const getBarChartOptions = (orientation: "vertical" | "horizontal") => {
   return {
-    scales: { y: { ticks: { stepSize: 1 } } },
-    ...(orientation === "horizontal" && { indexAxis: "y" as const }),
+    scales: { y: hoursScale, x: labelScale },
+    ...(orientation === "horizontal" && {
+      scales: {
+        x: hoursScale,
+        y: labelScale,
+      },
+      indexAxis: "y" as const,
+    }),
     parsing:
       orientation === "horizontal"
         ? {
