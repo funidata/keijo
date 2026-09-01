@@ -6,8 +6,8 @@ interface LineChartProps {
   variant?: "default" | "stacked";
 }
 
-export default function AreaChart({ workdays, variant }: ChartProps & LineChartProps) {
-  const chartData = formatAreaChartData(workdays, "activity", variant ?? "default");
+export default function AreaChart({ workdays, chartKey, variant }: ChartProps & LineChartProps) {
+  const chartData = formatAreaChartData(workdays, chartKey, variant ?? "default");
   const options = {
     parsing: { xAxisKey: "date", yAxisKey: "hours" },
     scales: {

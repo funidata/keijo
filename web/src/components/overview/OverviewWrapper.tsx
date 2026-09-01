@@ -73,8 +73,7 @@ export default function OverviewWrapper() {
                   return (
                     <Box sx={{ width: "50%" }}>
                       <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                        id={`totals-${sectionIndex}-${graphIndex}`}
                         value={graph.variant}
                         label="Variant"
                         onChange={(event) =>
@@ -118,8 +117,7 @@ export default function OverviewWrapper() {
                   return (
                     <Box sx={{ width: "50%" }}>
                       <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                        id={`timeline-${sectionIndex}-${graphIndex}`}
                         value={graph.variant}
                         label="Variant"
                         onChange={(event) =>
