@@ -32,7 +32,7 @@ const ListControls = () => {
           <TabList onChange={handleChange} aria-label={t("entryTable.tabs.aria")}>
             <Tab label={t("entryTable.tabs.browseByWeek")} value="week" />
             <Tab label={t("entryTable.tabs.browseByDates")} value="range" />
-            <Tab label={t("entryTable.tabs.overview")} value="overview" />
+            <Tab label={t("overview.title")} value="overview" />
           </TabList>
         </Box>
         <TabPanel value="week">

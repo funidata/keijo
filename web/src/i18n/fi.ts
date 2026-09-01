@@ -152,9 +152,21 @@ const fi = {
     },
   },
   overview: {
+    title: "Yhteenveto",
     hoursBy: {
       product: "Tuntijakauma tuotteittain",
       activity: "Tuntijakauma toiminnoittain",
+    },
+    totalsVariant: {
+      label: "Tyyppi",
+      barHorizontal: "Palkit, vaaka",
+      barVertical: "Palkit, pysty",
+      pie: "Ympyrä",
+    },
+    timelineVariant: {
+      label: "Tyyppi",
+      unstacked: "Pinottamaton",
+      stacked: "Pinottu",
     },
   },
   titles: {
