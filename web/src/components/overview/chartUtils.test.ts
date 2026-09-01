@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { formatAreaChartData } from "./chartUtils";
+import { formatAccumulatedChartData, formatAreaChartData } from "./chartUtils";
 import { AcceptanceStatus, Workday } from "../../graphql/generated/graphql";
 
 const defaults = {
@@ -7,7 +7,7 @@ const defaults = {
   description: "",
   key: "",
   typeName: "",
-  product: "Sisu"
+  product: "Sisu",
 };
 
 const workdays: Workday[] = [
@@ -206,6 +206,29 @@ describe("chartUtils", () => {
           },
         ],
       });
+    });
+  });
+
+  describe("formatChartData", () => {
+    it("formats chart data correctly", () => {
+      const expected = {
+        labels: ["2026-08-18"],
+        datasets: [
+          {
+            label: "Sisäiset tapahtumat ja palaverit",
+            data: [9],
+          },
+          {
+            label: "Toteutus",
+            data: [5],
+          },
+          {
+            label: "Tuotekehityksen palaverit",
+            data: [2],
+          },
+        ],
+      };
+      expect(formatAccumulatedChartData(workdays, "activity")).toEqual(expected);
     });
   });
 });
