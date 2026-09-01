@@ -42,7 +42,7 @@ const ListControls = () => {
           <DateControl />
         </TabPanel>
         <TabPanel value="overview">
-          <DateControl />
+          <DateControl target="overview" />
           <OverviewWrapper />
         </TabPanel>
       </TabContext>
