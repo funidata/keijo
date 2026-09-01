@@ -9,13 +9,13 @@ services:
     volumes:
       - ./db/init:/docker-entrypoint-initdb.d
     ports:
-      - 5432:5432
+      - 127.0.0.1:5432:5432
 
   nv-mock:
     image: mockoon/cli
     container_name: nv-mock
     ports:
-      - 4002:4002
+      - 127.0.0.1:4002:4002
     volumes:
       - ./nv-mock:/data
     command: "--port 4002 --data /data/nv-mock.json"
