@@ -1,5 +1,7 @@
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Box, Tab } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
 import { SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import OverviewWrapper from "../overview/OverviewWrapper";
@@ -39,11 +41,17 @@ const ListControls = () => {
           <WeekControl />
         </TabPanel>
         <TabPanel value="range">
-          <DateControl />
+          <Stack direction="row" sx={{ justifyContent: "center", width: "100%" }}>
+            <DateControl />
+          </Stack>
         </TabPanel>
         <TabPanel value="overview">
-          <DateControl target="overview" />
-          <OverviewWrapper />
+          <Stack direction="row" sx={{ justifyContent: "center", width: "100%" }}>
+            <DateControl target="overview" />
+          </Stack>
+          <Box sx={{ marginTop: 4 }}>
+            <OverviewWrapper />
+          </Box>
         </TabPanel>
       </TabContext>
     </Box>
