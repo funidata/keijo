@@ -8,11 +8,6 @@ interface BarChartProps {
 
 const getBarChartOptions = (orientation: "vertical" | "horizontal") => {
   return {
-    plugins: {
-      legend: {
-        display: false,
-      },
-    },
     scales: { y: { ticks: { stepSize: 1 } } },
     ...(orientation === "horizontal" && { indexAxis: "y" as const }),
     parsing:
