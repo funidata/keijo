@@ -27,7 +27,7 @@ import {
 } from "chart.js";
 import AreaChart from "./AreaChart";
 import useChartAreaConfig from "./useChartAreaConfig";
-// import 'chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm';
+import FormControl from "@mui/material/FormControl";
 
 ChartJS.register(
   ArcElement,
@@ -72,22 +72,30 @@ export default function OverviewWrapper() {
                 case "totals":
                   return (
                     <Box sx={{ width: "50%" }}>
-                      <Select
-                        id={`totals-${sectionIndex}-${graphIndex}`}
-                        value={graph.variant}
-                        label={t(`overview.totalsVariant.label`)}
-                        onChange={(event) =>
-                          handleTotalsChartVariantChange(
-                            event.target.value,
-                            graphIndex,
-                            sectionIndex,
-                          )
-                        }
-                      >
-                        <MenuItem value="bar-horizontal">{t(`overview.totalsVariant.barHorizontal`)}</MenuItem>
-                        <MenuItem value="bar-vertical">{t(`overview.totalsVariant.barVertical`)}</MenuItem>
-                        <MenuItem value="pie">{t(`overview.totalsVariant.pie`)}</MenuItem>
-                      </Select>
+                      <Stack direction="row" sx={{ justifyContent: "end", width: "100%" }}>
+                        <FormControl size="small" variant="standard">
+                          <Select
+                            id={`totals-${sectionIndex}-${graphIndex}`}
+                            value={graph.variant}
+                            label={t(`overview.totalsVariant.label`)}
+                            onChange={(event) =>
+                              handleTotalsChartVariantChange(
+                                event.target.value,
+                                graphIndex,
+                                sectionIndex,
+                              )
+                            }
+                          >
+                            <MenuItem value="bar-horizontal">
+                              {t(`overview.totalsVariant.barHorizontal`)}
+                            </MenuItem>
+                            <MenuItem value="bar-vertical">
+                              {t(`overview.totalsVariant.barVertical`)}
+                            </MenuItem>
+                            <MenuItem value="pie">{t(`overview.totalsVariant.pie`)}</MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Stack>
                       {graph.variant === "bar-horizontal" && (
                         <BarChart
                           key={`${sectionIndex}-${graphIndex}`}
@@ -116,21 +124,29 @@ export default function OverviewWrapper() {
                 case "timeline":
                   return (
                     <Box sx={{ width: "50%" }}>
-                      <Select
-                        id={`timeline-${sectionIndex}-${graphIndex}`}
-                        value={graph.variant}
-                        label={t(`overview.timelineVariant.label`)}
-                        onChange={(event) =>
-                          handleTimelineChartVariantChange(
-                            event.target.value,
-                            graphIndex,
-                            sectionIndex,
-                          )
-                        }
-                      >
-                        <MenuItem value="default">{t(`overview.timelineVariant.unstacked`)}</MenuItem>
-                        <MenuItem value="stacked">{t(`overview.timelineVariant.stacked`)}</MenuItem>
-                      </Select>
+                      <Stack direction="row" sx={{ justifyContent: "end", width: "100%" }}>
+                        <FormControl size="small" variant="standard">
+                          <Select
+                            id={`timeline-${sectionIndex}-${graphIndex}`}
+                            value={graph.variant}
+                            label={t(`overview.timelineVariant.label`)}
+                            onChange={(event) =>
+                              handleTimelineChartVariantChange(
+                                event.target.value,
+                                graphIndex,
+                                sectionIndex,
+                              )
+                            }
+                          >
+                            <MenuItem value="default">
+                              {t(`overview.timelineVariant.unstacked`)}
+                            </MenuItem>
+                            <MenuItem value="stacked">
+                              {t(`overview.timelineVariant.stacked`)}
+                            </MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Stack>
                       <AreaChart
                         key={`${sectionIndex}-${graphIndex}`}
                         chartKey={section.key}
