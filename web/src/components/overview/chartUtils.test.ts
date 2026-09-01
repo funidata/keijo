@@ -119,6 +119,40 @@ describe("chartUtils", () => {
       };
       expect(formatAreaChartData(workdays, "activity", "default")).toEqual(expectations);
     });
+    it("zero-fills dates without hours in stacked datasets", () => {
+      const sparseWorkdays: Workday[] = [
+        {
+          date: "2026-08-18",
+          entries: [{ activity: "Toteutus", duration: 2, durationInHours: true, ...defaults }],
+        },
+        {
+          date: "2026-08-19",
+          entries: [{ activity: "Palaveri", duration: 1, durationInHours: true, ...defaults }],
+        },
+      ];
+
+      expect(formatAreaChartData(sparseWorkdays, "activity", "stacked")).toEqual({
+        labels: ["2026-08-18", "2026-08-19"],
+        datasets: [
+          {
+            label: "Toteutus",
+            fill: "stack",
+            data: [
+              { date: "2026-08-19", hours: 0 },
+              { date: "2026-08-18", hours: 2 },
+            ],
+          },
+          {
+            label: "Palaveri",
+            fill: "stack",
+            data: [
+              { date: "2026-08-19", hours: 1 },
+              { date: "2026-08-18", hours: 0 },
+            ],
+          },
+        ],
+      });
+    });
     it("aggregates stacked chart data by week when the range exceeds seven days", () => {
       expect(formatAreaChartData(multiWeekWorkdays, "activity", "stacked")).toEqual({
         labels: ["2026-08-17", "2026-08-24"],
