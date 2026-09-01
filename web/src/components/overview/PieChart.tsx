@@ -6,5 +6,7 @@ export default function PieChart({ workdays, chartKey }: ChartProps) {
   const chartData = formatAccumulatedChartData(workdays, chartKey);
   const data = formatChartDataForPieChart(chartData);
 
-  return <Pie data={data} />;
+  const options = { animation: false };
+
+  return <Pie data={data} options={options} />;
 }
