@@ -75,7 +75,7 @@ export default function OverviewWrapper() {
                       <Select
                         id={`totals-${sectionIndex}-${graphIndex}`}
                         value={graph.variant}
-                        label="Variant"
+                        label={t(`overview.totalsVariant.label`)}
                         onChange={(event) =>
                           handleTotalsChartVariantChange(
                             event.target.value,
@@ -84,9 +84,9 @@ export default function OverviewWrapper() {
                           )
                         }
                       >
-                        <MenuItem value="bar-horizontal">Bar Horizontal</MenuItem>
-                        <MenuItem value="bar-vertical">Bar Vertical</MenuItem>
-                        <MenuItem value="pie">Pie</MenuItem>
+                        <MenuItem value="bar-horizontal">{t(`overview.totalsVariant.barHorizontal`)}</MenuItem>
+                        <MenuItem value="bar-vertical">{t(`overview.totalsVariant.barVertical`)}</MenuItem>
+                        <MenuItem value="pie">{t(`overview.totalsVariant.pie`)}</MenuItem>
                       </Select>
                       {graph.variant === "bar-horizontal" && (
                         <BarChart
@@ -119,7 +119,7 @@ export default function OverviewWrapper() {
                       <Select
                         id={`timeline-${sectionIndex}-${graphIndex}`}
                         value={graph.variant}
-                        label="Variant"
+                        label={t(`overview.timelineVariant.label`)}
                         onChange={(event) =>
                           handleTimelineChartVariantChange(
                             event.target.value,
@@ -128,8 +128,8 @@ export default function OverviewWrapper() {
                           )
                         }
                       >
-                        <MenuItem value="default">Unstacked</MenuItem>
-                        <MenuItem value="stacked">Stacked</MenuItem>
+                        <MenuItem value="default">{t(`overview.timelineVariant.unstacked`)}</MenuItem>
+                        <MenuItem value="stacked">{t(`overview.timelineVariant.stacked`)}</MenuItem>
                       </Select>
                       <AreaChart
                         key={`${sectionIndex}-${graphIndex}`}

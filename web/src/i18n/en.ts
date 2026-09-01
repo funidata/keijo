@@ -152,9 +152,21 @@ const en = {
     },
   },
   overview: {
+    title: "Overview",
     hoursBy: {
       product: "Hours by product",
       activity: "Hours by activity",
+    },
+    totalsVariant: {
+      label: "Variant",
+      barHorizontal: "Bar Horizontal",
+      barVertical: "Bar Vertical",
+      pie: "Pie",
+    },
+    timelineVariant: {
+      label: "Variant",
+      unstacked: "Unstacked",
+      stacked: "Stacked",
     },
   },
   titles: {
