@@ -87,9 +87,7 @@ export function formatAreaChartData(
     datasets: Array.from(datasets, ([label, dataByDate]) => ({
       label,
       ...(variant === "stacked" && { fill: "stack" }),
-      data: (variant === "stacked" ? Array.from(dataByDate.keys()) : [...labels])
-        .reverse()
-        .map((date) => ({ date, hours: dataByDate.get(date) ?? 0 })),
+      data: [...labels].reverse().map((date) => ({ date, hours: dataByDate.get(date) ?? 0 })),
     })),
     labels,
   };
