@@ -10,6 +10,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useDimensionOptions } from "../../common/useDimensionOptions";
 import { GetMySettingsDocument, UpdateSettingsDocument } from "../../graphql/generated/graphql";
+import { useIsJiraAuthenticated } from "../../jira/jira-api";
 
 const DefaultsForm = () => {
   const { t } = useTranslation();
@@ -18,6 +19,7 @@ const DefaultsForm = () => {
   const [updateSettings] = useMutation(UpdateSettingsDocument, {
     refetchQueries: [GetMySettingsDocument],
   });
+  const { isJiraAuth } = useIsJiraAuthenticated();
 
   if (!settingsData) {
     return null;
@@ -59,21 +61,23 @@ const DefaultsForm = () => {
           />
         </FormControl>
       </Grid>
-      <Grid size={{ xs: 12 }}>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={!!settingsData.getMySettings.showJiraIssueStatus}
-              onChange={(e) =>
-                updateSettings({
-                  variables: { settings: { showJiraIssueStatus: e.target.checked } },
-                })
-              }
-            />
-          }
-          label={t("entryDialog.showJiraIssueStatus")}
-        />
-      </Grid>
+      {isJiraAuth && (
+        <Grid size={{ xs: 12 }}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={!!settingsData.getMySettings.showJiraIssueStatus}
+                onChange={(e) =>
+                  updateSettings({
+                    variables: { settings: { showJiraIssueStatus: e.target.checked } },
+                  })
+                }
+              />
+            }
+            label={t("entryDialog.showJiraIssueStatus")}
+          />
+        </Grid>
+      )}
     </Grid>
   );
 };
