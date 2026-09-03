@@ -54,10 +54,16 @@ type TestFormValues = {
   issue: string | null;
 };
 
-const issue = {
-  key: "ABC-1",
-  fields: { summary: "Test issue", status: { name: "In Progress" } },
-};
+const issues = [
+  {
+    key: "ABC-1",
+    fields: { summary: "Test issue", status: { name: "In Progress" } },
+  },
+  {
+    key: "ABC-123",
+    fields: { summary: "Later issue", status: { name: "To Do" } },
+  },
+];
 
 const TestForm = ({
   onSubmit,
@@ -86,7 +92,7 @@ describe("JiraIssueComboBox", () => {
     useDebounceValueMock.mockReturnValue(["", vi.fn()]);
     mockRecentIssues.mockReturnValue([]);
     mockTextIssues.mockReturnValue([]);
-    mockKeyIssues.mockReturnValue([issue]);
+    mockKeyIssues.mockReturnValue(issues);
     mockUseQuery.mockReturnValue({ data: { getMySettings: { showJiraIssueStatus: false } } });
   });
 
@@ -124,6 +130,21 @@ describe("JiraIssueComboBox", () => {
       expect(onSubmit).toHaveBeenCalled();
     });
     expect(onSubmit.mock.calls[0][0]).toEqual({ issue: "ABC-1" });
+  });
+
+  it("autocomplete should not fill the input too eagerly with partially typed issue key", async () => {
+    render(<TestForm onSubmit={vi.fn()} />);
+
+    const input = screen.getByLabelText("Issue") as HTMLInputElement;
+    fireEvent.change(input, { target: { value: "ABC-1" } });
+
+    await waitFor(() => {
+      expect(input.value).toBe("ABC-1");
+      expect(input.value).not.toBe("ABC-1: Test issue");
+    });
+
+    fireEvent.change(input, { target: { value: `${input.value}23` } });
+    expect(input.value).toBe("ABC-123");
   });
 
   it("shows a validation error when the typed issue is unknown", async () => {
