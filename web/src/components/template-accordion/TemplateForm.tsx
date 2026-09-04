@@ -1,114 +1,30 @@
 import { Box, Button, Grid, TextField, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  AddEntryTemplateDocument,
-  EntryTemplateType,
-  GetMySettingsDocument,
-  ReplaceEntryTemplateDocument,
-} from "../../graphql/generated/graphql";
-
+import { EntryTemplateType } from "../../graphql/generated/graphql";
 import { useIsJiraAuthenticated } from "../../jira/jira-api";
 import JiraIssueComboBox from "../entry-dialog/JiraIssueComboBox";
 import DimensionComboBox from "../entry-dialog/DimensionComboBox";
 import DurationSlider from "../entry-dialog/DurationSlider";
-import { EntryFormSchema } from "../entry-form/useEntryForm";
-import { useLazyQuery, useMutation } from "@apollo/client/react";
-import { useNotification } from "../global-notification/useNotification";
+import useTemplateForm from "./useTemplateForm";
 
 type LocationState = {
   editTemplate?: EntryTemplateType;
 };
 
-type TemplateFormSchema = {
-  templateName: string;
-} & Omit<EntryFormSchema, "date">;
-
 const TemplateForm = () => {
   const { state } = useLocation();
   const { editTemplate }: LocationState = state || {};
 
-  const { t } = useTranslation();
-  const { showSuccessNotification } = useNotification();
-
-  const [addEntryTemplate, { loading: addLoading }] = useMutation(AddEntryTemplateDocument, {
-    refetchQueries: [GetMySettingsDocument],
-    awaitRefetchQueries: true,
-    onCompleted: () => {
-      showSuccessNotification(t("notifications.addTemplate.success"));
-    },
-  });
-
-  const [replaceEntryTemplate, { loading: replaceLoading }] = useMutation(
-    ReplaceEntryTemplateDocument,
-    {
-      refetchQueries: [GetMySettingsDocument],
-      awaitRefetchQueries: true,
-      onCompleted: () => {
-        showSuccessNotification(t("notifications.editTemplate.success"));
-      },
-    },
-  );
-
-  const [getMySettings] = useLazyQuery(GetMySettingsDocument);
-
-  const getCreateDefaultValues = async (): Promise<TemplateFormSchema> => {
-    const { data: settingsData } = await getMySettings().catch((e: unknown) => {
-      const isAbortError =
-        (e instanceof DOMException || e instanceof Error) && e.name === "AbortError";
-      if (!isAbortError) throw e;
-      return { data: undefined };
-    });
-
-    return {
-      templateName: "",
-      duration: "",
-      description: "",
-      product: settingsData?.getMySettings.productPreset || "",
-      activity: settingsData?.getMySettings.activityPreset || "",
-      issue: null,
-      client: "",
-    };
-  };
-
-  const form = useForm<TemplateFormSchema>({
-    defaultValues: editTemplate
-      ? {
-          templateName: editTemplate.templateName,
-          duration: editTemplate.duration.toString(),
-          description: editTemplate.description || "",
-          product: editTemplate.product || "",
-          activity: editTemplate.activity || "",
-          issue: editTemplate.issue || null,
-          client: editTemplate.client || "",
-        }
-      : getCreateDefaultValues,
-  });
+  const { form, onSubmit, loading } = useTemplateForm({ editTemplate });
 
   const {
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful },
   } = form;
-
-  const onSubmit: SubmitHandler<TemplateFormSchema> = async (formValues) => {
-    if (editTemplate) {
-      await replaceEntryTemplate({
-        variables: {
-          input: {
-            key: editTemplate.key,
-            template: { ...formValues, duration: Number(formValues.duration) },
-          },
-        },
-      });
-    } else {
-      await addEntryTemplate({
-        variables: { template: { ...formValues, duration: Number(formValues.duration) } },
-      });
-    }
-  };
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -118,11 +34,11 @@ const TemplateForm = () => {
     }
   }, [isSubmitSuccessful, navigate, reset]);
 
+  const { t } = useTranslation();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const { control, watch } = form;
   const { isJiraAuth } = useIsJiraAuthenticated();
-  const loading = addLoading || replaceLoading;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
