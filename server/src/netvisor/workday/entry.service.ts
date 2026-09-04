@@ -6,6 +6,8 @@ import {
 } from "@nestjs/common";
 import { Dayjs } from "dayjs";
 import config from "../../config/config";
+import { JiraService } from "../../jira/jira.service";
+import { JiraTokens } from "../../jira/jira.types";
 import dayjs from "../../config/dayjs";
 import { Logger } from "../../logger/logger";
 import { NetvisorApiService } from "../netvisor-api/netvisor-api.service";
@@ -22,6 +24,7 @@ export class EntryService {
     private netvisorApiService: NetvisorApiService,
     private workdayService: WorkdayService,
     private logger: Logger,
+    private jiraService: JiraService,
   ) {
     logger.setContext(EntryService.name);
   }
@@ -29,11 +32,20 @@ export class EntryService {
   async addWorkdayEntry(
     employeeNumber: number,
     eppn: string,
+    jiraTokens: JiraTokens | undefined,
     entry: AddWorkdayEntryInput,
   ): Promise<void> {
     const { duration, description, product, activity, issue, client } = entry;
     const { ratioNumber } = config.netvisor;
     const date = dayjs(entry.date).format("YYYY-MM-DD");
+
+    if (issue && jiraTokens?.accessToken) {
+      const exists = await this.jiraService.issueIsAvailable(jiraTokens.accessToken, issue);
+
+      if (!exists) {
+        throw new BadRequestException("Selected Jira issue is no longer available.");
+      }
+    }
 
     this.logger.audit({
       operation: "addWorkdayEntry",
@@ -169,12 +181,13 @@ export class EntryService {
   async replace(
     employeeNumber: number,
     eppn: string,
+    jiraTokens: JiraTokens | undefined,
     originalEntryKey: string,
     // Original entry date is necessary to remove the correct entry even if date is updated.
     originalEntryDate: Dayjs,
     replacementEntry: AddWorkdayEntryInput,
   ): Promise<void> {
     await this.remove(employeeNumber, eppn, originalEntryKey, originalEntryDate);
-    await this.addWorkdayEntry(employeeNumber, eppn, replacementEntry);
+    await this.addWorkdayEntry(employeeNumber, eppn, jiraTokens, replacementEntry);
   }
 }

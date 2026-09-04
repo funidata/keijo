@@ -13,6 +13,7 @@ const apiUrl = import.meta.env.VITE_API_URL_OVERRIDE || import.meta.env.VITE_API
 
 const httpLink = new HttpLink({
   uri: apiUrl,
+  credentials: "include",
   headers: import.meta.env.VITE_MOCK_EMPLOYEE_NUMBER
     ? { "x-shib-employeeid": import.meta.env.VITE_MOCK_EMPLOYEE_NUMBER || "" }
     : {},
