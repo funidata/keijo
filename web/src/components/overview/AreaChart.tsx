@@ -49,5 +49,5 @@ export default function AreaChart({
   const chartData = formatAreaChartData(workdays, chartKey, variant);
   const options = getAreaChartOptions(variant);
 
-  return <Line data={chartData} options={options} />;
+  return <Line key={variant} data={chartData} options={options} />;
 }

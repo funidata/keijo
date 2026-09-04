@@ -40,5 +40,5 @@ export default function BarChart({
   const chartData = formatAccumulatedChartData(workdays, chartKey);
   const options = getBarChartOptions(orientation);
 
-  return <Bar data={chartData} options={options} />;
+  return <Bar key={orientation} data={chartData} options={options} />;
 }
