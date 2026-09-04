@@ -58,6 +58,8 @@ ChartJS.register(
   opaqueBarBackgrounds,
 );
 
+ChartJS.defaults.animation = false;
+
 export default function OverviewWrapper() {
   // TODO: get data for the given range
   const { t } = useTranslation();
