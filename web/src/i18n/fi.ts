@@ -151,6 +151,25 @@ const fi = {
       success: "Kirjauspohja poistettu.",
     },
   },
+  overview: {
+    title: "Yhteenveto",
+    weekNumber: "viikko {{weekNumber}}",
+    hoursBy: {
+      product: "Tuntijakauma tuotteittain",
+      activity: "Tuntijakauma toiminnoittain",
+    },
+    totalsVariant: {
+      label: "Tyyppi",
+      barHorizontal: "Palkit, vaaka",
+      barVertical: "Palkit, pysty",
+      pie: "Ympyrä",
+    },
+    timelineVariant: {
+      label: "Tyyppi",
+      unstacked: "Pinottamaton",
+      stacked: "Pinottu",
+    },
+  },
   titles: {
     workdayBrowser: "Työaikakirjaukset",
     templates: "Omat kirjauspohjat",
