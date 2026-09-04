@@ -3,27 +3,23 @@ import { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
-import useDayjs from "../../common/useDayjs";
 import {
   AddEntryTemplateDocument,
-  Entry,
+  EntryTemplateType,
   GetMySettingsDocument,
+  ReplaceEntryTemplateDocument,
 } from "../../graphql/generated/graphql";
-import BigDeleteEntryButton from "../entry-dialog/BigDeleteEntryButton";
-import DimensionComboBox from "../entry-dialog/DimensionComboBox";
-import DurationSlider from "../entry-dialog/DurationSlider";
 
 import { useIsJiraAuthenticated } from "../../jira/jira-api";
 import JiraIssueComboBox from "../entry-dialog/JiraIssueComboBox";
+import DimensionComboBox from "../entry-dialog/DimensionComboBox";
+import DurationSlider from "../entry-dialog/DurationSlider";
 import { EntryFormSchema } from "../entry-form/useEntryForm";
-import { useMutation } from "@apollo/client/react";
+import { useLazyQuery, useMutation } from "@apollo/client/react";
 import { useNotification } from "../global-notification/useNotification";
 
 type LocationState = {
-  date?: string;
-  editEntry?: Entry;
-  template?: Entry;
-  templateEntries?: Entry[];
+  editTemplate?: EntryTemplateType;
 };
 
 type TemplateFormSchema = {
@@ -32,12 +28,12 @@ type TemplateFormSchema = {
 
 const TemplateForm = () => {
   const { state } = useLocation();
-  const dayjs = useDayjs();
-  // state is possibly null
-  const { date: originalDate, editEntry }: LocationState = state || {};
+  const { editTemplate }: LocationState = state || {};
 
+  const { t } = useTranslation();
   const { showSuccessNotification } = useNotification();
-  const [addEntryTemplate, { loading }] = useMutation(AddEntryTemplateDocument, {
+
+  const [addEntryTemplate, { loading: addLoading }] = useMutation(AddEntryTemplateDocument, {
     refetchQueries: [GetMySettingsDocument],
     awaitRefetchQueries: true,
     onCompleted: () => {
@@ -45,16 +41,50 @@ const TemplateForm = () => {
     },
   });
 
-  const form = useForm<TemplateFormSchema>({
-    defaultValues: {
+  const [replaceEntryTemplate, { loading: replaceLoading }] = useMutation(
+    ReplaceEntryTemplateDocument,
+    {
+      refetchQueries: [GetMySettingsDocument],
+      awaitRefetchQueries: true,
+      onCompleted: () => {
+        showSuccessNotification(t("notifications.editTemplate.success"));
+      },
+    },
+  );
+
+  const [getMySettings] = useLazyQuery(GetMySettingsDocument);
+
+  const getCreateDefaultValues = async (): Promise<TemplateFormSchema> => {
+    const { data: settingsData } = await getMySettings().catch((e: unknown) => {
+      const isAbortError =
+        (e instanceof DOMException || e instanceof Error) && e.name === "AbortError";
+      if (!isAbortError) throw e;
+      return { data: undefined };
+    });
+
+    return {
       templateName: "",
       duration: "",
       description: "",
-      product: "",
-      activity: "",
+      product: settingsData?.getMySettings.productPreset || "",
+      activity: settingsData?.getMySettings.activityPreset || "",
       issue: null,
       client: "",
-    },
+    };
+  };
+
+  const form = useForm<TemplateFormSchema>({
+    defaultValues: editTemplate
+      ? {
+          templateName: editTemplate.templateName,
+          duration: editTemplate.duration.toString(),
+          description: editTemplate.description || "",
+          product: editTemplate.product || "",
+          activity: editTemplate.activity || "",
+          issue: editTemplate.issue || null,
+          client: editTemplate.client || "",
+        }
+      : getCreateDefaultValues,
   });
 
   const {
@@ -64,9 +94,20 @@ const TemplateForm = () => {
   } = form;
 
   const onSubmit: SubmitHandler<TemplateFormSchema> = async (formValues) => {
-    addEntryTemplate({
-      variables: { template: { ...formValues, duration: Number(formValues.duration) } },
-    });
+    if (editTemplate) {
+      await replaceEntryTemplate({
+        variables: {
+          input: {
+            key: editTemplate.key,
+            template: { ...formValues, duration: Number(formValues.duration) },
+          },
+        },
+      });
+    } else {
+      await addEntryTemplate({
+        variables: { template: { ...formValues, duration: Number(formValues.duration) } },
+      });
+    }
   };
 
   const navigate = useNavigate();
@@ -77,11 +118,11 @@ const TemplateForm = () => {
     }
   }, [isSubmitSuccessful, navigate, reset]);
 
-  const { t } = useTranslation();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const { control, watch } = form;
   const { isJiraAuth } = useIsJiraAuthenticated();
+  const loading = addLoading || replaceLoading;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -190,20 +231,15 @@ const TemplateForm = () => {
                 onClick={() => reset()}
                 fullWidth
               >
-                {t("entryDialog.clear")}
+                {editTemplate ? t("entryDialog.reset") : t("entryDialog.clear")}
               </Button>
-            </Grid>
-            <Grid size={12}>
-              {editEntry && originalDate && (
-                <BigDeleteEntryButton entryKey={editEntry.key} date={dayjs(originalDate)} />
-              )}
             </Grid>
           </>
         ) : (
           <Grid size={12} sx={{ mt: 2 }}>
             <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
               <Button type="reset" variant="outlined" size="large" onClick={() => reset()}>
-                {t("entryDialog.clear")}
+                {editTemplate ? t("entryDialog.reset") : t("entryDialog.clear")}
               </Button>
               <Button loading={loading} type="submit" variant="contained" size="large">
                 {t("entryDialog.submit")}
