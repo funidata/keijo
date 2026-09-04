@@ -153,6 +153,7 @@ const fi = {
   },
   overview: {
     title: "Yhteenveto",
+    weekNumber: "viikko {{weekNumber}}",
     hoursBy: {
       product: "Tuntijakauma tuotteittain",
       activity: "Tuntijakauma toiminnoittain",

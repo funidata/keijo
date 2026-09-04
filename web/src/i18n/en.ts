@@ -153,6 +153,7 @@ const en = {
   },
   overview: {
     title: "Overview",
+    weekNumber: "week {{weekNumber}}",
     hoursBy: {
       product: "Hours by product",
       activity: "Hours by activity",

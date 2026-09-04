@@ -50,6 +50,7 @@ export function formatAreaChartData(
   workdays: Workday[],
   key: keyof Entry,
   variant: "stacked" | "default",
+  formatWeekNumber: (weekNumber: string) => string = (weekNumber) => weekNumber,
 ) {
   const datasets = new Map<string, Map<string, number>>();
   const dates = workdays.map((workday) => workday.date);
@@ -59,6 +60,9 @@ export function formatAreaChartData(
   const labels = spansMoreThanSevenDays
     ? Array.from(new Set(dates.map((date) => dayjs(date).startOf("week").format("YYYY-MM-DD"))))
     : dates;
+  const displayLabels = spansMoreThanSevenDays
+    ? labels.map((date) => formatWeekNumber(dayjs(date).week().toString()))
+    : labels;
 
   workdays.forEach((workday) => {
     workday.entries.forEach((entry) => {
@@ -80,8 +84,11 @@ export function formatAreaChartData(
     datasets: Array.from(datasets, ([label, dataByDate]) => ({
       label,
       ...(variant === "stacked" && { fill: "stack" }),
-      data: [...labels].reverse().map((date) => ({ date, hours: dataByDate.get(date) ?? 0 })),
+      data: [...labels].reverse().map((date) => ({
+        date: spansMoreThanSevenDays ? formatWeekNumber(dayjs(date).week().toString()) : date,
+        hours: dataByDate.get(date) ?? 0,
+      })),
     })),
-    labels,
+    labels: displayLabels,
   };
 }
