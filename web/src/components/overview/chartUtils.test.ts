@@ -153,30 +153,44 @@ describe("chartUtils", () => {
         ],
       });
     });
-    it("aggregates stacked chart data by week when the range exceeds seven days", () => {
-      expect(formatAreaChartData(multiWeekWorkdays, "activity", "stacked")).toEqual({
-        labels: ["2026-08-17", "2026-08-24"],
+    it("uses week-number labels for stacked chart data when the range exceeds seven days", () => {
+      expect(
+        formatAreaChartData(
+          multiWeekWorkdays,
+          "activity",
+          "stacked",
+          (weekNumber) => `Week ${weekNumber}`,
+        ),
+      ).toEqual({
+        labels: ["Week 34", "Week 35"],
         datasets: [
           {
             label: "Toteutus",
             fill: "stack",
             data: [
-              { date: "2026-08-24", hours: 5 },
-              { date: "2026-08-17", hours: 5 },
+              { date: "Week 35", hours: 5 },
+              { date: "Week 34", hours: 5 },
             ],
           },
         ],
       });
     });
-    it("aggregates default chart data by week when the range exceeds seven days", () => {
-      expect(formatAreaChartData(multiWeekWorkdays, "activity", "default")).toEqual({
-        labels: ["2026-08-17", "2026-08-24"],
+    it("uses week-number labels for default chart data when the range exceeds seven days", () => {
+      expect(
+        formatAreaChartData(
+          multiWeekWorkdays,
+          "activity",
+          "default",
+          (weekNumber) => `vk ${weekNumber}`,
+        ),
+      ).toEqual({
+        labels: ["vk 34", "vk 35"],
         datasets: [
           {
             label: "Toteutus",
             data: [
-              { date: "2026-08-24", hours: 5 },
-              { date: "2026-08-17", hours: 5 },
+              { date: "vk 35", hours: 5 },
+              { date: "vk 34", hours: 5 },
             ],
           },
         ],
