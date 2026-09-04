@@ -14,6 +14,7 @@ const en = {
     deleteEntry: "Delete entry",
     deleteEntryTemplate: "Delete",
     editEntry: "Edit entry",
+    editEntryTemplate: "Edit",
     selectWeek: "Week",
     openMenu: "Open menu",
     useDarkMode: "Dark Mode",
@@ -145,6 +146,9 @@ const en = {
     },
     addTemplate: {
       success: "Workday entry template created.",
+    },
+    editTemplate: {
+      success: "Workday entry template updated.",
     },
     deleteTemplate: {
       success: "Workday entry template deleted.",
