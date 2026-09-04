@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { formatAccumulatedChartData, formatAreaChartData } from "./chartUtils";
+import { formatAccumulatedChartData, formatAreaChartData, formatDuration } from "./chartUtils";
 import { AcceptanceStatus, Workday } from "../../graphql/generated/graphql";
 
 const defaults = {
@@ -243,6 +243,24 @@ describe("chartUtils", () => {
         ],
       };
       expect(formatAccumulatedChartData(workdays, "activity")).toEqual(expected);
+    });
+  });
+
+  describe("formatDuration", () => {
+    it("formats whole hours without minutes", () => {
+      expect(formatDuration(2)).toBe("2h");
+    });
+
+    it("formats fractional hours as hours and minutes", () => {
+      expect(formatDuration(2.5)).toBe("2h 30m");
+    });
+
+    it("formats zero hours", () => {
+      expect(formatDuration(0)).toBe("0h");
+    });
+
+    it("formats a fractional hour", () => {
+      expect(formatDuration(0.75)).toBe("0h 45m");
     });
   });
 });

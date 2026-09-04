@@ -92,3 +92,14 @@ export function formatAreaChartData(
     labels: displayLabels,
   };
 }
+
+export function formatDuration(durationInHours: number) {
+  const hours = Math.floor(durationInHours);
+  const minutes = dayjs.duration(durationInHours - hours, "hours").asMinutes();
+
+  if (minutes === 0) {
+    return `${hours}h`;
+  }
+
+  return `${hours}h ${minutes}m`;
+}
