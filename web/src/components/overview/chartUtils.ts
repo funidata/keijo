@@ -34,7 +34,7 @@ export function formatAccumulatedChartData(workdays: Workday[], key: keyof Entry
     }, []);
 
   return {
-    labels: [workdays.slice(0, 1).map((workday) => workday.date)],
+    labels: [...workdays.slice(0, 1).map((workday) => workday.date)],
     datasets: accumulatedData.map(({ label, value }) => ({ label, data: [value] })),
   };
 }
