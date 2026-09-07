@@ -6,6 +6,12 @@ interface AccumulatedDataset {
   value: number;
 }
 
+/** Accumulate work hour data categorized by given key. The returned chart data
+ * works as is for BarChart usage. PieCharts require further formatting using
+ * `formatChartDataForPieChart()`.
+ * 
+ * Note, the returned chart data is not compatible with AreaCharts.
+ * */
 export function formatAccumulatedChartData(workdays: Workday[], key: keyof Entry) {
   const accumulatedData = workdays
     .flatMap((workday) => workday.entries)
@@ -38,7 +44,7 @@ export function formatAccumulatedChartData(workdays: Workday[], key: keyof Entry
     datasets: accumulatedData.map(({ label, value }) => ({ label, data: [value] })),
   };
 }
-
+/** Format accumulative work hour data for PieChart usage. */
 export function formatChartDataForPieChart(data: ReturnType<typeof formatAccumulatedChartData>) {
   return {
     labels: data.datasets.map((dataset) => dataset.label),
@@ -46,6 +52,7 @@ export function formatChartDataForPieChart(data: ReturnType<typeof formatAccumul
   };
 }
 
+/** Format workday data for AreaChart usage. */
 export function formatAreaChartData(
   workdays: Workday[],
   key: keyof Entry,
@@ -93,6 +100,7 @@ export function formatAreaChartData(
   };
 }
 
+/** Format a duration in fractional hours to a human-readable string ("Xh Ym"). */
 export function formatDuration(durationInHours: number) {
   const hours = Math.floor(durationInHours);
   const minutes = dayjs.duration(durationInHours - hours, "hours").asMinutes();
@@ -104,6 +112,7 @@ export function formatDuration(durationInHours: number) {
   return `${hours}h ${minutes}m`;
 }
 
+/** Format the chart tooltip label for displaying label and hours consistently across different charts. */
 export function tooltipLabelFormatter(label: string, value: number | string) {
   const rawHours = Number(value.toString().replace(",", "."));
 
