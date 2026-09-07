@@ -3,7 +3,8 @@ import { FindWorkdaysDocument } from "../../graphql/generated/graphql";
 import { useWorkdayBrowserParams } from "../workday-browser/useWorkdayBrowserParams";
 import LoadingIndicator from "../workday-browser/LoadingIndicator";
 import { compileWorkdayRange } from "../../common/workdayUtils";
-import Stack from "@mui/material/Stack";
+import OverviewContextProvider from "./OverviewContext";
+import Overview from "./Overview";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -19,8 +20,6 @@ import {
   Filler,
   type Plugin,
 } from "chart.js";
-import useChartAreaConfig from "./OverviewContext";
-import Section from "./Section";
 import { CHART_DEFAULT_ASPECT_RATIO } from "./constants";
 
 const opaqueBarBackgrounds: Plugin = {
@@ -56,7 +55,6 @@ ChartJS.defaults.aspectRatio = CHART_DEFAULT_ASPECT_RATIO;
 
 export default function OverviewWrapper() {
   const { from, to, formattedFrom, formattedTo } = useWorkdayBrowserParams();
-  const { chartAreaConfig } = useChartAreaConfig();
   const { data } = useQuery(FindWorkdaysDocument, {
     variables: { start: formattedFrom, end: formattedTo },
     // Poll every 5 minutes, mainly to keep IDP session alive.
@@ -70,10 +68,8 @@ export default function OverviewWrapper() {
   const workdays = compileWorkdayRange(data, { from, to });
 
   return (
-    <Stack direction="column" spacing={4}>
-      {chartAreaConfig.map((section, sectionIndex) => (
-        <Section key={sectionIndex} section={section} index={sectionIndex} workdays={workdays} />
-      ))}
-    </Stack>
+    <OverviewContextProvider>
+      <Overview workdays={workdays} />
+    </OverviewContextProvider>
   );
 }
