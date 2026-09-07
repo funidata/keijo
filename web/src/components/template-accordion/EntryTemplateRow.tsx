@@ -28,33 +28,40 @@ const EntryTemplateRow = ({ entry }: EntryTemplateRowProps) => {
 
   return (
     <Box>
-      <Accordion sx={{ backgroundColor: "background.paper" }} disableGutters>
-        <Box sx={{ position: "relative" }}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ flexDirection: "row-reverse" }}>
-            <Stack
-              direction="row"
-              sx={{
-                justifyContent: "space-between",
-                alignItems: "center",
-                width: "100%",
-                paddingY: 1,
-              }}
+      <Accordion
+        slotProps={{ heading: { component: "h4" } }}
+        sx={{ backgroundColor: "background.paper" }}
+        disableGutters
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          sx={{ flexDirection: "row-reverse" }}
+          aria-controls={`entry-template-row-accordion-content-${entry.key}`}
+          id={`entry-template-row-accordion-header-${entry.key}`}
+        >
+          <Stack
+            direction="row"
+            sx={{
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              paddingY: 1,
+            }}
+          >
+            <Typography
+              component="span"
+              sx={{ fontWeight: "medium", paddingLeft: 2, width: "calc(100% - 58px + 15px)" }}
             >
-              <Typography
-                component="span"
-                sx={{ fontWeight: "medium", paddingLeft: 2, width: "calc(100% - 58px + 15px)" }}
-              >
-                {entry.templateName}
-              </Typography>
-            </Stack>
-          </AccordionSummary>
+              {entry.templateName}
+            </Typography>
+          </Stack>
           <Stack
             direction="row"
             sx={{ position: "absolute", top: "50%", transform: "translateY(-50%)", right: "4px" }}
           >
             <CopyEntryButton entry={entry} />
           </Stack>
-        </Box>
+        </AccordionSummary>
         <AccordionDetails>
           <Stack direction="column">
             <Typography>
