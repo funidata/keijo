@@ -21,6 +21,7 @@ import {
 } from "chart.js";
 import useChartAreaConfig from "./useChartAreaConfig";
 import Section from "./Section";
+import { CHART_DEFAULT_ASPECT_RATIO } from "./constants";
 
 const opaqueBarBackgrounds: Plugin = {
   id: "opaqueBarBackgrounds",
@@ -51,7 +52,7 @@ ChartJS.register(
 );
 
 ChartJS.defaults.animation = false;
-ChartJS.defaults.aspectRatio = 1.5;
+ChartJS.defaults.aspectRatio = CHART_DEFAULT_ASPECT_RATIO;
 
 export default function OverviewWrapper() {
   const { from, to, formattedFrom, formattedTo } = useWorkdayBrowserParams();

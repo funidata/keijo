@@ -1,4 +1,5 @@
 import { ChartProps } from "./chartTypes";
+import { CHART_DEFAULT_ASPECT_RATIO } from "./constants";
 import { formatDateRange } from "./chartUtils";
 import { useMemo } from "react";
 import { Pie } from "react-chartjs-2";
@@ -33,7 +34,7 @@ export default function PieChart({ workdays, chartKey }: ChartProps) {
   const data = formatChartDataForPieChart(chartData);
 
   const options = {
-    aspectRatio: 1.5,
+    aspectRatio: CHART_DEFAULT_ASPECT_RATIO,
     plugins: {
       tooltip: {
         title: {
