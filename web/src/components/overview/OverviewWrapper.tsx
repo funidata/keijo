@@ -19,7 +19,7 @@ import {
   Filler,
   type Plugin,
 } from "chart.js";
-import useChartAreaConfig from "./useChartAreaConfig";
+import useChartAreaConfig from "./OverviewContext";
 import Section from "./Section";
 import { CHART_DEFAULT_ASPECT_RATIO } from "./constants";
 

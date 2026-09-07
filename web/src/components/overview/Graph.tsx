@@ -1,6 +1,6 @@
 import { Workday } from "../../graphql/generated/graphql";
 import type { ChartKey, GraphConfig } from "./chartTypes";
-import useChartAreaConfig from "./useChartAreaConfig";
+import useChartAreaConfig from "./OverviewContext";
 import TotalsGraph from "./TotalsGraph";
 import TimelineGraph from "./TimelineGraph";
 
