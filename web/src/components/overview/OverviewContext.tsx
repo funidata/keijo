@@ -50,6 +50,7 @@ type OverviewContextType = {
     sectionIndex: number,
   ) => void;
   moveGraph: (sectionIndex: number, sourceIndex: number, targetIndex: number) => void;
+  moveSection: (sourceIndex: number, targetIndex: number) => void;
 };
 
 const OverviewContext = createContext<OverviewContextType | null>(null);
@@ -65,7 +66,9 @@ export default function OverviewContextProvider({ children }: { children: React.
             ? {
                 ...section,
                 graphs: section.graphs.map((graph, currentGraphIndex) =>
-                  currentGraphIndex === graphIndex ? { ...graph, variant: value } : graph,
+                  currentGraphIndex === graphIndex && graph.type === "totals"
+                    ? { ...graph, variant: value }
+                    : graph,
                 ),
               }
             : section,
@@ -86,7 +89,9 @@ export default function OverviewContextProvider({ children }: { children: React.
             ? {
                 ...section,
                 graphs: section.graphs.map((graph, currentGraphIndex) =>
-                  currentGraphIndex === graphIndex ? { ...graph, variant: value } : graph,
+                  currentGraphIndex === graphIndex && graph.type === "timeline"
+                    ? { ...graph, variant: value }
+                    : graph,
                 ),
               }
             : section,
@@ -99,24 +104,46 @@ export default function OverviewContextProvider({ children }: { children: React.
     [],
   );
 
-  const moveGraph = useCallback((sectionIndex: number, sourceIndex: number, targetIndex: number) => {
+  const moveGraph = useCallback(
+    (sectionIndex: number, sourceIndex: number, targetIndex: number) => {
+      if (sourceIndex === targetIndex) {
+        return;
+      }
+
+      setChartAreaConfig((currentConfig) => {
+        const section = currentConfig[sectionIndex];
+        const graphs = [...section.graphs];
+        const [graph] = graphs.splice(sourceIndex, 1);
+
+        if (!graph) {
+          return currentConfig;
+        }
+
+        graphs.splice(targetIndex, 0, graph);
+        const newConfig = [...currentConfig];
+        newConfig[sectionIndex] = { ...section, graphs };
+
+        localStorage.setItem(chartAreaConfigStorageKey, JSON.stringify(newConfig));
+        return newConfig;
+      });
+    },
+    [],
+  );
+
+  const moveSection = useCallback((sourceIndex: number, targetIndex: number) => {
     if (sourceIndex === targetIndex) {
       return;
     }
 
     setChartAreaConfig((currentConfig) => {
-      const section = currentConfig[sectionIndex];
-      const graphs = [...section.graphs];
-      const [graph] = graphs.splice(sourceIndex, 1);
+      const newConfig = [...currentConfig];
+      const [section] = newConfig.splice(sourceIndex, 1);
 
-      if (!graph) {
+      if (!section) {
         return currentConfig;
       }
 
-      graphs.splice(targetIndex, 0, graph);
-      const newConfig = [...currentConfig];
-      newConfig[sectionIndex] = { ...section, graphs };
-
+      newConfig.splice(targetIndex, 0, section);
       localStorage.setItem(chartAreaConfigStorageKey, JSON.stringify(newConfig));
       return newConfig;
     });
@@ -128,8 +155,15 @@ export default function OverviewContextProvider({ children }: { children: React.
       handleTotalsChartVariantChange,
       handleTimelineChartVariantChange,
       moveGraph,
+      moveSection,
     };
-  }, [chartAreaConfig, handleTotalsChartVariantChange, handleTimelineChartVariantChange, moveGraph]);
+  }, [
+    chartAreaConfig,
+    handleTotalsChartVariantChange,
+    handleTimelineChartVariantChange,
+    moveGraph,
+    moveSection,
+  ]);
 
   return <OverviewContext.Provider value={contextValue}>{children}</OverviewContext.Provider>;
 }

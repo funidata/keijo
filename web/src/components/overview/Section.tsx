@@ -20,6 +20,7 @@ export default function Section({ section, index, workdays }: SectionProps) {
   const [draggedGraphIndex, setDraggedGraphIndex] = useState<number | null>(null);
 
   function handleDragStart(event: DragEvent<HTMLDivElement>, graphIndex: number) {
+    event.stopPropagation();
     event.dataTransfer.effectAllowed = "move";
     event.dataTransfer.setData("text/plain", String(graphIndex));
     setDraggedGraphIndex(graphIndex);
@@ -27,6 +28,7 @@ export default function Section({ section, index, workdays }: SectionProps) {
 
   function handleDrop(event: DragEvent<HTMLDivElement>, targetIndex: number) {
     event.preventDefault();
+    event.stopPropagation();
     const sourceIndex = Number(event.dataTransfer.getData("text/plain"));
 
     if (Number.isInteger(sourceIndex) && sourceIndex >= 0) {
@@ -46,9 +48,15 @@ export default function Section({ section, index, workdays }: SectionProps) {
             size={{ xs: 12, sm: 6 }}
             draggable
             onDragStart={(event) => handleDragStart(event, graphIndex)}
-            onDragOver={(event) => event.preventDefault()}
+            onDragOver={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+            }}
             onDrop={(event) => handleDrop(event, graphIndex)}
-            onDragEnd={() => setDraggedGraphIndex(null)}
+            onDragEnd={(event) => {
+              event.stopPropagation();
+              setDraggedGraphIndex(null);
+            }}
             sx={{ opacity: draggedGraphIndex === graphIndex ? 0.5 : 1 }}
           >
             <Graph
