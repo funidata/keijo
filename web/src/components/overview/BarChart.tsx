@@ -1,6 +1,10 @@
+import { TooltipItem } from "chart.js";
 import { ChartProps } from "./chartTypes";
-import { formatAccumulatedChartData } from "./chartUtils";
+import { formatAccumulatedChartData, formatDuration } from "./chartUtils";
 import { Bar } from "react-chartjs-2";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+dayjs.extend(duration);
 
 interface BarChartProps {
   orientation?: "vertical" | "horizontal";
@@ -29,6 +33,17 @@ const getBarChartOptions = (orientation: "vertical" | "horizontal") => {
             yAxisKey: "value",
             xAxisKey: "label",
           },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (context: TooltipItem<"bar">) => {
+            const rawValue = Number(context.formattedValue.replace(",", "."));
+
+            return ` ${formatDuration(rawValue)}`;
+          },
+        },
+      },
+    },
   };
 };
 
