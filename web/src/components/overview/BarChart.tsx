@@ -1,9 +1,11 @@
 import { TooltipItem } from "chart.js";
 import { ChartProps } from "./chartTypes";
-import { formatAccumulatedChartData, formatDuration } from "./chartUtils";
+import { useTranslation } from "react-i18next";
+import { formatAccumulatedChartData, tooltipLabelFormatter } from "./chartUtils";
 import { Bar } from "react-chartjs-2";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
+import { useMemo } from "react";
 dayjs.extend(duration);
 
 interface BarChartProps {
@@ -13,7 +15,11 @@ interface BarChartProps {
 const hoursScale = { ticks: { stepSize: 1 } };
 const labelScale = { ticks: { display: false } };
 
-const getBarChartOptions = (orientation: "vertical" | "horizontal") => {
+const getBarChartOptions = (
+  orientation: "vertical" | "horizontal",
+  totalHours: number,
+  t: (key: string, options?: Record<string, unknown>) => string,
+) => {
   return {
     scales: { y: hoursScale, x: labelScale },
     ...(orientation === "horizontal" && {
@@ -37,9 +43,13 @@ const getBarChartOptions = (orientation: "vertical" | "horizontal") => {
       tooltip: {
         callbacks: {
           label: (context: TooltipItem<"bar">) => {
+            return tooltipLabelFormatter(context.dataset.label ?? "", context.formattedValue);
+          },
+          afterLabel: (context: TooltipItem<"bar">) => {
             const rawValue = Number(context.formattedValue.replace(",", "."));
+            const percentage = (rawValue / totalHours) * 100;
 
-            return ` ${formatDuration(rawValue)}`;
+            return ` ${t("overview.percentageOfTotalHours", { percentage: percentage.toFixed(0) })}`;
           },
         },
       },
@@ -53,7 +63,19 @@ export default function BarChart({
   chartKey,
 }: ChartProps & BarChartProps) {
   const chartData = formatAccumulatedChartData(workdays, chartKey);
-  const options = getBarChartOptions(orientation);
+  const totalHours = useMemo(() => {
+    return chartData.datasets.reduce(
+      (acc, dataset) => acc + dataset.data.reduce((acc, value) => acc + Number(value), 0),
+      0,
+    );
+  }, [chartData]);
+  const { t } = useTranslation();
+
+  const options = getBarChartOptions(
+    orientation,
+    totalHours,
+    (key: string, options?: Record<string, unknown>) => t(key, options),
+  );
 
   return <Bar key={orientation} data={chartData} options={options} />;
 }

@@ -158,6 +158,7 @@ const fi = {
       product: "Tuntijakauma tuotteittain",
       activity: "Tuntijakauma toiminnoittain",
     },
+    percentageOfTotalHours: "{{ percentage }}% koko työajasta",
     totalsVariant: {
       label: "Tyyppi",
       barHorizontal: "Palkit, vaaka",

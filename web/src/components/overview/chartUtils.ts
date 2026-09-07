@@ -103,3 +103,9 @@ export function formatDuration(durationInHours: number) {
 
   return `${hours}h ${minutes}m`;
 }
+
+export function tooltipLabelFormatter(label: string, value: number | string) {
+  const rawHours = Number(value.toString().replace(",", "."));
+
+  return ` ${label}: ${formatDuration(rawHours)}`;
+}

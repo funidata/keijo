@@ -1,5 +1,5 @@
 import { ChartProps } from "./chartTypes";
-import { formatAreaChartData, formatDuration } from "./chartUtils";
+import { formatAreaChartData, tooltipLabelFormatter } from "./chartUtils";
 import type { TooltipItem } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { useTranslation } from "react-i18next";
@@ -14,10 +14,8 @@ interface LineChartProps {
 const tooltipOptions = {
   tooltip: {
     callbacks: {
-      label: (context: TooltipItem<"line">) => {
-        const rawValue = Number(context.formattedValue.replace(",", "."));
-
-        return `${context.dataset.label}: ${formatDuration(rawValue)}`;
+      label: (context: TooltipItem<"line">) => {  
+        return tooltipLabelFormatter(context.dataset.label ?? "", context.formattedValue);
       },
     },
   },

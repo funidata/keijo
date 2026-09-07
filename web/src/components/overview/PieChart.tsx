@@ -1,9 +1,11 @@
 import { ChartProps } from "./chartTypes";
+import { useMemo } from "react";
 import { Pie } from "react-chartjs-2";
+import { useTranslation } from "react-i18next";
 import {
   formatAccumulatedChartData,
   formatChartDataForPieChart,
-  formatDuration,
+  tooltipLabelFormatter,
 } from "./chartUtils";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
@@ -12,7 +14,16 @@ dayjs.extend(duration);
 
 export default function PieChart({ workdays, chartKey }: ChartProps) {
   const chartData = formatAccumulatedChartData(workdays, chartKey);
+  const totalHours = useMemo(() => {
+    return chartData.datasets.reduce(
+      (acc, dataset) => acc + dataset.data.reduce((acc, value) => acc + Number(value), 0),
+      0,
+    );
+  }, [chartData]);
+  const { t } = useTranslation();
+
   const data = formatChartDataForPieChart(chartData);
+
   const options = {
     plugins: {
       tooltip: {
@@ -21,8 +32,12 @@ export default function PieChart({ workdays, chartKey }: ChartProps) {
         },
         callbacks: {
           label: (context: TooltipItem<"pie">) => {
+            return tooltipLabelFormatter(context.label, context.formattedValue);
+          },
+          afterLabel: (context: TooltipItem<"pie">) => {
             const rawValue = Number(context.formattedValue.replace(",", "."));
-            return ` ${formatDuration(rawValue)}`;
+            const percentage = (rawValue / totalHours) * 100;
+            return ` ${t("overview.percentageOfTotalHours", { percentage: percentage.toFixed(0) })}`;
           },
         },
       },

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { formatAccumulatedChartData, formatAreaChartData, formatDuration } from "./chartUtils";
+import { formatAccumulatedChartData, formatAreaChartData, formatDuration, tooltipLabelFormatter } from "./chartUtils";
 import { AcceptanceStatus, Workday } from "../../graphql/generated/graphql";
 
 const defaults = {
@@ -243,6 +243,14 @@ describe("chartUtils", () => {
         ],
       };
       expect(formatAccumulatedChartData(workdays, "activity")).toEqual(expected);
+    });
+  });
+
+  describe("tooltipLabelFormatter", () => {
+    it("formats the tooltip label correctly", () => {
+      const label = "Toteutus";
+      const value = "5";
+      expect(tooltipLabelFormatter(label, value)).toBe(" Toteutus: 5h");
     });
   });
 

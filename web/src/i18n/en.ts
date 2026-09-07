@@ -158,6 +158,7 @@ const en = {
       product: "Hours by product",
       activity: "Hours by activity",
     },
+    percentageOfTotalHours: "{{ percentage }}% of total work hours",
     totalsVariant: {
       label: "Variant",
       barHorizontal: "Bar Horizontal",
