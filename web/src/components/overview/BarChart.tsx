@@ -1,7 +1,12 @@
 import { TooltipItem } from "chart.js";
 import { ChartProps } from "./chartTypes";
 import { useTranslation } from "react-i18next";
-import { formatAccumulatedChartData, tooltipLabelFormatter } from "./chartUtils";
+import {
+  formatAccumulatedChartData,
+  tooltipLabelFormatter,
+  formatDateRange,
+  DateRange,
+} from "./chartUtils";
 import { Bar } from "react-chartjs-2";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
@@ -18,6 +23,7 @@ const labelScale = { ticks: { display: false } };
 const getBarChartOptions = (
   orientation: "vertical" | "horizontal",
   totalHours: number,
+  dateRange: DateRange,
   t: (key: string, options?: Record<string, unknown>) => string,
 ) => {
   return {
@@ -51,6 +57,7 @@ const getBarChartOptions = (
 
             return ` ${t("overview.percentageOfTotalHours", { percentage: percentage.toFixed(0) })}`;
           },
+          title: () => formatDateRange(dateRange),
         },
       },
     },
@@ -69,11 +76,18 @@ export default function BarChart({
       0,
     );
   }, [chartData]);
+  const dateRange = useMemo(() => {
+    return {
+      startDate: workdays.slice(0, 1).map((workday) => workday.date)[0],
+      endDate: workdays.slice(-1).map((workday) => workday.date)[0],
+    };
+  }, [workdays]);
   const { t } = useTranslation();
 
   const options = getBarChartOptions(
     orientation,
     totalHours,
+    dateRange,
     (key: string, options?: Record<string, unknown>) => t(key, options),
   );
 

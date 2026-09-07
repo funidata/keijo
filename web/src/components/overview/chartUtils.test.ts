@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { formatAccumulatedChartData, formatAreaChartData, formatDuration, tooltipLabelFormatter } from "./chartUtils";
+import { formatAccumulatedChartData, formatAreaChartData, formatDateRange, formatDuration, tooltipLabelFormatter } from "./chartUtils";
 import { AcceptanceStatus, Workday } from "../../graphql/generated/graphql";
 
 const defaults = {
@@ -269,6 +269,13 @@ describe("chartUtils", () => {
 
     it("formats a fractional hour", () => {
       expect(formatDuration(0.75)).toBe("0h 45m");
+    });
+  });
+
+  describe("formatDateRange", () => {
+    it("formats the date range correctly", () => {
+      const dateRange = { startDate: "2026-08-17", endDate: "2026-08-23" };
+      expect(formatDateRange(dateRange)).toBe("17.08.2026 - 23.08.2026");
     });
   });
 });

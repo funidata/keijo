@@ -118,3 +118,13 @@ export function tooltipLabelFormatter(label: string, value: number | string) {
 
   return ` ${label}: ${formatDuration(rawHours)}`;
 }
+
+export interface DateRange {
+  startDate: string;
+  endDate: string;
+}
+
+/** Format a date range as a human-readable string ("DD.MM.YYYY - DD.MM.YYYY"). Used for accumulated chart tooltips. */
+export function formatDateRange(dateRange: DateRange) {
+  return `${dayjs(dateRange.startDate).format("DD.MM.YYYY")} - ${dayjs(dateRange.endDate).format("DD.MM.YYYY")}`;
+}
