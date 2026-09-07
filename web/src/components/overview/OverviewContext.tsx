@@ -1,4 +1,4 @@
-import { useState, useCallback, useContext, useMemo,createContext } from "react";
+import { useState, useCallback, useContext, useMemo, createContext } from "react";
 import { GraphAreaConfig, TotalsChartVariant, TimelineChartVariant } from "./chartTypes";
 
 const defaultChartAreaConfig: GraphAreaConfig[] = [
@@ -39,8 +39,16 @@ const chartAreaConfigStorageKey = "chartAreaConfig";
 
 type OverviewContextType = {
   chartAreaConfig: GraphAreaConfig[];
-  handleTotalsChartVariantChange: (value: TotalsChartVariant, graphIndex: number, sectionIndex: number) => void;
-  handleTimelineChartVariantChange: (value: TimelineChartVariant, graphIndex: number, sectionIndex: number) => void;
+  handleTotalsChartVariantChange: (
+    value: TotalsChartVariant,
+    graphIndex: number,
+    sectionIndex: number,
+  ) => void;
+  handleTimelineChartVariantChange: (
+    value: TimelineChartVariant,
+    graphIndex: number,
+    sectionIndex: number,
+  ) => void;
 };
 
 const OverviewContext = createContext<OverviewContextType | null>(null);
@@ -78,11 +86,7 @@ export default function OverviewContextProvider({ children }: { children: React.
     };
   }, [chartAreaConfig, handleTotalsChartVariantChange, handleTimelineChartVariantChange]);
 
-  return (
-    <OverviewContext.Provider value={contextValue}>
-      {children}
-    </OverviewContext.Provider>
-  );
+  return <OverviewContext.Provider value={contextValue}>{children}</OverviewContext.Provider>;
 }
 
 export function useChartAreaConfig() {

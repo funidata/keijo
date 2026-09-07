@@ -25,7 +25,7 @@ export default function TimelineGraph({
   onChangeVariant,
 }: TimelineGraphProps) {
   const { t } = useTranslation();
-  const id = `timeline-${sectionIndex}-${graphIndex}`; 
+  const id = `timeline-${sectionIndex}-${graphIndex}`;
 
   return (
     <>

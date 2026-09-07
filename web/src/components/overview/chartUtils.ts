@@ -10,7 +10,7 @@ interface AccumulatedDataset {
 /** Accumulate work hour data categorized by given key. The returned chart data
  * works as is for BarChart usage. PieCharts require further formatting using
  * `formatChartDataForPieChart()`.
- * 
+ *
  * Note, the returned chart data is not compatible with AreaCharts.
  * */
 export function formatAccumulatedChartData(workdays: Workday[], key: ChartKey) {

@@ -14,7 +14,7 @@ interface LineChartProps {
 const tooltipOptions = {
   tooltip: {
     callbacks: {
-      label: (context: TooltipItem<"line">) => {  
+      label: (context: TooltipItem<"line">) => {
         return tooltipLabelFormatter(context.dataset.label ?? "", context.formattedValue);
       },
     },

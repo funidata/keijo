@@ -1,5 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { formatAccumulatedChartData, formatAreaChartData, formatDateRange, formatDuration, tooltipLabelFormatter } from "./chartUtils";
+import {
+  formatAccumulatedChartData,
+  formatAreaChartData,
+  formatDateRange,
+  formatDuration,
+  tooltipLabelFormatter,
+} from "./chartUtils";
 import { AcceptanceStatus, Workday } from "../../graphql/generated/graphql";
 
 const defaults = {

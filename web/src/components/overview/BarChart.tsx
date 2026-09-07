@@ -1,11 +1,7 @@
 import { TooltipItem } from "chart.js";
 import { ChartDateRange, ChartProps } from "./chartTypes";
 import { useTranslation } from "react-i18next";
-import {
-  formatAccumulatedChartData,
-  tooltipLabelFormatter,
-  formatDateRange,
-} from "./chartUtils";
+import { formatAccumulatedChartData, tooltipLabelFormatter, formatDateRange } from "./chartUtils";
 import { Bar } from "react-chartjs-2";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
