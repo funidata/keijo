@@ -41,11 +41,11 @@ export default function useChartAreaConfig() {
 
   const handleTotalsChartVariantChange = useCallback(
     (value: TotalsChartVariant, graphIndex: number, sectionIndex: number) => {
-      setChartAreaConfig((prevConfig) => {
-        const newConfig = [...prevConfig];
-        newConfig[sectionIndex].graphs[graphIndex].variant = value;
-        return newConfig;
-      });
+      const newConfig = [...chartAreaConfig];
+      newConfig[sectionIndex].graphs[graphIndex].variant = value;
+
+      setChartAreaConfig(newConfig);
+      localStorage.setItem(chartAreaConfigStorageKey, JSON.stringify(newConfig));
     },
     [],
   );
