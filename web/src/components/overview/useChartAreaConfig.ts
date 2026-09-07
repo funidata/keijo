@@ -12,7 +12,8 @@ type TotalsChartConfig = {
   type: "totals";
   variant: TotalsChartVariant;
 };
-interface GraphAreaConfig {
+
+export interface GraphAreaConfig {
   key: keyof Entry;
   graphs: GraphConfig[];
 }
