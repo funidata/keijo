@@ -29,6 +29,7 @@ import {
 import AreaChart from "./AreaChart";
 import useChartAreaConfig from "./useChartAreaConfig";
 import FormControl from "@mui/material/FormControl";
+import Grid from "@mui/material/Grid";
 
 const opaqueBarBackgrounds: Plugin = {
   id: "opaqueBarBackgrounds",
@@ -59,6 +60,7 @@ ChartJS.register(
 );
 
 ChartJS.defaults.animation = false;
+ChartJS.defaults.aspectRatio = 1.5;
 
 export default function OverviewWrapper() {
   // TODO: get data for the given range
@@ -83,12 +85,12 @@ export default function OverviewWrapper() {
       {chartAreaConfig.map((section, sectionIndex) => (
         <Box key={sectionIndex}>
           <Typography variant="h6">{t(`overview.hoursBy.${section.key}`)}</Typography>
-          <Stack direction="row" spacing={4}>
+          <Grid container spacing={6}>
             {section.graphs.map((graph, graphIndex) => {
               switch (graph.type) {
                 case "totals":
                   return (
-                    <Box sx={{ width: "50%" }}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
                       <Stack direction="row" sx={{ justifyContent: "end", width: "100%" }}>
                         <FormControl size="small" variant="standard">
                           <Select
@@ -136,11 +138,11 @@ export default function OverviewWrapper() {
                           workdays={workdays}
                         />
                       )}
-                    </Box>
+                    </Grid>
                   );
                 case "timeline":
                   return (
-                    <Box sx={{ width: "50%" }}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
                       <Stack direction="row" sx={{ justifyContent: "end", width: "100%" }}>
                         <FormControl size="small" variant="standard">
                           <Select
@@ -170,13 +172,13 @@ export default function OverviewWrapper() {
                         workdays={workdays}
                         variant={graph.variant}
                       />
-                    </Box>
+                    </Grid>
                   );
                 default:
                   return null;
               }
             })}
-          </Stack>
+          </Grid>
         </Box>
       ))}
     </Stack>

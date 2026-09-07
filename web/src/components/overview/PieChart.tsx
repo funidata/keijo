@@ -33,6 +33,7 @@ export default function PieChart({ workdays, chartKey }: ChartProps) {
   const data = formatChartDataForPieChart(chartData);
 
   const options = {
+    aspectRatio: 1.5,
     plugins: {
       tooltip: {
         title: {
