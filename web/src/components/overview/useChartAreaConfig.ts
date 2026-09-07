@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
-import { Entry } from "../../graphql/generated/graphql";
+import type { ChartKey } from "./chartTypes";
 
-type GraphConfig = TimelineChartConfig | TotalsChartConfig;
+export type GraphConfig = TimelineChartConfig | TotalsChartConfig;
 type TimelineChartVariant = "stacked" | "default";
 type TimelineChartConfig = {
   variant: TimelineChartVariant;
@@ -14,7 +14,7 @@ type TotalsChartConfig = {
 };
 
 export interface GraphAreaConfig {
-  key: keyof Entry;
+  key: ChartKey;
   graphs: GraphConfig[];
 }
 

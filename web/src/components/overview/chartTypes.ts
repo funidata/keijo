@@ -1,6 +1,8 @@
 import { Workday, Entry } from "../../graphql/generated/graphql";
 
+export type ChartKey = keyof Entry;
+
 export interface ChartProps {
   workdays: Workday[];
-  chartKey: keyof Entry;
+  chartKey: ChartKey;
 }

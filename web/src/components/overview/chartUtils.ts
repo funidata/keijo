@@ -1,5 +1,6 @@
-import { Entry, Workday } from "../../graphql/generated/schema-types";
+import { Workday } from "../../graphql/generated/schema-types";
 import dayjs from "../../common/dayjs";
+import { ChartKey } from "./chartTypes";
 
 interface AccumulatedDataset {
   label: string;
@@ -12,7 +13,7 @@ interface AccumulatedDataset {
  * 
  * Note, the returned chart data is not compatible with AreaCharts.
  * */
-export function formatAccumulatedChartData(workdays: Workday[], key: keyof Entry) {
+export function formatAccumulatedChartData(workdays: Workday[], key: ChartKey) {
   const accumulatedData = workdays
     .flatMap((workday) => workday.entries)
     .reduce<AccumulatedDataset[]>((accumulator, entry) => {
@@ -55,7 +56,7 @@ export function formatChartDataForPieChart(data: ReturnType<typeof formatAccumul
 /** Format workday data for AreaChart usage. */
 export function formatAreaChartData(
   workdays: Workday[],
-  key: keyof Entry,
+  key: ChartKey,
   variant: "stacked" | "default",
   formatWeekNumber: (weekNumber: string) => string = (weekNumber) => weekNumber,
 ) {
