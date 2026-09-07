@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useContext, createContext } from "react";
 import { GraphAreaConfig, TotalsChartVariant, TimelineChartVariant } from "./chartTypes";
 
 const defaultChartAreaConfig: GraphAreaConfig[] = [
@@ -36,7 +36,14 @@ function getChartAreaConfig() {
 }
 
 const chartAreaConfigStorageKey = "chartAreaConfig";
-export default function useChartAreaConfig() {
+
+const OverviewContext = createContext<{
+  chartAreaConfig: GraphAreaConfig[];
+  handleTotalsChartVariantChange: (value: TotalsChartVariant, graphIndex: number, sectionIndex: number) => void;
+  handleTimelineChartVariantChange: (value: TimelineChartVariant, graphIndex: number, sectionIndex: number) => void;
+} | null>(null);
+
+export default function OverviewContextProvider({ children }: { children: React.ReactNode }) {
   const [chartAreaConfig, setChartAreaConfig] = useState<GraphAreaConfig[]>(getChartAreaConfig());
 
   const handleTotalsChartVariantChange = useCallback(
@@ -61,5 +68,23 @@ export default function useChartAreaConfig() {
     [],
   );
 
-  return { chartAreaConfig, handleTotalsChartVariantChange, handleTimelineChartVariantChange };
+  const contextValue = {
+    chartAreaConfig,
+    handleTotalsChartVariantChange,
+    handleTimelineChartVariantChange,
+  };
+
+  return (
+    <OverviewContext.Provider value={contextValue}>
+      {children}
+    </OverviewContext.Provider>
+  );
+}
+
+export function useChartAreaConfig() {
+  const context = useContext(OverviewContext);
+  if (!context) {
+    throw new Error("useChartAreaConfig must be used within an OverviewContextProvider");
+  }
+  return context;
 }
