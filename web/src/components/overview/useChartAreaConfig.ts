@@ -1,22 +1,5 @@
 import { useState, useCallback } from "react";
-import type { ChartKey } from "./chartTypes";
-
-export type GraphConfig = TimelineChartConfig | TotalsChartConfig;
-type TimelineChartVariant = "stacked" | "default";
-type TimelineChartConfig = {
-  variant: TimelineChartVariant;
-  type: "timeline";
-};
-type TotalsChartVariant = "bar-vertical" | "bar-horizontal" | "pie";
-type TotalsChartConfig = {
-  type: "totals";
-  variant: TotalsChartVariant;
-};
-
-export interface GraphAreaConfig {
-  key: ChartKey;
-  graphs: GraphConfig[];
-}
+import { GraphAreaConfig, TotalsChartVariant, TimelineChartVariant } from "./chartTypes";
 
 const defaultChartAreaConfig: GraphAreaConfig[] = [
   {

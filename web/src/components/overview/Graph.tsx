@@ -9,8 +9,7 @@ import PieChart from "./PieChart";
 import BarChart from "./BarChart";
 import AreaChart from "./AreaChart";
 import { Workday } from "../../graphql/generated/graphql";
-import type { ChartKey } from "./chartTypes";
-import type { GraphConfig } from "./useChartAreaConfig";
+import type { ChartKey, GraphConfig } from "./chartTypes";
 import useChartAreaConfig from "./useChartAreaConfig";
 
 interface GraphProps {

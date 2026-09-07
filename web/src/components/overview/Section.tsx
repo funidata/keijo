@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import { useTranslation } from "react-i18next";
-import type { GraphAreaConfig } from "./useChartAreaConfig";
+import type { GraphAreaConfig } from "./chartTypes";
 import { Workday } from "../../graphql/generated/graphql";
 import Graph from "./Graph";
 
