@@ -6,3 +6,8 @@ export interface ChartProps {
   workdays: Workday[];
   chartKey: ChartKey;
 }
+
+export interface ChartDateRange {
+  startDate: string;
+  endDate: string;
+}

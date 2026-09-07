@@ -1,11 +1,10 @@
 import { TooltipItem } from "chart.js";
-import { ChartProps } from "./chartTypes";
+import { ChartDateRange, ChartProps } from "./chartTypes";
 import { useTranslation } from "react-i18next";
 import {
   formatAccumulatedChartData,
   tooltipLabelFormatter,
   formatDateRange,
-  DateRange,
 } from "./chartUtils";
 import { Bar } from "react-chartjs-2";
 import dayjs from "dayjs";
@@ -23,7 +22,7 @@ const labelScale = { ticks: { display: false } };
 const getBarChartOptions = (
   orientation: "vertical" | "horizontal",
   totalHours: number,
-  dateRange: DateRange,
+  dateRange: ChartDateRange,
   t: (key: string, options?: Record<string, unknown>) => string,
 ) => {
   return {

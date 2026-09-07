@@ -1,6 +1,6 @@
 import { Workday } from "../../graphql/generated/schema-types";
 import dayjs from "../../common/dayjs";
-import { ChartKey } from "./chartTypes";
+import { ChartDateRange, ChartKey } from "./chartTypes";
 
 interface AccumulatedDataset {
   label: string;
@@ -120,12 +120,7 @@ export function tooltipLabelFormatter(label: string, value: number | string) {
   return ` ${label}: ${formatDuration(rawHours)}`;
 }
 
-export interface DateRange {
-  startDate: string;
-  endDate: string;
-}
-
 /** Format a date range as a human-readable string ("DD.MM.YYYY - DD.MM.YYYY"). Used for accumulated chart tooltips. */
-export function formatDateRange(dateRange: DateRange) {
+export function formatDateRange(dateRange: ChartDateRange) {
   return `${dayjs(dateRange.startDate).format("DD.MM.YYYY")} - ${dayjs(dateRange.endDate).format("DD.MM.YYYY")}`;
 }
