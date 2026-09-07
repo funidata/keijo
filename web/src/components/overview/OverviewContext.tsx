@@ -49,6 +49,7 @@ type OverviewContextType = {
     graphIndex: number,
     sectionIndex: number,
   ) => void;
+  moveGraph: (sectionIndex: number, sourceIndex: number, targetIndex: number) => void;
 };
 
 const OverviewContext = createContext<OverviewContextType | null>(null);
@@ -58,33 +59,77 @@ export default function OverviewContextProvider({ children }: { children: React.
 
   const handleTotalsChartVariantChange = useCallback(
     (value: TotalsChartVariant, graphIndex: number, sectionIndex: number) => {
-      const newConfig = [...chartAreaConfig];
-      newConfig[sectionIndex].graphs[graphIndex].variant = value;
+      setChartAreaConfig((currentConfig) => {
+        const newConfig = currentConfig.map((section, currentSectionIndex) =>
+          currentSectionIndex === sectionIndex
+            ? {
+                ...section,
+                graphs: section.graphs.map((graph, currentGraphIndex) =>
+                  currentGraphIndex === graphIndex ? { ...graph, variant: value } : graph,
+                ),
+              }
+            : section,
+        );
 
-      setChartAreaConfig(newConfig);
-      localStorage.setItem(chartAreaConfigStorageKey, JSON.stringify(newConfig));
+        localStorage.setItem(chartAreaConfigStorageKey, JSON.stringify(newConfig));
+        return newConfig;
+      });
     },
     [],
   );
 
   const handleTimelineChartVariantChange = useCallback(
     (value: TimelineChartVariant, graphIndex: number, sectionIndex: number) => {
-      const newConfig = [...chartAreaConfig];
-      newConfig[sectionIndex].graphs[graphIndex].variant = value;
+      setChartAreaConfig((currentConfig) => {
+        const newConfig = currentConfig.map((section, currentSectionIndex) =>
+          currentSectionIndex === sectionIndex
+            ? {
+                ...section,
+                graphs: section.graphs.map((graph, currentGraphIndex) =>
+                  currentGraphIndex === graphIndex ? { ...graph, variant: value } : graph,
+                ),
+              }
+            : section,
+        );
 
-      setChartAreaConfig(newConfig);
-      localStorage.setItem(chartAreaConfigStorageKey, JSON.stringify(newConfig));
+        localStorage.setItem(chartAreaConfigStorageKey, JSON.stringify(newConfig));
+        return newConfig;
+      });
     },
     [],
   );
+
+  const moveGraph = useCallback((sectionIndex: number, sourceIndex: number, targetIndex: number) => {
+    if (sourceIndex === targetIndex) {
+      return;
+    }
+
+    setChartAreaConfig((currentConfig) => {
+      const section = currentConfig[sectionIndex];
+      const graphs = [...section.graphs];
+      const [graph] = graphs.splice(sourceIndex, 1);
+
+      if (!graph) {
+        return currentConfig;
+      }
+
+      graphs.splice(targetIndex, 0, graph);
+      const newConfig = [...currentConfig];
+      newConfig[sectionIndex] = { ...section, graphs };
+
+      localStorage.setItem(chartAreaConfigStorageKey, JSON.stringify(newConfig));
+      return newConfig;
+    });
+  }, []);
 
   const contextValue = useMemo(() => {
     return {
       chartAreaConfig,
       handleTotalsChartVariantChange,
       handleTimelineChartVariantChange,
+      moveGraph,
     };
-  }, [chartAreaConfig, handleTotalsChartVariantChange, handleTimelineChartVariantChange]);
+  }, [chartAreaConfig, handleTotalsChartVariantChange, handleTimelineChartVariantChange, moveGraph]);
 
   return <OverviewContext.Provider value={contextValue}>{children}</OverviewContext.Provider>;
 }
