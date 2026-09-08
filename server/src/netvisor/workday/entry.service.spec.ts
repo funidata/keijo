@@ -1,5 +1,6 @@
 import { BadRequestException, ForbiddenException, NotFoundException } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
+import { JiraService } from "../../jira/jira.service";
 import dayjs from "dayjs";
 import {
   MockLogger,
@@ -34,6 +35,10 @@ const entry: Entry = {
   client: "maksaja",
 };
 
+const mockJiraService = {
+  issueIsAvailable: jest.fn(),
+};
+
 describe("EntryService", () => {
   let entryService: EntryService;
   let workdayService: WorkdayService;
@@ -43,8 +48,17 @@ describe("EntryService", () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [EntryService, MockNetvisorApiService, MockWorkdayService, MockLogger],
+      providers: [
+        EntryService,
+        MockNetvisorApiService,
+        MockWorkdayService,
+        MockLogger,
+        { provide: JiraService, useValue: mockJiraService },
+      ],
     }).compile();
+
+    mockJiraService.issueIsAvailable.mockReset();
+    mockJiraService.issueIsAvailable.mockResolvedValue(true);
 
     entryService = module.get(EntryService);
     workdayService = module.get(WorkdayService);
@@ -138,7 +152,7 @@ describe("EntryService", () => {
 
   describe("addWorkdayEntry", () => {
     it("Adds entry", async () => {
-      const call = entryService.addWorkdayEntry(employeeNumber, "", {
+      const call = entryService.addWorkdayEntry(employeeNumber, "", undefined, {
         ...entry,
         date: date.toDate(),
       });
@@ -205,13 +219,51 @@ describe("EntryService", () => {
 
         jest.spyOn(entryService, "remove");
         jest.spyOn(entryService, "addWorkdayEntry");
-        const call = entryService.replace(employeeNumber, "", key, date, replacement);
+        const call = entryService.replace(employeeNumber, "", undefined, key, date, replacement);
 
         await expect(call).resolves.toBeUndefined();
         expect(entryService.remove).toHaveBeenCalledTimes(1);
         expect(entryService.remove).toHaveBeenCalledWith(employeeNumber, "", key, date);
         expect(entryService.addWorkdayEntry).toHaveBeenCalledTimes(1);
-        expect(entryService.addWorkdayEntry).toHaveBeenCalledWith(employeeNumber, "", replacement);
+        expect(entryService.addWorkdayEntry).toHaveBeenCalledWith(
+          employeeNumber,
+          "",
+          undefined,
+          replacement,
+        );
+      });
+    });
+
+    describe("paste entry", () => {
+      it("Adds an entry when its Jira issue is available", async () => {
+        mockJiraService.issueIsAvailable.mockResolvedValue(true);
+
+        await expect(
+          entryService.addWorkdayEntry(
+            employeeNumber,
+            "",
+            { accessToken: "access-token", refreshToken: "refresh-token" },
+            { ...entry, date: date.toDate() },
+          ),
+        ).resolves.toBeUndefined();
+
+        expect(mockJiraService.issueIsAvailable).toHaveBeenCalledWith("access-token", entry.issue);
+        expect(netvisorApiService.post).toHaveBeenCalledTimes(1);
+      });
+
+      it("Rejects an entry when its Jira issue is unavailable", async () => {
+        mockJiraService.issueIsAvailable.mockResolvedValue(false);
+
+        const call = entryService.addWorkdayEntry(
+          employeeNumber,
+          "",
+          { accessToken: "access-token", refreshToken: "refresh-token" },
+          { ...entry, date: date.toDate() },
+        );
+
+        await expect(call).rejects.toThrow(BadRequestException);
+        expect(mockJiraService.issueIsAvailable).toHaveBeenCalledWith("access-token", entry.issue);
+        expect(netvisorApiService.post).not.toHaveBeenCalled();
       });
     });
   });

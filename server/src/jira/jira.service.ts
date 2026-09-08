@@ -85,6 +85,15 @@ export class JiraService {
     return this.searchJql(accessToken, payload);
   }
 
+  async issueIsAvailable(accessToken: string, issueKey: string): Promise<boolean> {
+    const result = await this.searchIssuesByKey(accessToken, {
+      keys: [issueKey],
+      maxResults: 1,
+    });
+
+    return result.issues.some((issue) => issue.key === issueKey);
+  }
+
   async searchRecentIssues(accessToken: string, body: JiraSearchRecentDto) {
     // This list can include pretty much anything if there are malformed tickets entered into
     // Netvisor by accident, etc.
