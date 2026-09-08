@@ -2,9 +2,9 @@ import Stack from "@mui/material/Stack";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import Alert from "@mui/material/Alert";
 import { useTranslation } from "react-i18next";
 import { TimelineGraphVariant, type GraphGroupByKey, type GraphConfig } from "./graphTypes";
+import LineChart from "./charts/LineChart";
 import { useOverviewConfig } from "./OverviewContext";
 
 interface TimelineGraphProps {
@@ -45,20 +45,12 @@ export default function TimelineGraph({
           </Select>
         </FormControl>
       </Stack>
-      <Alert variant="outlined" severity="warning">
-        TODO TimelineGraph: Implement the timeline graph display based on the following:
-        <pre>
-          {JSON.stringify(
-            {
-              variant: config.variant,
-              groupBy,
-              daterange: { start: workdays[0]?.date, end: workdays[workdays.length - 1]?.date },
-            },
-            null,
-            2,
-          )}
-        </pre>
-      </Alert>
+      <LineChart
+        key={config.variant}
+        groupBy={groupBy}
+        workdays={workdays}
+        variant={config.variant as TimelineGraphVariant}
+      />
     </>
   );
 }

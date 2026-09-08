@@ -4,6 +4,12 @@ import TimelineGraph from "./TimelineGraph";
 import OverviewContextProvider from "./OverviewContext";
 import { TimelineGraphVariant } from "./graphTypes";
 
+vi.mock("./charts/LineChart", () => ({
+  default: ({ variant }: { variant: TimelineGraphVariant }) => (
+    <div data-testid={`line-chart-${variant}`} />
+  ),
+}));
+
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
@@ -11,6 +17,25 @@ vi.mock("react-i18next", () => ({
 afterEach(cleanup);
 
 describe("TimelineGraph", () => {
+  it.each([TimelineGraphVariant.Stacked, TimelineGraphVariant.Unstacked])(
+    "renders the %s line chart",
+    (variant) => {
+      render(
+        <OverviewContextProvider workdays={[]}>
+          <TimelineGraph
+            config={{ type: "timeline", variant }}
+            graphIndex={0}
+            groupBy="product"
+            onChangeVariant={vi.fn()}
+            zoneIndex={0}
+          />
+        </OverviewContextProvider>,
+      );
+
+      expect(screen.getByTestId(`line-chart-${variant}`)).toBeTruthy();
+    },
+  );
+
   it("offers timeline variants and reports the selected variant", () => {
     const onChangeVariant = vi.fn();
     render(

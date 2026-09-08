@@ -1,0 +1,127 @@
+import { Workday } from "../../../graphql/generated/schema-types";
+import dayjs from "../../../common/dayjs";
+import { ChartDateRange } from "./chartTypes";
+import { GraphGroupByKey, TimelineGraphVariant } from "../graphTypes";
+
+interface AccumulatedDataset {
+  label: string;
+  value: number;
+}
+
+/** Accumulate work hour data categorized by given key. The returned chart data
+ * works as is for BarChart usage. PieCharts require further formatting using
+ * `formatChartDataForPieChart()`.
+ *
+ * Note, the returned chart data is not compatible with AreaCharts.
+ * */
+export function formatAccumulatedChartData(workdays: Workday[], key: GraphGroupByKey) {
+  const accumulatedData = workdays
+    .flatMap((workday) => workday.entries)
+    .reduce<AccumulatedDataset[]>((accumulator, entry) => {
+      // Skip entries with no worktime to accumulate
+      if (entry.duration === 0) {
+        return accumulator;
+      }
+
+      if (entry.durationInHours) {
+        const label = entry[key] ? String(entry[key]) : "unknown";
+        const existingDatasetIndex = accumulator.findIndex((data) => {
+          return data.label === label;
+        });
+
+        if (existingDatasetIndex === -1) {
+          accumulator.push({ label, value: entry.duration });
+        } else {
+          accumulator[existingDatasetIndex]["value"] =
+            accumulator[existingDatasetIndex]["value"] + entry.duration;
+        }
+      } else {
+        console.error("Duration not in hours, cannot be added to workhours summary.", entry);
+      }
+      return accumulator;
+    }, []);
+
+  return {
+    labels: [...workdays.slice(0, 1).map((workday) => workday.date)],
+    datasets: accumulatedData.map(({ label, value }) => ({ label, data: [value] })),
+  };
+}
+/** Format accumulative work hour data for PieChart usage. */
+export function formatChartDataForPieChart(data: ReturnType<typeof formatAccumulatedChartData>) {
+  return {
+    labels: data.datasets.map((dataset) => dataset.label),
+    datasets: [{ data: data.datasets.map((dataset) => dataset.data[0]) }],
+  };
+}
+
+/** Format workday data for AreaChart usage. */
+export function formatLineChartData(
+  workdays: Workday[],
+  key: GraphGroupByKey,
+  variant: TimelineGraphVariant,
+  formatWeekNumber: (weekNumber: string) => string = (weekNumber) => weekNumber,
+) {
+  const datasets = new Map<string, Map<string, number>>();
+  const dates = workdays.map((workday) => workday.date);
+  const sortedDates = [...dates].sort();
+  const spansMoreThanSevenDays =
+    sortedDates.length > 0 && dayjs(sortedDates.at(-1)).diff(dayjs(sortedDates[0]), "day") + 1 > 7;
+  const labels = spansMoreThanSevenDays
+    ? Array.from(new Set(dates.map((date) => dayjs(date).startOf("week").format("YYYY-MM-DD"))))
+    : dates;
+  const displayLabels = spansMoreThanSevenDays
+    ? labels.map((date) => formatWeekNumber(dayjs(date).week().toString()))
+    : labels;
+
+  workdays.forEach((workday) => {
+    workday.entries.forEach((entry) => {
+      if (entry.duration === 0 || !entry.durationInHours) {
+        return;
+      }
+
+      const label = entry[key] ? String(entry[key]) : "unknown";
+      const dataByDate = datasets.get(label) ?? new Map<string, number>();
+      const date = spansMoreThanSevenDays
+        ? dayjs(workday.date).startOf("week").format("YYYY-MM-DD")
+        : workday.date;
+      dataByDate.set(date, (dataByDate.get(date) ?? 0) + entry.duration);
+      datasets.set(label, dataByDate);
+    });
+  });
+
+  return {
+    datasets: Array.from(datasets, ([label, dataByDate]) => ({
+      label,
+      ...(variant === "stacked" && { fill: "stack" }),
+      data: [...labels].reverse().map((date) => ({
+        date: spansMoreThanSevenDays ? formatWeekNumber(dayjs(date).week().toString()) : date,
+        hours: dataByDate.get(date) ?? 0,
+      })),
+    })),
+    labels: displayLabels,
+  };
+}
+
+/** Format a duration in fractional hours to a human-readable string ("Xh Ym"). */
+export function formatDuration(durationInHours: number) {
+  const hours = Math.floor(durationInHours);
+  const minutes = dayjs.duration(durationInHours - hours, "hours").asMinutes();
+
+  if (minutes === 0) {
+    return `${hours}h`;
+  }
+
+  return `${hours}h ${minutes}m`;
+}
+
+/** Format the chart tooltip label for displaying label and hours consistently across different charts. */
+export function tooltipLabelFormatter(label: string, value: number | string) {
+  const rawHours = Number(value.toString().replace(",", "."));
+
+  return ` ${label}: ${formatDuration(rawHours)}`;
+}
+
+/** Format a date range as a human-readable string ("DD.MM.YYYY - DD.MM.YYYY"). Used for accumulated chart tooltips. */
+export function formatDateRange(dateRange: ChartDateRange) {
+  return `${dayjs(dateRange.startDate).format("DD.MM.YYYY")} - ${dayjs(dateRange.endDate).format("DD.MM.YYYY")}`;
+}
