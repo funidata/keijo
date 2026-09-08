@@ -1,4 +1,4 @@
-import { Dayjs } from "dayjs";
+import type { Dayjs } from "dayjs";
 import { useNavigate, useParams } from "react-router-dom";
 import useDayjs from "../../common/useDayjs";
 import { InvalidWeekParamException } from "../error/InvalidWeekParamException";

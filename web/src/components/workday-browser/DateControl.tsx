@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { DateRange, DateRangePicker } from "@mui/x-date-pickers-pro";
-import { Dayjs } from "dayjs";
+import type { Dayjs } from "dayjs";
 import { useTranslation } from "react-i18next";
 import { useWorkdayBrowserParams } from "./useWorkdayBrowserParams";
 import type { BrowsingMode } from "./workdayBrowserTypes";
