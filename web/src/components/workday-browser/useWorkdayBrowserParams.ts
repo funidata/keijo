@@ -4,8 +4,7 @@ import useDayjs from "../../common/useDayjs";
 import { InvalidWeekParamException } from "../error/InvalidWeekParamException";
 import { NotFoundException } from "../error/NotFoundException";
 import { OldWeekParamFormatException } from "../error/OldWeekParamFormatException";
-
-export type BrowsingMode = "week" | "range";
+import type { BrowsingMode } from "./workdayBrowserTypes";
 const dateFormat = "YYYY-MM-DD";
 
 export const useWorkdayBrowserParams = () => {
@@ -14,7 +13,7 @@ export const useWorkdayBrowserParams = () => {
   const { browsingMode, from: fromParam, to: toParam } = useParams();
 
   // Validate browsing mode.
-  if (!browsingMode || !["week", "range"].includes(browsingMode)) {
+  if (!browsingMode || !["week", "range", "overview"].includes(browsingMode)) {
     throw new NotFoundException();
   }
 
@@ -96,6 +95,17 @@ export const useWorkdayBrowserParams = () => {
     navigate(newPath);
   };
 
+  /**
+   * Navigate to overview with given date range.
+   *
+   * Will not allow an invalid range, i.e., end before start.
+   */
+  const goToOverview = (targetFrom: Dayjs, targetTo: Dayjs) => {
+    const safeTo = targetTo.isBefore(targetFrom) ? targetFrom : targetTo;
+    const newPath = `/entries/overview/${targetFrom.format(dateFormat)}/${safeTo.format(dateFormat)}`;
+    navigate(newPath);
+  };
+
   return {
     browsingMode,
     from,
@@ -104,5 +114,6 @@ export const useWorkdayBrowserParams = () => {
     formattedTo: to.format(dateFormat),
     goToWeek,
     goToRange,
+    goToOverview,
   };
 };

@@ -151,6 +151,9 @@ const en = {
       success: "Workday entry template deleted.",
     },
   },
+  overview: {
+    title: "Overview",
+  },
   titles: {
     workdayBrowser: "Entries",
     templates: "My Entry Templates",
