@@ -13,6 +13,7 @@ type OverviewContextType = {
     graphIndex: number,
     zoneIndex: number,
   ) => void;
+  updateOverviewConfig: (newConfig: GraphZoneConfig[]) => void;
 };
 
 const OverviewContext = createContext<OverviewContextType | null>(null);
@@ -26,15 +27,19 @@ export default function OverviewContextProvider({
     DEFAULT_OVERVIEW_CONFIG,
   );
 
+  const updateOverviewConfig = useCallback((newConfig: GraphZoneConfig[]) => {
+    setOverviewConfig(newConfig);
+    localStorage.setItem(OVERVIEW_CONFIG_LOCALSTORAGE_KEY, JSON.stringify(newConfig));
+  }, []);
+
   const handleGraphVariantChange = useCallback(
     (value: TotalsGraphVariant | TimelineGraphVariant, graphIndex: number, zoneIndex: number) => {
       const newConfig = [...overviewConfig];
       newConfig[zoneIndex].graphs[graphIndex].variant = value;
 
-      setOverviewConfig(newConfig);
-      localStorage.setItem(OVERVIEW_CONFIG_LOCALSTORAGE_KEY, JSON.stringify(newConfig));
+      updateOverviewConfig(newConfig);
     },
-    [overviewConfig],
+    [overviewConfig, updateOverviewConfig],
   );
 
   const contextValue = useMemo(() => {
@@ -42,8 +47,9 @@ export default function OverviewContextProvider({
       overviewConfig,
       workdays,
       handleGraphVariantChange,
+      updateOverviewConfig,
     };
-  }, [overviewConfig, workdays, handleGraphVariantChange]);
+  }, [overviewConfig, workdays, handleGraphVariantChange, updateOverviewConfig]);
 
   return <OverviewContext.Provider value={contextValue}>{children}</OverviewContext.Provider>;
 }
