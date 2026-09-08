@@ -4,7 +4,7 @@ import { Dayjs } from "dayjs";
 import { useTranslation } from "react-i18next";
 import { useWorkdayBrowserParams } from "./useWorkdayBrowserParams";
 
-const DateControl = () => {
+export default function DateControl() {
   const { t } = useTranslation();
   const { goToRange, from, to } = useWorkdayBrowserParams();
 
@@ -19,6 +19,4 @@ const DateControl = () => {
       <DateRangePicker value={[from, to]} label={t("controls.dateRange")} onChange={handleChange} />
     </Box>
   );
-};
-
-export default DateControl;
+}

@@ -6,7 +6,7 @@ import DateControl from "./DateControl";
 import WeekControl from "./WeekControl";
 import { BrowsingMode, useWorkdayBrowserParams } from "./useWorkdayBrowserParams";
 
-const ListControls = () => {
+export default function ListControls() {
   const { t } = useTranslation();
   const { browsingMode, from, to, goToWeek, goToRange } = useWorkdayBrowserParams();
 
@@ -38,6 +38,4 @@ const ListControls = () => {
       </TabContext>
     </Box>
   );
-};
-
-export default ListControls;
+}
