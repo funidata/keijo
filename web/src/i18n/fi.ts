@@ -157,6 +157,17 @@ const fi = {
       product: "Työaika tuotteittain",
       activity: "Työaika toiminnoittain",
     },
+    timelineVariant: {
+      label: "Tyyppi",
+      unstacked: "Ryhmitelty",
+      stacked: "Pinottu",
+    },
+    totalsVariant: {
+      label: "Tyyppi",
+      barHorizontal: "Vaakapalkit",
+      barVertical: "Pystypalkit",
+      pie: "Piirakka",
+    },
   },
   titles: {
     workdayBrowser: "Työaikakirjaukset",

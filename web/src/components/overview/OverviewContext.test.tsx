@@ -1,6 +1,7 @@
-import { cleanup, renderHook } from "@testing-library/react";
+import { act, cleanup, renderHook } from "@testing-library/react";
 import type { PropsWithChildren } from "react";
 import { afterEach, describe, expect, it } from "vitest";
+import { TotalsGraphVariant } from "./graphTypes";
 import { DEFAULT_OVERVIEW_CONFIG, OVERVIEW_CONFIG_LOCALSTORAGE_KEY } from "./constants";
 import OverviewContextProvider, { useOverviewConfig } from "./OverviewContext";
 
@@ -50,5 +51,23 @@ describe("OverviewContextProvider", () => {
     expect(() => renderHook(() => useOverviewConfig())).toThrow(
       "useOverviewConfig must be used within an OverviewContextProvider",
     );
+  });
+
+  describe("handleGraphVariantChange()", () => {
+    it("updates and persists the selected graph variant", () => {
+      const { result } = renderOverviewConfig();
+
+      act(() => {
+        result.current.handleGraphVariantChange(TotalsGraphVariant.Pie, 0, 0);
+      });
+
+      expect(result.current.overviewConfig[0].graphs[0]).toEqual({
+        type: "totals",
+        variant: TotalsGraphVariant.Pie,
+      });
+      expect(JSON.parse(localStorage.getItem(OVERVIEW_CONFIG_LOCALSTORAGE_KEY)!)).toEqual(
+        result.current.overviewConfig,
+      );
+    });
   });
 });

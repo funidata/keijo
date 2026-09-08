@@ -157,6 +157,17 @@ const en = {
       product: "Worktime grouped by product",
       activity: "Worktime grouped by activity",
     },
+    timelineVariant: {
+      label: "Variant",
+      unstacked: "Unstacked",
+      stacked: "Stacked",
+    },
+    totalsVariant: {
+      label: "Variant",
+      barHorizontal: "Horizontal bars",
+      barVertical: "Vertical bars",
+      pie: "Pie",
+    },
   },
   titles: {
     workdayBrowser: "Entries",
