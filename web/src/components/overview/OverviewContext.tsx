@@ -1,12 +1,8 @@
-import { useState, useContext, useMemo, createContext, PropsWithChildren } from "react";
+import { useContext, useMemo, createContext, PropsWithChildren } from "react";
 import { GraphZoneConfig } from "./graphTypes";
 import type { Workday } from "../../graphql/generated/graphql";
 import { DEFAULT_OVERVIEW_CONFIG, OVERVIEW_CONFIG_LOCALSTORAGE_KEY } from "./constants";
-
-function getInitialOverviewConfig() {
-  const storedConfig = localStorage.getItem(OVERVIEW_CONFIG_LOCALSTORAGE_KEY);
-  return storedConfig ? JSON.parse(storedConfig) : DEFAULT_OVERVIEW_CONFIG;
-}
+import { useLocalStorage } from "usehooks-ts";
 
 type OverviewContextType = {
   overviewConfig: GraphZoneConfig[];
@@ -19,7 +15,10 @@ export default function OverviewContextProvider({
   children,
   workdays,
 }: PropsWithChildren<{ workdays: Workday[] }>) {
-  const [overviewConfig] = useState<GraphZoneConfig[]>(getInitialOverviewConfig());
+  const [overviewConfig] = useLocalStorage(
+    OVERVIEW_CONFIG_LOCALSTORAGE_KEY,
+    DEFAULT_OVERVIEW_CONFIG,
+  );
 
   const contextValue = useMemo(() => {
     return {
