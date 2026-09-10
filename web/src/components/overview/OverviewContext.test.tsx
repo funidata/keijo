@@ -1,7 +1,7 @@
 import { act, cleanup, renderHook } from "@testing-library/react";
 import type { PropsWithChildren } from "react";
 import { afterEach, describe, expect, it } from "vitest";
-import { TotalsGraphVariant } from "./graphTypes";
+import { TotalsGraphVariant, type GraphZoneConfig } from "./graphTypes";
 import { DEFAULT_OVERVIEW_CONFIG, OVERVIEW_CONFIG_LOCALSTORAGE_KEY } from "./constants";
 import OverviewContextProvider, { useOverviewConfig } from "./OverviewContext";
 
@@ -39,6 +39,17 @@ describe("OverviewContextProvider", () => {
     expect(result.current.overviewConfig).toEqual(storedConfig);
   });
 
+  it("restores the default configuration when the stored backup is invalid", () => {
+    localStorage.setItem(OVERVIEW_CONFIG_LOCALSTORAGE_KEY, "invalid JSON");
+
+    const { result } = renderOverviewConfig();
+
+    expect(result.current.overviewConfig).toEqual(DEFAULT_OVERVIEW_CONFIG);
+    expect(JSON.parse(localStorage.getItem(OVERVIEW_CONFIG_LOCALSTORAGE_KEY)!)).toEqual(
+      DEFAULT_OVERVIEW_CONFIG,
+    );
+  });
+
   it("provides the supplied workdays", () => {
     const workdays = [{ date: "2026-06-01", entries: [] }] as never[];
 
@@ -53,9 +64,36 @@ describe("OverviewContextProvider", () => {
     );
   });
 
+  it("persists replacement and functional configuration updates", () => {
+    const { result } = renderOverviewConfig();
+    const updatedConfig = [
+      {
+        groupBy: "client",
+        graphs: [{ type: "totals", variant: TotalsGraphVariant.Pie }],
+      },
+    ] satisfies GraphZoneConfig[];
+
+    act(() => {
+      result.current.updateOverviewConfig(updatedConfig);
+    });
+
+    expect(result.current.overviewConfig).toEqual(updatedConfig);
+    expect(JSON.parse(localStorage.getItem(OVERVIEW_CONFIG_LOCALSTORAGE_KEY)!)).toEqual(
+      updatedConfig,
+    );
+
+    act(() => {
+      result.current.updateOverviewConfig((previousConfig) => previousConfig.slice(0, 0));
+    });
+
+    expect(result.current.overviewConfig).toEqual([]);
+    expect(JSON.parse(localStorage.getItem(OVERVIEW_CONFIG_LOCALSTORAGE_KEY)!)).toEqual([]);
+  });
+
   describe("handleGraphVariantChange()", () => {
     it("updates and persists the selected graph variant", () => {
       const { result } = renderOverviewConfig();
+      const originalGraph = result.current.overviewConfig[0].graphs[0];
 
       act(() => {
         result.current.handleGraphVariantChange(TotalsGraphVariant.Pie, 0, 0);
@@ -64,6 +102,10 @@ describe("OverviewContextProvider", () => {
       expect(result.current.overviewConfig[0].graphs[0]).toEqual({
         type: "totals",
         variant: TotalsGraphVariant.Pie,
+      });
+      expect(originalGraph).toEqual({
+        type: "totals",
+        variant: TotalsGraphVariant.BarVertical,
       });
       expect(JSON.parse(localStorage.getItem(OVERVIEW_CONFIG_LOCALSTORAGE_KEY)!)).toEqual(
         result.current.overviewConfig,

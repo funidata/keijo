@@ -14,7 +14,7 @@ interface ZoneProps {
 export default function Zone({ zone, index }: ZoneProps) {
   const { t } = useTranslation();
   const { draggedGraphIndex, setDraggedGraphIndex, handleGraphDragStart, handleGraphDrop } =
-    useDraggableGraphs();
+    useDraggableGraphs(index);
 
   return (
     <Box>
@@ -25,14 +25,14 @@ export default function Zone({ zone, index }: ZoneProps) {
             key={graphIndex}
             size={{ xs: 12, sm: 6 }}
             draggable
-            onDragStart={(event) => handleGraphDragStart(event, graphIndex, index)}
+            onDragStart={(event) => handleGraphDragStart(event, graphIndex)}
             onDragOver={(event) => {
               if (event.dataTransfer.types.includes("application/x-keijo-overview-graph")) {
                 event.preventDefault();
                 event.stopPropagation();
               }
             }}
-            onDrop={(event) => handleGraphDrop(event, graphIndex, index)}
+            onDrop={(event) => handleGraphDrop(event, graphIndex)}
             onDragEnd={(event) => {
               event.stopPropagation();
               setDraggedGraphIndex(null);

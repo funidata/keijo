@@ -2,12 +2,12 @@ import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Zone from "./Zone";
 import { useOverviewConfig } from "./OverviewContext";
-import useDraggableGraphs from "./useDraggableGraphs";
+import useDraggableZones from "./useDraggableZones";
 
 export default function Overview() {
   const { overviewConfig } = useOverviewConfig();
   const { handleZoneDragStart, handleZoneDrop, draggedZoneIndex, setDraggedZoneIndex } =
-    useDraggableGraphs();
+    useDraggableZones();
 
   return (
     <Stack direction="column" spacing={4}>
