@@ -8,6 +8,8 @@ import { RemoveWorkdayEntryInput } from "./dto/remove-workday-entry-input.dto";
 import { Workday } from "./dto/workday.dto";
 import { EntryService } from "./entry.service";
 import { WorkdayService } from "./workday.service";
+import { JiraTokensFromSession } from "../../decorators/jira-tokens.decorator";
+import { JiraTokens } from "../../jira/jira.types";
 
 @Resolver()
 export class WorkdayResolver {
@@ -32,9 +34,10 @@ export class WorkdayResolver {
   async addWorkdayEntry(
     @EmployeeNumber() employeeNumber: number,
     @Eppn() eppn: string,
+    @JiraTokensFromSession() jiraTokens: JiraTokens | undefined,
     @Args("entry") entry: AddWorkdayEntryInput,
   ) {
-    await this.entryService.addWorkdayEntry(employeeNumber, eppn, entry);
+    await this.entryService.addWorkdayEntry(employeeNumber, eppn, jiraTokens, entry);
     // NV API does not return any data about the created object so it does not make
     // sense for us to return anything, as it would be just guessing. (E.g., NV API might
     // round given duration resulting in different durations between NV and a client.)
@@ -55,12 +58,14 @@ export class WorkdayResolver {
   async replaceWorkdayEntry(
     @EmployeeNumber() employeeNumber: number,
     @Eppn() eppn: string,
+    @JiraTokensFromSession() jiraTokens: JiraTokens | undefined,
     @Args("originalEntry") originalEntry: RemoveWorkdayEntryInput,
     @Args("replacementEntry") replacementEntry: AddWorkdayEntryInput,
   ) {
     await this.entryService.replace(
       employeeNumber,
       eppn,
+      jiraTokens,
       originalEntry.key,
       dayjs(originalEntry.date),
       replacementEntry,
