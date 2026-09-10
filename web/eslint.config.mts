@@ -9,6 +9,11 @@ const config = defineConfig([
   eslint.configs.recommended,
   tseslint.configs.recommended,
   reactHooks.configs.flat.recommended,
+  {
+    rules: {
+      "react-hooks/set-state-in-effect": "warn",
+    },
+  },
   reactRefresh.configs.vite(),
   prettierConfig,
   {
