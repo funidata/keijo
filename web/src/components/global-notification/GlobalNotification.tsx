@@ -3,24 +3,16 @@
  * To trigger the notification, use the custom hook `useNotification`.
  */
 import { Alert, Snackbar } from "@mui/material";
-import { useEffect, useState } from "react";
 import { useNotificationState } from "./useNotification";
 
 const GlobalNotification = () => {
-  const [open, setOpen] = useState(false);
   const { autoHide, message, type, resetNotification, action } = useNotificationState();
   const autoHideDuration = autoHide ? 5000 : null;
-  const close = () => setOpen(false);
-
-  useEffect(() => {
-    if (type) {
-      setOpen(true);
-    }
-  }, [type]);
+  const close = resetNotification;
 
   return (
     <Snackbar
-      open={open}
+      open={Boolean(type)}
       onClose={close}
       slotProps={{ transition: { onExited: resetNotification } }}
       autoHideDuration={autoHideDuration}
