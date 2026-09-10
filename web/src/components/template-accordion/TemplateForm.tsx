@@ -1,6 +1,6 @@
 import { Box, Button, Grid, TextField, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import useDayjs from "../../common/useDayjs";
@@ -80,7 +80,9 @@ const TemplateForm = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
-  const { control, watch } = form;
+  const { control } = form;
+  const activity = useWatch({ control, name: "activity" });
+  const issue = useWatch({ control, name: "issue" });
   const { isJiraAuth } = useIsJiraAuthenticated();
 
   return (
@@ -137,10 +139,9 @@ const TemplateForm = () => {
                 control={control}
                 rules={{
                   validate: (descriptionValue) => {
-                    const activity = watch("activity");
                     const ticketRequired = activity === "Toteutus";
 
-                    if (ticketRequired && !watch("issue") && !descriptionValue) {
+                    if (ticketRequired && !issue && !descriptionValue) {
                       return t("entryDialog.validation.ticketOrDescriptionRequired");
                     }
 
