@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from "react";
 import { useLocalStorage } from "usehooks-ts";
 
 type AccordionState = {
@@ -9,12 +10,15 @@ const useEntryTemplateAccordionState = () => {
   const [accordionState, setAccordionStates] = useLocalStorage<AccordionState>(key, {});
 
   const expanded = useMemo(() => {
-    return accordionState[key]?.expanded ?? false
-  });
+    return accordionState[key]?.expanded ?? false;
+  }, [accordionState, key]);
 
-  const setExpanded = useCallback((value: boolean) => {
-    setAccordionStates({ [key]: { expanded: value } });
-  }, [expanded]);
+  const setExpanded = useCallback(
+    (value: boolean) => {
+      setAccordionStates({ [key]: { expanded: value } });
+    },
+    [setAccordionStates],
+  );
 
   return { expanded, setExpanded };
 };
