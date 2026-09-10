@@ -8,11 +8,13 @@ const useEntryTemplateAccordionState = () => {
   const key = "entry-template-accordion-state";
   const [accordionState, setAccordionStates] = useLocalStorage<AccordionState>(key, {});
 
-  const expanded = accordionState[key]?.expanded ?? false;
+  const expanded = useMemo(() => {
+    return accordionState[key]?.expanded ?? false
+  });
 
-  const setExpanded = (value: boolean) => {
+  const setExpanded = useCallback((value: boolean) => {
     setAccordionStates({ [key]: { expanded: value } });
-  };
+  }, [expanded]);
 
   return { expanded, setExpanded };
 };
