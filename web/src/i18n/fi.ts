@@ -151,6 +151,9 @@ const fi = {
       success: "Kirjauspohja poistettu.",
     },
   },
+  overview: {
+    title: "Yhteenveto",
+  },
   titles: {
     workdayBrowser: "Työaikakirjaukset",
     templates: "Omat kirjauspohjat",

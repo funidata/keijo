@@ -1,15 +1,25 @@
 import { Box } from "@mui/material";
 import { DateRange, DateRangePicker } from "@mui/x-date-pickers-pro";
-import { Dayjs } from "dayjs";
+import type { Dayjs } from "dayjs";
 import { useTranslation } from "react-i18next";
 import { useWorkdayBrowserParams } from "./useWorkdayBrowserParams";
+import type { BrowsingMode } from "./workdayBrowserTypes";
 
-const DateControl = () => {
+interface DateControlProps {
+  target?: Extract<BrowsingMode, "range" | "overview">;
+}
+
+export default function DateControl({ target = "range" }: DateControlProps) {
   const { t } = useTranslation();
-  const { goToRange, from, to } = useWorkdayBrowserParams();
+  const { goToRange, goToOverview, from, to } = useWorkdayBrowserParams();
 
   const handleChange = ([newStart, newEnd]: DateRange<Dayjs>) => {
     if (newStart && newEnd) {
+      if (target === "overview") {
+        goToOverview(newStart, newEnd);
+        return;
+      }
+
       goToRange(newStart, newEnd);
     }
   };
@@ -19,6 +29,4 @@ const DateControl = () => {
       <DateRangePicker value={[from, to]} label={t("controls.dateRange")} onChange={handleChange} />
     </Box>
   );
-};
-
-export default DateControl;
+}
