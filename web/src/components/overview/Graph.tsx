@@ -1,6 +1,12 @@
-import type { GraphGroupByKey, GraphConfig } from "./graphTypes";
+import type {
+  GraphGroupByKey,
+  GraphConfig,
+  TotalsGraphVariant,
+  TimelineGraphVariant,
+} from "./graphTypes";
 import { useOverviewConfig } from "./OverviewContext";
-import Alert from "@mui/material/Alert";
+import TimelineGraph from "./TimelineGraph";
+import TotalsGraph from "./TotalsGraph";
 
 interface GraphProps {
   config: GraphConfig;
@@ -10,24 +16,23 @@ interface GraphProps {
 }
 
 export default function Graph(props: GraphProps) {
-  const { config, groupBy } = props;
-  const { workdays } = useOverviewConfig();
+  const { handleGraphVariantChange } = useOverviewConfig();
 
-  return (
-    <Alert variant="outlined" severity="warning">
-      TODO: Implement the graph display based on the following:
-      <pre>
-        {JSON.stringify(
-          {
-            type: config.type,
-            variant: config.variant,
-            groupBy,
-            daterange: { start: workdays[0]?.date, end: workdays[workdays.length - 1]?.date },
-          },
-          null,
-          2,
-        )}
-      </pre>
-    </Alert>
-  );
+  const graphProps = {
+    config: props.config,
+    graphIndex: props.graphIndex,
+    groupBy: props.groupBy,
+    zoneIndex: props.zoneIndex,
+    onChangeVariant: (variant: TotalsGraphVariant | TimelineGraphVariant) =>
+      handleGraphVariantChange(variant, props.graphIndex, props.zoneIndex),
+  };
+
+  switch (props.config.type) {
+    case "timeline":
+      return <TimelineGraph {...graphProps} />;
+    case "totals":
+      return <TotalsGraph {...graphProps} />;
+    default:
+      return null;
+  }
 }
