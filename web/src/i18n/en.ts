@@ -153,6 +153,10 @@ const en = {
   },
   overview: {
     title: "Overview",
+    hoursBy: {
+      product: "Worktime grouped by product",
+      activity: "Worktime grouped by activity",
+    },
   },
   titles: {
     workdayBrowser: "Entries",

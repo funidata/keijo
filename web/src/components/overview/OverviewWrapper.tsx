@@ -3,6 +3,8 @@ import { FindWorkdaysDocument } from "../../graphql/generated/graphql";
 import { useWorkdayBrowserParams } from "../workday-browser/useWorkdayBrowserParams";
 import LoadingIndicator from "../workday-browser/LoadingIndicator";
 import { compileWorkdayRange } from "../../common/workdayUtils";
+import Overview from "./Overview";
+import OverviewContextProvider from "./OverviewContext";
 
 export default function OverviewWrapper() {
   const { from, to, formattedFrom, formattedTo } = useWorkdayBrowserParams();
@@ -19,9 +21,8 @@ export default function OverviewWrapper() {
   const workdays = compileWorkdayRange(data, { from, to });
 
   return (
-    <>
-      <b>Workday data:</b>
-      <pre>{JSON.stringify(workdays, null, 2)}</pre>
-    </>
+    <OverviewContextProvider workdays={workdays}>
+      <Overview />
+    </OverviewContextProvider>
   );
 }

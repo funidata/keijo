@@ -153,6 +153,10 @@ const fi = {
   },
   overview: {
     title: "Yhteenveto",
+    hoursBy: {
+      product: "Työaika tuotteittain",
+      activity: "Työaika toiminnoittain",
+    },
   },
   titles: {
     workdayBrowser: "Työaikakirjaukset",
