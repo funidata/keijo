@@ -152,6 +152,10 @@ const fi = {
     },
   },
   overview: {
+    chart: {
+      percentageOfTotalHours: "{{ percentage }}% koko työajasta",
+      weekNumber: "viikko {{weekNumber}}",
+    },
     title: "Yhteenveto",
     hoursBy: {
       product: "Työaika tuotteittain",
