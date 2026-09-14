@@ -15,7 +15,9 @@ export default function Zone({ zone, index }: ZoneProps) {
 
   return (
     <Box>
-      <Typography variant="h6">{t(`overview.hoursBy.${zone.groupBy}`)}</Typography>
+      <Typography variant="h6" component="h2">
+        {t(`overview.hoursBy.${zone.groupBy}`)}
+      </Typography>
       <Grid container spacing={6}>
         {zone.graphs.map((config, graphIndex) => (
           <Grid key={graphIndex} size={{ xs: 12, sm: 6 }}>
