@@ -152,6 +152,10 @@ const en = {
     },
   },
   overview: {
+    chart: {
+      weekNumber: "week {{weekNumber}}",
+      percentageOfTotalHours: "{{ percentage }}% of total work hours",
+    },
     title: "Overview",
     hoursBy: {
       product: "Worktime grouped by product",

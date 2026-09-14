@@ -2,10 +2,11 @@ import Stack from "@mui/material/Stack";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import Alert from "@mui/material/Alert";
 import { useTranslation } from "react-i18next";
 import { TotalsGraphVariant, type GraphGroupByKey, type GraphConfig } from "./graphTypes";
 import { useOverviewConfig } from "./OverviewContext";
+import BarChart from "./charts/BarChart";
+import PieChart from "./charts/PieChart";
 
 interface TotalsGraphProps {
   graphIndex: number;
@@ -44,20 +45,15 @@ export default function TotalsGraph({
           </Select>
         </FormControl>
       </Stack>
-      <Alert variant="outlined" severity="warning">
-        TODO TotalsGraph: Implement the totals graph display based on the following:
-        <pre>
-          {JSON.stringify(
-            {
-              variant: config.variant,
-              groupBy,
-              daterange: { start: workdays[0]?.date, end: workdays[workdays.length - 1]?.date },
-            },
-            null,
-            2,
-          )}
-        </pre>
-      </Alert>
+      {config.variant === TotalsGraphVariant.BarHorizontal && (
+        <BarChart groupBy={groupBy} workdays={workdays} orientation="horizontal" />
+      )}
+      {config.variant === TotalsGraphVariant.BarVertical && (
+        <BarChart groupBy={groupBy} workdays={workdays} orientation="vertical" />
+      )}
+      {config.variant === TotalsGraphVariant.Pie && (
+        <PieChart groupBy={groupBy} workdays={workdays} />
+      )}
     </>
   );
 }
