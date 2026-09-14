@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import type { OverviewZone } from "./dto/overview-config.dto";
 
 @Entity({ name: "user_overview_config" })
 export class OverviewConfig {
@@ -6,7 +7,7 @@ export class OverviewConfig {
   employeeNumber: number;
 
   @Column({ type: "jsonb" })
-  config: Record<string, unknown>;
+  config: OverviewZone[];
 
   @UpdateDateColumn({ type: "timestamptz" })
   updatedAt: Date;
