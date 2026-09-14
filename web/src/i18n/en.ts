@@ -151,6 +151,26 @@ const en = {
       success: "Workday entry template deleted.",
     },
   },
+  overview: {
+    title: "Overview",
+    weekNumber: "week {{weekNumber}}",
+    hoursBy: {
+      product: "Hours by product",
+      activity: "Hours by activity",
+    },
+    percentageOfTotalHours: "{{ percentage }}% of total work hours",
+    totalsVariant: {
+      label: "Variant",
+      barHorizontal: "Bar Horizontal",
+      barVertical: "Bar Vertical",
+      pie: "Pie",
+    },
+    timelineVariant: {
+      label: "Variant",
+      unstacked: "Unstacked",
+      stacked: "Stacked",
+    },
+  },
   titles: {
     workdayBrowser: "Entries",
     templates: "My Entry Templates",
