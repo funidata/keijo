@@ -11,6 +11,10 @@ vi.mock("./Graph", () => ({
   default: () => <div data-testid="zone-graph" />,
 }));
 
+vi.mock("./OverviewContext", () => ({
+  useOverviewConfig: () => ({ overviewConfig: [], updateOverviewConfig: vi.fn() }),
+}));
+
 afterEach(() => {
   cleanup();
 });
