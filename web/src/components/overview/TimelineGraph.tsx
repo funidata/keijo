@@ -24,15 +24,13 @@ export default function TimelineGraph({
 }: TimelineGraphProps) {
   const { t } = useTranslation();
   const { workdays } = useOverviewConfig();
-  const id = `timeline-${zoneIndex}-${graphIndex}`;
 
   return (
     <>
       <Stack direction="row" sx={{ justifyContent: "end", width: "100%" }}>
         <FormControl size="small" variant="standard">
           <Select
-            labelId={`label-${zoneIndex}-${graphIndex}`}
-            id={id}
+            id={`timeline-${zoneIndex}-${graphIndex}`}
             value={config.variant}
             label={t(`overview.timelineVariant.label`)}
             onChange={(event) => onChangeVariant(event.target.value as TimelineGraphVariant)}
