@@ -1,7 +1,12 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import Zone from "./Zone";
-import { TimelineGraphVariant, TotalsGraphVariant } from "./graphTypes";
+import {
+  OverviewGraphType,
+  OverviewGroupBy,
+  TimelineGraphVariant,
+  TotalsGraphVariant,
+} from "./graphTypes";
 
 vi.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
@@ -17,7 +22,7 @@ afterEach(() => {
 
 describe("Zone", () => {
   it("renders the translated group heading", () => {
-    render(<Zone zone={{ groupBy: "product", graphs: [] }} index={0} />);
+    render(<Zone zone={{ groupBy: OverviewGroupBy.Product, graphs: [] }} index={0} />);
 
     expect(screen.getByRole("heading", { name: "overview.hoursBy.product" })).toBeTruthy();
   });
@@ -26,10 +31,10 @@ describe("Zone", () => {
     render(
       <Zone
         zone={{
-          groupBy: "product",
+          groupBy: OverviewGroupBy.Product,
           graphs: [
-            { type: "totals", variant: TotalsGraphVariant.Pie },
-            { type: "timeline", variant: TimelineGraphVariant.Stacked },
+            { type: OverviewGraphType.Totals, variant: TotalsGraphVariant.Pie },
+            { type: OverviewGraphType.Timeline, variant: TimelineGraphVariant.Stacked },
           ],
         }}
         index={0}

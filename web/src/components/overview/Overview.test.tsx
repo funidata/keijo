@@ -1,7 +1,12 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import Overview from "./Overview";
-import { TimelineGraphVariant, TotalsGraphVariant } from "./graphTypes";
+import {
+  OverviewGraphType,
+  OverviewGroupBy,
+  TimelineGraphVariant,
+  TotalsGraphVariant,
+} from "./graphTypes";
 
 const mocks = vi.hoisted(() => ({
   useOverviewConfig: vi.fn(),
@@ -29,12 +34,12 @@ describe("Overview", () => {
     mocks.useOverviewConfig.mockReturnValue({
       overviewConfig: [
         {
-          groupBy: "product",
-          graphs: [{ type: "totals", variant: TotalsGraphVariant.BarVertical }],
+          groupBy: OverviewGroupBy.Product,
+          graphs: [{ type: OverviewGraphType.Totals, variant: TotalsGraphVariant.BarVertical }],
         },
         {
-          groupBy: "activity",
-          graphs: [{ type: "timeline", variant: TimelineGraphVariant.Stacked }],
+          groupBy: OverviewGroupBy.Activity,
+          graphs: [{ type: OverviewGraphType.Timeline, variant: TimelineGraphVariant.Stacked }],
         },
       ],
       isLoading: false,

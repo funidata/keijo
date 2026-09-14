@@ -1,11 +1,11 @@
 import { useMutation, useQuery } from "@apollo/client/react";
 import { useContext, useMemo, createContext, PropsWithChildren, useCallback } from "react";
-import { GraphZoneConfig } from "./graphTypes";
+import { type GraphConfig, type GraphZoneConfig } from "./graphTypes";
 import type { TotalsGraphVariant, TimelineGraphVariant } from "./graphTypes";
 import {
   GetMyOverviewConfigDocument,
-  type GetMyOverviewConfigQuery,
   type Workday,
+  type UpdateMyOverviewConfigMutation,
   UpdateMyOverviewConfigDocument,
 } from "../../graphql/generated/graphql";
 
@@ -28,7 +28,7 @@ export default function OverviewContextProvider({
 }: PropsWithChildren<{ workdays: Workday[] }>) {
   const { data, loading: isLoading } = useQuery(GetMyOverviewConfigDocument);
   const [updateOverviewConfig] = useMutation(UpdateMyOverviewConfigDocument);
-  const overviewConfig = data?.getMyOverviewConfig ?? [];
+  const overviewConfig = (data?.getMyOverviewConfig ?? []) as GraphZoneConfig[];
 
   const handleGraphVariantChange = useCallback(
     (value: TotalsGraphVariant | TimelineGraphVariant, graphIndex: number, zoneIndex: number) => {
@@ -37,7 +37,9 @@ export default function OverviewContextProvider({
           ? {
               ...zone,
               graphs: zone.graphs.map((graph, currentGraphIndex) =>
-                currentGraphIndex === graphIndex ? { ...graph, variant: value } : graph,
+                currentGraphIndex === graphIndex
+                  ? ({ ...graph, variant: value } as GraphConfig)
+                  : graph,
               ),
             }
           : zone,
@@ -47,7 +49,7 @@ export default function OverviewContextProvider({
         variables: { config: newConfig },
         optimisticResponse: {
           updateMyOverviewConfig: newConfig,
-        } satisfies GetMyOverviewConfigQuery,
+        } satisfies UpdateMyOverviewConfigMutation,
       });
     },
     [overviewConfig, updateOverviewConfig],

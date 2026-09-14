@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import TimelineGraph from "./TimelineGraph";
 import OverviewContextProvider from "./OverviewContext";
-import { TimelineGraphVariant } from "./graphTypes";
+import { OverviewGraphType, TimelineGraphVariant } from "./graphTypes";
 
 vi.mock("./charts/LineChart", () => ({
   default: ({ variant }: { variant: TimelineGraphVariant }) => (
@@ -23,7 +23,7 @@ describe("TimelineGraph", () => {
       render(
         <OverviewContextProvider workdays={[]}>
           <TimelineGraph
-            config={{ type: "timeline", variant }}
+            config={{ type: OverviewGraphType.Timeline, variant }}
             graphIndex={0}
             groupBy="product"
             onChangeVariant={vi.fn()}
@@ -41,7 +41,7 @@ describe("TimelineGraph", () => {
     render(
       <OverviewContextProvider workdays={[]}>
         <TimelineGraph
-          config={{ type: "timeline", variant: TimelineGraphVariant.Stacked }}
+          config={{ type: OverviewGraphType.Timeline, variant: TimelineGraphVariant.Stacked }}
           graphIndex={0}
           groupBy="product"
           onChangeVariant={onChangeVariant}

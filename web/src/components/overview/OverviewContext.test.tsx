@@ -1,7 +1,7 @@
 import { act, cleanup, renderHook } from "@testing-library/react";
 import type { PropsWithChildren } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { TotalsGraphVariant } from "./graphTypes";
+import { OverviewGraphType, OverviewGroupBy, TotalsGraphVariant } from "./graphTypes";
 import OverviewContextProvider, { useOverviewConfig } from "./OverviewContext";
 
 const mocks = vi.hoisted(() => ({
@@ -38,8 +38,8 @@ describe("OverviewContextProvider", () => {
   it("uses the overview configuration returned by the server", () => {
     const config = [
       {
-        groupBy: "client",
-        graphs: [{ type: "totals", variant: "pie" }],
+        groupBy: OverviewGroupBy.Client,
+        graphs: [{ type: OverviewGraphType.Totals, variant: TotalsGraphVariant.Pie }],
       },
     ];
     mocks.useQuery.mockReturnValue({ data: { getMyOverviewConfig: config }, loading: false });
@@ -70,8 +70,10 @@ describe("OverviewContextProvider", () => {
         data: {
           getMyOverviewConfig: [
             {
-              groupBy: "product",
-              graphs: [{ type: "totals", variant: TotalsGraphVariant.BarVertical }],
+              groupBy: OverviewGroupBy.Product,
+              graphs: [
+                { type: OverviewGraphType.Totals, variant: TotalsGraphVariant.BarVertical },
+              ],
             },
           ],
         },
@@ -84,7 +86,7 @@ describe("OverviewContextProvider", () => {
       });
 
       expect(result.current.overviewConfig[0].graphs[0]).toEqual({
-        type: "totals",
+        type: OverviewGraphType.Totals,
         variant: TotalsGraphVariant.Pie,
       });
       expect(mocks.updateOverviewConfig).toHaveBeenCalledOnce();

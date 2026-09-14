@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import { useTranslation } from "react-i18next";
-import type { GraphZoneConfig } from "./graphTypes";
+import type { GraphGroupByKey, GraphZoneConfig } from "./graphTypes";
 import Graph from "./Graph";
 
 interface ZoneProps {
@@ -12,6 +12,7 @@ interface ZoneProps {
 
 export default function Zone({ zone, index }: ZoneProps) {
   const { t } = useTranslation();
+  const groupBy = zone.groupBy.toLowerCase() as GraphGroupByKey;
 
   return (
     <Box>
@@ -25,7 +26,7 @@ export default function Zone({ zone, index }: ZoneProps) {
               zoneIndex={index}
               config={config}
               graphIndex={graphIndex}
-              groupBy={zone.groupBy}
+              groupBy={groupBy}
             />
           </Grid>
         ))}
