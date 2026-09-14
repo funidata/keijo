@@ -67,30 +67,30 @@ describe("chartUtils", () => {
   describe("formatLineChartData", () => {
     it("formats area chart data correctly for stacked variant", () => {
       const expectation = {
-        labels: ["2026-08-18", "2026-08-19"],
+        labels: ["18.08.2026", "19.08.2026"],
         datasets: [
           {
             label: "Sisäiset tapahtumat ja palaverit",
             fill: "stack",
             data: [
-              { date: "2026-08-19", hours: 3 },
-              { date: "2026-08-18", hours: 6 },
+              { date: "19.08.2026", hours: 3 },
+              { date: "18.08.2026", hours: 6 },
             ],
           },
           {
             label: "Toteutus",
             fill: "stack",
             data: [
-              { date: "2026-08-19", hours: 3 },
-              { date: "2026-08-18", hours: 2 },
+              { date: "19.08.2026", hours: 3 },
+              { date: "18.08.2026", hours: 2 },
             ],
           },
           {
             label: "Tuotekehityksen palaverit",
             fill: "stack",
             data: [
-              { date: "2026-08-19", hours: 1 },
-              { date: "2026-08-18", hours: 1 },
+              { date: "19.08.2026", hours: 1 },
+              { date: "18.08.2026", hours: 1 },
             ],
           },
         ],
@@ -102,27 +102,27 @@ describe("chartUtils", () => {
     });
     it("formats area chart data correctly for unstacked variant", () => {
       const expectations = {
-        labels: ["2026-08-18", "2026-08-19"],
+        labels: ["18.08.2026", "19.08.2026"],
         datasets: [
           {
             label: "Sisäiset tapahtumat ja palaverit",
             data: [
-              { date: "2026-08-19", hours: 3 },
-              { date: "2026-08-18", hours: 6 },
+              { date: "19.08.2026", hours: 3 },
+              { date: "18.08.2026", hours: 6 },
             ],
           },
           {
             label: "Toteutus",
             data: [
-              { date: "2026-08-19", hours: 3 },
-              { date: "2026-08-18", hours: 2 },
+              { date: "19.08.2026", hours: 3 },
+              { date: "18.08.2026", hours: 2 },
             ],
           },
           {
             label: "Tuotekehityksen palaverit",
             data: [
-              { date: "2026-08-19", hours: 1 },
-              { date: "2026-08-18", hours: 1 },
+              { date: "19.08.2026", hours: 1 },
+              { date: "18.08.2026", hours: 1 },
             ],
           },
         ],
@@ -145,22 +145,22 @@ describe("chartUtils", () => {
 
       expect(formatLineChartData(sparseWorkdays, "activity", TimelineGraphVariant.Stacked)).toEqual(
         {
-          labels: ["2026-08-18", "2026-08-19"],
+          labels: ["18.08.2026", "19.08.2026"],
           datasets: [
             {
               label: "Toteutus",
               fill: "stack",
               data: [
-                { date: "2026-08-19", hours: 0 },
-                { date: "2026-08-18", hours: 2 },
+                { date: "19.08.2026", hours: 0 },
+                { date: "18.08.2026", hours: 2 },
               ],
             },
             {
               label: "Palaveri",
               fill: "stack",
               data: [
-                { date: "2026-08-19", hours: 1 },
-                { date: "2026-08-18", hours: 0 },
+                { date: "19.08.2026", hours: 1 },
+                { date: "18.08.2026", hours: 0 },
               ],
             },
           ],
@@ -225,13 +225,13 @@ describe("chartUtils", () => {
       expect(
         formatLineChartData(oneWeekWorkdays, "activity", TimelineGraphVariant.Unstacked),
       ).toEqual({
-        labels: ["2026-08-17", "2026-08-23"],
+        labels: ["17.08.2026", "23.08.2026"],
         datasets: [
           {
             label: "Toteutus",
             data: [
-              { date: "2026-08-23", hours: 5 },
-              { date: "2026-08-17", hours: 2 },
+              { date: "23.08.2026", hours: 5 },
+              { date: "17.08.2026", hours: 2 },
             ],
           },
         ],

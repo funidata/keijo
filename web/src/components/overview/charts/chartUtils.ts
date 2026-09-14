@@ -8,6 +8,8 @@ interface AccumulatedDataset {
   value: number;
 }
 
+const DATE_FORMAT_PRETTY = "DD.MM.YYYY";
+
 /** Accumulate work hour data categorized by given key. The returned chart data
  * works as is for BarChart usage. PieCharts require further formatting using
  * `formatChartDataForPieChart()`.
@@ -68,7 +70,7 @@ export function formatLineChartData(
     sortedDates.length > 0 && dayjs(sortedDates.at(-1)).diff(dayjs(sortedDates[0]), "day") + 1 > 7;
   const labels = spansMoreThanSevenDays
     ? Array.from(new Set(dates.map((date) => dayjs(date).startOf("week").format("YYYY-MM-DD"))))
-    : dates;
+    : Array.from(new Set(dates.map((date) => dayjs(date).format(DATE_FORMAT_PRETTY))));
   const displayLabels = spansMoreThanSevenDays
     ? labels.map((date) => formatWeekNumber(dayjs(date).week().toString()))
     : labels;
@@ -83,7 +85,7 @@ export function formatLineChartData(
       const dataByDate = datasets.get(label) ?? new Map<string, number>();
       const date = spansMoreThanSevenDays
         ? dayjs(workday.date).startOf("week").format("YYYY-MM-DD")
-        : workday.date;
+        : dayjs(workday.date).format(DATE_FORMAT_PRETTY);
       dataByDate.set(date, (dataByDate.get(date) ?? 0) + entry.duration);
       datasets.set(label, dataByDate);
     });
