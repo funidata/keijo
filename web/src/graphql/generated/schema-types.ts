@@ -127,17 +127,25 @@ export type MutationUpdateSettingsArgs = {
 export type OverviewGraph = {
   __typename?: 'OverviewGraph';
   type: OverviewGraphType;
-  variant: Scalars['String']['output'];
+  variant: OverviewGraphVariant;
 };
 
 export type OverviewGraphInput = {
   type: OverviewGraphType;
-  variant: Scalars['String']['input'];
+  variant: OverviewGraphVariant;
 };
 
 export enum OverviewGraphType {
   Timeline = 'Timeline',
   Totals = 'Totals'
+}
+
+export enum OverviewGraphVariant {
+  BarHorizontal = 'BarHorizontal',
+  BarVertical = 'BarVertical',
+  Pie = 'Pie',
+  Stacked = 'Stacked',
+  Unstacked = 'Unstacked'
 }
 
 export enum OverviewGroupBy {

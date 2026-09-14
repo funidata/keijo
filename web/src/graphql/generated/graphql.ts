@@ -34,14 +34,14 @@ export type GetSessionStatusQuery = { getSessionStatus: { employeeNumber: number
 export type GetMyOverviewConfigQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMyOverviewConfigQuery = { getMyOverviewConfig: Array<{ groupBy: Types.OverviewGroupBy, graphs: Array<{ type: Types.OverviewGraphType, variant: string }> }> };
+export type GetMyOverviewConfigQuery = { getMyOverviewConfig: Array<{ groupBy: Types.OverviewGroupBy, graphs: Array<{ type: Types.OverviewGraphType, variant: Types.OverviewGraphVariant }> }> };
 
 export type UpdateMyOverviewConfigMutationVariables = Exact<{
   config: Array<Types.OverviewZoneInput> | Types.OverviewZoneInput;
 }>;
 
 
-export type UpdateMyOverviewConfigMutation = { updateMyOverviewConfig: Array<{ groupBy: Types.OverviewGroupBy, graphs: Array<{ type: Types.OverviewGraphType, variant: string }> }> };
+export type UpdateMyOverviewConfigMutation = { updateMyOverviewConfig: Array<{ groupBy: Types.OverviewGroupBy, graphs: Array<{ type: Types.OverviewGraphType, variant: Types.OverviewGraphVariant }> }> };
 
 export type RemoveWorkdayEntryMutationVariables = Exact<{
   entry: Types.RemoveWorkdayEntryInput;

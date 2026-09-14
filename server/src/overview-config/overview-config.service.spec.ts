@@ -1,6 +1,11 @@
 import { BadRequestException } from "@nestjs/common";
 import { Repository } from "typeorm";
-import { OverviewGraphType, OverviewGroupBy, OverviewZoneInput } from "./dto/overview-config.dto";
+import {
+  OverviewGraphType,
+  OverviewGraphVariant,
+  OverviewGroupBy,
+  OverviewZoneInput,
+} from "./dto/overview-config.dto";
 import { DEFAULT_OVERVIEW_CONFIG } from "./overview-config.defaults";
 import { OverviewConfig } from "./overview-config.model";
 import { OverviewConfigService } from "./overview-config.service";
@@ -15,7 +20,7 @@ describe("OverviewConfigService", () => {
   const config: OverviewZoneInput[] = [
     {
       groupBy: OverviewGroupBy.Product,
-      graphs: [{ type: OverviewGraphType.Totals, variant: "pie" }],
+      graphs: [{ type: OverviewGraphType.Totals, variant: OverviewGraphVariant.Pie }],
     },
   ];
 
@@ -48,7 +53,10 @@ describe("OverviewConfigService", () => {
 
   it("rejects invalid config without saving it", async () => {
     const invalidConfig = [
-      { ...config[0], graphs: [{ type: OverviewGraphType.Totals, variant: "stacked" }] },
+      {
+        ...config[0],
+        graphs: [{ type: OverviewGraphType.Totals, variant: OverviewGraphVariant.Stacked }],
+      },
     ];
 
     await expect(service.update(1, invalidConfig)).rejects.toBeInstanceOf(BadRequestException);

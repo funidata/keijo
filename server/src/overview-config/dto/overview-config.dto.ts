@@ -5,6 +5,14 @@ export enum OverviewGraphType {
   Timeline = "timeline",
 }
 
+export enum OverviewGraphVariant {
+  BarVertical = "barVertical",
+  BarHorizontal = "barHorizontal",
+  Pie = "pie",
+  Stacked = "stacked",
+  Unstacked = "unstacked",
+}
+
 export enum OverviewGroupBy {
   Product = "product",
   Activity = "activity",
@@ -13,6 +21,7 @@ export enum OverviewGroupBy {
 }
 
 registerEnumType(OverviewGraphType, { name: "OverviewGraphType" });
+registerEnumType(OverviewGraphVariant, { name: "OverviewGraphVariant" });
 registerEnumType(OverviewGroupBy, { name: "OverviewGroupBy" });
 
 @ObjectType()
@@ -20,8 +29,8 @@ export class OverviewGraph {
   @Field(() => OverviewGraphType)
   type: OverviewGraphType;
 
-  @Field()
-  variant: string;
+  @Field(() => OverviewGraphVariant)
+  variant: OverviewGraphVariant;
 }
 
 @ObjectType()
@@ -38,8 +47,8 @@ export class OverviewGraphInput {
   @Field(() => OverviewGraphType)
   type: OverviewGraphType;
 
-  @Field()
-  variant: string;
+  @Field(() => OverviewGraphVariant)
+  variant: OverviewGraphVariant;
 }
 
 @InputType()
