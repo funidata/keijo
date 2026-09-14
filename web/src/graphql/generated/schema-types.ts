@@ -84,6 +84,7 @@ export type Mutation = {
   removeEntryTemplate: UserSettings;
   removeWorkdayEntry: Scalars['String']['output'];
   replaceWorkdayEntry: Scalars['String']['output'];
+  updateMyOverviewConfig: Array<OverviewZone>;
   updateSettings: UserSettings;
 };
 
@@ -114,14 +115,54 @@ export type MutationReplaceWorkdayEntryArgs = {
 };
 
 
+export type MutationUpdateMyOverviewConfigArgs = {
+  config: Array<OverviewZoneInput>;
+};
+
+
 export type MutationUpdateSettingsArgs = {
   settings: UpdateSettingsDto;
+};
+
+export type OverviewGraph = {
+  __typename?: 'OverviewGraph';
+  type: OverviewGraphType;
+  variant: Scalars['String']['output'];
+};
+
+export type OverviewGraphInput = {
+  type: OverviewGraphType;
+  variant: Scalars['String']['input'];
+};
+
+export enum OverviewGraphType {
+  Timeline = 'Timeline',
+  Totals = 'Totals'
+}
+
+export enum OverviewGroupBy {
+  Activity = 'Activity',
+  Client = 'Client',
+  Issue = 'Issue',
+  Product = 'Product'
+}
+
+export type OverviewZone = {
+  __typename?: 'OverviewZone';
+  graphs: Array<OverviewGraph>;
+  groupBy: OverviewGroupBy;
+};
+
+export type OverviewZoneInput = {
+  graphs: Array<OverviewGraphInput>;
+  groupBy: OverviewGroupBy;
 };
 
 export type Query = {
   __typename?: 'Query';
   findDimensionOptions: DimensionOptions;
   findWorkdays: Array<Workday>;
+  getMyOverviewConfig: Array<OverviewZone>;
   getMySettings: UserSettings;
   getSessionStatus: SessionStatus;
 };

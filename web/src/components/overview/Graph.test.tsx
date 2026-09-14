@@ -4,6 +4,15 @@ import Graph from "./Graph";
 import OverviewContextProvider from "./OverviewContext";
 import { TimelineGraphVariant, TotalsGraphVariant } from "./graphTypes";
 
+const mocks = vi.hoisted(() => ({
+  updateOverviewConfig: vi.fn(),
+}));
+
+vi.mock("@apollo/client/react", () => ({
+  useQuery: () => ({ data: undefined }),
+  useMutation: () => [mocks.updateOverviewConfig],
+}));
+
 vi.mock("./TimelineGraph", () => ({
   default: ({ onChangeVariant }: { onChangeVariant: (variant: TimelineGraphVariant) => void }) => (
     <button
@@ -25,8 +34,8 @@ vi.mock("./TotalsGraph", () => ({
 
 afterEach(() => {
   cleanup();
-  localStorage.clear();
   vi.restoreAllMocks();
+  mocks.updateOverviewConfig.mockReset();
 });
 
 function renderGraph(config: Parameters<typeof Graph>[0]["config"]) {
@@ -53,13 +62,12 @@ describe("Graph", () => {
   });
 
   it("forwards a graph variant change with the graph and zone indices", () => {
-    const setItem = vi.spyOn(Storage.prototype, "setItem");
     renderGraph({ type: "timeline", variant: TimelineGraphVariant.Stacked });
 
     fireEvent.click(screen.getByTestId("timeline-graph"));
 
-    expect(setItem).toHaveBeenLastCalledWith("overviewConfig", expect.any(String));
-    expect(JSON.parse(setItem.mock.calls.at(-1)![1])[0].graphs[1]).toEqual({
+    const updateCall = mocks.updateOverviewConfig.mock.calls[0][0];
+    expect(updateCall.variables.config[0].graphs[1]).toEqual({
       type: "timeline",
       variant: TimelineGraphVariant.Unstacked,
     });
