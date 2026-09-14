@@ -32,3 +32,21 @@ export class OverviewZone {
   @Field(() => [OverviewGraph])
   graphs: OverviewGraph[];
 }
+
+@InputType()
+export class OverviewGraphInput {
+  @Field(() => OverviewGraphType)
+  type: OverviewGraphType;
+
+  @Field()
+  variant: string;
+}
+
+@InputType()
+export class OverviewZoneInput {
+  @Field(() => OverviewGroupBy)
+  groupBy: OverviewGroupBy;
+
+  @Field(() => [OverviewGraphInput])
+  graphs: OverviewGraphInput[];
+}
