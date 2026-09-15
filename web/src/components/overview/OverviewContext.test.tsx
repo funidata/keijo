@@ -72,7 +72,7 @@ describe("OverviewContextProvider", () => {
             {
               groupBy: OverviewGroupBy.Product,
               graphs: [
-                { type: OverviewGraphType.Totals, variant: TotalsGraphVariant.BarVertical },
+                { type: OverviewGraphType.Totals, variant: TotalsGraphVariant.Pie },
               ],
             },
           ],

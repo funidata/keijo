@@ -38,7 +38,7 @@ export default function TotalsGraph({
             {Object.values(TotalsGraphVariant).map((variant) => {
               return (
                 <MenuItem key={variant} value={variant}>
-                  {t(`overview.totalsVariant.${variant}`)}
+                  {t(`overview.totalsVariant.${variant.toLowerCase()}`)}
                 </MenuItem>
               );
             })}

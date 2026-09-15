@@ -9,7 +9,18 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("@apollo/client/react", () => ({
-  useQuery: () => ({ data: undefined }),
+  useQuery: () => ({
+    data: {
+      getMyOverviewConfig: [
+        {
+          graphs: [
+            { type: OverviewGraphType.Totals, variant: TotalsGraphVariant.BarVertical },
+            { type: OverviewGraphType.Timeline, variant: TimelineGraphVariant.Stacked },
+          ],
+        },
+      ],
+    },
+  }),
   useMutation: () => [mocks.updateOverviewConfig],
 }));
 

@@ -4,6 +4,11 @@ import TotalsGraph from "./TotalsGraph";
 import OverviewContextProvider from "./OverviewContext";
 import { OverviewGraphType, TotalsGraphVariant } from "./graphTypes";
 
+vi.mock("@apollo/client/react", () => ({
+  useQuery: () => ({ data: { getMyOverviewConfig: [] }, loading: false }),
+  useMutation: () => [vi.fn()],
+}));
+
 vi.mock("./charts/BarChart", () => ({
   default: ({ orientation }: { orientation: "vertical" | "horizontal" }) => (
     <div data-testid={`bar-chart-${orientation}`} />

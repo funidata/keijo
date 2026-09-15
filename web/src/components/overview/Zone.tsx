@@ -17,7 +17,7 @@ export default function Zone({ zone, index }: ZoneProps) {
   return (
     <Box>
       <Typography variant="h6" component="h2">
-        {t(`overview.hoursBy.${zone.groupBy}`)}
+        {t(`overview.hoursBy.${zone.groupBy.toLowerCase()}`)}
       </Typography>
       <Grid container spacing={6}>
         {zone.graphs.map((config, graphIndex) => (

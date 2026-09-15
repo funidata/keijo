@@ -4,6 +4,11 @@ import TimelineGraph from "./TimelineGraph";
 import OverviewContextProvider from "./OverviewContext";
 import { OverviewGraphType, TimelineGraphVariant } from "./graphTypes";
 
+vi.mock("@apollo/client/react", () => ({
+  useQuery: () => ({ data: { getMyOverviewConfig: [] }, loading: false }),
+  useMutation: () => [vi.fn()],
+}));
+
 vi.mock("./charts/LineChart", () => ({
   default: ({ variant }: { variant: TimelineGraphVariant }) => (
     <div data-testid={`line-chart-${variant}`} />
