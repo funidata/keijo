@@ -71,9 +71,7 @@ describe("OverviewContextProvider", () => {
           getMyOverviewConfig: [
             {
               groupBy: OverviewGroupBy.Product,
-              graphs: [
-                { type: OverviewGraphType.Totals, variant: TotalsGraphVariant.Pie },
-              ],
+              graphs: [{ type: OverviewGraphType.Totals, variant: TotalsGraphVariant.Pie }],
             },
           ],
         },

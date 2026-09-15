@@ -22,12 +22,7 @@ export default function Zone({ zone, index }: ZoneProps) {
       <Grid container spacing={6}>
         {zone.graphs.map((config, graphIndex) => (
           <Grid key={graphIndex} size={{ xs: 12, sm: 6 }}>
-            <Graph
-              zoneIndex={index}
-              config={config}
-              graphIndex={graphIndex}
-              groupBy={groupBy}
-            />
+            <Graph zoneIndex={index} config={config} graphIndex={graphIndex} groupBy={groupBy} />
           </Grid>
         ))}
       </Grid>
