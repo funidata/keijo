@@ -8,7 +8,7 @@ const templateName = "Daily standup";
 const description = "Team sync";
 
 test.describe("Entry templates", () => {
-  test("creates an entry from a template", async ({ page, t }) => {
+  test("creates an entry from a template", async ({ dayjs, page, t }) => {
     await page.goto("/entries/week/2024-05-20");
 
     await page.getByRole("button", { name: t("titles.templates") }).click();
@@ -27,12 +27,21 @@ test.describe("Entry templates", () => {
     await expect(page.getByText(templateName, { exact: true })).toBeVisible();
 
     await page.getByRole("button", { name: t("controls.selectEntryTemplate") }).click();
+    const workdaysRefetched = page.waitForResponse(
+      (response) =>
+        response.url().endsWith("/graphql") &&
+        response.request().postData()?.includes("FindWorkdays") &&
+        response.ok(),
+    );
     await page
       .getByRole("button", { name: t("controls.pasteEntry", { count: 1 }) })
       .first()
       .click();
 
+    await workdaysRefetched;
     await expect(page.getByRole("alert")).toContainText(t("notifications.addEntry.success"));
+    await expect(page.getByText("1:00 h", { exact: true })).toBeVisible();
+    await page.getByRole("button", { name: dayjs("2024-05-20").format("dd l") }).click();
     await expect(page.getByText(description, { exact: true })).toBeVisible();
   });
 });
