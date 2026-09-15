@@ -107,8 +107,8 @@ const EntryTemplateRow = ({ entry }: EntryTemplateRowProps) => {
           </Stack>
         </AccordionDetails>
         <AccordionActions>
-          <DeleteTemplateButton templateKey={entry.key} />
           <EditTemplateButton template={entry} />
+          <DeleteTemplateButton templateKey={entry.key} />
         </AccordionActions>
       </Accordion>
     </Box>

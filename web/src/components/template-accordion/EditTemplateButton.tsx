@@ -1,5 +1,4 @@
-import EditIcon from "@mui/icons-material/Edit";
-import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import { useTranslation } from "react-i18next";
 import { generatePath, useLocation, useNavigate } from "react-router-dom";
 import { EntryTemplateType } from "../../graphql/generated/graphql";
@@ -14,7 +13,7 @@ const EditTemplateButton = ({ template }: EditTemplateButtonProps) => {
   const { t } = useTranslation();
 
   return (
-    <IconButton
+    <Button
       aria-label={t("controls.editEntryTemplate")}
       onClick={(e) => {
         e.stopPropagation();
@@ -24,8 +23,8 @@ const EditTemplateButton = ({ template }: EditTemplateButtonProps) => {
       }}
       size="medium"
     >
-      <EditIcon />
-    </IconButton>
+      {t("controls.editEntryTemplate")}
+    </Button>
   );
 };
 
