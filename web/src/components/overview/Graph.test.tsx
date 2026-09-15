@@ -2,7 +2,27 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import Graph from "./Graph";
 import OverviewContextProvider from "./OverviewContext";
-import { TimelineGraphVariant, TotalsGraphVariant } from "./graphTypes";
+import { OverviewGraphType, TimelineGraphVariant, TotalsGraphVariant } from "./graphTypes";
+
+const mocks = vi.hoisted(() => ({
+  updateOverviewConfig: vi.fn(),
+}));
+
+vi.mock("@apollo/client/react", () => ({
+  useQuery: () => ({
+    data: {
+      getMyOverviewConfig: [
+        {
+          graphs: [
+            { type: OverviewGraphType.Totals, variant: TotalsGraphVariant.BarVertical },
+            { type: OverviewGraphType.Timeline, variant: TimelineGraphVariant.Stacked },
+          ],
+        },
+      ],
+    },
+  }),
+  useMutation: () => [mocks.updateOverviewConfig],
+}));
 
 vi.mock("./TimelineGraph", () => ({
   default: ({ onChangeVariant }: { onChangeVariant: (variant: TimelineGraphVariant) => void }) => (
@@ -25,8 +45,8 @@ vi.mock("./TotalsGraph", () => ({
 
 afterEach(() => {
   cleanup();
-  localStorage.clear();
   vi.restoreAllMocks();
+  mocks.updateOverviewConfig.mockReset();
 });
 
 function renderGraph(config: Parameters<typeof Graph>[0]["config"]) {
@@ -39,28 +59,27 @@ function renderGraph(config: Parameters<typeof Graph>[0]["config"]) {
 
 describe("Graph", () => {
   it("renders TimelineGraph for a timeline configuration", () => {
-    renderGraph({ type: "timeline", variant: TimelineGraphVariant.Stacked });
+    renderGraph({ type: OverviewGraphType.Timeline, variant: TimelineGraphVariant.Stacked });
 
     expect(screen.getByTestId("timeline-graph")).toBeTruthy();
     expect(screen.queryByTestId("totals-graph")).toBeNull();
   });
 
   it("renders TotalsGraph for a totals configuration", () => {
-    renderGraph({ type: "totals", variant: TotalsGraphVariant.BarVertical });
+    renderGraph({ type: OverviewGraphType.Totals, variant: TotalsGraphVariant.BarVertical });
 
     expect(screen.getByTestId("totals-graph")).toBeTruthy();
     expect(screen.queryByTestId("timeline-graph")).toBeNull();
   });
 
   it("forwards a graph variant change with the graph and zone indices", () => {
-    const setItem = vi.spyOn(Storage.prototype, "setItem");
-    renderGraph({ type: "timeline", variant: TimelineGraphVariant.Stacked });
+    renderGraph({ type: OverviewGraphType.Timeline, variant: TimelineGraphVariant.Stacked });
 
     fireEvent.click(screen.getByTestId("timeline-graph"));
 
-    expect(setItem).toHaveBeenLastCalledWith("overviewConfig", expect.any(String));
-    expect(JSON.parse(setItem.mock.calls.at(-1)![1])[0].graphs[1]).toEqual({
-      type: "timeline",
+    const updateCall = mocks.updateOverviewConfig.mock.calls[0][0];
+    expect(updateCall.variables.config[0].graphs[1]).toEqual({
+      type: OverviewGraphType.Timeline,
       variant: TimelineGraphVariant.Unstacked,
     });
   });

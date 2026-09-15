@@ -1,13 +1,23 @@
 import { act, cleanup, renderHook } from "@testing-library/react";
 import type { PropsWithChildren } from "react";
-import { afterEach, describe, expect, it } from "vitest";
-import { TotalsGraphVariant } from "./graphTypes";
-import { DEFAULT_OVERVIEW_CONFIG, OVERVIEW_CONFIG_LOCALSTORAGE_KEY } from "./constants";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { OverviewGraphType, OverviewGroupBy, TotalsGraphVariant } from "./graphTypes";
 import OverviewContextProvider, { useOverviewConfig } from "./OverviewContext";
+
+const mocks = vi.hoisted(() => ({
+  updateOverviewConfig: vi.fn(),
+  useQuery: vi.fn(),
+}));
+
+vi.mock("@apollo/client/react", () => ({
+  useQuery: mocks.useQuery,
+  useMutation: () => [mocks.updateOverviewConfig],
+}));
 
 afterEach(() => {
   cleanup();
-  localStorage.clear();
+  mocks.updateOverviewConfig.mockReset();
+  mocks.useQuery.mockReset();
 });
 
 const renderOverviewConfig = (workdays: never[] = []) =>
@@ -18,29 +28,30 @@ const renderOverviewConfig = (workdays: never[] = []) =>
   });
 
 describe("OverviewContextProvider", () => {
-  it("uses the default overview configuration when local storage is empty", () => {
-    localStorage.clear();
+  it("exposes a loading state until the overview configuration loads", () => {
+    mocks.useQuery.mockReturnValue({ data: undefined, loading: true });
     const { result } = renderOverviewConfig();
 
-    expect(result.current.overviewConfig).toEqual(DEFAULT_OVERVIEW_CONFIG);
+    expect(result.current).toMatchObject({ overviewConfig: [], isLoading: true });
   });
 
-  it("uses the overview configuration stored in local storage", () => {
-    const storedConfig = [
+  it("uses the overview configuration returned by the server", () => {
+    const config = [
       {
-        groupBy: "client",
-        graphs: [{ type: "totals", variant: "pie" }],
+        groupBy: OverviewGroupBy.Client,
+        graphs: [{ type: OverviewGraphType.Totals, variant: TotalsGraphVariant.Pie }],
       },
     ];
-    localStorage.setItem(OVERVIEW_CONFIG_LOCALSTORAGE_KEY, JSON.stringify(storedConfig));
+    mocks.useQuery.mockReturnValue({ data: { getMyOverviewConfig: config }, loading: false });
 
     const { result } = renderOverviewConfig();
 
-    expect(result.current.overviewConfig).toEqual(storedConfig);
+    expect(result.current).toMatchObject({ overviewConfig: config, isLoading: false });
   });
 
   it("provides the supplied workdays", () => {
     const workdays = [{ date: "2026-06-01", entries: [] }] as never[];
+    mocks.useQuery.mockReturnValue({ data: { getMyOverviewConfig: [] }, loading: false });
 
     const { result } = renderOverviewConfig(workdays);
 
@@ -54,7 +65,18 @@ describe("OverviewContextProvider", () => {
   });
 
   describe("handleGraphVariantChange()", () => {
-    it("updates and persists the selected graph variant", () => {
+    it("updates the selected graph variant", () => {
+      mocks.useQuery.mockReturnValue({
+        data: {
+          getMyOverviewConfig: [
+            {
+              groupBy: OverviewGroupBy.Product,
+              graphs: [{ type: OverviewGraphType.Totals, variant: TotalsGraphVariant.Pie }],
+            },
+          ],
+        },
+        loading: false,
+      });
       const { result } = renderOverviewConfig();
 
       act(() => {
@@ -62,12 +84,10 @@ describe("OverviewContextProvider", () => {
       });
 
       expect(result.current.overviewConfig[0].graphs[0]).toEqual({
-        type: "totals",
+        type: OverviewGraphType.Totals,
         variant: TotalsGraphVariant.Pie,
       });
-      expect(JSON.parse(localStorage.getItem(OVERVIEW_CONFIG_LOCALSTORAGE_KEY)!)).toEqual(
-        result.current.overviewConfig,
-      );
+      expect(mocks.updateOverviewConfig).toHaveBeenCalledOnce();
     });
   });
 });

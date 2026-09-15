@@ -1,17 +1,22 @@
 import { z } from "zod";
-import { OverviewGraphType, OverviewGroupBy } from "./dto/overview-config.dto";
-
-const totalsGraphVariants = ["barVertical", "barHorizontal", "pie"] as const;
-const timelineGraphVariants = ["stacked", "unstacked"] as const;
+import {
+  OverviewGraphType,
+  OverviewGraphVariant,
+  OverviewGroupBy,
+} from "./dto/overview-config.dto";
 
 const overviewGraphSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal(OverviewGraphType.Totals),
-    variant: z.enum(totalsGraphVariants),
+    variant: z.enum([
+      OverviewGraphVariant.BarVertical,
+      OverviewGraphVariant.BarHorizontal,
+      OverviewGraphVariant.Pie,
+    ]),
   }),
   z.object({
     type: z.literal(OverviewGraphType.Timeline),
-    variant: z.enum(timelineGraphVariants),
+    variant: z.enum([OverviewGraphVariant.Stacked, OverviewGraphVariant.Unstacked]),
   }),
 ]);
 

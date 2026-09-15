@@ -94,7 +94,7 @@ export function formatLineChartData(
   return {
     datasets: Array.from(datasets, ([label, dataByDate]) => ({
       label,
-      ...(variant === "stacked" && { fill: "stack" }),
+      ...(variant === TimelineGraphVariant.Stacked && { fill: "stack" }),
       data: [...labels].reverse().map((date) => ({
         date: spansMoreThanSevenDays ? formatWeekNumber(dayjs(date).week().toString()) : date,
         hours: dataByDate.get(date) ?? 0,
