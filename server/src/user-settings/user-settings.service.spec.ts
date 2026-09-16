@@ -111,11 +111,40 @@ describe("UserSettingsService", () => {
   });
 
   it("leaves other templates unchanged when replacing one", async () => {
-    const target = { key: "target-key", templateName: "Target", duration: 60, description: "", product: null, activity: null, issue: null, client: null };
-    const other = { key: "other-key", templateName: "Other", duration: 30, description: "", product: null, activity: null, issue: null, client: null };
-    const update: EntryTemplateInput = { templateName: "Updated", duration: 90, description: "", product: null, activity: null, issue: null, client: null };
+    const target = {
+      key: "target-key",
+      templateName: "Target",
+      duration: 60,
+      description: "",
+      product: null,
+      activity: null,
+      issue: null,
+      client: null,
+    };
+    const other = {
+      key: "other-key",
+      templateName: "Other",
+      duration: 30,
+      description: "",
+      product: null,
+      activity: null,
+      issue: null,
+      client: null,
+    };
+    const update: EntryTemplateInput = {
+      templateName: "Updated",
+      duration: 90,
+      description: "",
+      product: null,
+      activity: null,
+      issue: null,
+      client: null,
+    };
 
-    repository.findOneBy.mockResolvedValueOnce({ employeeNumber: 1, entryTemplates: [target, other] });
+    repository.findOneBy.mockResolvedValueOnce({
+      employeeNumber: 1,
+      entryTemplates: [target, other],
+    });
     repository.findOneBy.mockResolvedValueOnce({
       employeeNumber: 1,
       entryTemplates: [{ key: "target-key", ...update }, other],
@@ -130,7 +159,15 @@ describe("UserSettingsService", () => {
   });
 
   it("does not crash when replacing a non-existent template", async () => {
-    const update: EntryTemplateInput = { templateName: "New", duration: 60, description: "", product: null, activity: null, issue: null, client: null };
+    const update: EntryTemplateInput = {
+      templateName: "New",
+      duration: 60,
+      description: "",
+      product: null,
+      activity: null,
+      issue: null,
+      client: null,
+    };
 
     repository.findOneBy.mockResolvedValueOnce({ employeeNumber: 1, entryTemplates: undefined });
     repository.findOneBy.mockResolvedValueOnce({ employeeNumber: 1, entryTemplates: [] });
