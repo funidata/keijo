@@ -73,4 +73,71 @@ describe("UserSettingsService", () => {
 
     expect(repository.update).toHaveBeenCalledWith({ employeeNumber: 1 }, { entryTemplates: [] });
   });
+
+  it("replaces a template identified by key with updated values", async () => {
+    const original = {
+      key: "template-key",
+      templateName: "Old name",
+      duration: 60,
+      description: "Old description",
+      product: null,
+      activity: null,
+      issue: null,
+      client: null,
+    };
+    const update: EntryTemplateInput = {
+      templateName: "New name",
+      duration: 120,
+      description: "New description",
+      product: "TestProduct",
+      activity: null,
+      issue: null,
+      client: null,
+    };
+
+    repository.findOneBy.mockResolvedValueOnce({ employeeNumber: 1, entryTemplates: [original] });
+    repository.findOneBy.mockResolvedValueOnce({
+      employeeNumber: 1,
+      entryTemplates: [{ key: "template-key", ...update }],
+    });
+
+    const result = await service.replaceEntryTemplate(1, "template-key", update);
+
+    expect(repository.update).toHaveBeenCalledWith(
+      { employeeNumber: 1 },
+      { entryTemplates: [{ key: "template-key", ...update }] },
+    );
+    expect(result.entryTemplates).toEqual([{ key: "template-key", ...update }]);
+  });
+
+  it("leaves other templates unchanged when replacing one", async () => {
+    const target = { key: "target-key", templateName: "Target", duration: 60, description: "", product: null, activity: null, issue: null, client: null };
+    const other = { key: "other-key", templateName: "Other", duration: 30, description: "", product: null, activity: null, issue: null, client: null };
+    const update: EntryTemplateInput = { templateName: "Updated", duration: 90, description: "", product: null, activity: null, issue: null, client: null };
+
+    repository.findOneBy.mockResolvedValueOnce({ employeeNumber: 1, entryTemplates: [target, other] });
+    repository.findOneBy.mockResolvedValueOnce({
+      employeeNumber: 1,
+      entryTemplates: [{ key: "target-key", ...update }, other],
+    });
+
+    await service.replaceEntryTemplate(1, "target-key", update);
+
+    expect(repository.update).toHaveBeenCalledWith(
+      { employeeNumber: 1 },
+      { entryTemplates: [{ key: "target-key", ...update }, other] },
+    );
+  });
+
+  it("does not crash when replacing a non-existent template", async () => {
+    const update: EntryTemplateInput = { templateName: "New", duration: 60, description: "", product: null, activity: null, issue: null, client: null };
+
+    repository.findOneBy.mockResolvedValueOnce({ employeeNumber: 1, entryTemplates: undefined });
+    repository.findOneBy.mockResolvedValueOnce({ employeeNumber: 1, entryTemplates: [] });
+
+    const result = await service.replaceEntryTemplate(1, "missing-key", update);
+
+    expect(repository.update).toHaveBeenCalledWith({ employeeNumber: 1 }, { entryTemplates: [] });
+    expect(result.entryTemplates).toEqual([]);
+  });
 });
