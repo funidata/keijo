@@ -14,6 +14,7 @@ import DeleteTemplateButton from "./DeleteTemplateButton";
 import { roundToFullMinutes } from "../../common/duration";
 import useDayjs from "../../common/useDayjs";
 import { useTranslation } from "react-i18next";
+import EditTemplateButton from "./EditTemplateButton";
 
 type EntryTemplateRowProps = {
   entry: EntryTemplateType;
@@ -115,6 +116,7 @@ const EntryTemplateRow = ({ entry }: EntryTemplateRowProps) => {
           </Stack>
         </AccordionDetails>
         <AccordionActions>
+          <EditTemplateButton template={entry} />
           <DeleteTemplateButton templateKey={entry.key} />
         </AccordionActions>
       </Accordion>

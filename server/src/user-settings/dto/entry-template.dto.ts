@@ -48,3 +48,13 @@ export class RemoveEntryTemplateInput {
   @IsString()
   key: string;
 }
+
+@InputType()
+export class ReplaceEntryTemplateInput {
+  @Field()
+  @IsString()
+  key: string;
+
+  @Field(() => EntryTemplateInput)
+  template: EntryTemplateInput;
+}

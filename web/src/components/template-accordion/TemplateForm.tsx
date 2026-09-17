@@ -1,73 +1,30 @@
 import { Box, Button, Grid, TextField, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
-import useDayjs from "../../common/useDayjs";
-import {
-  AddEntryTemplateDocument,
-  Entry,
-  GetMySettingsDocument,
-} from "../../graphql/generated/graphql";
-import BigDeleteEntryButton from "../entry-dialog/BigDeleteEntryButton";
-import DimensionComboBox from "../entry-dialog/DimensionComboBox";
-import DurationSlider from "../entry-dialog/DurationSlider";
-
+import { EntryTemplateType } from "../../graphql/generated/graphql";
 import { useIsJiraAuthenticated } from "../../jira/jira-api";
 import JiraIssueComboBox from "../entry-dialog/JiraIssueComboBox";
-import { EntryFormSchema } from "../entry-form/useEntryForm";
-import { useMutation } from "@apollo/client/react";
-import { useNotification } from "../global-notification/useNotification";
+import DimensionComboBox from "../entry-dialog/DimensionComboBox";
+import DurationSlider from "../entry-dialog/DurationSlider";
+import useTemplateForm from "./useTemplateForm";
 
 type LocationState = {
-  date?: string;
-  editEntry?: Entry;
-  template?: Entry;
-  templateEntries?: Entry[];
+  editTemplate?: EntryTemplateType;
 };
-
-type TemplateFormSchema = {
-  templateName: string;
-} & Omit<EntryFormSchema, "date">;
 
 const TemplateForm = () => {
   const { state } = useLocation();
-  const dayjs = useDayjs();
-  // state is possibly null
-  const { date: originalDate, editEntry }: LocationState = state || {};
+  const { editTemplate }: LocationState = state || {};
 
-  const { showSuccessNotification } = useNotification();
-  const [addEntryTemplate, { loading }] = useMutation(AddEntryTemplateDocument, {
-    refetchQueries: [GetMySettingsDocument],
-    awaitRefetchQueries: true,
-    onCompleted: () => {
-      showSuccessNotification(t("notifications.addTemplate.success"));
-    },
-  });
-
-  const form = useForm<TemplateFormSchema>({
-    defaultValues: {
-      templateName: "",
-      duration: "",
-      description: "",
-      product: "",
-      activity: "",
-      issue: null,
-      client: "",
-    },
-  });
+  const { form, onSubmit, loading } = useTemplateForm({ editTemplate });
 
   const {
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful },
   } = form;
-
-  const onSubmit: SubmitHandler<TemplateFormSchema> = async (formValues) => {
-    addEntryTemplate({
-      variables: { template: { ...formValues, duration: Number(formValues.duration) } },
-    });
-  };
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -190,20 +147,15 @@ const TemplateForm = () => {
                 onClick={() => reset()}
                 fullWidth
               >
-                {t("entryDialog.clear")}
+                {editTemplate ? t("entryDialog.reset") : t("entryDialog.clear")}
               </Button>
-            </Grid>
-            <Grid size={12}>
-              {editEntry && originalDate && (
-                <BigDeleteEntryButton entryKey={editEntry.key} date={dayjs(originalDate)} />
-              )}
             </Grid>
           </>
         ) : (
           <Grid size={12} sx={{ mt: 2 }}>
             <Box sx={{ display: "flex", justifyContent: "end", gap: 2 }}>
               <Button type="reset" variant="outlined" size="large" onClick={() => reset()}>
-                {t("entryDialog.clear")}
+                {editTemplate ? t("entryDialog.reset") : t("entryDialog.clear")}
               </Button>
               <Button loading={loading} type="submit" variant="contained" size="large">
                 {t("entryDialog.submit")}
