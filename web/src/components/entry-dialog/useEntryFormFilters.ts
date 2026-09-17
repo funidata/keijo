@@ -40,17 +40,20 @@ export default function useEntryFormFilters(): EntryFormFiltersResult {
     return usedFilters;
   }, [selectedProjectKeys]);
 
-  const updateSelectedProjects = useCallback((newProjectKeys: string[]) => {
-    setSelectedProjectKeys(newProjectKeys);
-    const existing = client.readQuery({ query: GetMySettingsDocument });
-    if (existing) {
-      client.writeQuery({
-        query: GetMySettingsDocument,
-        data: { getMySettings: { ...existing.getMySettings, projectsPreset: newProjectKeys } },
-      });
-    }
-    updateSettings({ variables: { settings: { projectsPreset: newProjectKeys } } });
-  }, []);
+  const updateSelectedProjects = useCallback(
+    (newProjectKeys: string[]) => {
+      setSelectedProjectKeys(newProjectKeys);
+      const existing = client.readQuery({ query: GetMySettingsDocument });
+      if (existing) {
+        client.writeQuery({
+          query: GetMySettingsDocument,
+          data: { getMySettings: { ...existing.getMySettings, projectsPreset: newProjectKeys } },
+        });
+      }
+      updateSettings({ variables: { settings: { projectsPreset: newProjectKeys } } });
+    },
+    [client, updateSettings],
+  );
 
   return {
     filters: {
