@@ -9,5 +9,6 @@ import { PassportModule } from "@nestjs/passport";
   imports: [AxiosModule, PassportModule.register({ session: true })],
   controllers: [JiraController],
   providers: [JiraStrategy, JiraService],
+  exports: [JiraService],
 })
 export class JiraModule {}

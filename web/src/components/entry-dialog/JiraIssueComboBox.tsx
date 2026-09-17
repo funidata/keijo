@@ -14,7 +14,7 @@ import Autocomplete, { type AutocompleteInputChangeReason } from "@mui/material/
 import FormControl from "@mui/material/FormControl";
 import useJiraIssueOptions, { type Option } from "./useJiraIssueOptions";
 import { useTranslation } from "react-i18next";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@apollo/client/react";
 import { GetMySettingsDocument } from "../../graphql/generated/graphql";
 
@@ -36,6 +36,7 @@ const JiraIssueComboBox = <T extends FieldValues>({
   // Debounce search term to avoid firing queries on every key press.
   const [searchTerm, setSearchTerm] = useDebounceValue("", 300);
   const [inputValue, setInputValue] = useState("");
+  const isUserTyping = useRef(false);
 
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -45,6 +46,8 @@ const JiraIssueComboBox = <T extends FieldValues>({
   const showJiraIssueStatus = !!settingsData?.getMySettings.showJiraIssueStatus;
 
   useEffect(() => {
+    if (isUserTyping.current) return;
+
     const currentIssue = form.getValues(name as Path<T>) as string | null;
 
     if (!currentIssue) {
@@ -96,6 +99,8 @@ const JiraIssueComboBox = <T extends FieldValues>({
               value={value ?? ""}
               inputValue={inputValue}
               onChange={(_, selectedOption) => {
+                isUserTyping.current = false;
+
                 if (selectedOption == null) {
                   onChange(null);
                   setInputValue("");
@@ -109,10 +114,12 @@ const JiraIssueComboBox = <T extends FieldValues>({
               }}
               onInputChange={(_, value, reason: AutocompleteInputChangeReason) => {
                 if (reason === "input") {
+                  isUserTyping.current = true;
                   setSearchTerm(value);
                   setInputValue(value);
                   onChange(value);
                 } else if (reason === "clear") {
+                  isUserTyping.current = false;
                   setSearchTerm("");
                   setInputValue("");
                   onChange(null);

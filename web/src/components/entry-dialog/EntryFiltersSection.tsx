@@ -21,14 +21,13 @@ export default function EntryFiltersSection() {
         onClick={() => setShowFilters((prev) => !prev)}
         size="small"
         variant="text"
-        color="secondary"
         aria-label={
           showFilters ? undefined : t("controls.showFilters_aria", { count: filterValueCount })
         }
-        sx={{ marginBottom: 1, color: "secondary.dark" }}
+        sx={{ marginBottom: 1 }}
       >
         {showFilters ? t("controls.hideFilters") : t("controls.showFilters")}
-        <Badge badgeContent={filterValueCount} color="secondary" sx={{ ml: 2 }} />
+        <Badge badgeContent={filterValueCount} sx={{ ml: 2 }} />
       </Button>
       <Collapse in={showFilters}>
         <ProjectFilter
