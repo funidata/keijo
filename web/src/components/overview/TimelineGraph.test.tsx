@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import TimelineGraph from "./TimelineGraph";
-import OverviewContextProvider from "./OverviewContext";
+import OverviewContextProvider from "./OverviewContextProvider";
 import { OverviewGraphType, TimelineGraphVariant } from "./graphTypes";
 
 vi.mock("@apollo/client/react", () => ({

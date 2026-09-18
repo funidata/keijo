@@ -48,6 +48,26 @@ export class UserSettingsService {
     return this.findOneByEmployeeNumber(employeeNumber);
   }
 
+  async replaceEntryTemplate(
+    employeeNumber: number,
+    key: string,
+    update: EntryTemplateInput,
+  ): Promise<UserSettings> {
+    const settings = await this.findOneByEmployeeNumber(employeeNumber);
+    const existingTemplates = settings.entryTemplates ?? [];
+
+    await this.userSettings.update(
+      { employeeNumber },
+      {
+        entryTemplates: existingTemplates.map((entry) =>
+          entry.key === key ? { key, ...update } : entry,
+        ),
+      },
+    );
+
+    return this.findOneByEmployeeNumber(employeeNumber);
+  }
+
   async removeEntryTemplate(employeeNumber: number, entryKey: string): Promise<UserSettings> {
     const settings = await this.findOneByEmployeeNumber(employeeNumber);
     const existingTemplates = settings.entryTemplates ?? [];

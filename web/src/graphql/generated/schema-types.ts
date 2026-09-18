@@ -83,6 +83,7 @@ export type Mutation = {
   addWorkdayEntry: Scalars['String']['output'];
   removeEntryTemplate: UserSettings;
   removeWorkdayEntry: Scalars['String']['output'];
+  replaceEntryTemplate: UserSettings;
   replaceWorkdayEntry: Scalars['String']['output'];
   updateMyOverviewConfig: Array<OverviewZone>;
   updateSettings: UserSettings;
@@ -106,6 +107,11 @@ export type MutationRemoveEntryTemplateArgs = {
 
 export type MutationRemoveWorkdayEntryArgs = {
   entry: RemoveWorkdayEntryInput;
+};
+
+
+export type MutationReplaceEntryTemplateArgs = {
+  input: ReplaceEntryTemplateInput;
 };
 
 
@@ -187,6 +193,11 @@ export type RemoveEntryTemplateInput = {
 export type RemoveWorkdayEntryInput = {
   date: Scalars['DateTime']['input'];
   key: Scalars['String']['input'];
+};
+
+export type ReplaceEntryTemplateInput = {
+  key: Scalars['String']['input'];
+  template: EntryTemplateInput;
 };
 
 export type SessionStatus = {

@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client/react";
-import { useContext, useMemo, createContext, PropsWithChildren, useCallback } from "react";
+import { useMemo, createContext, PropsWithChildren, useCallback } from "react";
 import { type GraphConfig, type GraphZoneConfig } from "./graphTypes";
 import type { TotalsGraphVariant, TimelineGraphVariant } from "./graphTypes";
 import {
@@ -65,12 +65,4 @@ export default function OverviewContextProvider({
   }, [overviewConfig, isLoading, workdays, handleGraphVariantChange]);
 
   return <OverviewContext.Provider value={contextValue}>{children}</OverviewContext.Provider>;
-}
-
-export function useOverviewConfig() {
-  const context = useContext(OverviewContext);
-  if (!context) {
-    throw new Error("useOverviewConfig must be used within an OverviewContextProvider");
-  }
-  return context;
 }

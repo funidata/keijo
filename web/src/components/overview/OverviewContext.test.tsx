@@ -2,7 +2,8 @@ import { act, cleanup, renderHook } from "@testing-library/react";
 import type { PropsWithChildren } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { OverviewGraphType, OverviewGroupBy, TotalsGraphVariant } from "./graphTypes";
-import OverviewContextProvider, { useOverviewConfig } from "./OverviewContext";
+import OverviewContextProvider from "./OverviewContextProvider";
+import { useOverviewConfig } from "./OverviewContext";
 
 const mocks = vi.hoisted(() => ({
   updateOverviewConfig: vi.fn(),
