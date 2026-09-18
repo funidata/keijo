@@ -14,6 +14,7 @@ const fi = {
     deleteEntry: "Poista merkintä",
     deleteEntryTemplate: "Poista",
     editEntry: "Muokkaa merkintää",
+    editEntryTemplate: "Muokkaa",
     selectWeek: "Viikko",
     openMenu: "Avaa valikko",
     useDarkMode: "Synkkyys",
@@ -146,6 +147,9 @@ const fi = {
     },
     addTemplate: {
       success: "Uusi kirjauspohja lisätty.",
+    },
+    editTemplate: {
+      success: "Kirjauspohja päivitetty.",
     },
     deleteTemplate: {
       success: "Kirjauspohja poistettu.",

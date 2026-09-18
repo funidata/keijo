@@ -3,7 +3,11 @@ import { EmployeeNumber } from "../decorators/employee-number.decorator";
 import { UpdateSettingsDto } from "./dto/update-settings.dto";
 import { UserSettings } from "./user-settings.model";
 import { UserSettingsService } from "./user-settings.service";
-import { EntryTemplateInput, RemoveEntryTemplateInput } from "./dto/entry-template.dto";
+import {
+  EntryTemplateInput,
+  RemoveEntryTemplateInput,
+  ReplaceEntryTemplateInput,
+} from "./dto/entry-template.dto";
 
 @Resolver()
 export class UserSettingsResolver {
@@ -28,6 +32,14 @@ export class UserSettingsResolver {
     @Args("template") entry: EntryTemplateInput,
   ) {
     return this.userSettingsService.addEntryTemplate(employeeNumber, entry);
+  }
+
+  @Mutation(() => UserSettings)
+  async replaceEntryTemplate(
+    @EmployeeNumber() employeeNumber: number,
+    @Args("input") input: ReplaceEntryTemplateInput,
+  ) {
+    return this.userSettingsService.replaceEntryTemplate(employeeNumber, input.key, input.template);
   }
 
   @Mutation(() => UserSettings)

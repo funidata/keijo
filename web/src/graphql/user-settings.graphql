@@ -43,6 +43,22 @@ mutation AddEntryTemplate($template: EntryTemplateInput!) {
   }
 }
 
+mutation ReplaceEntryTemplate($input: ReplaceEntryTemplateInput!) {
+  replaceEntryTemplate(input: $input) {
+    employeeNumber
+    entryTemplates {
+      key
+      templateName
+      duration
+      description
+      product
+      activity
+      issue
+      client
+    }
+  }
+}
+
 mutation RemoveEntryTemplate($templateKey: RemoveEntryTemplateInput!) {
   removeEntryTemplate(templateKey: $templateKey) {
     employeeNumber
