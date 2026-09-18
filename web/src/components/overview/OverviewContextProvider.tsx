@@ -16,7 +16,10 @@ export default function OverviewContextProvider({
 }: PropsWithChildren<{ workdays: Workday[] }>) {
   const { data, loading: isLoading } = useQuery(GetMyOverviewConfigDocument);
   const [updateOverviewConfig] = useMutation(UpdateMyOverviewConfigDocument);
-  const overviewConfig = (data?.getMyOverviewConfig ?? []) as GraphZoneConfig[];
+  const overviewConfig = useMemo(
+    () => (data?.getMyOverviewConfig ?? []) as GraphZoneConfig[],
+    [data?.getMyOverviewConfig],
+  );
 
   const handleGraphVariantChange = useCallback(
     (value: TotalsGraphVariant | TimelineGraphVariant, graphIndex: number, zoneIndex: number) => {
