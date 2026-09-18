@@ -37,7 +37,7 @@ export default function TimelineGraph({
           >
             {Object.values(TimelineGraphVariant).map((variant) => (
               <MenuItem key={variant} value={variant}>
-                {t(`overview.timelineVariant.${variant}`)}
+                {t(`overview.timelineVariant.${variant.toLowerCase()}`)}
               </MenuItem>
             ))}
           </Select>

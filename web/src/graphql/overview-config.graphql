@@ -1,0 +1,19 @@
+query GetMyOverviewConfig {
+  getMyOverviewConfig {
+    groupBy
+    graphs {
+      type
+      variant
+    }
+  }
+}
+
+mutation UpdateMyOverviewConfig($config: [OverviewZoneInput!]!) {
+  updateMyOverviewConfig(config: $config) {
+    groupBy
+    graphs {
+      type
+      variant
+    }
+  }
+}

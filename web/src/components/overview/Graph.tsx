@@ -4,6 +4,7 @@ import type {
   TotalsGraphVariant,
   TimelineGraphVariant,
 } from "./graphTypes";
+import { OverviewGraphType } from "./graphTypes";
 import { useOverviewConfig } from "./OverviewContext";
 import TimelineGraph from "./TimelineGraph";
 import TotalsGraph from "./TotalsGraph";
@@ -28,9 +29,9 @@ export default function Graph(props: GraphProps) {
   };
 
   switch (props.config.type) {
-    case "timeline":
+    case OverviewGraphType.Timeline:
       return <TimelineGraph {...graphProps} />;
-    case "totals":
+    case OverviewGraphType.Totals:
       return <TotalsGraph {...graphProps} />;
     default:
       return null;

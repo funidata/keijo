@@ -2,7 +2,12 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import TotalsGraph from "./TotalsGraph";
 import OverviewContextProvider from "./OverviewContextProvider";
-import { TotalsGraphVariant } from "./graphTypes";
+import { OverviewGraphType, TotalsGraphVariant } from "./graphTypes";
+
+vi.mock("@apollo/client/react", () => ({
+  useQuery: () => ({ data: { getMyOverviewConfig: [] }, loading: false }),
+  useMutation: () => [vi.fn()],
+}));
 
 vi.mock("./charts/BarChart", () => ({
   default: ({ orientation }: { orientation: "vertical" | "horizontal" }) => (
@@ -25,7 +30,7 @@ describe("TotalsGraph", () => {
     return render(
       <OverviewContextProvider workdays={[]}>
         <TotalsGraph
-          config={{ type: "totals", variant }}
+          config={{ type: OverviewGraphType.Totals, variant }}
           graphIndex={0}
           groupBy="product"
           onChangeVariant={vi.fn()}
@@ -50,7 +55,7 @@ describe("TotalsGraph", () => {
     render(
       <OverviewContextProvider workdays={[]}>
         <TotalsGraph
-          config={{ type: "totals", variant: TotalsGraphVariant.BarVertical }}
+          config={{ type: OverviewGraphType.Totals, variant: TotalsGraphVariant.BarVertical }}
           graphIndex={0}
           groupBy="product"
           onChangeVariant={onChangeVariant}

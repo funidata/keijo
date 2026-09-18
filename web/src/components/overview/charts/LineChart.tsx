@@ -39,7 +39,7 @@ const getLineChartOptions = (variant: TimelineGraphVariant) => {
     plugins: {
       ...tooltipOptions,
     },
-    ...(variant === "stacked" && {
+    ...(variant === TimelineGraphVariant.Stacked && {
       scales: {
         y: {
           stacked: true,
