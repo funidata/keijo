@@ -4,6 +4,7 @@ import { Workday } from "../../graphql/generated/graphql";
 
 type OverviewContextType = {
   overviewConfig: GraphZoneConfig[];
+  isLoading: boolean;
   workdays: Workday[];
   handleGraphVariantChange: (
     value: TotalsGraphVariant | TimelineGraphVariant,

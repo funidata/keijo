@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client/react";
-import { useMemo, createContext, PropsWithChildren, useCallback } from "react";
+import { useMemo, PropsWithChildren, useCallback } from "react";
+import { OverviewContext } from "./OverviewContext";
 import { type GraphConfig, type GraphZoneConfig } from "./graphTypes";
 import type { TotalsGraphVariant, TimelineGraphVariant } from "./graphTypes";
 import {
@@ -8,19 +9,6 @@ import {
   type UpdateMyOverviewConfigMutation,
   UpdateMyOverviewConfigDocument,
 } from "../../graphql/generated/graphql";
-
-type OverviewContextType = {
-  overviewConfig: GraphZoneConfig[];
-  isLoading: boolean;
-  workdays: Workday[];
-  handleGraphVariantChange: (
-    value: TotalsGraphVariant | TimelineGraphVariant,
-    graphIndex: number,
-    zoneIndex: number,
-  ) => void;
-};
-
-const OverviewContext = createContext<OverviewContextType | null>(null);
 
 export default function OverviewContextProvider({
   children,
