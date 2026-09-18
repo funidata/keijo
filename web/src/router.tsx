@@ -44,6 +44,7 @@ const router = createBrowserRouter([
               { path: "edit", element: <EntryDialog variant="edit" /> },
               { path: "set-defaults", element: <DefaultsDialog /> },
               { path: "create-template", element: <TemplateDialog /> },
+              { path: "edit-template", element: <TemplateDialog variant="edit" /> },
             ],
           },
         ],

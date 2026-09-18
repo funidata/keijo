@@ -14,6 +14,7 @@ import DeleteTemplateButton from "./DeleteTemplateButton";
 import { roundToFullMinutes } from "../../common/duration";
 import useDayjs from "../../common/useDayjs";
 import { useTranslation } from "react-i18next";
+import EditTemplateButton from "./EditTemplateButton";
 
 type EntryTemplateRowProps = {
   entry: EntryTemplateType;
@@ -28,9 +29,18 @@ const EntryTemplateRow = ({ entry }: EntryTemplateRowProps) => {
 
   return (
     <Box>
-      <Accordion sx={{ backgroundColor: "background.paper" }} disableGutters>
+      <Accordion
+        slotProps={{ heading: { component: "h4" } }}
+        sx={{ backgroundColor: "background.paper" }}
+        disableGutters
+      >
         <Box sx={{ position: "relative" }}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ flexDirection: "row-reverse" }}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            sx={{ flexDirection: "row-reverse" }}
+            aria-controls={`entry-template-row-accordion-content-${entry.key}`}
+            id={`entry-template-row-accordion-header-${entry.key}`}
+          >
             <Stack
               direction="row"
               sx={{
@@ -106,6 +116,7 @@ const EntryTemplateRow = ({ entry }: EntryTemplateRowProps) => {
           </Stack>
         </AccordionDetails>
         <AccordionActions>
+          <EditTemplateButton template={entry} />
           <DeleteTemplateButton templateKey={entry.key} />
         </AccordionActions>
       </Accordion>
