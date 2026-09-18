@@ -12,6 +12,7 @@ import { appGuards } from "./guards/app-guards";
 import { JiraModule } from "./jira/jira.module";
 import { LoggerModule } from "./logger/logger.module";
 import { NetvisorModule } from "./netvisor/netvisor.module";
+import { OverviewConfigModule } from "./overview-config/overview-config.module";
 import { SessionModule } from "./session/session.module";
 import { UserSettingsModule } from "./user-settings/user-settings.module";
 
@@ -32,6 +33,7 @@ const devEnvImports = devTools ? [DevToolsModule] : [];
     SessionModule,
     DatabaseModule,
     UserSettingsModule,
+    OverviewConfigModule,
     JiraModule,
     ...devEnvImports,
   ],
