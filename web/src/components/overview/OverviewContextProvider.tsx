@@ -1,19 +1,9 @@
-import { useContext, useMemo, createContext, PropsWithChildren, useCallback } from "react";
-import { GraphZoneConfig } from "./graphTypes";
+import { useMemo, PropsWithChildren, useCallback } from "react";
 import type { TotalsGraphVariant, TimelineGraphVariant } from "./graphTypes";
 import type { Workday } from "../../graphql/generated/graphql";
 import { DEFAULT_OVERVIEW_CONFIG, OVERVIEW_CONFIG_LOCALSTORAGE_KEY } from "./constants";
 import { useLocalStorage } from "usehooks-ts";
-
-type OverviewContextType = {
-  overviewConfig: GraphZoneConfig[];
-  workdays: Workday[];
-  handleGraphVariantChange: (
-    value: TotalsGraphVariant | TimelineGraphVariant,
-    graphIndex: number,
-    zoneIndex: number,
-  ) => void;
-};
+import { OverviewContext } from "./OverviewContext";
 
 export default function OverviewContextProvider({
   children,
