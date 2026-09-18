@@ -3,7 +3,7 @@ import type { PropsWithChildren } from "react";
 import { afterEach, describe, expect, it } from "vitest";
 import { TotalsGraphVariant } from "./graphTypes";
 import { DEFAULT_OVERVIEW_CONFIG, OVERVIEW_CONFIG_LOCALSTORAGE_KEY } from "./constants";
-import OverviewContextProvider, { useOverviewConfig } from "./OverviewContext";
+import OverviewContextProvider, { useOverviewConfig } from "./OverviewContextProvider";
 
 afterEach(() => {
   cleanup();

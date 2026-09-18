@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useTranslation } from "react-i18next";
 import { TimelineGraphVariant, type GraphGroupByKey, type GraphConfig } from "./graphTypes";
 import LineChart from "./charts/LineChart";
-import { useOverviewConfig } from "./OverviewContext";
+import { useOverviewConfig } from "./OverviewContextProvider";
 
 interface TimelineGraphProps {
   graphIndex: number;

@@ -4,7 +4,7 @@ import type {
   TotalsGraphVariant,
   TimelineGraphVariant,
 } from "./graphTypes";
-import { useOverviewConfig } from "./OverviewContext";
+import { useOverviewConfig } from "./OverviewContextProvider";
 import TimelineGraph from "./TimelineGraph";
 import TotalsGraph from "./TotalsGraph";
 

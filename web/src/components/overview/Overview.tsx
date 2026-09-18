@@ -1,6 +1,6 @@
 import Stack from "@mui/material/Stack";
 import Zone from "./Zone";
-import { useOverviewConfig } from "./OverviewContext";
+import { useOverviewConfig } from "./OverviewContextProvider";
 
 export default function Overview() {
   const { overviewConfig } = useOverviewConfig();

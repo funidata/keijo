@@ -4,7 +4,7 @@ import { useWorkdayBrowserParams } from "../workday-browser/useWorkdayBrowserPar
 import LoadingIndicator from "../workday-browser/LoadingIndicator";
 import { compileWorkdayRange } from "../../common/workdayUtils";
 import Overview from "./Overview";
-import OverviewContextProvider from "./OverviewContext";
+import OverviewContextProvider from "./OverviewContextProvider";
 
 export default function OverviewWrapper() {
   const { from, to, formattedFrom, formattedTo } = useWorkdayBrowserParams();

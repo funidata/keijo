@@ -4,7 +4,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { useTranslation } from "react-i18next";
 import { TotalsGraphVariant, type GraphGroupByKey, type GraphConfig } from "./graphTypes";
-import { useOverviewConfig } from "./OverviewContext";
+import { useOverviewConfig } from "./OverviewContextProvider";
 import BarChart from "./charts/BarChart";
 import PieChart from "./charts/PieChart";
 

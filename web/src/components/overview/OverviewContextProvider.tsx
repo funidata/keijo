@@ -15,8 +15,6 @@ type OverviewContextType = {
   ) => void;
 };
 
-const OverviewContext = createContext<OverviewContextType | null>(null);
-
 export default function OverviewContextProvider({
   children,
   workdays,
@@ -46,12 +44,4 @@ export default function OverviewContextProvider({
   }, [overviewConfig, workdays, handleGraphVariantChange]);
 
   return <OverviewContext.Provider value={contextValue}>{children}</OverviewContext.Provider>;
-}
-
-export function useOverviewConfig() {
-  const context = useContext(OverviewContext);
-  if (!context) {
-    throw new Error("useOverviewConfig must be used within an OverviewContextProvider");
-  }
-  return context;
 }
