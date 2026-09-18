@@ -155,6 +155,28 @@ const fi = {
       success: "Kirjauspohja poistettu.",
     },
   },
+  overview: {
+    chart: {
+      percentageOfTotalHours: "{{ percentage }}% koko työajasta",
+      weekNumber: "viikko {{weekNumber}}",
+    },
+    title: "Yhteenveto",
+    hoursBy: {
+      product: "Työaika tuotteittain",
+      activity: "Työaika toiminnoittain",
+    },
+    timelineVariant: {
+      label: "Tyyppi",
+      unstacked: "Ryhmitelty",
+      stacked: "Pinottu",
+    },
+    totalsVariant: {
+      label: "Tyyppi",
+      barHorizontal: "Vaakapalkit",
+      barVertical: "Pystypalkit",
+      pie: "Piirakka",
+    },
+  },
   titles: {
     workdayBrowser: "Työaikakirjaukset",
     templates: "Omat kirjauspohjat",
