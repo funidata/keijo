@@ -1,4 +1,4 @@
-import { ValidatorOptions, registerDecorator } from "class-validator";
+import { ValidationOptions, registerDecorator } from "class-validator";
 import { DimensionConstraint } from "./dimension.constraint";
 
 /**
@@ -7,7 +7,7 @@ import { DimensionConstraint } from "./dimension.constraint";
  * Decorated property name must be one of the keys of `DimensionOptions`.
  */
 export const IsDimensionValue =
-  (validationOptions?: ValidatorOptions) => (object: object, propertyName: string) => {
+  (validationOptions?: ValidationOptions) => (object: object, propertyName: string) => {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,
