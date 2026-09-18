@@ -1,6 +1,6 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 
 import "../../i18n/i18n-config";
 import DimensionComboBox from "./DimensionComboBox";
@@ -29,7 +29,7 @@ const TestForm = () => {
     defaultValues: { issue: "" },
   });
 
-  const issueValue = form.watch("issue");
+  const issueValue = useWatch({ control: form.control, name: "issue" });
 
   return (
     <form>
