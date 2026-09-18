@@ -34,7 +34,7 @@ export default function OverviewContextProvider({
       setOverviewConfig(newConfig);
       localStorage.setItem(OVERVIEW_CONFIG_LOCALSTORAGE_KEY, JSON.stringify(newConfig));
     },
-    [overviewConfig],
+    [overviewConfig, setOverviewConfig],
   );
 
   const contextValue = useMemo(() => {
