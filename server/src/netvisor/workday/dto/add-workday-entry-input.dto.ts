@@ -22,7 +22,9 @@ export class AddWorkdayEntryInput {
   @Field(() => String, { nullable: true })
   activity: string | null;
 
-  @IsDimensionValue()
+  @IsDimensionValue({
+    message: "Selected issue is no longer available.",
+  })
   @Field(() => String, { nullable: true })
   issue: string | null;
 
