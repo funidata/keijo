@@ -25,6 +25,7 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
        * not supported.
        * See https://github.com/brianc/node-postgres/tree/master/packages/pg-connection-string#tcp-connections
        */
+      // eslint-disable-next-line node-security/no-self-signed-certs -- no-verify is the configured compatibility mode.
       ssl: ssl ? { rejectUnauthorized: false } : false,
     };
   }

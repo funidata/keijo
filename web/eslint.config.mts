@@ -4,11 +4,15 @@ import prettierConfig from "eslint-config-prettier";
 import reactHooks from "eslint-plugin-react-hooks";
 import { reactRefresh } from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
+import { configs as browserSecurityConfigs } from "eslint-plugin-browser-security";
+import { configs as secureCodingConfigs } from "eslint-plugin-secure-coding";
 
 const config = defineConfig([
   eslint.configs.recommended,
   tseslint.configs.recommended,
   reactHooks.configs.flat.recommended,
+  browserSecurityConfigs.recommended,
+  secureCodingConfigs.recommended,
   {
     rules: {
       "react-hooks/set-state-in-effect": "warn",

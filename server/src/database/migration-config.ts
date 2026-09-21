@@ -12,6 +12,7 @@ export default new DataSource({
    * not supported.
    * See https://github.com/brianc/node-postgres/tree/master/packages/pg-connection-string#tcp-connections
    */
+  // eslint-disable-next-line node-security/no-self-signed-certs -- no-verify is the configured compatibility mode.
   ssl: process.env.DATABASE_SSL_MODE === "true" ? { rejectUnauthorized: false } : false,
   /**
    * Glob pattern is used to make this work both locally and in CI as it appears that

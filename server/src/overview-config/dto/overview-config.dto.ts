@@ -1,4 +1,6 @@
 import { Field, InputType, ObjectType, registerEnumType } from "@nestjs/graphql";
+import { Type } from "class-transformer";
+import { IsArray, IsEnum, ValidateNested } from "class-validator";
 
 export enum OverviewGraphType {
   Totals = "totals",
@@ -45,17 +47,23 @@ export class OverviewZone {
 @InputType()
 export class OverviewGraphInput {
   @Field(() => OverviewGraphType)
+  @IsEnum(OverviewGraphType)
   type: OverviewGraphType;
 
   @Field(() => OverviewGraphVariant)
+  @IsEnum(OverviewGraphVariant)
   variant: OverviewGraphVariant;
 }
 
 @InputType()
 export class OverviewZoneInput {
   @Field(() => OverviewGroupBy)
+  @IsEnum(OverviewGroupBy)
   groupBy: OverviewGroupBy;
 
   @Field(() => [OverviewGraphInput])
+  @Type(() => OverviewGraphInput)
+  @IsArray()
+  @ValidateNested({ each: true })
   graphs: OverviewGraphInput[];
 }
