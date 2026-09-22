@@ -14,7 +14,7 @@ import Autocomplete, { type AutocompleteInputChangeReason } from "@mui/material/
 import FormControl from "@mui/material/FormControl";
 import useJiraIssueOptions, { type Option } from "./useJiraIssueOptions";
 import { useTranslation } from "react-i18next";
-import { useState, useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useQuery } from "@apollo/client/react";
 import { GetMySettingsDocument } from "../../graphql/generated/graphql";
 
@@ -35,9 +35,6 @@ const JiraIssueComboBox = <T extends FieldValues>({
 
   // Debounce search term to avoid firing queries on every key press.
   const [searchTerm, setSearchTerm] = useDebounceValue("", 300);
-  const [inputValue, setInputValue] = useState("");
-  const isUserTyping = useRef(false);
-
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -46,22 +43,15 @@ const JiraIssueComboBox = <T extends FieldValues>({
   const showJiraIssueStatus = !!settingsData?.getMySettings.showJiraIssueStatus;
 
   useEffect(() => {
-    if (isUserTyping.current) return;
-
     const currentIssue = form.getValues(name as Path<T>) as string | null;
 
     if (!currentIssue) {
-      setInputValue("");
       return;
     }
 
     const matched = options.find((option) => option.value === currentIssue);
 
-    if (matched) {
-      setInputValue(matched.label);
-    } else {
-      setInputValue(currentIssue);
-
+    if (!matched) {
       // Available options are built from recent issues and search results, so if current issue is not included in user's recent issues list,
       // update the search term to fetch it from Jira, so that the issue label can be displayed in the input field.
       if (searchTerm !== currentIssue) {
@@ -97,31 +87,26 @@ const JiraIssueComboBox = <T extends FieldValues>({
               freeSolo
               forcePopupIcon
               value={value ?? ""}
-              inputValue={inputValue}
+              inputValue={
+                typeof value === "string"
+                  ? (options.find((option) => option.value === value)?.label ?? value)
+                  : ""
+              }
               onChange={(_, selectedOption) => {
-                isUserTyping.current = false;
-
                 if (selectedOption == null) {
                   onChange(null);
-                  setInputValue("");
                 } else if (typeof selectedOption === "string") {
                   onChange(selectedOption);
-                  setInputValue(selectedOption);
                 } else {
                   onChange(selectedOption.value);
-                  setInputValue(selectedOption.label);
                 }
               }}
               onInputChange={(_, value, reason: AutocompleteInputChangeReason) => {
                 if (reason === "input") {
-                  isUserTyping.current = true;
                   setSearchTerm(value);
-                  setInputValue(value);
                   onChange(value);
                 } else if (reason === "clear") {
-                  isUserTyping.current = false;
                   setSearchTerm("");
-                  setInputValue("");
                   onChange(null);
                 }
               }}
