@@ -103,25 +103,12 @@ describe("OverviewContextProvider", () => {
       });
 
       expect(result.current.overviewConfig[0].graphs[0]).toEqual({
-        __typename: "OverviewGraph",
         type: OverviewGraphType.Totals,
         variant: TotalsGraphVariant.Pie,
       });
       expect(mocks.updateOverviewConfig).toHaveBeenCalledWith({
         variables: {
           config: [
-            {
-              groupBy: OverviewGroupBy.Product,
-              graphs: [{ type: OverviewGraphType.Totals, variant: TotalsGraphVariant.Pie }],
-            },
-            {
-              groupBy: OverviewGroupBy.Client,
-              graphs: [{ type: OverviewGraphType.Totals, variant: TotalsGraphVariant.BarVertical }],
-            },
-          ],
-        },
-        optimisticResponse: {
-          updateMyOverviewConfig: [
             {
               groupBy: OverviewGroupBy.Product,
               graphs: [{ type: OverviewGraphType.Totals, variant: TotalsGraphVariant.Pie }],
