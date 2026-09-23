@@ -26,7 +26,7 @@ const options =
   const configService = app.get(ConfigService);
   app.useLogger(new AppLogger(configService));
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
 
   // express-session setup.
   app.set("trust proxy", configService.config.trustProxyIps);

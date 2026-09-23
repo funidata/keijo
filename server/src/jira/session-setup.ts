@@ -12,6 +12,7 @@ export function createSession(configService: ConfigService): any {
     password,
     host,
     port,
+    // eslint-disable-next-line node-security/no-self-signed-certs -- no-verify is the configured compatibility mode.
     ssl: ssl ? { rejectUnauthorized: false } : false,
   });
 

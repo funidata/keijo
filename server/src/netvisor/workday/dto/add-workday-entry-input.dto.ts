@@ -1,5 +1,5 @@
 import { Field, InputType } from "@nestjs/graphql";
-import { IsDate } from "class-validator";
+import { IsDate, IsNumber, IsString } from "class-validator";
 import { IsDimensionValue } from "../../dimension/is-dimension-value.decorator";
 
 @InputType()
@@ -9,9 +9,11 @@ export class AddWorkdayEntryInput {
   date: Date;
 
   @Field()
+  @IsNumber()
   duration: number;
 
   @Field()
+  @IsString()
   description: string;
 
   @IsDimensionValue()
