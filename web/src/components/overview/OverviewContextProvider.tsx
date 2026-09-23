@@ -9,10 +9,12 @@ import {
   UpdateMyOverviewConfigDocument,
 } from "../../graphql/generated/graphql";
 
-const withoutTypename = <T extends object>(value: T): Omit<T, "__typename"> => {
+type WithoutTypename<T> = T extends object ? Omit<T, "__typename"> : never;
+
+const withoutTypename = <T extends object>(value: T): WithoutTypename<T> => {
   const input = { ...value } as T & { __typename?: string };
   delete input.__typename;
-  return input;
+  return input as unknown as WithoutTypename<T>;
 };
 
 export default function OverviewContextProvider({
