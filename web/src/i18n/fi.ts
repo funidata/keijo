@@ -172,8 +172,8 @@ const fi = {
     },
     totalsVariant: {
       label: "Tyyppi",
-      barHorizontal: "Vaakapalkit",
-      barVertical: "Pystypalkit",
+      barhorizontal: "Vaakapalkit",
+      barvertical: "Pystypalkit",
       pie: "Piirakka",
     },
   },
