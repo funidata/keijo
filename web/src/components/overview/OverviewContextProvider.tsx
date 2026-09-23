@@ -10,6 +10,12 @@ import {
   UpdateMyOverviewConfigDocument,
 } from "../../graphql/generated/graphql";
 
+const withoutTypename = <T extends object>(value: T): Omit<T, "__typename"> => {
+  const input = { ...value } as T & { __typename?: string };
+  delete input.__typename;
+  return input;
+};
+
 export default function OverviewContextProvider({
   children,
   workdays,
@@ -23,18 +29,18 @@ export default function OverviewContextProvider({
 
   const handleGraphVariantChange = useCallback(
     (value: TotalsGraphVariant | TimelineGraphVariant, graphIndex: number, zoneIndex: number) => {
-      const newConfig = overviewConfig.map((zone, currentZoneIndex) =>
-        currentZoneIndex === zoneIndex
-          ? {
-              ...zone,
-              graphs: zone.graphs.map((graph, currentGraphIndex) =>
-                currentGraphIndex === graphIndex
-                  ? ({ ...graph, variant: value } as GraphConfig)
-                  : graph,
-              ),
-            }
-          : zone,
-      );
+      const newConfig = overviewConfig.map((zone, currentZoneIndex) => {
+        const zoneInput = withoutTypename(zone);
+        const graphs = zone.graphs.map((graph, currentGraphIndex) => {
+          const graphInput = withoutTypename(graph);
+
+          return currentZoneIndex === zoneIndex && currentGraphIndex === graphIndex
+            ? ({ ...graphInput, variant: value } as GraphConfig)
+            : graphInput;
+        });
+
+        return { ...zoneInput, graphs };
+      });
 
       updateOverviewConfig({
         variables: { config: newConfig },
