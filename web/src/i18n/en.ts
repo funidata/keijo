@@ -172,8 +172,8 @@ const en = {
     },
     totalsVariant: {
       label: "Variant",
-      barHorizontal: "Horizontal bars",
-      barVertical: "Vertical bars",
+      barhorizontal: "Horizontal bars",
+      barvertical: "Vertical bars",
       pie: "Pie",
     },
   },
