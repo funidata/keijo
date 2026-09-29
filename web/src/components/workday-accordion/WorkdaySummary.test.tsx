@@ -157,7 +157,9 @@ describe("WorkdaySummary", () => {
   it("shows 'Weekend' chip for a Saturday with only a flex leave entry", () => {
     renderWorkday({
       date: "2026-06-13", // Saturday
-      entries: [{ ...baseEntry, ratioNumber: EntryType.FlexLeave, duration: 1, durationInHours: false }],
+      entries: [
+        { ...baseEntry, ratioNumber: EntryType.FlexLeave, duration: 1, durationInHours: false },
+      ],
     });
 
     // WorkdayAccordion filters the flex leave entry before passing to WorkdaySummary,
