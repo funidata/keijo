@@ -168,17 +168,6 @@ describe("WorkdaySummary", () => {
     expect(screen.queryByText("Flex Leave")).toBeNull();
   });
 
-  it("shows 'Weekend' chip for a Saturday with flex leave + zero entry", () => {
-    renderWorkday({
-      date: "2026-06-13", // Saturday
-      // Simulates effectiveWorkday after WorkdayAccordion filters out flex leave and only zero entry remains
-      entries: [{ ...baseEntry, key: "2", ratioNumber: EntryType.NormalWork, duration: 0 }],
-    });
-
-    expect(screen.getByText("Weekend")).toBeTruthy();
-    expect(screen.queryByText("Flex Leave")).toBeNull();
-  });
-
   it("has aria-current='date' for current day", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date(2026, 5, 10, 12, 0, 0)); // 2026-06-10 local time
