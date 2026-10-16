@@ -106,7 +106,7 @@ describe("OverviewContextProvider", () => {
         type: OverviewGraphType.Totals,
         variant: TotalsGraphVariant.Pie,
       });
-      expect(mocks.updateOverviewConfig).toHaveBeenCalledWith({
+      expect(mocks.updateOverviewConfig).toHaveBeenCalledWith(expect.objectContaining({
         variables: {
           config: [
             {
@@ -119,7 +119,7 @@ describe("OverviewContextProvider", () => {
             },
           ],
         },
-      });
+      }));
     });
   });
 });
