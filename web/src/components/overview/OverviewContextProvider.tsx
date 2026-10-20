@@ -43,8 +43,20 @@ export default function OverviewContextProvider({
       });
 
       setLocalConfig(newConfig);
+      // Update the query cache when a chart graph value changes so the provider remounted after a route
+      // change does not read an outdated cached value.
       updateOverviewConfig({
         variables: { config: newConfig },
+        update: (cache, { data: mutationData }) => {
+          if (!mutationData) {
+            return;
+          }
+
+          cache.writeQuery({
+            query: GetMyOverviewConfigDocument,
+            data: { getMyOverviewConfig: mutationData.updateMyOverviewConfig },
+          });
+        },
       });
     },
     [overviewConfig, updateOverviewConfig],
