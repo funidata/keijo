@@ -81,7 +81,7 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
           <Box
             sx={
               disabled
-                ? { display: "flex", flexDirection: "row", alignItems: "center", gap: 2 }
+                ? { display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }
                 : {}
             }
           >
@@ -120,7 +120,7 @@ const WorkdaySummary = ({ workday }: WorkdayAccordionProps) => {
                 }}
               />
             )}
-            {disabled && !mobile && <Box sx={{ width: 133 }} />}
+            {disabled && !mobile && <Box sx={{ width: 100 }} />}
           </Stack>
         </Box>
       </AccordionSummary>
