@@ -14,6 +14,7 @@ const WorkdayHours = ({ date }: WorkdayHoursProps) => {
   const queryDate = date.format("YYYY-MM-DD");
   const { data } = useQuery(FindWorkdaysDocument, {
     variables: { start: queryDate, end: queryDate },
+    fetchPolicy: "network-only",
   });
 
   const totalDuration = totalDurationOfEntries(
